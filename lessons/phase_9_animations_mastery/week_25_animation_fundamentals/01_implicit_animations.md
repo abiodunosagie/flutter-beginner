@@ -16,7 +16,7 @@ In this comprehensive lesson, you'll master:
 
 By the end, you'll make your apps feel alive with smooth, professional animations!
 
-## Understanding Animations (Like Teaching a 5-Year-Old)
+## 5-Year-Old Explanation
 
 ### What is an Animation?
 

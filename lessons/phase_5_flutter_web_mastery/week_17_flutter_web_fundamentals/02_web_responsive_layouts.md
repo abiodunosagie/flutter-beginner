@@ -1,5 +1,23 @@
 # Week 17, Day 3-5: Web-Specific Responsive Layouts (No Packages!)
 
+## 5-Year-Old Explanation
+
+Imagine you have a photo that you want to hang on different walls:
+- Tiny bathroom wall → Make the photo small to fit
+- Living room wall → Make it bigger
+- Entire movie theater screen → Make it HUGE!
+
+The photo is the same, but it changes size to fit perfectly wherever you put it!
+
+Web responsive layouts are the same - your app needs to look perfect whether someone views it on:
+- A tiny phone (like a bathroom wall)
+- A tablet (like a living room wall)
+- A huge computer monitor (like a movie theater!)
+
+The difference between mobile and web is like the difference between fitting a photo in a lunchbox versus fitting it on a billboard. Web screens can be MASSIVE - some are 10 times bigger than phones! Your app needs to be smart enough to rearrange itself for any size screen.
+
+---
+
 ## Web Responsiveness is Different
 
 **Mobile responsiveness:**

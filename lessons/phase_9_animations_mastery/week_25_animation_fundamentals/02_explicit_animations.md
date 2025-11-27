@@ -16,7 +16,7 @@ In this comprehensive lesson, you'll master:
 
 By the end, you'll have complete control over your animations!
 
-## Understanding Explicit Animations (Like Teaching a 5-Year-Old)
+## 5-Year-Old Explanation
 
 ### Implicit vs Explicit
 

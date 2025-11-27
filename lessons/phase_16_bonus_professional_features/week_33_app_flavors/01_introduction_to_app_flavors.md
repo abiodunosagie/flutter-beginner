@@ -1,6 +1,6 @@
 # Introduction to App Flavors (Build Variants)
 
-## What Are App Flavors? (5-Year-Old Explanation)
+## 5-Year-Old Explanation
 
 Imagine you're a baker who makes the same delicious cake recipe. But:
 - For **kids' parties**, you add extra colorful sprinkles and use a playground-themed wrapper

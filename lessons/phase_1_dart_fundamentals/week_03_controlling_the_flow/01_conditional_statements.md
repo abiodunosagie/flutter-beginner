@@ -1,5 +1,35 @@
 # Week 3, Day 1-2: Conditional Statements - Making Decisions
 
+## 5-Year-Old Explanation
+
+Imagine you're getting ready to go outside to play. Your mom says:
+
+"IF it's raining, THEN take an umbrella. OTHERWISE, you can go without one."
+
+This is a decision! You look outside. Is it raining?
+- YES → Take the umbrella
+- NO → Go without it
+
+That's exactly what conditional statements do in programming! They help the computer make decisions.
+
+**More everyday examples:**
+- IF you finish your homework, THEN you can watch TV
+- IF the cookie jar is empty, THEN we need to bake more cookies
+- IF it's your birthday, THEN you get a cake!
+
+In programming, we write these decisions like:
+```
+IF (something is true) {
+  Do this thing
+}
+```
+
+The computer checks: "Is this thing true?" If YES, it does what's inside the curly braces { }. If NO, it skips that part!
+
+Think of it like a fork in the road - the computer needs to choose which path to take based on whether something is true or false. This is how we make programs that are smart and can respond differently to different situations!
+
+---
+
 ## Programs Need to Make Decisions
 
 Right now, your programs run the same way every time. But real apps need to:

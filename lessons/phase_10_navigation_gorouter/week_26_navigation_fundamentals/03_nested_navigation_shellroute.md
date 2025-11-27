@@ -1,5 +1,19 @@
 # Nested Navigation with ShellRoute
 
+## 5-Year-Old Explanation
+
+Imagine you have a toy house with three rooms: Kitchen, Bedroom, and Playroom.
+
+**Simple navigation (bad):**
+You're in the Kitchen building a LEGO tower. Then you go to the Bedroom to get a toy. When you come back to the Kitchen... YOUR LEGO TOWER IS GONE! You have to start over!
+
+**Nested navigation (good):**
+You're in the Kitchen building a LEGO tower. You go to the Bedroom to get a toy. When you come back to the Kitchen... YOUR LEGO TOWER IS STILL THERE! Each room remembers what you were doing!
+
+In apps, nested navigation means each tab (Kitchen, Bedroom, Playroom) remembers where you were. If you're deep in Settings, then switch to Home tab, then come back to Settings - you're still in the same spot! No need to navigate all the way back.
+
+---
+
 ## What You'll Learn
 
 - Creating nested navigation with ShellRoute

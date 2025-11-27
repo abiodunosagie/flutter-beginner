@@ -15,7 +15,7 @@ In this comprehensive lesson, you'll master:
 
 By the end, you'll create stunning custom animations from scratch!
 
-## Understanding CustomPainter (Like Teaching a 5-Year-Old)
+## 5-Year-Old Explanation
 
 ### What is CustomPainter?
 

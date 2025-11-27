@@ -1,5 +1,28 @@
 # Environment Setup - Your Developer Workspace
 
+## 5-Year-Old Explanation
+
+Imagine you want to build a treehouse. You can't just start hammering wood together with your bare hands, right? You need tools!
+
+You need:
+- A hammer to hit the nails
+- A saw to cut the wood
+- A measuring tape to make sure everything fits
+- A toolbox to keep everything organized
+
+Writing code is the same way! Before you can write programs that do amazing things, you need to set up your "coding toolbox" first.
+
+**Your Coding Toolbox Contains:**
+1. A special place where you write your code (like a notebook, but for code)
+2. A tool that reads your code and makes it work (the Dart SDK)
+3. A helper that checks if you made any mistakes (like a spell-checker)
+
+Think of it like this: If you wanted to draw a picture, you'd need paper, pencils, and maybe crayons. For coding, you need a code editor, Dart, and some other helpful tools.
+
+The good news? We're going to set up your coding toolbox together, step by step. And guess what? We'll start with the easiest way possible - no complicated installation required!
+
+---
+
 ## Why Environment Setup Matters
 
 A carpenter needs a workshop. A painter needs a studio. A programmer needs a **development environment**.

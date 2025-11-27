@@ -1,5 +1,27 @@
 # Futures vs Streams: Understanding Async Data
 
+## 5-Year-Old Explanation
+
+Imagine two different ways to get toys:
+
+**Future (One-Time Delivery):**
+You order a toy online. The delivery truck brings it to your house ONCE. You get the toy, and that's it - no more deliveries for that order.
+
+**Stream (Ongoing Delivery):**
+You subscribe to a "Toy of the Month" club. Every month, a new toy shows up at your door! The deliveries keep coming until you cancel.
+
+In programming:
+- **Future** = One single thing that will arrive later (like downloading one photo)
+- **Stream** = Multiple things arriving over time (like watching a video - the data keeps coming!)
+
+**Real examples:**
+- Future: "Fetch user profile" → Gets it once, done
+- Stream: "Listen to chat messages" → New messages keep arriving!
+
+The key difference: Futures give you ONE result. Streams give you MANY results over time!
+
+---
+
 ## What You'll Learn
 
 In this comprehensive lesson, you'll master:
@@ -14,7 +36,7 @@ In this comprehensive lesson, you'll master:
 
 By the end, you'll know exactly which async tool to use for any situation!
 
-## Understanding Async Programming (Like Teaching a 5-Year-Old)
+## Understanding Async Programming
 
 ### What is Asynchronous?
 

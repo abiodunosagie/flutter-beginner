@@ -27,10 +27,7 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Counter with Riverpod',
-      home: CounterScreen(),
-    );
+    return MaterialApp(title: 'Counter with Riverpod', home: CounterScreen());
   }
 }
 
