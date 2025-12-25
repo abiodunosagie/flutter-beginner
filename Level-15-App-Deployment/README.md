@@ -74,6 +74,7 @@ YOUR JOURNEY:
 4. **Store Listings** - Icons, screenshots, descriptions
 5. **Submission Process** - Step-by-step publishing
 6. **App Security** - Protecting API keys, data, and your app from hackers
+7. **Practical API Key Security** - Step-by-step guide for hiding secrets (Uber-like app example)
 
 ### Examples
 1. **Android Deployment Guide** - Complete Android walkthrough
