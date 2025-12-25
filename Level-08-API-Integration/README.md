@@ -42,6 +42,7 @@ Learn how to fetch data from the internet and display it in your Flutter app!
 | 06 | Error Handling | Handle network errors gracefully |
 | 07 | Loading States | Show loading indicators properly |
 | 08 | Data Models | Create Dart classes from JSON |
+| 09 | API Architecture | Repository Pattern, DI & Clean Architecture |
 
 ### Examples
 | File | Description |
@@ -52,6 +53,7 @@ Learn how to fetch data from the internet and display it in your Flutter app!
 | Example04 | Complete CRUD operations |
 | Example05 | Dio with interceptors |
 | Example06 | Error handling patterns |
+| Example07 | Real-World API App (Complete Architecture) |
 
 ### Exercises
 Practice fetching real data from public APIs!
@@ -320,7 +322,12 @@ START HERE
 └─────────────────────┘
     │
     ▼
-  EXERCISES
+┌─────────────────────┐
+│ 09-APIArchitecture  │  ← Repository, DI & Clean Code
+└─────────────────────┘
+    │
+    ▼
+  EXAMPLES & EXERCISES
 ```
 
 ---
@@ -341,10 +348,10 @@ START HERE
 
 | Section | Estimated Time |
 |---------|---------------|
-| Theory (8 files) | 3-4 hours |
-| Examples | 2-3 hours |
+| Theory (9 files) | 4-5 hours |
+| Examples (7 files) | 3-4 hours |
 | Exercises | 3-4 hours |
-| **Total** | **8-11 hours** |
+| **Total** | **10-13 hours** |
 
 ---
 
