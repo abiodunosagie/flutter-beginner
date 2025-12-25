@@ -73,6 +73,7 @@ YOUR JOURNEY:
 3. **Building for Production** - Creating release builds
 4. **Store Listings** - Icons, screenshots, descriptions
 5. **Submission Process** - Step-by-step publishing
+6. **App Security** - Protecting API keys, data, and your app from hackers
 
 ### Examples
 1. **Android Deployment Guide** - Complete Android walkthrough
