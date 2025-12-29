@@ -1,517 +1,1647 @@
-# Level 5 Exercises: Flutter Foundations
+# Level 05: Flutter Foundations Exercises
 
-Practice building Flutter apps with these exercises. Start simple and work your way up!
+## How These Exercises Work
+
+Each skill is broken into **small steps**. Complete each step before moving to the next. By the end, you'll combine everything!
+
+```
+THE PROGRESSIVE LEARNING PATH:
+
+Step 1: Learn one tiny piece ──────────────► Practice it
+Step 2: Learn next tiny piece ─────────────► Practice it
+Step 3: Learn next tiny piece ─────────────► Practice it
+...
+Final: Combine ALL pieces ─────────────────► Build complete app!
+```
 
 ---
 
-## Exercise 1: Hello World Variations ⭐
+# PART 1: BASIC WIDGETS
 
-**Goal:** Get comfortable with basic Flutter structure and widgets.
+## Exercise 1.1: Create a Text Widget
 
-Create a Flutter app that displays:
-1. Your name in large, bold text
-2. A subtitle with your favorite quote
-3. An icon that represents you
-4. All centered on the screen with a nice background color
+**Goal:** Display text on screen.
 
-**Requirements:**
-- Use `Scaffold` with an `AppBar`
-- Use `Column` for layout
-- Style the text with `TextStyle`
-- Add appropriate spacing with `SizedBox`
-- Use `const` where appropriate
+**Your Task:** Replace "TODO" with a Text widget showing "Hello Flutter"
 
-**Hints:**
 ```dart
-Text(
-  'Your Name',
-  style: TextStyle(
-    fontSize: 32,
-    fontWeight: FontWeight.bold,
+import 'package:flutter/material.dart';
+
+void main() => runApp(const MyApp());
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: // TODO: Add Text widget with "Hello Flutter"
+        ),
+      ),
+    );
+  }
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+child: const Text('Hello Flutter'),
+```
+
+</details>
+
+---
+
+## Exercise 1.2: Style the Text
+
+**Goal:** Make text larger and bold.
+
+**Your Task:** Add TextStyle to make the text size 32 and bold.
+
+```dart
+Center(
+  child: Text(
+    'Hello Flutter',
+    // TODO: Add style property with TextStyle
+    // - fontSize: 32
+    // - fontWeight: FontWeight.bold
   ),
 )
 ```
 
----
+<details>
+<summary>✅ Solution</summary>
 
-## Exercise 2: Profile Card ⭐
-
-**Goal:** Practice using Container, decoration, and layout widgets.
-
-Create a profile card that shows:
-- A circular avatar (use `CircleAvatar`)
-- Name and title
-- Location with an icon
-- A brief bio
-- Social media stats (Followers, Following, Posts)
-
-**Requirements:**
-- Use `Card` widget
-- Use `Padding` for spacing
-- Use `Row` and `Column` for layout
-- Add colors and styling
-- Make it look professional
-
-**Example Layout:**
-```
-┌─────────────────────────┐
-│      [Avatar]           │
-│                         │
-│      John Doe           │
-│   Flutter Developer     │
-│                         │
-│   📍 San Francisco      │
-│                         │
-│ This is my bio text...  │
-│                         │
-│  100    1.2K    250     │
-│  Posts  Followers  Following │
-└─────────────────────────┘
-```
-
----
-
-## Exercise 3: Interactive Counter ⭐⭐
-
-**Goal:** Practice StatefulWidget and setState.
-
-Create a counter app with:
-- Display of current count
-- Increment button (+)
-- Decrement button (-)
-- Reset button
-- Count should never go below 0
-
-**Bonus Challenges:**
-- Change color based on count (e.g., red when 0, green when positive)
-- Add a "+5" and "-5" button
-- Add a history of all counts
-
-**Requirements:**
-- Use `StatefulWidget`
-- Use `setState()` for updates
-- Handle edge cases (negative numbers)
-- Make buttons visually distinct
-
----
-
-## Exercise 4: Todo List ⭐⭐
-
-**Goal:** Practice lists and state management.
-
-Create a simple todo list app:
-- Text field to add new tasks
-- List of tasks
-- Tap task to mark as complete (strikethrough)
-- Delete button for each task
-- Show count of completed vs total tasks
-
-**Requirements:**
-- Use `TextField` with `TextEditingController`
-- Use `ListView.builder`
-- Manage list state with `setState()`
-- Style completed tasks differently
-- Don't forget to `dispose()` the controller
-
-**Example:**
-```
-┌─────────────────────────┐
-│  Add new task...    [+] │
-├─────────────────────────┤
-│  ☐ Buy groceries    [X] │
-│  ☑ Learn Flutter    [X] │
-│  ☐ Build an app     [X] │
-└─────────────────────────┘
-  2 of 3 completed
-```
-
----
-
-## Exercise 5: Layout Practice ⭐⭐
-
-**Goal:** Master Row, Column, and alignment.
-
-Create a page that demonstrates different layouts:
-
-**Section 1: Row Alignment**
-- Show boxes aligned: start, center, end, spaceBetween, spaceEvenly
-
-**Section 2: Column Alignment**
-- Show items with different crossAxisAlignment options
-
-**Section 3: Expanded/Flexible**
-- Show 3 boxes with different flex values (2:1:1)
-
-**Requirements:**
-- Use labeled sections
-- Different colors for each box
-- Clear visual demonstration of each concept
-- Use `Container` with different sizes
-
----
-
-## Exercise 6: Color Picker ⭐⭐
-
-**Goal:** Practice with multiple state variables and user interaction.
-
-Create a color picker app:
-- Three sliders for RGB values (0-255)
-- Display the resulting color in a large box
-- Show the RGB values as text
-- Show the hex color code
-
-**Bonus:**
-- Add preset color buttons
-- Add a "Random Color" button
-- Show a list of recently picked colors
-
-**Requirements:**
-- Use `StatefulWidget`
-- Use `Slider` widgets
-- Convert RGB to hex
-- Update UI on slider change
-
----
-
-## Exercise 7: Toggle Features ⭐⭐
-
-**Goal:** Practice with switches, checkboxes, and conditional rendering.
-
-Create a settings page with:
-- Dark Mode toggle (change background)
-- Notifications toggle
-- Font size slider
-- Show/hide avatar checkbox
-- Different sections (Account, Preferences, About)
-
-**Requirements:**
-- Use `Switch` and `Checkbox` widgets
-- Use `Slider` for font size
-- Conditionally show/hide widgets based on settings
-- Use `ListTile` for settings items
-
----
-
-## Exercise 8: Navigation App ⭐⭐⭐
-
-**Goal:** Practice bottom navigation and page management.
-
-Create an app with 3 tabs:
-1. **Home**: Show a welcome message and user stats
-2. **Search**: Show a search bar and dummy results
-3. **Profile**: Show user profile with edit button
-
-**Requirements:**
-- Use `BottomNavigationBar`
-- Maintain separate state for each page
-- Use appropriate icons
-- Highlight active tab
-- Each page should have real content
-
----
-
-## Exercise 9: Form Validation ⭐⭐⭐
-
-**Goal:** Practice forms and validation.
-
-Create a registration form with:
-- Name field (required, min 3 characters)
-- Email field (required, valid email format)
-- Password field (required, min 8 characters, hidden text)
-- Confirm password field (must match password)
-- Submit button (disabled until valid)
-- Show error messages
-
-**Requirements:**
-- Use `TextField` widgets
-- Validate on text change
-- Show/hide password toggle
-- Disable submit if invalid
-- Clear form after submit
-
-**Validation Rules:**
 ```dart
-// Name: not empty, at least 3 characters
-// Email: contains @
-// Password: at least 8 characters
-// Confirm: matches password
-```
-
----
-
-## Exercise 10: Weather Card ⭐⭐⭐
-
-**Goal:** Build a complex, styled widget.
-
-Create a weather card that shows:
-- City name
-- Large temperature
-- Weather icon
-- Weather description
-- High/Low temperatures
-- Humidity and Wind speed
-- 5-day forecast (horizontal scroll)
-
-**Requirements:**
-- Use `Card` with nice styling
-- Use `Stack` for layering
-- Use `Row` and `Column` for layout
-- Add gradient background
-- Make it visually appealing
-- Use dummy data (no API yet)
-
-**Example:**
-```
-┌─────────────────────────┐
-│  ☀️                     │
-│  San Francisco          │
-│                         │
-│      72°F               │
-│   Sunny Skies           │
-│                         │
-│  High: 78°  Low: 65°    │
-│  💧 45%     💨 12 mph   │
-│                         │
-│  Mon  Tue  Wed  Thu  Fri│
-│  70°  72°  75°  73°  71°│
-└─────────────────────────┘
-```
-
----
-
-## Exercise 11: Image Gallery ⭐⭐⭐
-
-**Goal:** Practice GridView and navigation.
-
-Create a photo gallery app:
-- Grid of images (use colored containers as placeholders)
-- Tap image to view full screen
-- Add like button on each image
-- Show liked images count
-- Filter to show only liked images
-
-**Requirements:**
-- Use `GridView.builder`
-- Navigate to detail page with `Navigator.push`
-- Manage liked state
-- Use `Hero` animation for smooth transition
-- Add filter toggle
-
----
-
-## Exercise 12: Calculator ⭐⭐⭐⭐
-
-**Goal:** Build a functional calculator.
-
-Create a calculator with:
-- Number buttons (0-9)
-- Operation buttons (+, -, ×, ÷)
-- Equals button
-- Clear button
-- Display showing current input and result
-- Basic calculation logic
-
-**Requirements:**
-- Grid layout for buttons
-- Proper calculation logic
-- Handle decimal numbers
-- Handle divide by zero
-- Clear button resets everything
-- Professional styling
-
----
-
-## Exercise 13: Expense Tracker ⭐⭐⭐⭐
-
-**Goal:** Build a complete mini-app.
-
-Create an expense tracker:
-- Add expense (name, amount, category)
-- List of expenses
-- Delete expense
-- Show total expenses
-- Filter by category
-- Show expenses by category chart (simple bars)
-
-**Requirements:**
-- Multiple StatefulWidgets
-- Form validation
-- List management
-- Filtering logic
-- Summary calculations
-- Nice UI with colors
-
----
-
-## Exercise 14: Quiz App ⭐⭐⭐⭐
-
-**Goal:** Complex state management and navigation.
-
-Create a quiz app:
-- Welcome screen
-- Multiple choice questions (one at a time)
-- Progress indicator
-- Track score
-- Results screen with score
-- Restart button
-
-**Requirements:**
-- Multiple pages/screens
-- Progress tracking
-- Score calculation
-- Navigation between screens
-- Timer for each question (bonus)
-- Review incorrect answers (bonus)
-
-**Questions Data Structure:**
-```dart
-class Question {
-  final String text;
-  final List<String> options;
-  final int correctIndex;
-}
-```
-
----
-
-## Exercise 15: Final Project - Personal Dashboard ⭐⭐⭐⭐⭐
-
-**Goal:** Combine everything you've learned!
-
-Create a personal dashboard app with:
-
-**Features:**
-1. Multiple tabs (Dashboard, Tasks, Notes, Settings)
-2. Dashboard: Show widgets for weather, tasks, quick stats
-3. Tasks: Full todo list with categories
-4. Notes: Add/edit/delete notes
-5. Settings: User preferences
-
-**Requirements:**
-- Clean, professional UI
-- Multiple pages with navigation
-- State management across app
-- Forms and validation
-- Lists (add/edit/delete)
-- Local state for preferences
-- Reusable components
-- Proper code organization
-
-**Bonus Features:**
-- Search functionality
-- Sort/filter options
-- Dark mode toggle
-- Animations
-- Custom theme
-
----
-
-## Tips for Success
-
-1. **Start Simple**
-   - Get basic structure working first
-   - Add features incrementally
-   - Test frequently
-
-2. **Read Error Messages**
-   - Flutter errors are usually helpful
-   - Check the line number
-   - Look for "expected" vs "actual"
-
-3. **Use Hot Reload**
-   - Press `r` in terminal
-   - See changes instantly
-   - Saves tons of time
-
-4. **Code Organization**
-   - Break into smaller widgets
-   - Use meaningful names
-   - Add comments for complex logic
-
-5. **Styling**
-   - Use consistent spacing
-   - Pick a color scheme
-   - Make it visually pleasing
-
-6. **Testing**
-   - Test edge cases
-   - Try different screen sizes
-   - Check all user interactions
-
----
-
-## Common Mistakes to Avoid
-
-❌ **Forgetting setState()**
-```dart
-// Won't update UI
-count++;
-
-// Will update UI
-setState(() => count++);
-```
-
-❌ **Not disposing controllers**
-```dart
-@override
-void dispose() {
-  controller.dispose();  // Don't forget!
-  super.dispose();
-}
-```
-
-❌ **Unbounded constraints**
-```dart
-// Error: ListView in Column
-Column(
-  children: [
-    ListView(),  // Needs bounded height
-  ],
+Center(
+  child: Text(
+    'Hello Flutter',
+    style: TextStyle(
+      fontSize: 32,
+      fontWeight: FontWeight.bold,
+    ),
+  ),
 )
+```
 
-// Fix: Wrap in Expanded
+</details>
+
+---
+
+## Exercise 1.3: Add Color to Text
+
+**Goal:** Change text color.
+
+**Your Task:** Make the text blue.
+
+```dart
+Text(
+  'Hello Flutter',
+  style: TextStyle(
+    fontSize: 32,
+    fontWeight: FontWeight.bold,
+    // TODO: Add color property
+  ),
+)
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+Text(
+  'Hello Flutter',
+  style: TextStyle(
+    fontSize: 32,
+    fontWeight: FontWeight.bold,
+    color: Colors.blue,
+  ),
+)
+```
+
+</details>
+
+---
+
+## Exercise 1.4: Add an Icon
+
+**Goal:** Display an icon.
+
+**Your Task:** Add a star icon below the text.
+
+```dart
 Column(
+  mainAxisAlignment: MainAxisAlignment.center,
   children: [
-    Expanded(child: ListView()),
+    Text('Hello Flutter', style: TextStyle(fontSize: 32)),
+    SizedBox(height: 16),
+    // TODO: Add Icon widget
+    // Use Icons.star with size 50 and color yellow
   ],
 )
 ```
 
-❌ **Missing const**
-```dart
-// Less efficient
-Text('Hello')
+<details>
+<summary>✅ Solution</summary>
 
-// More efficient
-const Text('Hello')
+```dart
+Column(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: [
+    Text('Hello Flutter', style: TextStyle(fontSize: 32)),
+    SizedBox(height: 16),
+    Icon(
+      Icons.star,
+      size: 50,
+      color: Colors.yellow,
+    ),
+  ],
+)
+```
+
+</details>
+
+---
+
+## Exercise 1.5: Complete Widget Challenge
+
+**Goal:** Build a greeting card WITHOUT looking at solutions.
+
+**Your Task:** Create a centered card showing:
+- Your name (large, bold)
+- "Flutter Developer" (smaller, gray)
+- A heart icon (red)
+
+```dart
+// TODO: Build it yourself!
+// Use Column, Text, Icon, SizedBox
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+Center(
+  child: Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Text(
+        'John Doe',
+        style: TextStyle(
+          fontSize: 32,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      SizedBox(height: 8),
+      Text(
+        'Flutter Developer',
+        style: TextStyle(
+          fontSize: 18,
+          color: Colors.grey,
+        ),
+      ),
+      SizedBox(height: 16),
+      Icon(
+        Icons.favorite,
+        size: 50,
+        color: Colors.red,
+      ),
+    ],
+  ),
+)
+```
+
+</details>
+
+---
+
+# PART 2: LAYOUT WIDGETS
+
+## Exercise 2.1: Create a Row
+
+**Goal:** Arrange items horizontally.
+
+**Your Task:** Put 3 colored boxes in a row.
+
+```dart
+// TODO: Create a Row with 3 Container children
+// Each Container should be:
+// - width: 60, height: 60
+// - Different colors (red, green, blue)
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+Row(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: [
+    Container(width: 60, height: 60, color: Colors.red),
+    Container(width: 60, height: 60, color: Colors.green),
+    Container(width: 60, height: 60, color: Colors.blue),
+  ],
+)
+```
+
+</details>
+
+---
+
+## Exercise 2.2: Add Spacing to Row
+
+**Goal:** Add space between items.
+
+**Your Task:** Use mainAxisAlignment to spread boxes evenly.
+
+```dart
+Row(
+  // TODO: Add mainAxisAlignment: MainAxisAlignment.spaceEvenly
+  children: [
+    Container(width: 60, height: 60, color: Colors.red),
+    Container(width: 60, height: 60, color: Colors.green),
+    Container(width: 60, height: 60, color: Colors.blue),
+  ],
+)
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+Row(
+  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  children: [
+    Container(width: 60, height: 60, color: Colors.red),
+    Container(width: 60, height: 60, color: Colors.green),
+    Container(width: 60, height: 60, color: Colors.blue),
+  ],
+)
+```
+
+</details>
+
+---
+
+## Exercise 2.3: Create a Column
+
+**Goal:** Arrange items vertically.
+
+**Your Task:** Stack 3 boxes vertically, centered.
+
+```dart
+// TODO: Create a Column with 3 Container children
+// - Use mainAxisAlignment: MainAxisAlignment.center
+// - Each box: width 100, height 50, different colors
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+Column(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: [
+    Container(width: 100, height: 50, color: Colors.orange),
+    Container(width: 100, height: 50, color: Colors.purple),
+    Container(width: 100, height: 50, color: Colors.teal),
+  ],
+)
+```
+
+</details>
+
+---
+
+## Exercise 2.4: Add SizedBox for Spacing
+
+**Goal:** Add gaps between widgets.
+
+**Your Task:** Add 16 pixels of space between each box.
+
+```dart
+Column(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: [
+    Container(width: 100, height: 50, color: Colors.orange),
+    // TODO: Add SizedBox(height: 16)
+    Container(width: 100, height: 50, color: Colors.purple),
+    // TODO: Add SizedBox(height: 16)
+    Container(width: 100, height: 50, color: Colors.teal),
+  ],
+)
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+Column(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: [
+    Container(width: 100, height: 50, color: Colors.orange),
+    SizedBox(height: 16),
+    Container(width: 100, height: 50, color: Colors.purple),
+    SizedBox(height: 16),
+    Container(width: 100, height: 50, color: Colors.teal),
+  ],
+)
+```
+
+</details>
+
+---
+
+## Exercise 2.5: Use Padding
+
+**Goal:** Add space around a widget.
+
+**Your Task:** Add 20 pixels of padding around the Container.
+
+```dart
+// TODO: Wrap Container in Padding widget
+// Use EdgeInsets.all(20)
+
+Container(
+  width: 100,
+  height: 100,
+  color: Colors.blue,
+)
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+Padding(
+  padding: EdgeInsets.all(20),
+  child: Container(
+    width: 100,
+    height: 100,
+    color: Colors.blue,
+  ),
+)
+```
+
+</details>
+
+---
+
+## Exercise 2.6: Use Expanded
+
+**Goal:** Make widgets fill available space.
+
+**Your Task:** Make boxes fill the row width with ratios 2:1:1.
+
+```dart
+Row(
+  children: [
+    // TODO: First box should take 2x space (flex: 2)
+    Container(height: 60, color: Colors.red),
+
+    // TODO: Second box should take 1x space (flex: 1)
+    Container(height: 60, color: Colors.green),
+
+    // TODO: Third box should take 1x space (flex: 1)
+    Container(height: 60, color: Colors.blue),
+  ],
+)
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+Row(
+  children: [
+    Expanded(
+      flex: 2,
+      child: Container(height: 60, color: Colors.red),
+    ),
+    Expanded(
+      flex: 1,
+      child: Container(height: 60, color: Colors.green),
+    ),
+    Expanded(
+      flex: 1,
+      child: Container(height: 60, color: Colors.blue),
+    ),
+  ],
+)
+```
+
+</details>
+
+---
+
+## Exercise 2.7: Layout Challenge
+
+**Goal:** Build a profile card layout WITHOUT looking at solutions.
+
+**Your Task:** Create this layout:
+```
+┌─────────────────────────────────────┐
+│  [Avatar]    Name                   │
+│              @username              │
+└─────────────────────────────────────┘
+```
+
+Use: Row, Column, Container (for avatar), Text, Padding
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+Padding(
+  padding: EdgeInsets.all(16),
+  child: Row(
+    children: [
+      Container(
+        width: 60,
+        height: 60,
+        decoration: BoxDecoration(
+          color: Colors.blue,
+          shape: BoxShape.circle,
+        ),
+      ),
+      SizedBox(width: 16),
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'John Doe',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            '@johndoe',
+            style: TextStyle(
+              color: Colors.grey,
+            ),
+          ),
+        ],
+      ),
+    ],
+  ),
+)
+```
+
+</details>
+
+---
+
+# PART 3: STATEFUL WIDGETS
+
+## Exercise 3.1: Create StatefulWidget
+
+**Goal:** Understand the structure of a StatefulWidget.
+
+**Your Task:** Convert this StatelessWidget to StatefulWidget.
+
+```dart
+// Convert this:
+class Counter extends StatelessWidget {
+  const Counter({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text('0');
+  }
+}
+
+// TODO: Rewrite as StatefulWidget
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+class Counter extends StatefulWidget {
+  const Counter({super.key});
+
+  @override
+  State<Counter> createState() => _CounterState();
+}
+
+class _CounterState extends State<Counter> {
+  @override
+  Widget build(BuildContext context) {
+    return Text('0');
+  }
+}
+```
+
+</details>
+
+---
+
+## Exercise 3.2: Add State Variable
+
+**Goal:** Store data in state.
+
+**Your Task:** Add a count variable to the state.
+
+```dart
+class _CounterState extends State<Counter> {
+  // TODO: Add int _count = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text('0');  // TODO: Change to show _count
+  }
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+class _CounterState extends State<Counter> {
+  int _count = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text('$_count');
+  }
+}
+```
+
+</details>
+
+---
+
+## Exercise 3.3: Add a Button
+
+**Goal:** Add a clickable button.
+
+**Your Task:** Add an ElevatedButton that prints "Clicked!" when pressed.
+
+```dart
+Column(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: [
+    Text('$_count', style: TextStyle(fontSize: 48)),
+    SizedBox(height: 16),
+    // TODO: Add ElevatedButton
+    // onPressed should print "Clicked!"
+    // child should be Text('+')
+  ],
+)
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+Column(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: [
+    Text('$_count', style: TextStyle(fontSize: 48)),
+    SizedBox(height: 16),
+    ElevatedButton(
+      onPressed: () {
+        print('Clicked!');
+      },
+      child: Text('+'),
+    ),
+  ],
+)
+```
+
+</details>
+
+---
+
+## Exercise 3.4: Use setState
+
+**Goal:** Update UI when state changes.
+
+**Your Task:** Make the button increment _count using setState.
+
+```dart
+ElevatedButton(
+  onPressed: () {
+    // TODO: Use setState to increment _count
+    // setState(() {
+    //   _count++;
+    // });
+  },
+  child: Text('+'),
+)
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+ElevatedButton(
+  onPressed: () {
+    setState(() {
+      _count++;
+    });
+  },
+  child: Text('+'),
+)
+```
+
+</details>
+
+---
+
+## Exercise 3.5: Add Decrement Button
+
+**Goal:** Add another button to decrease count.
+
+**Your Task:** Add a "-" button that decreases _count, but doesn't go below 0.
+
+```dart
+Row(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: [
+    // TODO: Add decrement button
+    // Don't allow count to go below 0
+
+    SizedBox(width: 20),
+    Text('$_count', style: TextStyle(fontSize: 48)),
+    SizedBox(width: 20),
+
+    ElevatedButton(
+      onPressed: () {
+        setState(() {
+          _count++;
+        });
+      },
+      child: Text('+'),
+    ),
+  ],
+)
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+Row(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: [
+    ElevatedButton(
+      onPressed: () {
+        setState(() {
+          if (_count > 0) {
+            _count--;
+          }
+        });
+      },
+      child: Text('-'),
+    ),
+    SizedBox(width: 20),
+    Text('$_count', style: TextStyle(fontSize: 48)),
+    SizedBox(width: 20),
+    ElevatedButton(
+      onPressed: () {
+        setState(() {
+          _count++;
+        });
+      },
+      child: Text('+'),
+    ),
+  ],
+)
+```
+
+</details>
+
+---
+
+## Exercise 3.6: Counter Challenge
+
+**Goal:** Build a complete counter WITHOUT looking at solutions.
+
+**Requirements:**
+- Display count in large text
+- "+" button to increment
+- "-" button to decrement (min 0)
+- "Reset" button to set to 0
+- Change text color to red when 0, green when positive
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+class Counter extends StatefulWidget {
+  const Counter({super.key});
+
+  @override
+  State<Counter> createState() => _CounterState();
+}
+
+class _CounterState extends State<Counter> {
+  int _count = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Counter')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              '$_count',
+              style: TextStyle(
+                fontSize: 72,
+                fontWeight: FontWeight.bold,
+                color: _count == 0 ? Colors.red : Colors.green,
+              ),
+            ),
+            SizedBox(height: 32),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      if (_count > 0) _count--;
+                    });
+                  },
+                  child: Text('-', style: TextStyle(fontSize: 24)),
+                ),
+                SizedBox(width: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      _count++;
+                    });
+                  },
+                  child: Text('+', style: TextStyle(fontSize: 24)),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  _count = 0;
+                });
+              },
+              child: Text('Reset'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
+</details>
+
+---
+
+# PART 4: LISTS
+
+## Exercise 4.1: Create a ListView
+
+**Goal:** Display a scrollable list.
+
+**Your Task:** Create a ListView with 3 items.
+
+```dart
+// TODO: Create ListView with 3 ListTile children
+// Each ListTile should have:
+// - leading: Icon
+// - title: Text
+// - subtitle: Text
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+ListView(
+  children: [
+    ListTile(
+      leading: Icon(Icons.star),
+      title: Text('Item 1'),
+      subtitle: Text('Description 1'),
+    ),
+    ListTile(
+      leading: Icon(Icons.star),
+      title: Text('Item 2'),
+      subtitle: Text('Description 2'),
+    ),
+    ListTile(
+      leading: Icon(Icons.star),
+      title: Text('Item 3'),
+      subtitle: Text('Description 3'),
+    ),
+  ],
+)
+```
+
+</details>
+
+---
+
+## Exercise 4.2: Use ListView.builder
+
+**Goal:** Create list from data.
+
+**Your Task:** Use ListView.builder with a list of strings.
+
+```dart
+final items = ['Apple', 'Banana', 'Cherry', 'Date', 'Elderberry'];
+
+// TODO: Create ListView.builder
+// - itemCount: items.length
+// - itemBuilder returns ListTile with item name
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+final items = ['Apple', 'Banana', 'Cherry', 'Date', 'Elderberry'];
+
+ListView.builder(
+  itemCount: items.length,
+  itemBuilder: (context, index) {
+    return ListTile(
+      title: Text(items[index]),
+    );
+  },
+)
+```
+
+</details>
+
+---
+
+## Exercise 4.3: Add Item to List
+
+**Goal:** Add items dynamically.
+
+**Your Task:** Add "New Item" to the list when button is pressed.
+
+```dart
+class _MyListState extends State<MyList> {
+  final List<String> _items = ['Item 1', 'Item 2', 'Item 3'];
+
+  void _addItem() {
+    // TODO: Use setState to add 'New Item' to _items
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('My List')),
+      body: ListView.builder(
+        itemCount: _items.length,
+        itemBuilder: (context, index) {
+          return ListTile(title: Text(_items[index]));
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _addItem,
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+void _addItem() {
+  setState(() {
+    _items.add('New Item ${_items.length + 1}');
+  });
+}
+```
+
+</details>
+
+---
+
+## Exercise 4.4: Delete Item from List
+
+**Goal:** Remove items from list.
+
+**Your Task:** Add delete button to each item.
+
+```dart
+ListView.builder(
+  itemCount: _items.length,
+  itemBuilder: (context, index) {
+    return ListTile(
+      title: Text(_items[index]),
+      // TODO: Add trailing IconButton to delete this item
+      // Use Icons.delete
+      // onPressed should remove item at this index
+    );
+  },
+)
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+ListView.builder(
+  itemCount: _items.length,
+  itemBuilder: (context, index) {
+    return ListTile(
+      title: Text(_items[index]),
+      trailing: IconButton(
+        icon: Icon(Icons.delete),
+        onPressed: () {
+          setState(() {
+            _items.removeAt(index);
+          });
+        },
+      ),
+    );
+  },
+)
+```
+
+</details>
+
+---
+
+## Exercise 4.5: List Challenge
+
+**Goal:** Build a simple todo list WITHOUT looking at solutions.
+
+**Requirements:**
+- TextField to enter new task
+- "Add" button to add task to list
+- List shows all tasks
+- Each task has delete button
+- Show total count of tasks
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+class TodoList extends StatefulWidget {
+  const TodoList({super.key});
+
+  @override
+  State<TodoList> createState() => _TodoListState();
+}
+
+class _TodoListState extends State<TodoList> {
+  final List<String> _tasks = [];
+  final _controller = TextEditingController();
+
+  void _addTask() {
+    if (_controller.text.isNotEmpty) {
+      setState(() {
+        _tasks.add(_controller.text);
+        _controller.clear();
+      });
+    }
+  }
+
+  void _deleteTask(int index) {
+    setState(() {
+      _tasks.removeAt(index);
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Todo List')),
+      body: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(16),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _controller,
+                    decoration: InputDecoration(
+                      hintText: 'Enter a task',
+                    ),
+                  ),
+                ),
+                SizedBox(width: 16),
+                ElevatedButton(
+                  onPressed: _addTask,
+                  child: Text('Add'),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Text('Total tasks: ${_tasks.length}'),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: _tasks.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(_tasks[index]),
+                  trailing: IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () => _deleteTask(index),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+```
+
+</details>
+
+---
+
+# PART 5: USER INPUT
+
+## Exercise 5.1: Create a TextField
+
+**Goal:** Accept text input.
+
+**Your Task:** Add a basic TextField.
+
+```dart
+Column(
+  children: [
+    // TODO: Add TextField with decoration
+    // hintText: 'Enter your name'
+  ],
+)
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+Column(
+  children: [
+    TextField(
+      decoration: InputDecoration(
+        hintText: 'Enter your name',
+      ),
+    ),
+  ],
+)
+```
+
+</details>
+
+---
+
+## Exercise 5.2: Use TextEditingController
+
+**Goal:** Read text from TextField.
+
+**Your Task:** Show the entered text below the TextField.
+
+```dart
+class _MyFormState extends State<MyForm> {
+  // TODO: Create TextEditingController
+
+  // TODO: Dispose controller in dispose()
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        TextField(
+          // TODO: Connect controller
+          decoration: InputDecoration(hintText: 'Enter text'),
+        ),
+        SizedBox(height: 16),
+        ElevatedButton(
+          onPressed: () {
+            // TODO: Print controller.text
+          },
+          child: Text('Submit'),
+        ),
+      ],
+    );
+  }
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+class _MyFormState extends State<MyForm> {
+  final _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        TextField(
+          controller: _controller,
+          decoration: InputDecoration(hintText: 'Enter text'),
+        ),
+        SizedBox(height: 16),
+        ElevatedButton(
+          onPressed: () {
+            print('Entered: ${_controller.text}');
+          },
+          child: Text('Submit'),
+        ),
+      ],
+    );
+  }
+}
+```
+
+</details>
+
+---
+
+## Exercise 5.3: Add TextField Border
+
+**Goal:** Style the TextField.
+
+**Your Task:** Add an outlined border to the TextField.
+
+```dart
+TextField(
+  decoration: InputDecoration(
+    hintText: 'Enter email',
+    // TODO: Add border: OutlineInputBorder()
+    // TODO: Add prefixIcon: Icon(Icons.email)
+  ),
+)
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+TextField(
+  decoration: InputDecoration(
+    hintText: 'Enter email',
+    border: OutlineInputBorder(),
+    prefixIcon: Icon(Icons.email),
+  ),
+)
+```
+
+</details>
+
+---
+
+## Exercise 5.4: Create Password Field
+
+**Goal:** Hide password text.
+
+**Your Task:** Create a password TextField.
+
+```dart
+// TODO: Create TextField for password
+// - obscureText: true
+// - Add lock icon
+// - hintText: 'Enter password'
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+TextField(
+  obscureText: true,
+  decoration: InputDecoration(
+    hintText: 'Enter password',
+    border: OutlineInputBorder(),
+    prefixIcon: Icon(Icons.lock),
+  ),
+)
+```
+
+</details>
+
+---
+
+## Exercise 5.5: Simple Validation
+
+**Goal:** Check if input is valid.
+
+**Your Task:** Show error if name is less than 3 characters.
+
+```dart
+class _MyFormState extends State<MyForm> {
+  final _controller = TextEditingController();
+  String? _errorText;
+
+  void _submit() {
+    // TODO: Check if text length < 3
+    // If yes: set _errorText = 'Name must be at least 3 characters'
+    // If no: set _errorText = null and print "Valid!"
+    // Remember to use setState!
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        TextField(
+          controller: _controller,
+          decoration: InputDecoration(
+            hintText: 'Enter name',
+            border: OutlineInputBorder(),
+            errorText: _errorText,  // Shows error below field
+          ),
+        ),
+        ElevatedButton(
+          onPressed: _submit,
+          child: Text('Submit'),
+        ),
+      ],
+    );
+  }
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+void _submit() {
+  setState(() {
+    if (_controller.text.length < 3) {
+      _errorText = 'Name must be at least 3 characters';
+    } else {
+      _errorText = null;
+      print('Valid: ${_controller.text}');
+    }
+  });
+}
+```
+
+</details>
+
+---
+
+## Exercise 5.6: Form Challenge
+
+**Goal:** Build a login form WITHOUT looking at solutions.
+
+**Requirements:**
+- Email field (with email icon)
+- Password field (hidden text, with lock icon)
+- Login button
+- Validate email contains "@"
+- Validate password is at least 6 characters
+- Show errors if invalid
+- Print "Login successful!" if valid
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+class LoginForm extends StatefulWidget {
+  const LoginForm({super.key});
+
+  @override
+  State<LoginForm> createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  String? _emailError;
+  String? _passwordError;
+
+  void _login() {
+    setState(() {
+      // Validate email
+      if (!_emailController.text.contains('@')) {
+        _emailError = 'Please enter a valid email';
+      } else {
+        _emailError = null;
+      }
+
+      // Validate password
+      if (_passwordController.text.length < 6) {
+        _passwordError = 'Password must be at least 6 characters';
+      } else {
+        _passwordError = null;
+      }
+
+      // If both valid
+      if (_emailError == null && _passwordError == null) {
+        print('Login successful!');
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Login')),
+      body: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          children: [
+            TextField(
+              controller: _emailController,
+              decoration: InputDecoration(
+                hintText: 'Email',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.email),
+                errorText: _emailError,
+              ),
+            ),
+            SizedBox(height: 16),
+            TextField(
+              controller: _passwordController,
+              obscureText: true,
+              decoration: InputDecoration(
+                hintText: 'Password',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.lock),
+                errorText: _passwordError,
+              ),
+            ),
+            SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: _login,
+              child: Text('Login'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
+</details>
+
+---
+
+# PART 6: FINAL PROJECT
+
+## Build a Profile Card App
+
+**Goal:** Combine EVERYTHING you learned!
+
+**Requirements:**
+1. App with Scaffold and AppBar
+2. Profile section with:
+   - CircleAvatar (use Container with BoxDecoration)
+   - Name (large, bold)
+   - Bio (smaller, gray)
+3. Stats Row showing: Posts, Followers, Following
+4. "Edit Profile" button
+5. When Edit is pressed, show form to change name
+6. Save button updates the displayed name
+
+**Build it step by step:**
+
+### Step 1: Create the basic structure
+```dart
+class ProfileApp extends StatefulWidget { ... }
+```
+
+### Step 2: Add the profile display widgets
+```dart
+// CircleAvatar, name Text, bio Text
+```
+
+### Step 3: Add the stats Row
+```dart
+// Three columns for Posts, Followers, Following
+```
+
+### Step 4: Add Edit button and form
+```dart
+// Button that shows/hides TextField
+// Save button that updates name
 ```
 
 ---
 
-## Solutions
+**Try to build this WITHOUT looking at the solution!**
 
-Solutions for these exercises are not provided intentionally. The best way to learn is by:
-1. Trying yourself first
-2. Reading error messages
-3. Consulting the Theory files
-4. Looking at Examples
-5. Asking for help when truly stuck
+<details>
+<summary>✅ Complete Solution</summary>
 
-Remember: Struggling is part of learning! Don't give up.
+```dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const ProfileApp());
+
+class ProfileApp extends StatelessWidget {
+  const ProfileApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Profile Card',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: const ProfileScreen(),
+    );
+  }
+}
+
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  String _name = 'John Doe';
+  bool _isEditing = false;
+  final _controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.text = _name;
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _toggleEdit() {
+    setState(() {
+      _isEditing = !_isEditing;
+      if (_isEditing) {
+        _controller.text = _name;
+      }
+    });
+  }
+
+  void _saveName() {
+    setState(() {
+      _name = _controller.text;
+      _isEditing = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('My Profile')),
+      body: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          children: [
+            // Avatar
+            Container(
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(Icons.person, size: 60, color: Colors.white),
+            ),
+            SizedBox(height: 16),
+
+            // Name (or edit field)
+            if (_isEditing) ...[
+              TextField(
+                controller: _controller,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Name',
+                ),
+              ),
+              SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: _saveName,
+                child: Text('Save'),
+              ),
+            ] else ...[
+              Text(
+                _name,
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+            SizedBox(height: 8),
+
+            // Bio
+            Text(
+              'Flutter Developer | Coffee Lover',
+              style: TextStyle(color: Colors.grey),
+            ),
+            SizedBox(height: 24),
+
+            // Stats Row
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildStat('Posts', '42'),
+                _buildStat('Followers', '1.2K'),
+                _buildStat('Following', '500'),
+              ],
+            ),
+            SizedBox(height: 24),
+
+            // Edit Button
+            if (!_isEditing)
+              OutlinedButton(
+                onPressed: _toggleEdit,
+                child: Text('Edit Profile'),
+              ),
+            if (_isEditing)
+              TextButton(
+                onPressed: _toggleEdit,
+                child: Text('Cancel'),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStat(String label, String value) {
+    return Column(
+      children: [
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+          label,
+          style: TextStyle(color: Colors.grey),
+        ),
+      ],
+    );
+  }
+}
+```
+
+</details>
 
 ---
 
-## What's Next?
+## Congratulations!
 
-After completing these exercises, you're ready for:
-- **Level 6:** State Management (Riverpod & BLoC)
-- Building more complex apps
-- Learning about navigation
-- Working with APIs
-- Adding animations
+You've completed all the Flutter Foundations exercises!
 
-Keep practicing and building! 🚀
+**What you learned:**
+- ✅ Basic widgets (Text, Icon, Container)
+- ✅ Layout widgets (Row, Column, Padding, Expanded)
+- ✅ StatefulWidget and setState
+- ✅ Lists with ListView.builder
+- ✅ User input with TextField
+- ✅ Basic form validation
+- ✅ Building complete apps
+
+**Next Steps:**
+1. Practice by building more apps
+2. Try the bonus challenges
+3. Move on to Level 06: State Management
 
 ---
 
-**Continue to:** Level-06-State-Management
+[← Back to Level 05 README](../README.md) | [Level 06: State Management →](../../Level-06-State-Management/README.md)

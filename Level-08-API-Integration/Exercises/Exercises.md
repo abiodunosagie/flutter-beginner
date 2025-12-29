@@ -1,72 +1,1241 @@
 # Level 08: API Integration Exercises
 
-Master API calls through hands-on practice!
+## How These Exercises Work
+
+Each skill is broken into **small steps**. Complete each step before moving to the next. By the end, you'll combine everything into a complete app!
+
+```
+THE PROGRESSIVE LEARNING PATH:
+
+Step 1: Learn one tiny piece ──────────────► Practice it
+Step 2: Learn next tiny piece ─────────────► Practice it
+Step 3: Learn next tiny piece ─────────────► Practice it
+...
+Final: Combine ALL pieces ─────────────────► Build complete app!
+```
 
 ---
 
-## Exercise 1: Pokemon Viewer (Beginner)
+# PART 1: DATA MODELS
 
-### The Goal
-Build an app that fetches Pokemon data from the PokeAPI and displays it.
+## Exercise 1.1: Create Model Properties
 
-### API Endpoint
-```
-https://pokeapi.co/api/v2/pokemon?limit=20
-https://pokeapi.co/api/v2/pokemon/{id}
-```
+**Goal:** Define the properties of a User model.
 
-### What You'll Build
+**Your Task:** Fill in the properties for a User class.
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│  LIST VIEW                           DETAIL VIEW            │
-├─────────────────────────────────────────────────────────────┤
-│  ┌─────────────────────┐           ┌───────────────────┐   │
-│  │ 🔴 Pokemon List     │           │ ← Pikachu         │   │
-│  ├─────────────────────┤           ├───────────────────┤   │
-│  │ #1 Bulbasaur   >    │   tap    │                   │   │
-│  │ #2 Ivysaur     >    │  ────>   │    [Image]        │   │
-│  │ #3 Venusaur    >    │          │                   │   │
-│  │ #4 Charmander  >    │          │  Height: 4        │   │
-│  │ #5 Charmeleon  >    │          │  Weight: 60       │   │
-│  │ #6 Charizard   >    │          │  Types: Electric  │   │
-│  │ ...                 │          │                   │   │
-│  └─────────────────────┘           └───────────────────┘   │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
+```dart
+// The API returns this JSON:
+// {
+//   "id": 1,
+//   "name": "John Doe",
+//   "email": "john@example.com",
+//   "phone": "123-456-7890"
+// }
+
+class User {
+  // TODO: Add 4 properties
+  // - id (int)
+  // - name (String)
+  // - email (String)
+  // - phone (String)
+}
 ```
 
-### Starter Code
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+class User {
+  final int id;
+  final String name;
+  final String email;
+  final String phone;
+}
+```
+
+</details>
+
+---
+
+## Exercise 1.2: Add Constructor
+
+**Goal:** Add a constructor to your User model.
+
+**Your Task:** Create a constructor that requires all properties.
+
+```dart
+class User {
+  final int id;
+  final String name;
+  final String email;
+  final String phone;
+
+  // TODO: Add constructor
+  // Use the 'required' keyword for all parameters
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+class User {
+  final int id;
+  final String name;
+  final String email;
+  final String phone;
+
+  User({
+    required this.id,
+    required this.name,
+    required this.email,
+    required this.phone,
+  });
+}
+```
+
+</details>
+
+---
+
+## Exercise 1.3: Create fromJson Factory
+
+**Goal:** Convert JSON data to a User object.
+
+**Your Task:** Write the fromJson factory constructor.
+
+```dart
+class User {
+  final int id;
+  final String name;
+  final String email;
+  final String phone;
+
+  User({
+    required this.id,
+    required this.name,
+    required this.email,
+    required this.phone,
+  });
+
+  // TODO: Create factory fromJson
+  // Input: Map<String, dynamic> json
+  // Output: User object
+  //
+  // JSON keys are: 'id', 'name', 'email', 'phone'
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+factory User.fromJson(Map<String, dynamic> json) {
+  return User(
+    id: json['id'],
+    name: json['name'],
+    email: json['email'],
+    phone: json['phone'],
+  );
+}
+```
+
+</details>
+
+---
+
+## Exercise 1.4: Create toJson Method
+
+**Goal:** Convert a User object back to JSON.
+
+**Your Task:** Write the toJson method.
+
+```dart
+class User {
+  final int id;
+  final String name;
+  final String email;
+  final String phone;
+
+  User({
+    required this.id,
+    required this.name,
+    required this.email,
+    required this.phone,
+  });
+
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json['id'],
+      name: json['name'],
+      email: json['email'],
+      phone: json['phone'],
+    );
+  }
+
+  // TODO: Create toJson method
+  // Output: Map<String, dynamic>
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+Map<String, dynamic> toJson() {
+  return {
+    'id': id,
+    'name': name,
+    'email': email,
+    'phone': phone,
+  };
+}
+```
+
+</details>
+
+---
+
+## Exercise 1.5: Handle Nullable Fields
+
+**Goal:** Handle optional/nullable fields from API.
+
+Sometimes APIs return null for some fields. Let's handle that.
+
+**Your Task:** Make phone nullable and handle it in fromJson.
+
+```dart
+// API might return:
+// {
+//   "id": 1,
+//   "name": "John Doe",
+//   "email": "john@example.com",
+//   "phone": null  <-- could be null!
+// }
+
+class User {
+  final int id;
+  final String name;
+  final String email;
+  final String? phone;  // Now nullable!
+
+  User({
+    required this.id,
+    required this.name,
+    required this.email,
+    this.phone,  // Not required anymore
+  });
+
+  // TODO: Update fromJson to handle nullable phone
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json['id'],
+      name: json['name'],
+      email: json['email'],
+      // TODO: Handle phone being null
+    );
+  }
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+factory User.fromJson(Map<String, dynamic> json) {
+  return User(
+    id: json['id'],
+    name: json['name'],
+    email: json['email'],
+    phone: json['phone'],  // Dart handles null automatically for nullable types
+  );
+}
+
+// OR with explicit null check:
+factory User.fromJson(Map<String, dynamic> json) {
+  return User(
+    id: json['id'],
+    name: json['name'],
+    email: json['email'],
+    phone: json['phone'] as String?,
+  );
+}
+```
+
+</details>
+
+---
+
+## Exercise 1.6: Complete Model Challenge
+
+**Goal:** Build a complete Post model from scratch WITHOUT looking at solutions.
+
+**Your Task:** Create a complete Post model for this API response:
+
+```json
+{
+  "id": 1,
+  "userId": 1,
+  "title": "My First Post",
+  "body": "This is the content...",
+  "createdAt": "2024-01-15T10:30:00Z"
+}
+```
+
+Requirements:
+- All properties with correct types
+- Constructor with required parameters (createdAt can be nullable)
+- fromJson factory
+- toJson method
+
+```dart
+// TODO: Create complete Post model below
+class Post {
+  // Your code here...
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+class Post {
+  final int id;
+  final int userId;
+  final String title;
+  final String body;
+  final DateTime? createdAt;
+
+  Post({
+    required this.id,
+    required this.userId,
+    required this.title,
+    required this.body,
+    this.createdAt,
+  });
+
+  factory Post.fromJson(Map<String, dynamic> json) {
+    return Post(
+      id: json['id'],
+      userId: json['userId'],
+      title: json['title'],
+      body: json['body'],
+      createdAt: json['createdAt'] != null
+          ? DateTime.parse(json['createdAt'])
+          : null,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'userId': userId,
+      'title': title,
+      'body': body,
+      'createdAt': createdAt?.toIso8601String(),
+    };
+  }
+}
+```
+
+</details>
+
+---
+
+# PART 2: HTTP REQUESTS
+
+## Exercise 2.1: Simple GET Request
+
+**Goal:** Make your first HTTP GET request.
+
+**Your Task:** Complete the function to fetch data from an API.
+
+```dart
+import 'package:http/http.dart' as http;
+
+Future<void> fetchData() async {
+  // TODO: Make a GET request to this URL:
+  // https://jsonplaceholder.typicode.com/posts/1
+
+  // Step 1: Create the URL using Uri.parse()
+
+  // Step 2: Make the GET request using http.get()
+
+  // Step 3: Print the response body
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+import 'package:http/http.dart' as http;
+
+Future<void> fetchData() async {
+  // Step 1: Create the URL
+  final url = Uri.parse('https://jsonplaceholder.typicode.com/posts/1');
+
+  // Step 2: Make the GET request
+  final response = await http.get(url);
+
+  // Step 3: Print the response body
+  print(response.body);
+}
+```
+
+</details>
+
+---
+
+## Exercise 2.2: Check Response Status
+
+**Goal:** Check if the request was successful.
+
+**Your Task:** Add status code checking.
+
+```dart
+import 'package:http/http.dart' as http;
+
+Future<void> fetchData() async {
+  final url = Uri.parse('https://jsonplaceholder.typicode.com/posts/1');
+  final response = await http.get(url);
+
+  // TODO: Check if status code is 200 (success)
+  // If success: print "Success!" and the body
+  // If not: print "Error: " and the status code
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+import 'package:http/http.dart' as http;
+
+Future<void> fetchData() async {
+  final url = Uri.parse('https://jsonplaceholder.typicode.com/posts/1');
+  final response = await http.get(url);
+
+  if (response.statusCode == 200) {
+    print('Success!');
+    print(response.body);
+  } else {
+    print('Error: ${response.statusCode}');
+  }
+}
+```
+
+</details>
+
+---
+
+## Exercise 2.3: Parse JSON Response
+
+**Goal:** Convert JSON string to Dart Map.
+
+**Your Task:** Parse the JSON response.
+
+```dart
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+Future<void> fetchData() async {
+  final url = Uri.parse('https://jsonplaceholder.typicode.com/posts/1');
+  final response = await http.get(url);
+
+  if (response.statusCode == 200) {
+    // TODO: Convert response.body (String) to Map
+    // Use json.decode() from dart:convert
+    // Then print the 'title' field
+  }
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+Future<void> fetchData() async {
+  final url = Uri.parse('https://jsonplaceholder.typicode.com/posts/1');
+  final response = await http.get(url);
+
+  if (response.statusCode == 200) {
+    final Map<String, dynamic> data = json.decode(response.body);
+    print('Title: ${data['title']}');
+  }
+}
+```
+
+</details>
+
+---
+
+## Exercise 2.4: Return a Model Object
+
+**Goal:** Return a typed object instead of raw data.
+
+**Your Task:** Return a Post object from the API.
+
+```dart
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+class Post {
+  final int id;
+  final String title;
+  final String body;
+
+  Post({required this.id, required this.title, required this.body});
+
+  factory Post.fromJson(Map<String, dynamic> json) {
+    return Post(
+      id: json['id'],
+      title: json['title'],
+      body: json['body'],
+    );
+  }
+}
+
+// TODO: Change return type to Future<Post>
+// TODO: Return a Post object instead of printing
+Future<void> fetchPost() async {
+  final url = Uri.parse('https://jsonplaceholder.typicode.com/posts/1');
+  final response = await http.get(url);
+
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body);
+    // TODO: Create and return Post object
+  }
+  // TODO: Throw exception if not successful
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+Future<Post> fetchPost() async {
+  final url = Uri.parse('https://jsonplaceholder.typicode.com/posts/1');
+  final response = await http.get(url);
+
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body);
+    return Post.fromJson(data);
+  } else {
+    throw Exception('Failed to load post: ${response.statusCode}');
+  }
+}
+```
+
+</details>
+
+---
+
+## Exercise 2.5: Fetch a List of Items
+
+**Goal:** Fetch and parse multiple items.
+
+**Your Task:** Fetch a list of posts.
+
+```dart
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+class Post {
+  final int id;
+  final String title;
+
+  Post({required this.id, required this.title});
+
+  factory Post.fromJson(Map<String, dynamic> json) {
+    return Post(id: json['id'], title: json['title']);
+  }
+}
+
+// TODO: Fetch list of posts from:
+// https://jsonplaceholder.typicode.com/posts
+//
+// The API returns an array: [ {post1}, {post2}, ... ]
+// Convert each item to a Post object
+
+Future<List<Post>> fetchPosts() async {
+  // Your code here...
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+Future<List<Post>> fetchPosts() async {
+  final url = Uri.parse('https://jsonplaceholder.typicode.com/posts');
+  final response = await http.get(url);
+
+  if (response.statusCode == 200) {
+    final List<dynamic> jsonList = json.decode(response.body);
+    return jsonList.map((json) => Post.fromJson(json)).toList();
+  } else {
+    throw Exception('Failed to load posts');
+  }
+}
+```
+
+</details>
+
+---
+
+## Exercise 2.6: Make a POST Request
+
+**Goal:** Send data to create a new resource.
+
+**Your Task:** Create a new post via POST request.
+
+```dart
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+// TODO: Create a function to POST a new post
+// URL: https://jsonplaceholder.typicode.com/posts
+//
+// Required headers: {'Content-Type': 'application/json'}
+// Body should be JSON with: title, body, userId
+//
+// Return the created Post (API returns it with new id)
+
+Future<Post> createPost({
+  required String title,
+  required String body,
+  required int userId,
+}) async {
+  // Your code here...
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+Future<Post> createPost({
+  required String title,
+  required String body,
+  required int userId,
+}) async {
+  final url = Uri.parse('https://jsonplaceholder.typicode.com/posts');
+
+  final response = await http.post(
+    url,
+    headers: {'Content-Type': 'application/json'},
+    body: json.encode({
+      'title': title,
+      'body': body,
+      'userId': userId,
+    }),
+  );
+
+  if (response.statusCode == 201) {  // 201 = Created
+    final data = json.decode(response.body);
+    return Post.fromJson(data);
+  } else {
+    throw Exception('Failed to create post');
+  }
+}
+```
+
+</details>
+
+---
+
+## Exercise 2.7: Complete API Service Challenge
+
+**Goal:** Build a complete API service WITHOUT looking at solutions.
+
+**Your Task:** Create a UserService with all CRUD operations.
+
+API Endpoints:
+- GET https://jsonplaceholder.typicode.com/users
+- GET https://jsonplaceholder.typicode.com/users/{id}
+- POST https://jsonplaceholder.typicode.com/users
+- PUT https://jsonplaceholder.typicode.com/users/{id}
+- DELETE https://jsonplaceholder.typicode.com/users/{id}
+
+```dart
+class User {
+  final int? id;
+  final String name;
+  final String email;
+
+  User({this.id, required this.name, required this.email});
+
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json['id'],
+      name: json['name'],
+      email: json['email'],
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'name': name,
+    'email': email,
+  };
+}
+
+// TODO: Create complete UserService with:
+// - getUsers() -> List<User>
+// - getUser(int id) -> User
+// - createUser(User user) -> User
+// - updateUser(User user) -> User
+// - deleteUser(int id) -> void
+
+class UserService {
+  static const baseUrl = 'https://jsonplaceholder.typicode.com';
+
+  // Your code here...
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+class UserService {
+  static const baseUrl = 'https://jsonplaceholder.typicode.com';
+
+  Future<List<User>> getUsers() async {
+    final response = await http.get(Uri.parse('$baseUrl/users'));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonList = json.decode(response.body);
+      return jsonList.map((json) => User.fromJson(json)).toList();
+    }
+    throw Exception('Failed to load users');
+  }
+
+  Future<User> getUser(int id) async {
+    final response = await http.get(Uri.parse('$baseUrl/users/$id'));
+
+    if (response.statusCode == 200) {
+      return User.fromJson(json.decode(response.body));
+    }
+    throw Exception('Failed to load user');
+  }
+
+  Future<User> createUser(User user) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/users'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode(user.toJson()),
+    );
+
+    if (response.statusCode == 201) {
+      return User.fromJson(json.decode(response.body));
+    }
+    throw Exception('Failed to create user');
+  }
+
+  Future<User> updateUser(User user) async {
+    final response = await http.put(
+      Uri.parse('$baseUrl/users/${user.id}'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode(user.toJson()),
+    );
+
+    if (response.statusCode == 200) {
+      return User.fromJson(json.decode(response.body));
+    }
+    throw Exception('Failed to update user');
+  }
+
+  Future<void> deleteUser(int id) async {
+    final response = await http.delete(Uri.parse('$baseUrl/users/$id'));
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to delete user');
+    }
+  }
+}
+```
+
+</details>
+
+---
+
+# PART 3: UI INTEGRATION
+
+## Exercise 3.1: Display Loading State
+
+**Goal:** Show a loading spinner while fetching data.
+
+**Your Task:** Add loading state to a widget.
+
+```dart
+class PostsScreen extends StatefulWidget {
+  const PostsScreen({super.key});
+
+  @override
+  State<PostsScreen> createState() => _PostsScreenState();
+}
+
+class _PostsScreenState extends State<PostsScreen> {
+  List<Post> _posts = [];
+  bool _isLoading = false;  // TODO: Use this!
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPosts();
+  }
+
+  Future<void> _loadPosts() async {
+    // TODO: Set loading to true before fetching
+
+    final posts = await PostService().getPosts();
+
+    // TODO: Set loading to false and update posts
+    setState(() {
+      _posts = posts;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: Show CircularProgressIndicator when loading
+    // Show ListView when not loading
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('Posts')),
+      body: ListView.builder(
+        itemCount: _posts.length,
+        itemBuilder: (context, index) {
+          return ListTile(title: Text(_posts[index].title));
+        },
+      ),
+    );
+  }
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+class _PostsScreenState extends State<PostsScreen> {
+  List<Post> _posts = [];
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPosts();
+  }
+
+  Future<void> _loadPosts() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    final posts = await PostService().getPosts();
+
+    setState(() {
+      _isLoading = false;
+      _posts = posts;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Posts')),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : ListView.builder(
+              itemCount: _posts.length,
+              itemBuilder: (context, index) {
+                return ListTile(title: Text(_posts[index].title));
+              },
+            ),
+    );
+  }
+}
+```
+
+</details>
+
+---
+
+## Exercise 3.2: Handle Errors
+
+**Goal:** Display error messages to the user.
+
+**Your Task:** Add error handling to the screen.
+
+```dart
+class _PostsScreenState extends State<PostsScreen> {
+  List<Post> _posts = [];
+  bool _isLoading = false;
+  String? _error;  // TODO: Use this!
+
+  Future<void> _loadPosts() async {
+    setState(() {
+      _isLoading = true;
+      _error = null;  // Clear previous error
+    });
+
+    // TODO: Wrap in try-catch
+    // On error: set _error to error message
+    // Always: set _isLoading to false
+
+    final posts = await PostService().getPosts();
+
+    setState(() {
+      _isLoading = false;
+      _posts = posts;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Posts')),
+      body: _buildBody(),
+    );
+  }
+
+  Widget _buildBody() {
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    // TODO: Add error state
+    // Show error message with a "Retry" button
+
+    return ListView.builder(
+      itemCount: _posts.length,
+      itemBuilder: (context, index) {
+        return ListTile(title: Text(_posts[index].title));
+      },
+    );
+  }
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+class _PostsScreenState extends State<PostsScreen> {
+  List<Post> _posts = [];
+  bool _isLoading = false;
+  String? _error;
+
+  Future<void> _loadPosts() async {
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+
+    try {
+      final posts = await PostService().getPosts();
+      setState(() {
+        _posts = posts;
+      });
+    } catch (e) {
+      setState(() {
+        _error = e.toString();
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Posts')),
+      body: _buildBody(),
+    );
+  }
+
+  Widget _buildBody() {
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (_error != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Error: $_error'),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: _loadPosts,
+              child: const Text('Retry'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return ListView.builder(
+      itemCount: _posts.length,
+      itemBuilder: (context, index) {
+        return ListTile(title: Text(_posts[index].title));
+      },
+    );
+  }
+}
+```
+
+</details>
+
+---
+
+## Exercise 3.3: Use FutureBuilder
+
+**Goal:** Simplify async UI with FutureBuilder.
+
+**Your Task:** Rewrite using FutureBuilder.
+
+```dart
+class PostDetailScreen extends StatelessWidget {
+  final int postId;
+
+  const PostDetailScreen({super.key, required this.postId});
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: Use FutureBuilder to:
+    // 1. Call PostService().getPost(postId)
+    // 2. Show loading spinner during ConnectionState.waiting
+    // 3. Show error if snapshot.hasError
+    // 4. Show post details if snapshot.hasData
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('Post Detail')),
+      body: const Center(child: Text('Use FutureBuilder!')),
+    );
+  }
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+class PostDetailScreen extends StatelessWidget {
+  final int postId;
+
+  const PostDetailScreen({super.key, required this.postId});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Post Detail')),
+      body: FutureBuilder<Post>(
+        future: PostService().getPost(postId),
+        builder: (context, snapshot) {
+          // Loading state
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          // Error state
+          if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          }
+
+          // Success state
+          final post = snapshot.data!;
+          return Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  post.title,
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                const SizedBox(height: 16),
+                Text(post.body),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+```
+
+</details>
+
+---
+
+## Exercise 3.4: Pull to Refresh
+
+**Goal:** Add pull-to-refresh functionality.
+
+**Your Task:** Make the list refreshable.
+
+```dart
+class _PostsScreenState extends State<PostsScreen> {
+  List<Post> _posts = [];
+  bool _isLoading = false;
+
+  Future<void> _loadPosts() async {
+    setState(() => _isLoading = true);
+    final posts = await PostService().getPosts();
+    setState(() {
+      _posts = posts;
+      _isLoading = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Posts')),
+      // TODO: Wrap ListView in RefreshIndicator
+      // onRefresh should call _loadPosts
+      body: ListView.builder(
+        itemCount: _posts.length,
+        itemBuilder: (context, index) {
+          return ListTile(title: Text(_posts[index].title));
+        },
+      ),
+    );
+  }
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(title: const Text('Posts')),
+    body: RefreshIndicator(
+      onRefresh: _loadPosts,
+      child: ListView.builder(
+        itemCount: _posts.length,
+        itemBuilder: (context, index) {
+          return ListTile(title: Text(_posts[index].title));
+        },
+      ),
+    ),
+  );
+}
+```
+
+</details>
+
+---
+
+# PART 4: FINAL PROJECT
+
+## Exercise 4.1: Pokemon App - Complete Challenge
+
+Now combine EVERYTHING you learned to build a complete app!
+
+**Goal:** Build a Pokemon viewer app from scratch.
+
+**API:** https://pokeapi.co/api/v2/pokemon?limit=20
+
+**Requirements:**
+1. ✅ Pokemon model with id, name, imageUrl
+2. ✅ PokemonService with getPokemonList()
+3. ✅ List screen with loading, error, and data states
+4. ✅ Pull to refresh
+5. ✅ Tap to see detail (use Navigator)
+
+**Pokemon Image URL Format:**
+```
+https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{id}.png
+```
+
+**API Response Format:**
+```json
+{
+  "results": [
+    {"name": "bulbasaur", "url": "https://pokeapi.co/api/v2/pokemon/1/"},
+    {"name": "ivysaur", "url": "https://pokeapi.co/api/v2/pokemon/2/"}
+  ]
+}
+```
+
+**Build it step by step:**
+
+### Step 1: Create Pokemon Model
+```dart
+class Pokemon {
+  // Properties: id, name, imageUrl
+  // Constructor
+  // fromJson factory (extract id from URL or use index + 1)
+}
+```
+
+### Step 2: Create PokemonService
+```dart
+class PokemonService {
+  Future<List<Pokemon>> getPokemonList() async {
+    // GET request
+    // Parse JSON
+    // Return list of Pokemon
+  }
+}
+```
+
+### Step 3: Create PokemonListScreen
+```dart
+class PokemonListScreen extends StatefulWidget {
+  // State: _pokemon list, _isLoading, _error
+  // initState: call _loadPokemon
+  // build: show loading/error/list
+}
+```
+
+### Step 4: Add Pull to Refresh
+
+### Step 5: Add Navigation to Detail
+
+---
+
+**Try to build this WITHOUT looking at the solution!**
+
+Practice makes perfect. If you get stuck:
+1. Re-read the relevant exercise above
+2. Try for 10 more minutes
+3. Only then look at the solution
+
+<details>
+<summary>✅ Complete Solution</summary>
 
 ```dart
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-void main() => runApp(const MyApp());
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Pokemon Viewer',
-      theme: ThemeData(primarySwatch: Colors.red),
-      home: const PokemonListScreen(),
-    );
-  }
-}
+void main() => runApp(const PokemonApp());
 
 // ═══════════════════════════════════════════════════════════════
-// TODO 1: Create Pokemon Model
+// MODEL
 // ═══════════════════════════════════════════════════════════════
 
 class Pokemon {
   final int id;
   final String name;
   final String imageUrl;
-  // TODO: Add more fields (height, weight, types)
 
   Pokemon({
     required this.id,
@@ -74,39 +1243,43 @@ class Pokemon {
     required this.imageUrl,
   });
 
-  // TODO: Create fromJson factory
-  factory Pokemon.fromJson(Map<String, dynamic> json) {
-    // Hint: Image URL format:
-    // https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{id}.png
-    throw UnimplementedError();
+  factory Pokemon.fromJson(Map<String, dynamic> json, int index) {
+    final id = index + 1;
+    return Pokemon(
+      id: id,
+      name: json['name'],
+      imageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$id.png',
+    );
   }
 }
 
 // ═══════════════════════════════════════════════════════════════
-// TODO 2: Create API Service
+// SERVICE
 // ═══════════════════════════════════════════════════════════════
 
 class PokemonService {
   static const baseUrl = 'https://pokeapi.co/api/v2';
 
-  // TODO: Implement getPokemonList
   Future<List<Pokemon>> getPokemonList({int limit = 20}) async {
-    // Hint: GET /pokemon?limit=20
-    // Response has { results: [ {name, url} ] }
-    // Extract ID from URL or use index + 1
-    throw UnimplementedError();
-  }
+    final response = await http.get(
+      Uri.parse('$baseUrl/pokemon?limit=$limit'),
+    );
 
-  // TODO: Implement getPokemonDetail
-  Future<Pokemon> getPokemonDetail(int id) async {
-    // Hint: GET /pokemon/{id}
-    // Response has { id, name, height, weight, types, sprites }
-    throw UnimplementedError();
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final List<dynamic> results = data['results'];
+
+      return results.asMap().entries.map((entry) {
+        return Pokemon.fromJson(entry.value, entry.key);
+      }).toList();
+    } else {
+      throw Exception('Failed to load Pokemon');
+    }
   }
 }
 
 // ═══════════════════════════════════════════════════════════════
-// TODO 3: Create Pokemon List Screen
+// SCREENS
 // ═══════════════════════════════════════════════════════════════
 
 class PokemonListScreen extends StatefulWidget {
@@ -117,756 +1290,190 @@ class PokemonListScreen extends StatefulWidget {
 }
 
 class _PokemonListScreenState extends State<PokemonListScreen> {
-  // TODO: Add state variables (loading, error, pokemon list)
-  // TODO: Implement initState to load data
-  // TODO: Build UI with loading, error, and list states
+  final _service = PokemonService();
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Pokemon')),
-      body: const Center(child: Text('Implement me!')),
-    );
-  }
-}
-
-// ═══════════════════════════════════════════════════════════════
-// TODO 4: Create Pokemon Detail Screen
-// ═══════════════════════════════════════════════════════════════
-
-class PokemonDetailScreen extends StatelessWidget {
-  final int pokemonId;
-
-  const PokemonDetailScreen({super.key, required this.pokemonId});
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: Use FutureBuilder to fetch and display Pokemon details
-    return Scaffold(
-      appBar: AppBar(title: const Text('Pokemon Detail')),
-      body: const Center(child: Text('Implement me!')),
-    );
-  }
-}
-```
-
-### Success Checklist
-- [ ] Pokemon list loads and displays
-- [ ] Each item shows number, name, and small image
-- [ ] Tapping item navigates to detail screen
-- [ ] Detail screen shows full info (name, image, height, weight, types)
-- [ ] Loading indicator while fetching
-- [ ] Error message with retry on failure
-
----
-
-## Exercise 2: Weather App (Intermediate)
-
-### The Goal
-Build a weather app that fetches current weather for a city.
-
-### API
-Use OpenWeatherMap API (free tier):
-```
-https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric
-```
-
-Note: You'll need to sign up for a free API key at openweathermap.org
-
-### What You'll Build
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    WEATHER APP                               │
-├─────────────────────────────────────────────────────────────┤
-│  ┌─────────────────────────────────────────────────────┐   │
-│  │  🔍 Enter city name...              [Search]        │   │
-│  └─────────────────────────────────────────────────────┘   │
-│                                                             │
-│  ┌─────────────────────────────────────────────────────┐   │
-│  │                                                     │   │
-│  │              New York, US                           │   │
-│  │                  ☀️                                 │   │
-│  │               25°C                                  │   │
-│  │             Clear Sky                               │   │
-│  │                                                     │   │
-│  │  💨 Wind: 5 m/s    💧 Humidity: 65%                 │   │
-│  │                                                     │   │
-│  └─────────────────────────────────────────────────────┘   │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### Requirements
-1. Search input for city name
-2. Display current temperature, description, icon
-3. Show additional details (wind, humidity, feels like)
-4. Handle city not found error
-5. Remember last searched city
-
-### Starter Code
-
-```dart
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
-void main() => runApp(const WeatherApp());
-
-class WeatherApp extends StatelessWidget {
-  const WeatherApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Weather App',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: const WeatherScreen(),
-    );
-  }
-}
-
-// ═══════════════════════════════════════════════════════════════
-// TODO 1: Create Weather Model
-// ═══════════════════════════════════════════════════════════════
-
-class Weather {
-  final String cityName;
-  final String country;
-  final double temperature;
-  final double feelsLike;
-  final String description;
-  final String icon;
-  final int humidity;
-  final double windSpeed;
-
-  Weather({
-    required this.cityName,
-    required this.country,
-    required this.temperature,
-    required this.feelsLike,
-    required this.description,
-    required this.icon,
-    required this.humidity,
-    required this.windSpeed,
-  });
-
-  // TODO: Implement fromJson
-  // API Response structure:
-  // {
-  //   "name": "London",
-  //   "sys": {"country": "GB"},
-  //   "main": {"temp": 20.5, "feels_like": 19.2, "humidity": 65},
-  //   "weather": [{"description": "clear sky", "icon": "01d"}],
-  //   "wind": {"speed": 5.2}
-  // }
-  factory Weather.fromJson(Map<String, dynamic> json) {
-    throw UnimplementedError();
-  }
-
-  // Icon URL
-  String get iconUrl => 'https://openweathermap.org/img/wn/$icon@2x.png';
-}
-
-// ═══════════════════════════════════════════════════════════════
-// TODO 2: Create Weather Service
-// ═══════════════════════════════════════════════════════════════
-
-class WeatherService {
-  // TODO: Replace with your API key
-  static const apiKey = 'YOUR_API_KEY';
-  static const baseUrl = 'https://api.openweathermap.org/data/2.5';
-
-  Future<Weather> getWeather(String city) async {
-    // TODO: Implement API call
-    // Handle 404 for city not found
-    throw UnimplementedError();
-  }
-}
-
-// ═══════════════════════════════════════════════════════════════
-// TODO 3: Create Weather Screen
-// ═══════════════════════════════════════════════════════════════
-
-class WeatherScreen extends StatefulWidget {
-  const WeatherScreen({super.key});
-
-  @override
-  State<WeatherScreen> createState() => _WeatherScreenState();
-}
-
-class _WeatherScreenState extends State<WeatherScreen> {
-  final _controller = TextEditingController();
-  final _service = WeatherService();
-
-  Weather? _weather;
+  List<Pokemon> _pokemon = [];
   bool _isLoading = false;
   String? _error;
 
-  // TODO: Implement search functionality
-  // TODO: Build UI with search bar and weather display
+  @override
+  void initState() {
+    super.initState();
+    _loadPokemon();
+  }
+
+  Future<void> _loadPokemon() async {
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+
+    try {
+      final pokemon = await _service.getPokemonList();
+      setState(() {
+        _pokemon = pokemon;
+      });
+    } catch (e) {
+      setState(() {
+        _error = e.toString();
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Weather')),
-      body: const Center(child: Text('Implement me!')),
+      appBar: AppBar(
+        title: const Text('Pokemon'),
+        backgroundColor: Colors.red,
+        foregroundColor: Colors.white,
+      ),
+      body: _buildBody(),
     );
   }
-}
-```
 
-### Success Checklist
-- [ ] Search bar accepts city name
-- [ ] Weather displays after successful search
-- [ ] Shows all weather details (temp, description, wind, humidity)
-- [ ] Weather icon displays correctly
-- [ ] "City not found" error shown for invalid cities
-- [ ] Loading indicator during fetch
+  Widget _buildBody() {
+    if (_isLoading && _pokemon.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
----
+    if (_error != null && _pokemon.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.error, size: 64, color: Colors.red),
+            const SizedBox(height: 16),
+            Text('Error: $_error'),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: _loadPokemon,
+              child: const Text('Retry'),
+            ),
+          ],
+        ),
+      );
+    }
 
-## Exercise 3: Todo API (Intermediate)
-
-### The Goal
-Build a Todo app that syncs with a REST API.
-
-### API Endpoint
-```
-https://jsonplaceholder.typicode.com/todos
-```
-
-### Requirements
-1. List todos with checkboxes
-2. Add new todos (POST)
-3. Toggle todo completion (PATCH)
-4. Delete todos (DELETE)
-5. Filter by completed/incomplete
-
-### What You'll Build
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│  📝 My Todos                                    [+]         │
-├─────────────────────────────────────────────────────────────┤
-│  [All] [Active] [Completed]                                 │
-├─────────────────────────────────────────────────────────────┤
-│  ☑️ Learn Dart                              [🗑️]           │
-│  ☐ Build Flutter app                        [🗑️]           │
-│  ☐ Master API calls                         [🗑️]           │
-│  ☑️ Read documentation                      [🗑️]           │
-│  ...                                                        │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### Starter Code
-
-```dart
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
-void main() => runApp(const TodoApp());
-
-// ═══════════════════════════════════════════════════════════════
-// TODO 1: Create Todo Model
-// ═══════════════════════════════════════════════════════════════
-
-class Todo {
-  final int? id;
-  final String title;
-  final bool completed;
-  final int userId;
-
-  Todo({
-    this.id,
-    required this.title,
-    this.completed = false,
-    this.userId = 1,
-  });
-
-  // TODO: Implement fromJson and toJson
-
-  Todo copyWith({
-    int? id,
-    String? title,
-    bool? completed,
-    int? userId,
-  }) {
-    return Todo(
-      id: id ?? this.id,
-      title: title ?? this.title,
-      completed: completed ?? this.completed,
-      userId: userId ?? this.userId,
+    return RefreshIndicator(
+      onRefresh: _loadPokemon,
+      child: ListView.builder(
+        itemCount: _pokemon.length,
+        itemBuilder: (context, index) {
+          final pokemon = _pokemon[index];
+          return ListTile(
+            leading: Image.network(
+              pokemon.imageUrl,
+              width: 50,
+              height: 50,
+              errorBuilder: (_, __, ___) => const Icon(Icons.catching_pokemon),
+            ),
+            title: Text(
+              pokemon.name[0].toUpperCase() + pokemon.name.substring(1),
+            ),
+            subtitle: Text('#${pokemon.id.toString().padLeft(3, '0')}'),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => PokemonDetailScreen(pokemon: pokemon),
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
 
-// ═══════════════════════════════════════════════════════════════
-// TODO 2: Create Todo Service with full CRUD
-// ═══════════════════════════════════════════════════════════════
+class PokemonDetailScreen extends StatelessWidget {
+  final Pokemon pokemon;
 
-class TodoService {
-  static const baseUrl = 'https://jsonplaceholder.typicode.com';
-
-  // TODO: GET /todos?_limit=20
-  Future<List<Todo>> getTodos() async {
-    throw UnimplementedError();
-  }
-
-  // TODO: POST /todos
-  Future<Todo> createTodo(Todo todo) async {
-    throw UnimplementedError();
-  }
-
-  // TODO: PATCH /todos/{id}
-  Future<Todo> updateTodo(Todo todo) async {
-    throw UnimplementedError();
-  }
-
-  // TODO: DELETE /todos/{id}
-  Future<void> deleteTodo(int id) async {
-    throw UnimplementedError();
-  }
-}
-
-// ═══════════════════════════════════════════════════════════════
-// TODO 3: Create Todos Screen with filtering
-// ═══════════════════════════════════════════════════════════════
-
-enum TodoFilter { all, active, completed }
-
-class TodosScreen extends StatefulWidget {
-  const TodosScreen({super.key});
-
-  @override
-  State<TodosScreen> createState() => _TodosScreenState();
-}
-
-class _TodosScreenState extends State<TodosScreen> {
-  // TODO: Implement state and methods
-  // TODO: Build UI with filter chips and todo list
+  const PokemonDetailScreen({super.key, required this.pokemon});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Todos')),
-      body: const Center(child: Text('Implement me!')),
+      appBar: AppBar(
+        title: Text(pokemon.name[0].toUpperCase() + pokemon.name.substring(1)),
+        backgroundColor: Colors.red,
+        foregroundColor: Colors.white,
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.network(
+              pokemon.imageUrl,
+              width: 200,
+              height: 200,
+            ),
+            const SizedBox(height: 24),
+            Text(
+              pokemon.name[0].toUpperCase() + pokemon.name.substring(1),
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            Text(
+              '#${pokemon.id.toString().padLeft(3, '0')}',
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                color: Colors.grey,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
 
-class TodoApp extends StatelessWidget {
-  const TodoApp({super.key});
+// ═══════════════════════════════════════════════════════════════
+// APP
+// ═══════════════════════════════════════════════════════════════
+
+class PokemonApp extends StatelessWidget {
+  const PokemonApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Todo App',
-      theme: ThemeData(primarySwatch: Colors.purple),
-      home: const TodosScreen(),
+      title: 'Pokemon Viewer',
+      theme: ThemeData(
+        primarySwatch: Colors.red,
+        useMaterial3: true,
+      ),
+      home: const PokemonListScreen(),
     );
   }
 }
 ```
 
-### Success Checklist
-- [ ] Todos load and display with checkboxes
-- [ ] Add new todo via dialog/input
-- [ ] Toggle completion updates UI immediately
-- [ ] Delete with confirmation
-- [ ] Filter tabs work correctly
-- [ ] Optimistic UI updates (update locally, then sync)
+</details>
 
 ---
 
-## Exercise 4: GitHub Profile Viewer (Advanced)
+## Congratulations!
 
-### The Goal
-Build an app that fetches GitHub user profiles and repositories.
+You've completed all the API Integration exercises!
 
-### API Endpoints
-```
-https://api.github.com/users/{username}
-https://api.github.com/users/{username}/repos
-```
+**What you learned:**
+- ✅ Creating data models with fromJson/toJson
+- ✅ Making GET and POST requests
+- ✅ Parsing JSON responses
+- ✅ Handling loading and error states
+- ✅ Using FutureBuilder
+- ✅ Pull to refresh
+- ✅ Building complete API-powered apps
 
-### What You'll Build
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│  🔍 Search GitHub user...                     [Search]      │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  ┌─────────────────────────────────────────────────────┐   │
-│  │  [Avatar]                                           │   │
-│  │                                                     │   │
-│  │  John Doe (@johndoe)                               │   │
-│  │  Senior Developer                                   │   │
-│  │  📍 San Francisco                                   │   │
-│  │                                                     │   │
-│  │  Followers: 1.2K  Following: 500  Repos: 45        │   │
-│  └─────────────────────────────────────────────────────┘   │
-│                                                             │
-│  Popular Repositories:                                      │
-│  ┌─────────────────────────────────────────────────────┐   │
-│  │ 📁 awesome-project                         ⭐ 234   │   │
-│  │    A really cool project                            │   │
-│  ├─────────────────────────────────────────────────────┤   │
-│  │ 📁 flutter-app                            ⭐ 156    │   │
-│  │    My Flutter application                           │   │
-│  └─────────────────────────────────────────────────────┘   │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### Requirements
-1. Search for GitHub users by username
-2. Display user profile (avatar, name, bio, location, stats)
-3. List top repositories sorted by stars
-4. Navigate to repo detail
-5. Handle rate limiting errors
-
-### Starter Code
-
-```dart
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
-void main() => runApp(const GitHubApp());
-
-// ═══════════════════════════════════════════════════════════════
-// TODO 1: Create Models (GitHubUser, Repository)
-// ═══════════════════════════════════════════════════════════════
-
-class GitHubUser {
-  final String login;
-  final String? name;
-  final String avatarUrl;
-  final String? bio;
-  final String? location;
-  final int followers;
-  final int following;
-  final int publicRepos;
-
-  GitHubUser({
-    required this.login,
-    this.name,
-    required this.avatarUrl,
-    this.bio,
-    this.location,
-    required this.followers,
-    required this.following,
-    required this.publicRepos,
-  });
-
-  // TODO: Implement fromJson
-}
-
-class Repository {
-  final int id;
-  final String name;
-  final String? description;
-  final int stars;
-  final int forks;
-  final String? language;
-  final String htmlUrl;
-
-  Repository({
-    required this.id,
-    required this.name,
-    this.description,
-    required this.stars,
-    required this.forks,
-    this.language,
-    required this.htmlUrl,
-  });
-
-  // TODO: Implement fromJson
-  // Note: stars is "stargazers_count" in API
-  // Note: htmlUrl is "html_url" in API
-}
-
-// ═══════════════════════════════════════════════════════════════
-// TODO 2: Create GitHub Service
-// ═══════════════════════════════════════════════════════════════
-
-class GitHubService {
-  static const baseUrl = 'https://api.github.com';
-
-  Future<GitHubUser> getUser(String username) async {
-    // TODO: GET /users/{username}
-    throw UnimplementedError();
-  }
-
-  Future<List<Repository>> getRepos(String username, {int limit = 10}) async {
-    // TODO: GET /users/{username}/repos?sort=stars&per_page={limit}
-    throw UnimplementedError();
-  }
-}
-
-// ═══════════════════════════════════════════════════════════════
-// TODO 3: Create GitHub Profile Screen
-// ═══════════════════════════════════════════════════════════════
-
-class GitHubProfileScreen extends StatefulWidget {
-  const GitHubProfileScreen({super.key});
-
-  @override
-  State<GitHubProfileScreen> createState() => _GitHubProfileScreenState();
-}
-
-class _GitHubProfileScreenState extends State<GitHubProfileScreen> {
-  // TODO: Implement search and display
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('GitHub Profile')),
-      body: const Center(child: Text('Implement me!')),
-    );
-  }
-}
-
-class GitHubApp extends StatelessWidget {
-  const GitHubApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'GitHub Viewer',
-      theme: ThemeData.dark(),
-      home: const GitHubProfileScreen(),
-    );
-  }
-}
-```
-
-### Success Checklist
-- [ ] Search finds GitHub users
-- [ ] Profile displays with avatar and stats
-- [ ] Repositories list sorted by stars
-- [ ] Tap repo opens in browser
-- [ ] Handle user not found (404)
-- [ ] Handle rate limit (403)
-
----
-
-## Exercise 5: News Reader (Advanced)
-
-### The Goal
-Build a news reader app with categories and bookmarks.
-
-### API
-Use NewsAPI.org (free tier):
-```
-https://newsapi.org/v2/top-headlines?country=us&apiKey={KEY}
-https://newsapi.org/v2/top-headlines?country=us&category={cat}&apiKey={KEY}
-```
-
-### Requirements
-1. Display news headlines with images
-2. Category tabs (business, technology, sports, etc.)
-3. Pull to refresh
-4. Offline support (cache last fetched)
-5. Bookmark articles (local storage)
-6. Share articles
-
-### What You'll Build
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│  📰 News                                      [🔖] [🔄]     │
-├─────────────────────────────────────────────────────────────┤
-│  [All] [Business] [Tech] [Sports] [Health]                  │
-├─────────────────────────────────────────────────────────────┤
-│  ┌─────────────────────────────────────────────────────┐   │
-│  │ [Image                                         ]    │   │
-│  │                                                     │   │
-│  │ Tech Giant Announces New Product                    │   │
-│  │ BBC News • 2 hours ago                     [🔖][↗️] │   │
-│  └─────────────────────────────────────────────────────┘   │
-│                                                             │
-│  ┌─────────────────────────────────────────────────────┐   │
-│  │ [Image                                         ]    │   │
-│  │                                                     │   │
-│  │ Market Hits Record High                             │   │
-│  │ CNN • 4 hours ago                          [🔖][↗️] │   │
-│  └─────────────────────────────────────────────────────┘   │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### Starter Code
-
-```dart
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
-void main() => runApp(const NewsApp());
-
-// ═══════════════════════════════════════════════════════════════
-// TODO 1: Create Article Model
-// ═══════════════════════════════════════════════════════════════
-
-class Article {
-  final String? title;
-  final String? description;
-  final String? url;
-  final String? imageUrl;
-  final String? source;
-  final DateTime? publishedAt;
-  bool isBookmarked;
-
-  Article({
-    this.title,
-    this.description,
-    this.url,
-    this.imageUrl,
-    this.source,
-    this.publishedAt,
-    this.isBookmarked = false,
-  });
-
-  // TODO: Implement fromJson
-  // API response:
-  // {
-  //   "title": "...",
-  //   "description": "...",
-  //   "url": "...",
-  //   "urlToImage": "...",
-  //   "source": {"name": "..."},
-  //   "publishedAt": "2024-01-01T12:00:00Z"
-  // }
-}
-
-// ═══════════════════════════════════════════════════════════════
-// TODO 2: Create News Service
-// ═══════════════════════════════════════════════════════════════
-
-class NewsService {
-  // TODO: Replace with your API key
-  static const apiKey = 'YOUR_API_KEY';
-  static const baseUrl = 'https://newsapi.org/v2';
-
-  Future<List<Article>> getTopHeadlines({String? category}) async {
-    // TODO: Implement
-    throw UnimplementedError();
-  }
-}
-
-// ═══════════════════════════════════════════════════════════════
-// TODO 3: Create News Screen with categories
-// ═══════════════════════════════════════════════════════════════
-
-class NewsScreen extends StatefulWidget {
-  const NewsScreen({super.key});
-
-  @override
-  State<NewsScreen> createState() => _NewsScreenState();
-}
-
-class _NewsScreenState extends State<NewsScreen>
-    with SingleTickerProviderStateMixin {
-  // TODO: Implement TabController for categories
-  // TODO: Implement article loading and display
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('News')),
-      body: const Center(child: Text('Implement me!')),
-    );
-  }
-}
-
-// ═══════════════════════════════════════════════════════════════
-// TODO 4: Create Article Card Widget
-// ═══════════════════════════════════════════════════════════════
-
-class ArticleCard extends StatelessWidget {
-  final Article article;
-  final VoidCallback onTap;
-  final VoidCallback onBookmark;
-  final VoidCallback onShare;
-
-  const ArticleCard({
-    super.key,
-    required this.article,
-    required this.onTap,
-    required this.onBookmark,
-    required this.onShare,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: Implement card with image, title, source, actions
-    return const Card(child: Text('Implement me!'));
-  }
-}
-
-class NewsApp extends StatelessWidget {
-  const NewsApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'News Reader',
-      theme: ThemeData(primarySwatch: Colors.indigo),
-      home: const NewsScreen(),
-    );
-  }
-}
-```
-
-### Success Checklist
-- [ ] Headlines load by category
-- [ ] Tab bar for category navigation
-- [ ] Article cards display image, title, source
-- [ ] Pull to refresh works
-- [ ] Bookmark toggle works
-- [ ] Share opens share sheet
-- [ ] Tap opens article URL
-
----
-
-## Summary: API Integration Patterns
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│              API INTEGRATION CHEAT SHEET                     │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  REQUEST PATTERN:                                           │
-│  final response = await http.get(Uri.parse(url));           │
-│  if (response.statusCode == 200) {                          │
-│    final data = json.decode(response.body);                 │
-│    return Model.fromJson(data);                             │
-│  }                                                          │
-│  throw Exception('Failed');                                 │
-│                                                             │
-│  MODEL PATTERN:                                             │
-│  class Model {                                              │
-│    final String field;                                      │
-│    Model({required this.field});                            │
-│    factory Model.fromJson(json) => Model(field: json['f']); │
-│    Map toJson() => {'field': field};                        │
-│  }                                                          │
-│                                                             │
-│  UI PATTERN:                                                │
-│  if (isLoading) return CircularProgressIndicator();         │
-│  if (error != null) return ErrorWidget(error);              │
-│  return DataWidget(data);                                   │
-│                                                             │
-│  ERROR PATTERN:                                             │
-│  try { ... }                                                │
-│  on SocketException { /* no internet */ }                   │
-│  catch (e) { /* other error */ }                            │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
-```
+**Next Steps:**
+1. Try building the Weather App (use OpenWeatherMap API)
+2. Try building a GitHub Profile Viewer
+3. Move on to Level 09: Local Storage
 
 ---
 
