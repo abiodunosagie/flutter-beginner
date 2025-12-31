@@ -1,20 +1,35 @@
-# Level 1 Exercises
+# Level 1 Exercises: Dart Fundamentals
 
-Complete these exercises to master Dart fundamentals.
+Welcome! These exercises teach you Dart basics step-by-step. Each part builds on the previous one!
+
+**How these exercises work:**
+- Each PART focuses on ONE concept
+- Within each part, exercises build on each other progressively
+- Try each exercise BEFORE looking at the solution
+- The final exercise in each part combines everything you learned
+- Once you complete all parts, you'll understand Dart fundamentals!
 
 ---
 
-## Exercise 1: Hello You ⭐
+## PART 1: Print & Your First Variables
 
-**Difficulty:** Beginner | **Time:** 5 minutes
+Learn to display text and create your first variables.
 
-### Task
-Write a program that prints:
-1. Your name
-2. Your age
-3. Your favorite color
+### Exercise 1.1: Hello You ⭐
 
-### Expected Output
+**Goal:** Print your basic information.
+
+**Your Task:** Print three lines about yourself.
+
+```dart
+void main() {
+  // TODO: Print your name
+  // TODO: Print your age
+  // TODO: Print your favorite color
+}
+```
+
+**Expected Output:**
 ```
 My name is [your name]
 I am [your age] years old
@@ -22,7 +37,7 @@ My favorite color is [your color]
 ```
 
 <details>
-<summary>Solution</summary>
+<summary>✅ Solution</summary>
 
 ```dart
 void main() {
@@ -35,21 +50,88 @@ void main() {
 
 ---
 
-## Exercise 2: Variables Practice ⭐
+### Exercise 1.2: Create Your First Variable ⭐
 
-**Difficulty:** Beginner | **Time:** 10 minutes
+**Goal:** Store information in variables instead of printing directly.
 
-### Task
-Create variables for a book:
-- Title (String)
-- Author (String)
-- Pages (int)
-- Price (double)
-- Is available (bool)
+**Your Task:** Create three String variables and print them.
 
-Print all the information in a nice format.
+```dart
+void main() {
+  // TODO: Create a String variable called 'name' with your name
+  // TODO: Create a String variable called 'age' with your age
+  // TODO: Create a String variable called 'color' with your favorite color
 
-### Expected Output
+  // TODO: Print each variable
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+void main() {
+  String name = 'Alex';
+  String age = '25';
+  String color = 'blue';
+
+  print('My name is $name');
+  print('I am $age years old');
+  print('My favorite color is $color');
+}
+```
+</details>
+
+---
+
+### Exercise 1.3: Use the Right Types ⭐
+
+**Goal:** Use the correct data type for each piece of information.
+
+**Your Task:** Create variables with proper types (String, int, bool).
+
+```dart
+void main() {
+  // TODO: Create String variable 'name' with your name
+  // TODO: Create int variable 'age' with your age (use actual number, not text!)
+  // TODO: Create bool variable 'likesP programming' set to true
+
+  // TODO: Print all three using string interpolation ($variableName)
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+void main() {
+  String name = 'Alex';
+  int age = 25;
+  bool likesProgramming = true;
+
+  print('My name is $name');
+  print('I am $age years old');
+  print('Likes programming: $likesProgramming');
+}
+```
+</details>
+
+---
+
+### Exercise 1.4: Book Information Challenge ⭐⭐
+
+**Goal:** Create a complete book profile - NO scaffolding!
+
+**Requirements:**
+1. Create variables for a book:
+   - Title (String)
+   - Author (String)
+   - Pages (int)
+   - Price (double)
+   - Is available (bool)
+2. Print all information in a nice format
+
+**Expected Output:**
 ```
 Book: The Great Gatsby
 Author: F. Scott Fitzgerald
@@ -58,8 +140,10 @@ Price: $12.99
 Available: Yes
 ```
 
+Try building this on your own!
+
 <details>
-<summary>Solution</summary>
+<summary>✅ Solution</summary>
 
 ```dart
 void main() {
@@ -80,35 +164,118 @@ void main() {
 
 ---
 
-## Exercise 3: String Manipulation ⭐⭐
+## PART 2: Working with Strings
 
-**Difficulty:** Beginner-Intermediate | **Time:** 15 minutes
+Learn to manipulate and transform text.
 
-### Task
-Given a full name string:
-1. Print it in uppercase
-2. Print it in lowercase
-3. Print the number of characters
-4. Print the first letter
-5. Check if it contains "Smith"
+### Exercise 2.1: Convert Case ⭐
 
-### Start With
+**Goal:** Change text to uppercase and lowercase.
+
+**Your Task:** Convert a name to different cases.
+
 ```dart
-String fullName = 'John Smith';
-```
+void main() {
+  String name = 'John Smith';
 
-### Expected Output
-```
-Original: John Smith
-Uppercase: JOHN SMITH
-Lowercase: john smith
-Length: 10
-First letter: J
-Contains Smith: true
+  // TODO: Print the name in UPPERCASE using toUpperCase()
+  // TODO: Print the name in lowercase using toLowerCase()
+}
 ```
 
 <details>
-<summary>Solution</summary>
+<summary>✅ Solution</summary>
+
+```dart
+void main() {
+  String name = 'John Smith';
+
+  print('Uppercase: ${name.toUpperCase()}');
+  print('Lowercase: ${name.toLowerCase()}');
+}
+```
+</details>
+
+---
+
+### Exercise 2.2: String Properties ⭐
+
+**Goal:** Use string properties to get information about text.
+
+**Your Task:** Find the length and first letter of a string.
+
+```dart
+void main() {
+  String fullName = 'John Smith';
+
+  // TODO: Print the length of fullName using .length
+  // TODO: Print the first letter using [0]
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+void main() {
+  String fullName = 'John Smith';
+
+  print('Length: ${fullName.length}');
+  print('First letter: ${fullName[0]}');
+}
+```
+</details>
+
+---
+
+### Exercise 2.3: String Checks ⭐
+
+**Goal:** Check if text contains certain characters.
+
+**Your Task:** Check if a string contains specific text.
+
+```dart
+void main() {
+  String fullName = 'John Smith';
+
+  // TODO: Check if fullName contains 'Smith' using .contains()
+  // TODO: Print the result
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+void main() {
+  String fullName = 'John Smith';
+
+  print('Contains Smith: ${fullName.contains('Smith')}');
+}
+```
+</details>
+
+---
+
+### Exercise 2.4: String Manipulation Challenge ⭐⭐
+
+**Goal:** Use all string methods together - NO scaffolding!
+
+**Requirements:**
+Given: `String fullName = 'John Smith';`
+
+Print:
+1. Original
+2. Uppercase
+3. Lowercase
+4. Length
+5. First letter
+6. Contains "Smith"
+
+Try this on your own!
+
+<details>
+<summary>✅ Solution</summary>
 
 ```dart
 void main() {
@@ -126,36 +293,123 @@ void main() {
 
 ---
 
-## Exercise 4: Simple Calculator ⭐⭐
+## PART 3: Working with Numbers
 
-**Difficulty:** Beginner-Intermediate | **Time:** 15 minutes
+Learn arithmetic and number operations.
 
-### Task
-Create two number variables and print:
-1. Their sum
-2. Their difference
-3. Their product
-4. Their quotient (with 2 decimal places)
-5. The remainder when divided
+### Exercise 3.1: Basic Math ⭐
 
-### Start With
+**Goal:** Perform basic arithmetic operations.
+
+**Your Task:** Add and subtract two numbers.
+
 ```dart
-int num1 = 17;
-int num2 = 5;
-```
+void main() {
+  int num1 = 17;
+  int num2 = 5;
 
-### Expected Output
-```
-Numbers: 17 and 5
-Sum: 22
-Difference: 12
-Product: 85
-Quotient: 3.40
-Remainder: 2
+  // TODO: Calculate and print sum (num1 + num2)
+  // TODO: Calculate and print difference (num1 - num2)
+}
 ```
 
 <details>
-<summary>Solution</summary>
+<summary>✅ Solution</summary>
+
+```dart
+void main() {
+  int num1 = 17;
+  int num2 = 5;
+
+  print('Sum: ${num1 + num2}');
+  print('Difference: ${num1 - num2}');
+}
+```
+</details>
+
+---
+
+### Exercise 3.2: More Operations ⭐
+
+**Goal:** Use multiplication and division.
+
+**Your Task:** Calculate product and quotient.
+
+```dart
+void main() {
+  int num1 = 17;
+  int num2 = 5;
+
+  // TODO: Calculate and print product (num1 * num2)
+  // TODO: Calculate and print quotient (num1 / num2) with 2 decimal places
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+void main() {
+  int num1 = 17;
+  int num2 = 5;
+
+  print('Product: ${num1 * num2}');
+  print('Quotient: ${(num1 / num2).toStringAsFixed(2)}');
+}
+```
+</details>
+
+---
+
+### Exercise 3.3: Remainder ⭐
+
+**Goal:** Find the remainder using modulo.
+
+**Your Task:** Use the % operator.
+
+```dart
+void main() {
+  int num1 = 17;
+  int num2 = 5;
+
+  // TODO: Print remainder (num1 % num2)
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+void main() {
+  int num1 = 17;
+  int num2 = 5;
+
+  print('Remainder: ${num1 % num2}');
+}
+```
+</details>
+
+---
+
+### Exercise 3.4: Calculator Challenge ⭐⭐
+
+**Goal:** Build a simple calculator - NO scaffolding!
+
+**Requirements:**
+Given: `int num1 = 17;` and `int num2 = 5;`
+
+Print:
+1. Numbers being used
+2. Sum
+3. Difference
+4. Product
+5. Quotient (2 decimals)
+6. Remainder
+
+Try this on your own!
+
+<details>
+<summary>✅ Solution</summary>
 
 ```dart
 void main() {
@@ -174,29 +428,126 @@ void main() {
 
 ---
 
-## Exercise 5: Temperature Converter ⭐⭐
+## PART 4: Calculations & Formulas
 
-**Difficulty:** Intermediate | **Time:** 15 minutes
+Apply what you learned to real-world calculations.
 
-### Task
-Convert temperatures:
-1. Convert 100°F to Celsius
-2. Convert 0°C to Fahrenheit
+### Exercise 4.1: Rectangle Area ⭐
+
+**Goal:** Calculate the area of a rectangle.
+
+**Your Task:** Use the formula: area = width × height
+
+```dart
+void main() {
+  int width = 10;
+  int height = 5;
+
+  // TODO: Calculate area
+  // TODO: Print result
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+void main() {
+  int width = 10;
+  int height = 5;
+
+  int area = width * height;
+  print('Rectangle Area: $area');
+}
+```
+</details>
+
+---
+
+### Exercise 4.2: Rectangle Perimeter ⭐
+
+**Goal:** Calculate the perimeter of a rectangle.
+
+**Your Task:** Use the formula: perimeter = 2 × (width + height)
+
+```dart
+void main() {
+  int width = 10;
+  int height = 5;
+
+  // TODO: Calculate perimeter
+  // TODO: Print result
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+void main() {
+  int width = 10;
+  int height = 5;
+
+  int perimeter = 2 * (width + height);
+  print('Rectangle Perimeter: $perimeter');
+}
+```
+</details>
+
+---
+
+### Exercise 4.3: Circle Area ⭐⭐
+
+**Goal:** Calculate the area of a circle.
+
+**Your Task:** Use the formula: area = π × radius²
+
+```dart
+void main() {
+  double radius = 4;
+  double pi = 3.14159;
+
+  // TODO: Calculate area (pi * radius * radius)
+  // TODO: Print with 2 decimal places
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+void main() {
+  double radius = 4;
+  double pi = 3.14159;
+
+  double area = pi * radius * radius;
+  print('Circle Area: ${area.toStringAsFixed(2)}');
+}
+```
+</details>
+
+---
+
+### Exercise 4.4: Temperature Converter Challenge ⭐⭐
+
+**Goal:** Convert temperatures - NO scaffolding!
+
+**Requirements:**
+1. Convert 100°F to Celsius: (F - 32) × 5/9
+2. Convert 0°C to Fahrenheit: (C × 9/5) + 32
 3. Convert 37°C to Fahrenheit (body temperature)
 
-**Formula:**
-- F to C: (F - 32) × 5/9
-- C to F: (C × 9/5) + 32
-
-### Expected Output
+**Expected Output:**
 ```
 100°F = 37.8°C
 0°C = 32.0°F
 37°C = 98.6°F
 ```
 
+Try this on your own!
+
 <details>
-<summary>Solution</summary>
+<summary>✅ Solution</summary>
 
 ```dart
 void main() {
@@ -220,25 +571,72 @@ void main() {
 
 ---
 
-## Exercise 6: Area Calculator ⭐⭐
+## PART 5: Building Complete Programs
 
-**Difficulty:** Intermediate | **Time:** 15 minutes
+Combine everything to create real programs.
 
-### Task
-Calculate the area and perimeter of:
-1. A rectangle (width: 10, height: 5)
-2. A square (side: 7)
-3. A circle (radius: 4) - use 3.14159 for pi
+### Exercise 5.1: Mad Libs ⭐⭐
 
-### Expected Output
+**Goal:** Create a story using variables.
+
+**Your Task:** Build a funny story with variables.
+
+```dart
+void main() {
+  // TODO: Create variables: noun, adjective, verb, place, number
+  // TODO: Print a story using these variables
+}
+```
+
+**Example Output:**
+```
+One day, a giant elephant decided to dance
+in the middle of Paris.
+It happened exactly 42 times!
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+void main() {
+  String noun = 'elephant';
+  String adjective = 'giant';
+  String verb = 'dance';
+  String place = 'Paris';
+  int number = 42;
+
+  print('One day, a $adjective $noun decided to $verb');
+  print('in the middle of $place.');
+  print('It happened exactly $number times!');
+  print('Everyone was amazed.');
+}
+```
+</details>
+
+---
+
+### Exercise 5.2: Area Calculator ⭐⭐
+
+**Goal:** Calculate multiple shapes - NO scaffolding!
+
+**Requirements:**
+Calculate and print:
+1. Rectangle (width: 10, height: 5) - Area and Perimeter
+2. Square (side: 7) - Area and Perimeter
+3. Circle (radius: 4, pi: 3.14159) - Area and Circumference (2 × π × radius)
+
+**Expected Output:**
 ```
 Rectangle: Area = 50, Perimeter = 30
 Square: Area = 49, Perimeter = 28
 Circle: Area = 50.27, Circumference = 25.13
 ```
 
+Try this on your own!
+
 <details>
-<summary>Solution</summary>
+<summary>✅ Solution</summary>
 
 ```dart
 void main() {
@@ -267,63 +665,23 @@ void main() {
 
 ---
 
-## Exercise 7: Mad Libs ⭐⭐
+## FINAL PROJECT: User Profile Card ⭐⭐⭐
 
-**Difficulty:** Intermediate | **Time:** 20 minutes
+**Goal:** Create a complete, formatted user profile!
 
-### Task
-Create a Mad Libs story using variables:
-- A noun (thing)
-- An adjective (describing word)
-- A verb (action word)
-- A place
-- A number
+**Your Task:** Build this entirely on your own - NO scaffolding!
 
-Then print a funny story using these variables.
+### Requirements:
 
-### Example Output
-```
-One day, a giant elephant decided to dance
-in the middle of Paris.
-It happened exactly 42 times!
-Everyone was amazed.
-```
+**User Data:**
+- Name, username, email (String)
+- Age, followers, following (int)
+- Rating 1-5 (double)
+- Account balance (double)
+- Is verified, is online (bool)
 
-<details>
-<summary>Solution</summary>
+**Output:** Create a nicely formatted profile card like this:
 
-```dart
-void main() {
-  String noun = 'elephant';
-  String adjective = 'giant';
-  String verb = 'dance';
-  String place = 'Paris';
-  int number = 42;
-
-  print('One day, a $adjective $noun decided to $verb');
-  print('in the middle of $place.');
-  print('It happened exactly $number times!');
-  print('Everyone was amazed.');
-}
-```
-</details>
-
----
-
-## Exercise 8: User Profile Card ⭐⭐⭐
-
-**Difficulty:** Intermediate-Advanced | **Time:** 25 minutes
-
-### Task
-Create a complete user profile with:
-- Name, username, email
-- Age, followers, following
-- Rating (1-5), account balance
-- Is verified, is online
-
-Print a formatted profile card.
-
-### Expected Output
 ```
 ╔════════════════════════════════════╗
 ║         USER PROFILE               ║
@@ -341,8 +699,16 @@ Print a formatted profile card.
 ╚════════════════════════════════════╝
 ```
 
+**Hints:**
+- Use string interpolation
+- Use ternary operator for verified: `${isVerified ? '✓' : '✗'}`
+- Use toStringAsFixed(2) for money
+- Stars can be simple text or calculated
+
+**Build this completely on your own!**
+
 <details>
-<summary>Solution</summary>
+<summary>✅ Solution</summary>
 
 ```dart
 void main() {
@@ -360,23 +726,22 @@ void main() {
 
   // Calculate stars
   int fullStars = rating.floor();
-  int emptyStars = 5 - fullStars;
-  String stars = '★' * fullStars + '☆' * emptyStars;
+  String stars = '★' * fullStars + '☆' * (5 - fullStars);
 
   // Print profile
   print('╔════════════════════════════════════╗');
   print('║         USER PROFILE               ║');
   print('╠════════════════════════════════════╣');
-  print('║ Name: $name');
-  print('║ Username: $username');
-  print('║ Email: $email');
+  print('║ Name: $name                 ║');
+  print('║ Username: $username                 ║');
+  print('║ Email: $email            ║');
   print('╠════════════════════════════════════╣');
-  print('║ Age: $age          Verified: ${isVerified ? '✓' : '✗'}');
-  print('║ Followers: $followers  Following: $following');
-  print('║ Rating: $stars ($rating)');
-  print('║ Balance: \$${balance.toStringAsFixed(2)}');
+  print('║ Age: $age          Verified: ${isVerified ? '✓' : '✗'}       ║');
+  print('║ Followers: $followers  Following: $following    ║');
+  print('║ Rating: $stars ($rating)               ║');
+  print('║ Balance: \$${balance.toStringAsFixed(2)}                 ║');
   print('╠════════════════════════════════════╣');
-  print('║ Status: ${isOnline ? '🟢 Online' : '⚫ Offline'}');
+  print('║ Status: ${isOnline ? '🟢 Online' : '⚫ Offline'}                  ║');
   print('╚════════════════════════════════════╝');
 }
 ```
@@ -384,94 +749,18 @@ void main() {
 
 ---
 
-## Exercise 9: Receipt Generator ⭐⭐⭐
-
-**Difficulty:** Advanced | **Time:** 25 minutes
-
-### Task
-Create a shopping receipt:
-- 3 items with names and prices
-- Calculate subtotal
-- Apply 8% tax
-- Calculate total
-- Show payment and change
-
-### Expected Output
-```
-========== RECEIPT ==========
-Coffee Mug        $12.99
-Notebook          $8.50
-Pen Set           $15.00
------------------------------
-Subtotal:         $36.49
-Tax (8%):         $2.92
------------------------------
-TOTAL:            $39.41
------------------------------
-Payment:          $50.00
-Change:           $10.59
-=============================
-Thank you for shopping!
-```
-
-<details>
-<summary>Solution</summary>
-
-```dart
-void main() {
-  // Items
-  String item1 = 'Coffee Mug';
-  double price1 = 12.99;
-
-  String item2 = 'Notebook';
-  double price2 = 8.50;
-
-  String item3 = 'Pen Set';
-  double price3 = 15.00;
-
-  // Calculations
-  double subtotal = price1 + price2 + price3;
-  double taxRate = 0.08;
-  double tax = subtotal * taxRate;
-  double total = subtotal + tax;
-
-  double payment = 50.00;
-  double change = payment - total;
-
-  // Print receipt
-  print('========== RECEIPT ==========');
-  print('$item1        \$${price1.toStringAsFixed(2)}');
-  print('$item2          \$${price2.toStringAsFixed(2)}');
-  print('$item3           \$${price3.toStringAsFixed(2)}');
-  print('-----------------------------');
-  print('Subtotal:         \$${subtotal.toStringAsFixed(2)}');
-  print('Tax (8%):         \$${tax.toStringAsFixed(2)}');
-  print('-----------------------------');
-  print('TOTAL:            \$${total.toStringAsFixed(2)}');
-  print('-----------------------------');
-  print('Payment:          \$${payment.toStringAsFixed(2)}');
-  print('Change:           \$${change.toStringAsFixed(2)}');
-  print('=============================');
-  print('Thank you for shopping!');
-}
-```
-</details>
-
----
-
-## Self-Assessment Checklist
+## Submission Checklist
 
 Before moving to Level 2, make sure you can:
 
 - [ ] Write and run a basic Dart program
 - [ ] Create variables of different types (String, int, double, bool)
 - [ ] Use string interpolation ($variable and ${expression})
-- [ ] Perform basic arithmetic operations
+- [ ] Perform basic arithmetic operations (+, -, *, /, %, ~/)
 - [ ] Convert between types (int, double, String)
-- [ ] Use comparison operators (==, !=, <, >, <=, >=)
-- [ ] Use logical operators (&&, ||, !)
-- [ ] Use the ternary operator (condition ? ifTrue : ifFalse)
+- [ ] Use string methods (toUpperCase, toLowerCase, contains, etc.)
 - [ ] Format numbers with toStringAsFixed()
+- [ ] Write programs without looking at solutions first
 
 ---
 
@@ -479,15 +768,18 @@ Before moving to Level 2, make sure you can:
 
 Build a BMI (Body Mass Index) calculator:
 - Input: weight (kg), height (m)
-- Calculate: BMI = weight / (height * height)
-- Print BMI and category:
-  - Under 18.5: Underweight
-  - 18.5 - 24.9: Normal
-  - 25 - 29.9: Overweight
-  - 30+: Obese
+- Calculate: BMI = weight / (height × height)
+- Print BMI with 1 decimal place
+
+**Example:**
+```
+Weight: 70.0 kg
+Height: 1.75 m
+BMI: 22.9
+```
 
 <details>
-<summary>Solution</summary>
+<summary>✅ Solution</summary>
 
 ```dart
 void main() {
@@ -496,14 +788,9 @@ void main() {
 
   double bmi = weightKg / (heightM * heightM);
 
-  String category = bmi < 18.5 ? 'Underweight' :
-                    bmi < 25 ? 'Normal' :
-                    bmi < 30 ? 'Overweight' : 'Obese';
-
   print('Weight: $weightKg kg');
   print('Height: $heightM m');
   print('BMI: ${bmi.toStringAsFixed(1)}');
-  print('Category: $category');
 }
 ```
 </details>

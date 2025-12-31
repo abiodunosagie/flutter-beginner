@@ -1,37 +1,196 @@
-# Level 14: Animations & Polish - Exercises
+# Level 14 Exercises: Animations & Polish
 
-Practice creating smooth, delightful animations!
+Welcome! These exercises teach you how to add smooth animations to your Flutter apps. Each part builds your animation skills step-by-step!
+
+**How these exercises work:**
+- Each PART focuses on ONE type of animation
+- Within each part, exercises build on each other step-by-step
+- Try each exercise BEFORE looking at the solution
+- The final exercise in each part combines everything you learned
+- Once you complete all parts, your apps will feel professional and polished!
 
 ---
 
-## Exercise 1: Animated Like Button (Beginner)
+## PART 1: Implicit Animations
 
-**Goal:** Create a heart button that animates when tapped.
+Learn the simplest animations - just change a value!
 
+### Exercise 1.1: Animated Color
+
+**Goal:** Animate a container's color change.
+
+**Your Task:** Make color transition smoothly.
+
+```dart
+class ColorBox extends StatefulWidget {
+  @override
+  State<ColorBox> createState() => _ColorBoxState();
+}
+
+class _ColorBoxState extends State<ColorBox> {
+  bool _isBlue = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        setState(() => _isBlue = !_isBlue);
+      },
+      child: AnimatedContainer(
+        // TODO: Set duration to Duration(milliseconds: 300)
+        // TODO: Set color to _isBlue ? Colors.blue : Colors.red
+        width: 100,
+        height: 100,
+      ),
+    );
+  }
+}
 ```
-WHAT TO BUILD:
 
-  Before Tap          After Tap
-     ♡                  ❤️
-   (gray)            (red + bigger)
+<details>
+<summary>✅ Solution</summary>
 
-  The heart should:
-  1. Scale up briefly
-  2. Change color to red
-  3. Scale back to normal size
+```dart
+child: AnimatedContainer(
+  duration: Duration(milliseconds: 300),
+  color: _isBlue ? Colors.blue : Colors.red,
+  width: 100,
+  height: 100,
+)
 ```
+
+**What it does:**
+- AnimatedContainer automatically animates property changes
+- When color changes, it smoothly transitions
+- Duration controls how long the animation takes
+</details>
+
+---
+
+### Exercise 1.2: Animated Size
+
+**Goal:** Animate a container growing and shrinking.
+
+**Your Task:** Make the box expand when tapped.
+
+```dart
+class ExpandingBox extends StatefulWidget {
+  @override
+  State<ExpandingBox> createState() => _ExpandingBoxState();
+}
+
+class _ExpandingBoxState extends State<ExpandingBox> {
+  bool _isExpanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        setState(() => _isExpanded = !_isExpanded);
+      },
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 300),
+        width: _isExpanded ? 200 : 100,
+        height: _isExpanded ? 200 : 100,
+        color: Colors.blue,
+        // TODO: Add curve: Curves.easeInOut for smoother animation
+      ),
+    );
+  }
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+child: AnimatedContainer(
+  duration: Duration(milliseconds: 300),
+  curve: Curves.easeInOut,
+  width: _isExpanded ? 200 : 100,
+  height: _isExpanded ? 200 : 100,
+  color: Colors.blue,
+)
+```
+
+**Key Points:**
+- Width and height animate automatically
+- `curve` makes the animation feel more natural
+- `Curves.easeInOut` starts slow, speeds up, then slows down
+</details>
+
+---
+
+### Exercise 1.3: Animated Opacity
+
+**Goal:** Fade a widget in and out.
+
+**Your Task:** Make text fade in/out on tap.
+
+```dart
+class FadingText extends StatefulWidget {
+  @override
+  State<FadingText> createState() => _FadingTextState();
+}
+
+class _FadingTextState extends State<FadingText> {
+  bool _isVisible = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        AnimatedOpacity(
+          // TODO: Set opacity to _isVisible ? 1.0 : 0.0
+          // TODO: Set duration to 500ms
+          child: Text('Hello!', style: TextStyle(fontSize: 24)),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            setState(() => _isVisible = !_isVisible);
+          },
+          child: Text('Toggle'),
+        ),
+      ],
+    );
+  }
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+AnimatedOpacity(
+  opacity: _isVisible ? 1.0 : 0.0,
+  duration: Duration(milliseconds: 500),
+  child: Text('Hello!', style: TextStyle(fontSize: 24)),
+)
+```
+</details>
+
+---
+
+### Exercise 1.4: Like Button Challenge
+
+**Goal:** Create an animated like button - NO scaffolding!
+
+**Your Task:** Build a heart button that animates when tapped.
 
 **Requirements:**
-- Use `AnimatedScale` and `AnimatedContainer`
-- Heart grows to 1.3x then settles at 1.0x
-- Color changes from gray to red
-- Animation duration: 200ms
+1. Use AnimatedScale to make heart pop
+2. Scale to 1.2 when liked, 1.0 when not
+3. Change color from grey to red
+4. Use Icons.favorite when liked, Icons.favorite_border when not
+5. Animate smoothly in 200ms
 
-**Starter Code:**
+Try building this on your own!
+
+<details>
+<summary>✅ Solution</summary>
+
 ```dart
 class LikeButton extends StatefulWidget {
-  const LikeButton({super.key});
-
   @override
   State<LikeButton> createState() => _LikeButtonState();
 }
@@ -41,120 +200,40 @@ class _LikeButtonState extends State<LikeButton> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Implement animated like button
-    // Hint: Use AnimatedScale for the pop effect
-    // Hint: Use Icon with color animation
-
     return GestureDetector(
       onTap: () {
-        setState(() {
-          _isLiked = !_isLiked;
-        });
+        setState(() => _isLiked = !_isLiked);
       },
-      child: Icon(
-        _isLiked ? Icons.favorite : Icons.favorite_border,
-        color: _isLiked ? Colors.red : Colors.grey,
-        size: 32,
+      child: AnimatedScale(
+        scale: _isLiked ? 1.2 : 1.0,
+        duration: Duration(milliseconds: 200),
+        curve: Curves.easeOut,
+        child: Icon(
+          _isLiked ? Icons.favorite : Icons.favorite_border,
+          color: _isLiked ? Colors.red : Colors.grey,
+          size: 48,
+        ),
       ),
     );
   }
 }
 ```
-
-**Expected Behavior:**
-- Tap → Heart pops bigger → Settles to normal size
-- Color animates smoothly from gray to red
-- Tap again → Reverse animation
+</details>
 
 ---
 
-## Exercise 2: Expanding Card (Beginner)
+## PART 2: AnimatedSwitcher
 
-**Goal:** Create a card that expands to show more content.
+Learn to animate when widgets change.
 
-```
-COLLAPSED:                    EXPANDED:
-┌──────────────────┐          ┌──────────────────┐
-│ Title            │          │ Title            │
-│ Tap to expand ▼  │   →      │                  │
-└──────────────────┘          │ Full description │
-                              │ here with more   │
-                              │ details...       │
-                              │                  │
-                              │ Tap to close ▲   │
-                              └──────────────────┘
-```
+### Exercise 2.1: Simple Counter Animation
 
-**Requirements:**
-- Use `AnimatedContainer` for height change
-- Use `AnimatedCrossFade` for content switch
-- Smooth 300ms animation
-- Arrow icon rotates with `AnimatedRotation`
+**Goal:** Animate numbers changing.
 
-**Starter Code:**
-```dart
-class ExpandingCard extends StatefulWidget {
-  final String title;
-  final String description;
+**Your Task:** Make counter numbers slide when changing.
 
-  const ExpandingCard({
-    super.key,
-    required this.title,
-    required this.description,
-  });
-
-  @override
-  State<ExpandingCard> createState() => _ExpandingCardState();
-}
-
-class _ExpandingCardState extends State<ExpandingCard> {
-  bool _isExpanded = false;
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: Create expanding card
-    // Hint: AnimatedContainer for the card height
-    // Hint: AnimatedRotation for the arrow (0.5 = 180 degrees)
-    // Hint: AnimatedCrossFade to switch between short/full content
-
-    return Card(
-      child: Column(
-        children: [
-          // Title row with arrow
-          // Content area
-        ],
-      ),
-    );
-  }
-}
-```
-
----
-
-## Exercise 3: Animated Counter (Intermediate)
-
-**Goal:** Create a counter where numbers animate in/out.
-
-```
-ANIMATION:
-         ↑ (new number slides in from bottom)
-       [ 5 ]
-         ↓ (old number slides out to top)
-
-  Each digit change should animate separately!
-```
-
-**Requirements:**
-- Use `AnimatedSwitcher` with custom transition
-- Numbers slide in from bottom, out to top
-- Duration: 200ms
-- Include + and - buttons
-
-**Starter Code:**
 ```dart
 class AnimatedCounter extends StatefulWidget {
-  const AnimatedCounter({super.key});
-
   @override
   State<AnimatedCounter> createState() => _AnimatedCounterState();
 }
@@ -165,31 +244,19 @@ class _AnimatedCounterState extends State<AnimatedCounter> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        // TODO: Wrap count display in AnimatedSwitcher
-        // Hint: Use SlideTransition for the transition
-        // Hint: Key the Text widget with ValueKey(_count)
-
-        Text(
-          '$_count',
-          style: const TextStyle(fontSize: 48),
+        AnimatedSwitcher(
+          duration: Duration(milliseconds: 200),
+          // TODO: Add this child with key
+          child: Text(
+            '$_count',
+            // TODO: Add key: ValueKey(_count)
+            style: TextStyle(fontSize: 48),
+          ),
         ),
-
-        const SizedBox(height: 20),
-
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.remove),
-              onPressed: () => setState(() => _count--),
-            ),
-            IconButton(
-              icon: const Icon(Icons.add),
-              onPressed: () => setState(() => _count++),
-            ),
-          ],
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () => setState(() => _count++),
         ),
       ],
     );
@@ -197,453 +264,480 @@ class _AnimatedCounterState extends State<AnimatedCounter> {
 }
 ```
 
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+AnimatedSwitcher(
+  duration: Duration(milliseconds: 200),
+  child: Text(
+    '$_count',
+    key: ValueKey(_count),
+    style: TextStyle(fontSize: 48),
+  ),
+)
+```
+
+**What it does:**
+- AnimatedSwitcher detects when child changes
+- Uses the key to know child changed
+- Automatically fades old out, new in
+</details>
+
 ---
 
-## Exercise 4: Staggered List Animation (Intermediate)
+### Exercise 2.2: Custom Transition
 
-**Goal:** Create a list where items animate in one after another.
+**Goal:** Add a slide transition to the counter.
 
+**Your Task:** Make numbers slide up instead of fade.
+
+```dart
+AnimatedSwitcher(
+  duration: Duration(milliseconds: 200),
+  transitionBuilder: (child, animation) {
+    // TODO: Return SlideTransition
+    // TODO: Offset should start at Offset(0, 0.3) and end at Offset.zero
+    // TODO: Use Tween for offset animation
+  },
+  child: Text(
+    '$_count',
+    key: ValueKey(_count),
+    style: TextStyle(fontSize: 48),
+  ),
+)
 ```
-ANIMATION SEQUENCE:
 
-  Time 0ms:   [ Item 1 slides in →→→ ]
-  Time 100ms: [ Item 1 ][ Item 2 slides in →→→ ]
-  Time 200ms: [ Item 1 ][ Item 2 ][ Item 3 slides in →→→ ]
-  ...and so on
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+AnimatedSwitcher(
+  duration: Duration(milliseconds: 200),
+  transitionBuilder: (child, animation) {
+    return SlideTransition(
+      position: Tween<Offset>(
+        begin: Offset(0, 0.3),
+        end: Offset.zero,
+      ).animate(animation),
+      child: child,
+    );
+  },
+  child: Text(
+    '$_count',
+    key: ValueKey(_count),
+    style: TextStyle(fontSize: 48),
+  ),
+)
 ```
+</details>
+
+---
+
+### Exercise 2.3: Switcher Challenge
+
+**Goal:** Create content that switches with animation - NO scaffolding!
 
 **Requirements:**
-- Use explicit animation with `AnimationController`
-- Each item has slide + fade animation
-- Items start animating 100ms apart (staggered)
-- Add a "Replay" button
+1. Show different widgets based on a boolean
+2. When true: show "✓ Success" in green
+3. When false: show "X Error" in red
+4. Animate the switch with slide + fade
+5. Add a button to toggle
 
-**Starter Code:**
+Try building this on your own!
+
+---
+
+## PART 3: Hero Animations
+
+Learn to animate widgets between screens.
+
+### Exercise 3.1: Simple Hero
+
+**Goal:** Make an image fly between screens.
+
+**Your Task:** Wrap image in Hero widget.
+
 ```dart
-class StaggeredList extends StatefulWidget {
-  const StaggeredList({super.key});
-
+// Screen 1
+class ImageListScreen extends StatelessWidget {
   @override
-  State<StaggeredList> createState() => _StaggeredListState();
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: 5,
+      itemBuilder: (context, index) {
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ImageDetailScreen(index: index),
+              ),
+            );
+          },
+          child: Hero(
+            // TODO: Set tag to 'image_$index'
+            child: Image.network(
+              'https://picsum.photos/id/${index * 10}/200',
+              height: 100,
+              width: 100,
+              fit: BoxFit.cover,
+            ),
+          ),
+        );
+      },
+    );
+  }
 }
 
-class _StaggeredListState extends State<StaggeredList>
-    with SingleTickerProviderStateMixin {
+// Screen 2
+class ImageDetailScreen extends StatelessWidget {
+  final int index;
 
+  ImageDetailScreen({required this.index});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Center(
+        child: Hero(
+          // TODO: Set same tag 'image_$index'
+          child: Image.network(
+            'https://picsum.photos/id/${index * 10}/400',
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+// Screen 1
+child: Hero(
+  tag: 'image_$index',
+  child: Image.network(
+    'https://picsum.photos/id/${index * 10}/200',
+    height: 100,
+    width: 100,
+    fit: BoxFit.cover,
+  ),
+)
+
+// Screen 2
+child: Hero(
+  tag: 'image_$index',
+  child: Image.network(
+    'https://picsum.photos/id/${index * 10}/400',
+  ),
+)
+```
+
+**What it does:**
+- Hero widgets with matching tags animate together
+- Image smoothly flies from list to detail screen
+- Happens automatically during navigation
+</details>
+
+---
+
+### Exercise 3.2: Hero Challenge
+
+**Goal:** Create photo gallery with Hero - NO scaffolding!
+
+**Requirements:**
+1. Grid of 6 images (3x2)
+2. Tap to open full screen
+3. Hero animation on image
+4. Show image title below full image
+5. Tap anywhere to go back
+
+Try building this on your own!
+
+---
+
+## PART 4: Explicit Animations
+
+Learn full control with AnimationController.
+
+### Exercise 4.1: Rotating Icon
+
+**Goal:** Make an icon spin continuously.
+
+**Your Task:** Create a spinning loading indicator.
+
+```dart
+class SpinningIcon extends StatefulWidget {
+  @override
+  State<SpinningIcon> createState() => _SpinningIconState();
+}
+
+class _SpinningIconState extends State<SpinningIcon>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  final List<String> _items = ['Apple', 'Banana', 'Cherry', 'Date', 'Elderberry'];
 
   @override
   void initState() {
     super.initState();
-    // TODO: Create AnimationController with duration 1500ms
-    // TODO: Start the animation
+    // TODO: Create AnimationController with vsync: this
+    // TODO: Set duration to 2 seconds
+    // TODO: Call _controller.repeat() to loop forever
   }
 
   @override
   void dispose() {
-    // TODO: Dispose controller
+    // TODO: Dispose the controller
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView.builder(
-        itemCount: _items.length,
-        itemBuilder: (context, index) {
-          // TODO: Create staggered animation for each item
-          // Hint: Use Interval with different start times
-          // Hint: start = index * 0.1, end = start + 0.4
-
-          return ListTile(
-            title: Text(_items[index]),
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // TODO: Reset and replay animation
-        },
-        child: const Icon(Icons.replay),
-      ),
+    return RotationTransition(
+      // TODO: Set turns to _controller
+      child: Icon(Icons.refresh, size: 64),
     );
   }
 }
 ```
 
----
+<details>
+<summary>✅ Solution</summary>
 
-## Exercise 5: Hero Image Gallery (Intermediate)
-
-**Goal:** Create a photo grid with Hero transitions to detail view.
-
-```
-GALLERY SCREEN:              DETAIL SCREEN:
-┌─────┬─────┬─────┐          ┌─────────────────┐
-│ 📷1 │ 📷2 │ 📷3 │          │                 │
-├─────┼─────┼─────┤   →      │      📷1        │
-│ 📷4 │ 📷5 │ 📷6 │  Tap     │    (enlarged)   │
-└─────┴─────┴─────┘          │                 │
-                             │ Photo Title     │
-                             │ Description...  │
-                             └─────────────────┘
-
-Image flies smoothly from grid to full screen!
-```
-
-**Requirements:**
-- Use `Hero` widget with matching tags
-- Wrap Image AND title text in separate Heroes
-- Use `Material` widget wrapper for text Heroes
-- Tap anywhere on detail screen to go back
-
-**Starter Code:**
 ```dart
-// Photo Model
-class Photo {
-  final String id;
-  final String url;
-  final String title;
-
-  const Photo({required this.id, required this.url, required this.title});
+@override
+void initState() {
+  super.initState();
+  _controller = AnimationController(
+    vsync: this,
+    duration: Duration(seconds: 2),
+  )..repeat();
 }
 
-// Sample photos (use picsum.photos for demo images)
-const photos = [
-  Photo(id: '1', url: 'https://picsum.photos/id/10/200', title: 'Nature'),
-  Photo(id: '2', url: 'https://picsum.photos/id/20/200', title: 'Beach'),
-  Photo(id: '3', url: 'https://picsum.photos/id/30/200', title: 'Mountains'),
-];
+@override
+void dispose() {
+  _controller.dispose();
+  super.dispose();
+}
 
-// TODO: Create GalleryScreen with GridView
-// TODO: Create PhotoDetailScreen with full image
-// TODO: Add Hero widgets to both screens with matching tags
+@override
+Widget build(BuildContext context) {
+  return RotationTransition(
+    turns: _controller,
+    child: Icon(Icons.refresh, size: 64),
+  );
+}
 ```
+
+**What it does:**
+- AnimationController generates values from 0 to 1
+- repeat() makes it loop infinitely
+- RotationTransition rotates based on controller value
+- Must dispose controller to prevent memory leaks
+</details>
 
 ---
 
-## Exercise 6: Loading Button (Intermediate)
+### Exercise 4.2: Staggered Animation
 
-**Goal:** Create a button that shows loading state.
+**Goal:** Animate multiple properties at different times.
 
-```
-STATES:
+**Your Task:** Make a box that slides in AND fades in.
 
-  IDLE:        ┌──────────────────┐
-               │     Submit       │
-               └──────────────────┘
-
-  LOADING:            ┌────┐
-                      │ ◐  │  (spinning)
-                      └────┘
-
-  SUCCESS:            ┌────┐
-                      │ ✓  │  (checkmark appears)
-                      └────┘
-```
-
-**Requirements:**
-- Button width animates (wide → small circle → wide)
-- BorderRadius animates (rounded rect → circle → rounded rect)
-- Show spinner during loading
-- Show checkmark on success (then reset)
-- Use haptic feedback at each state change
-
-**Starter Code:**
 ```dart
-class LoadingButton extends StatefulWidget {
-  final Future<void> Function() onPressed;
-  final String text;
+class StaggeredBox extends StatefulWidget {
+  @override
+  State<StaggeredBox> createState() => _StaggeredBoxState();
+}
 
-  const LoadingButton({
-    super.key,
-    required this.onPressed,
-    required this.text,
-  });
+class _StaggeredBoxState extends State<StaggeredBox>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _fadeAnimation;
+  late Animation<Offset> _slideAnimation;
 
   @override
-  State<LoadingButton> createState() => _LoadingButtonState();
-}
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 1),
+    );
 
-class _LoadingButtonState extends State<LoadingButton> {
-  bool _isLoading = false;
-  bool _isSuccess = false;
+    // TODO: Create _fadeAnimation using Tween(0.0, 1.0)
+    // TODO: Use Interval(0.0, 0.5) for first half
 
-  Future<void> _handlePress() async {
-    // TODO: Set loading state
-    // TODO: Add haptic feedback
-    // TODO: Call onPressed
-    // TODO: Show success state
-    // TODO: Reset after delay
+    // TODO: Create _slideAnimation using Tween for Offset
+    // TODO: Start from Offset(0, 1), end at Offset.zero
+    // TODO: Use Interval(0.3, 1.0) for last 70%
+
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Use AnimatedContainer for width/borderRadius
-    // TODO: Show different content based on state
-    // TODO: Disable button when loading
-
-    return ElevatedButton(
-      onPressed: _isLoading ? null : _handlePress,
-      child: Text(widget.text),
-    );
-  }
-}
-
-// Usage:
-// LoadingButton(
-//   text: 'Submit',
-//   onPressed: () async {
-//     await Future.delayed(Duration(seconds: 2));
-//   },
-// )
-```
-
----
-
-## Exercise 7: Animated Navigation Bar (Advanced)
-
-**Goal:** Create a custom bottom nav with animated indicator.
-
-```
-NAVIGATION BAR:
-
-  ┌─────────────────────────────────────────┐
-  │   🏠      🔍      ❤️      👤           │
-  │   ━━                                    │  ← Indicator slides
-  └─────────────────────────────────────────┘
-
-  When tapping Search:
-
-  ┌─────────────────────────────────────────┐
-  │   🏠      🔍      ❤️      👤           │
-  │          ━━                             │  ← Indicator animated here
-  └─────────────────────────────────────────┘
-```
-
-**Requirements:**
-- Sliding indicator under selected item
-- Selected icon scales up slightly
-- Use `AnimatedPositioned` for indicator
-- Use `AnimatedScale` for icons
-- Smooth 200ms animations
-
-**Starter Code:**
-```dart
-class AnimatedNavBar extends StatefulWidget {
-  final Function(int) onItemSelected;
-
-  const AnimatedNavBar({super.key, required this.onItemSelected});
-
-  @override
-  State<AnimatedNavBar> createState() => _AnimatedNavBarState();
-}
-
-class _AnimatedNavBarState extends State<AnimatedNavBar> {
-  int _selectedIndex = 0;
-
-  final List<IconData> _icons = [
-    Icons.home,
-    Icons.search,
-    Icons.favorite,
-    Icons.person,
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: Create nav bar with Stack
-    // TODO: Add Row of icon buttons
-    // TODO: Add AnimatedPositioned indicator
-    // TODO: Use AnimatedScale for selected icon
-
-    return Container(
-      height: 60,
-      color: Colors.white,
-      child: Stack(
-        children: [
-          // Icon buttons row
-          // Sliding indicator
-        ],
+    return SlideTransition(
+      position: _slideAnimation,
+      child: FadeTransition(
+        opacity: _fadeAnimation,
+        child: Container(
+          width: 200,
+          height: 200,
+          color: Colors.blue,
+        ),
       ),
     );
   }
 }
 ```
 
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+@override
+void initState() {
+  super.initState();
+  _controller = AnimationController(
+    vsync: this,
+    duration: Duration(seconds: 1),
+  );
+
+  _fadeAnimation = Tween<double>(
+    begin: 0.0,
+    end: 1.0,
+  ).animate(
+    CurvedAnimation(
+      parent: _controller,
+      curve: Interval(0.0, 0.5),
+    ),
+  );
+
+  _slideAnimation = Tween<Offset>(
+    begin: Offset(0, 1),
+    end: Offset.zero,
+  ).animate(
+    CurvedAnimation(
+      parent: _controller,
+      curve: Interval(0.3, 1.0, curve: Curves.easeOut),
+    ),
+  );
+
+  _controller.forward();
+}
+```
+
+**What it does:**
+- Interval staggers animations at different times
+- Fade happens in first 50% (0.0 to 0.5)
+- Slide happens in last 70% (0.3 to 1.0)
+- Creates a polished, layered effect
+</details>
+
 ---
 
-## Exercise 8: Animated Onboarding (Advanced)
+### Exercise 4.3: Loading Button Challenge
 
-**Goal:** Create a multi-page onboarding with animations.
-
-```
-PAGE 1:                      PAGE 2:
-┌──────────────────┐         ┌──────────────────┐
-│                  │         │                  │
-│    🎨            │  Swipe  │        📱        │
-│  (bounces in)    │   →     │   (slides in)    │
-│                  │         │                  │
-│  Welcome!        │         │  Easy to use     │
-│  Description...  │         │  Description...  │
-│                  │         │                  │
-│  ● ○ ○           │         │  ○ ● ○           │
-│                  │         │                  │
-│     [Next]       │         │     [Next]       │
-└──────────────────┘         └──────────────────┘
-```
+**Goal:** Create a button with loading animation - NO scaffolding!
 
 **Requirements:**
-- Use `PageView` for swiping
-- Each page has staggered animations (icon → title → description)
-- Page indicator dots animate
-- "Next" button on last page changes to "Get Started"
-- Icon on each page has unique entrance animation
+1. Normal state: "Submit" button (full width)
+2. Loading state: Button shrinks to circle with spinner
+3. Success state: Checkmark icon appears
+4. After 1 second, reset to normal
+5. Use AnimatedContainer for width/borderRadius
 
-**Starter Code:**
-```dart
-class AnimatedOnboarding extends StatefulWidget {
-  const AnimatedOnboarding({super.key});
+Try building this on your own!
 
-  @override
-  State<AnimatedOnboarding> createState() => _AnimatedOnboardingState();
-}
+---
 
-class _AnimatedOnboardingState extends State<AnimatedOnboarding> {
-  final PageController _pageController = PageController();
-  int _currentPage = 0;
+## FINAL PROJECT: Animated Onboarding
 
-  final List<OnboardingPage> _pages = [
-    OnboardingPage(
-      icon: Icons.palette,
-      title: 'Welcome',
-      description: 'Beautiful design at your fingertips',
-    ),
-    OnboardingPage(
-      icon: Icons.phone_android,
-      title: 'Easy to Use',
-      description: 'Simple and intuitive interface',
-    ),
-    OnboardingPage(
-      icon: Icons.rocket_launch,
-      title: 'Get Started',
-      description: 'Begin your journey today',
-    ),
-  ];
+**Goal:** Create a complete onboarding flow with animations!
 
-  @override
-  Widget build(BuildContext context) {
-    // TODO: Create PageView with animated pages
-    // TODO: Add page indicator dots
-    // TODO: Add Next/Get Started button
+**Your Task:** Build a 3-page onboarding - NO help!
 
-    return Scaffold(
-      body: Column(
-        children: [
-          // PageView
-          // Page indicators
-          // Button
-        ],
-      ),
-    );
-  }
-}
+### Requirements:
 
-class OnboardingPage {
-  final IconData icon;
-  final String title;
-  final String description;
+**PageView Setup:**
+- 3 pages with different icons, titles, descriptions
+- Swipe to navigate between pages
+- Page indicator dots (current page highlighted)
 
-  const OnboardingPage({
-    required this.icon,
-    required this.title,
-    required this.description,
-  });
-}
+**Animations Per Page:**
+- Icon bounces in (ScaleTransition)
+- Title slides in from right
+- Description fades in
+- Stagger these 100ms apart
 
-// TODO: Create AnimatedOnboardingPage widget with staggered animations
+**Navigation:**
+- "Next" button on pages 1-2
+- "Get Started" button on page 3
+- Button animates when changing text
+
+**Polish:**
+- Smooth page transitions
+- Dots animate when page changes
+- Colors match your theme
+
+### Build this using everything you learned!
+
+---
+
+## Submission Checklist
+
+Before moving to the next level:
+
+- [ ] Completed all PART 1 exercises (Implicit Animations)
+- [ ] Completed all PART 2 exercises (AnimatedSwitcher)
+- [ ] Completed all PART 3 exercises (Hero Animations)
+- [ ] Completed all PART 4 exercises (Explicit Animations)
+- [ ] Completed the Final Project
+- [ ] Animations feel smooth (not too fast/slow)
+- [ ] Controllers are disposed properly
+- [ ] Curves are used for natural motion
+- [ ] No performance issues
+
+---
+
+## Animation Best Practices
+
+```
+DURATION GUIDELINES:
+- Micro-interactions: 100-200ms (buttons, toggles)
+- Transitions: 200-300ms (navigation, reveals)
+- Complex animations: 300-500ms (multi-step effects)
+
+CURVES TO USE:
+- Curves.easeInOut → Most animations
+- Curves.easeOut → Elements entering
+- Curves.easeIn → Elements exiting
+- Curves.elasticOut → Playful bounces
+- Curves.fastOutSlowIn → Material Design standard
+
+PERFORMANCE TIPS:
+- Always dispose AnimationControllers
+- Use const constructors where possible
+- Avoid animating during build
+- Use RepaintBoundary for complex scenes
 ```
 
 ---
 
-## Bonus Challenges
+## Need Help?
 
-### Challenge A: Parallax Scroll Effect
-Create a ListView where background images move slower than foreground content.
-
-### Challenge B: Ripple Effect Button
-Create a custom button with an expanding ripple animation on tap.
-
-### Challenge C: Animated Theme Switch
-Create a theme toggle that animates the entire app's colors smoothly.
-
-### Challenge D: Card Flip Animation
-Create a card that flips to reveal content on the back.
+Review the theory files about animations in the Theory folder!
 
 ---
 
-## Animation Checklist
-
-Use this checklist when implementing animations:
-
-```
-□ Is the animation duration appropriate?
-  - Micro-interactions: 100-200ms
-  - Transitions: 200-300ms
-  - Complex animations: 300-500ms
-
-□ Does the animation have proper easing?
-  - Use Curves.easeInOut for most animations
-  - Use Curves.elasticOut for bouncy effects
-
-□ Is the animation performant?
-  - Avoid animating during layout
-  - Use RepaintBoundary for complex animations
-
-□ Does the animation provide feedback?
-  - Visual confirmation of user actions
-  - Loading indicators for async operations
-
-□ Is haptic feedback included where appropriate?
-  - Button presses
-  - Toggle switches
-  - Important actions
-
-□ Are animation controllers disposed?
-  - Always dispose in dispose() method
-```
-
----
-
-## Quick Reference
-
-```
-IMPLICIT ANIMATIONS:
-├── AnimatedContainer    → Size, color, padding
-├── AnimatedOpacity      → Fade in/out
-├── AnimatedScale        → Grow/shrink
-├── AnimatedRotation     → Spin
-├── AnimatedAlign        → Move position
-├── AnimatedCrossFade    → Switch between widgets
-└── AnimatedSwitcher     → Replace with animation
-
-EXPLICIT ANIMATIONS:
-├── AnimationController  → The engine
-├── Tween               → Start to end values
-├── CurvedAnimation     → Add easing curves
-├── Interval            → Stagger timing
-└── AnimatedBuilder     → Rebuild on animation
-
-TRANSITIONS:
-├── Hero                → Shared element
-├── SlideTransition     → Slide in/out
-├── FadeTransition      → Fade in/out
-├── ScaleTransition     → Scale in/out
-└── RotationTransition  → Rotate in/out
-```
-
----
-
-**Congratulations!** You've completed Level 14!
-
-**Next Level:** Level 15 - App Deployment (Publishing Your App)
+**Your apps now feel alive and polished!** ✨

@@ -515,4 +515,10 @@ Try building:
 
 ---
 
-[← Back to Level 07 README](../README.md) | [Next: Named Routes →](./02-NamedRoutes.md)
+
+---
+
+## Navigation
+
+⬆️ **Back to:** [Learning Path](00-LearningPath.md)
+➡️ **Next:** [Named Routes](02-NamedRoutes.md)

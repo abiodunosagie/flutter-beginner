@@ -522,3 +522,11 @@ class UserApi {
 ---
 
 [← What is an API](./01-WhatIsAnAPI.md) | [Next: JSON Basics →](./03-JSONBasics.md)
+
+---
+
+## Navigation
+
+⬅️ **Previous:** [What is an API?](01-WhatIsAnAPI.md)
+⬆️ **Back to:** [Learning Path](00-LearningPath.md)
+➡️ **Next:** [JSON Introduction](03a-JSONIntro.md)

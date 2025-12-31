@@ -1,363 +1,1163 @@
 # Level 11 Exercises: Firebase Integration
 
-## Exercise 1: User Registration System
+Welcome! These exercises break down Firebase into small, easy-to-learn steps. Complete each part bit-by-bit, and by the end, you'll be building real-time cloud-powered apps!
 
-**Objective:** Build a complete user registration and profile system.
-
-```
-FEATURES:
-□ Sign up with email/password
-□ Log in with email/password
-□ Display user profile
-□ Update display name
-□ Log out functionality
-□ Password reset via email
-```
-
-### Requirements
-
-1. Create `AuthService` class with all auth methods
-2. Use `StreamBuilder` with `authStateChanges()` for navigation
-3. Show friendly error messages for auth errors
-4. Store additional user data in Firestore after signup
-
-### Hints
-
-```dart
-// After creating user, store extra info in Firestore
-await FirebaseAuth.instance.createUserWithEmailAndPassword(...);
-await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
-  'name': name,
-  'email': email,
-  'createdAt': FieldValue.serverTimestamp(),
-});
-```
+**How these exercises work:**
+- Each PART focuses on ONE major Firebase skill
+- Within each part, exercises build on each other step-by-step
+- Try each exercise BEFORE looking at the solution
+- The final exercise in each part combines everything you learned
+- Once you complete all parts, you'll have mastered Firebase!
 
 ---
 
-## Exercise 2: Notes App with Firestore
+## PART 1: Firebase Authentication Basics
 
-**Objective:** Build a note-taking app with real-time sync.
+Learn to sign up and log in users.
 
-```
-FEATURES:
-□ Create notes with title and content
-□ View all notes in a list
-□ Edit existing notes
-□ Delete notes
-□ Notes sync in real-time
-□ User can only see their own notes
-```
+### Exercise 1.1: Sign Up with Email/Password
 
-### Data Structure
+**Goal:** Create a new user account.
 
-```
-notes (Collection)
-├── {noteId} (Document)
-│   ├── userId: "user123"
-│   ├── title: "My Note"
-│   ├── content: "Note content..."
-│   ├── createdAt: Timestamp
-│   └── updatedAt: Timestamp
-```
-
-### Starter Code
+**Your Task:** Implement user registration.
 
 ```dart
+import 'package:firebase_auth/firebase_auth.dart';
+
+class AuthService {
+  final _auth = FirebaseAuth.instance;
+
+  Future<User?> signUp(String email, String password) async {
+    try {
+      // TODO: Use _auth.createUserWithEmailAndPassword
+      // TODO: Return the user from userCredential.user
+    } catch (e) {
+      // TODO: Print error and return null
+    }
+  }
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+Future<User?> signUp(String email, String password) async {
+  try {
+    final userCredential = await _auth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+    return userCredential.user;
+  } catch (e) {
+    print('Sign up error: $e');
+    return null;
+  }
+}
+```
+
+**What it does:**
+- Creates a new user with email and password
+- Returns the User object if successful
+- Returns null if there's an error
+</details>
+
+---
+
+### Exercise 1.2: Sign In Existing User
+
+**Goal:** Log in a user with their credentials.
+
+**Your Task:** Implement user login.
+
+```dart
+class AuthService {
+  final _auth = FirebaseAuth.instance;
+
+  Future<User?> signIn(String email, String password) async {
+    try {
+      // TODO: Use _auth.signInWithEmailAndPassword
+      // TODO: Return the user
+    } catch (e) {
+      // TODO: Handle error
+    }
+  }
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+Future<User?> signIn(String email, String password) async {
+  try {
+    final userCredential = await _auth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+    return userCredential.user;
+  } catch (e) {
+    print('Sign in error: $e');
+    return null;
+  }
+}
+```
+</details>
+
+---
+
+### Exercise 1.3: Get Current User
+
+**Goal:** Check who is currently logged in.
+
+**Your Task:** Get the current user.
+
+```dart
+class AuthService {
+  final _auth = FirebaseAuth.instance;
+
+  User? getCurrentUser() {
+    // TODO: Return _auth.currentUser
+  }
+
+  bool isLoggedIn() {
+    // TODO: Return true if currentUser is not null
+  }
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+User? getCurrentUser() {
+  return _auth.currentUser;
+}
+
+bool isLoggedIn() {
+  return _auth.currentUser != null;
+}
+```
+</details>
+
+---
+
+### Exercise 1.4: Sign Out
+
+**Goal:** Log out the current user.
+
+**Your Task:** Implement sign out.
+
+```dart
+class AuthService {
+  final _auth = FirebaseAuth.instance;
+
+  Future<void> signOut() async {
+    // TODO: Call _auth.signOut()
+  }
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+Future<void> signOut() async {
+  await _auth.signOut();
+}
+```
+</details>
+
+---
+
+### Exercise 1.5: Auth State Stream
+
+**Goal:** Listen to authentication state changes.
+
+**Your Task:** Create a stream that notifies when user logs in/out.
+
+```dart
+class AuthService {
+  final _auth = FirebaseAuth.instance;
+
+  Stream<User?> authStateChanges() {
+    // TODO: Return _auth.authStateChanges()
+  }
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+Stream<User?> authStateChanges() {
+  return _auth.authStateChanges();
+}
+```
+
+**What it does:**
+- Returns a stream that emits the current user
+- Emits null when user signs out
+- Emits User when user signs in
+- Perfect for StreamBuilder navigation
+</details>
+
+---
+
+### Exercise 1.6: Authentication Challenge
+
+**Goal:** Build a complete auth system - NO scaffolding!
+
+**Your Task:** Create sign up, sign in, and sign out screens.
+
+**Requirements:**
+1. Sign up screen with email/password fields
+2. Sign in screen with email/password fields
+3. Home screen showing user email with sign out button
+4. Use StreamBuilder to automatically navigate based on auth state
+5. Show error messages for invalid credentials
+6. Validate email and password before submitting
+
+Try building this completely on your own!
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+// Auth Service
+class AuthService {
+  final _auth = FirebaseAuth.instance;
+
+  Stream<User?> authStateChanges() => _auth.authStateChanges();
+
+  Future<String?> signUp(String email, String password) async {
+    try {
+      await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return null; // Success
+    } on FirebaseAuthException catch (e) {
+      return e.message;
+    }
+  }
+
+  Future<String?> signIn(String email, String password) async {
+    try {
+      await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return null; // Success
+    } on FirebaseAuthException catch (e) {
+      return e.message;
+    }
+  }
+
+  Future<void> signOut() async {
+    await _auth.signOut();
+  }
+}
+
+// Main App with StreamBuilder
+class MyApp extends StatelessWidget {
+  final authService = AuthService();
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: StreamBuilder<User?>(
+        stream: authService.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return HomeScreen();
+          }
+          return SignInScreen();
+        },
+      ),
+    );
+  }
+}
+
+// Sign In Screen
+class SignInScreen extends StatefulWidget {
+  @override
+  State<SignInScreen> createState() => _SignInScreenState();
+}
+
+class _SignInScreenState extends State<SignInScreen> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _authService = AuthService();
+  bool _isLoading = false;
+
+  Future<void> _signIn() async {
+    setState(() => _isLoading = true);
+
+    final error = await _authService.signIn(
+      _emailController.text,
+      _passwordController.text,
+    );
+
+    setState(() => _isLoading = false);
+
+    if (error != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(error)),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Sign In')),
+      body: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextField(
+              controller: _emailController,
+              decoration: InputDecoration(labelText: 'Email'),
+              keyboardType: TextInputType.emailAddress,
+            ),
+            SizedBox(height: 16),
+            TextField(
+              controller: _passwordController,
+              decoration: InputDecoration(labelText: 'Password'),
+              obscureText: true,
+            ),
+            SizedBox(height: 24),
+            _isLoading
+                ? CircularProgressIndicator()
+                : ElevatedButton(
+                    onPressed: _signIn,
+                    child: Text('Sign In'),
+                  ),
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SignUpScreen()),
+                );
+              },
+              child: Text('Create Account'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// Sign Up Screen (similar structure)
+class SignUpScreen extends StatefulWidget {
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _authService = AuthService();
+  bool _isLoading = false;
+
+  Future<void> _signUp() async {
+    setState(() => _isLoading = true);
+
+    final error = await _authService.signUp(
+      _emailController.text,
+      _passwordController.text,
+    );
+
+    setState(() => _isLoading = false);
+
+    if (error != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(error)),
+      );
+    } else {
+      Navigator.pop(context);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Sign Up')),
+      body: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextField(
+              controller: _emailController,
+              decoration: InputDecoration(labelText: 'Email'),
+              keyboardType: TextInputType.emailAddress,
+            ),
+            SizedBox(height: 16),
+            TextField(
+              controller: _passwordController,
+              decoration: InputDecoration(labelText: 'Password'),
+              obscureText: true,
+            ),
+            SizedBox(height: 24),
+            _isLoading
+                ? CircularProgressIndicator()
+                : ElevatedButton(
+                    onPressed: _signUp,
+                    child: Text('Sign Up'),
+                  ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// Home Screen
+class HomeScreen extends StatelessWidget {
+  final _authService = AuthService();
+
+  @override
+  Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
+
+    return Scaffold(
+      appBar: AppBar(title: Text('Home')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Welcome!'),
+            Text('Email: ${user?.email}'),
+            SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: () => _authService.signOut(),
+              child: Text('Sign Out'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+</details>
+
+---
+
+## PART 2: Cloud Firestore Basics
+
+Learn to store and retrieve data in the cloud.
+
+### Exercise 2.1: Add a Document
+
+**Goal:** Save data to Firestore.
+
+**Your Task:** Add a note to the database.
+
+```dart
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class FirestoreService {
+  final _db = FirebaseFirestore.instance;
+
+  Future<void> addNote(String title, String content) async {
+    // TODO: Use _db.collection('notes').add()
+    // TODO: Pass a map with title, content, and createdAt
+  }
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+Future<void> addNote(String title, String content) async {
+  await _db.collection('notes').add({
+    'title': title,
+    'content': content,
+    'createdAt': FieldValue.serverTimestamp(),
+  });
+}
+```
+
+**What it does:**
+- Adds a new document to 'notes' collection
+- Auto-generates a unique document ID
+- Uses server timestamp for consistency
+</details>
+
+---
+
+### Exercise 2.2: Get All Documents
+
+**Goal:** Retrieve all notes from Firestore.
+
+**Your Task:** Fetch all notes as a list.
+
+```dart
+class FirestoreService {
+  final _db = FirebaseFirestore.instance;
+
+  Future<List<Map<String, dynamic>>> getAllNotes() async {
+    // TODO: Get the 'notes' collection
+    // TODO: Call .get() to fetch documents
+    // TODO: Return list of document data maps
+  }
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+Future<List<Map<String, dynamic>>> getAllNotes() async {
+  final snapshot = await _db.collection('notes').get();
+  return snapshot.docs.map((doc) => {
+    'id': doc.id,
+    ...doc.data(),
+  }).toList();
+}
+```
+
+**What it does:**
+- Fetches all documents from 'notes' collection
+- Converts each document to a map
+- Includes the document ID
+</details>
+
+---
+
+### Exercise 2.3: Real-time Stream
+
+**Goal:** Listen to notes in real-time.
+
+**Your Task:** Create a stream that updates when notes change.
+
+```dart
+class FirestoreService {
+  final _db = FirebaseFirestore.instance;
+
+  Stream<List<Map<String, dynamic>>> getNotesStream() {
+    // TODO: Return _db.collection('notes').snapshots()
+    // TODO: Map the snapshots to list of maps
+  }
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+Stream<List<Map<String, dynamic>>> getNotesStream() {
+  return _db.collection('notes').snapshots().map((snapshot) {
+    return snapshot.docs.map((doc) => {
+      'id': doc.id,
+      ...doc.data(),
+    }).toList();
+  });
+}
+```
+
+**What it does:**
+- Returns a stream that emits whenever data changes
+- Perfect for StreamBuilder
+- Updates UI automatically
+</details>
+
+---
+
+### Exercise 2.4: Update a Document
+
+**Goal:** Modify an existing note.
+
+**Your Task:** Update a note's title and content.
+
+```dart
+class FirestoreService {
+  final _db = FirebaseFirestore.instance;
+
+  Future<void> updateNote(String id, String title, String content) async {
+    // TODO: Use _db.collection('notes').doc(id).update()
+    // TODO: Pass map with title and content
+  }
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+Future<void> updateNote(String id, String title, String content) async {
+  await _db.collection('notes').doc(id).update({
+    'title': title,
+    'content': content,
+    'updatedAt': FieldValue.serverTimestamp(),
+  });
+}
+```
+</details>
+
+---
+
+### Exercise 2.5: Delete a Document
+
+**Goal:** Remove a note from Firestore.
+
+**Your Task:** Delete a note by ID.
+
+```dart
+class FirestoreService {
+  final _db = FirebaseFirestore.instance;
+
+  Future<void> deleteNote(String id) async {
+    // TODO: Use _db.collection('notes').doc(id).delete()
+  }
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+Future<void> deleteNote(String id) async {
+  await _db.collection('notes').doc(id).delete();
+}
+```
+</details>
+
+---
+
+### Exercise 2.6: Query with Filters
+
+**Goal:** Get only specific documents.
+
+**Your Task:** Get notes for a specific user.
+
+```dart
+class FirestoreService {
+  final _db = FirebaseFirestore.instance;
+
+  Stream<List<Map<String, dynamic>>> getUserNotes(String userId) {
+    // TODO: Use _db.collection('notes')
+    // TODO: Add .where('userId', isEqualTo: userId)
+    // TODO: Add .snapshots() and map to list
+  }
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+Stream<List<Map<String, dynamic>>> getUserNotes(String userId) {
+  return _db
+      .collection('notes')
+      .where('userId', isEqualTo: userId)
+      .snapshots()
+      .map((snapshot) {
+    return snapshot.docs.map((doc) => {
+      'id': doc.id,
+      ...doc.data(),
+    }).toList();
+  });
+}
+```
+</details>
+
+---
+
+### Exercise 2.7: Firestore CRUD Challenge
+
+**Goal:** Build a complete notes app with Firestore - NO scaffolding!
+
+**Your Task:** Create a real-time notes app with auth.
+
+**Requirements:**
+1. Users can only see their own notes
+2. Add new note (title + content)
+3. Edit existing note
+4. Delete note
+5. Notes update in real-time
+6. Use StreamBuilder for the list
+7. Store userId with each note
+
+Try building this completely on your own!
+
+<details>
+<summary>✅ Solution - Key Components</summary>
+
+```dart
+// Firestore Service with User-specific queries
 class NotesService {
   final _db = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
 
   String get _userId => _auth.currentUser!.uid;
 
-  // TODO: Implement these methods
-  Stream<List<Note>> getNotesStream() { }
-  Future<void> addNote(String title, String content) { }
-  Future<void> updateNote(String id, String title, String content) { }
-  Future<void> deleteNote(String id) { }
+  Stream<List<Map<String, dynamic>>> getMyNotes() {
+    return _db
+        .collection('notes')
+        .where('userId', isEqualTo: _userId)
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) => {
+        'id': doc.id,
+        ...doc.data(),
+      }).toList();
+    });
+  }
+
+  Future<void> addNote(String title, String content) async {
+    await _db.collection('notes').add({
+      'userId': _userId,
+      'title': title,
+      'content': content,
+      'createdAt': FieldValue.serverTimestamp(),
+    });
+  }
+
+  Future<void> updateNote(String id, String title, String content) async {
+    await _db.collection('notes').doc(id).update({
+      'title': title,
+      'content': content,
+      'updatedAt': FieldValue.serverTimestamp(),
+    });
+  }
+
+  Future<void> deleteNote(String id) async {
+    await _db.collection('notes').doc(id).delete();
+  }
 }
-```
 
----
+// Notes List Screen with StreamBuilder
+class NotesListScreen extends StatelessWidget {
+  final _notesService = NotesService();
 
-## Exercise 3: Shopping List with Real-time Sharing
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('My Notes')),
+      body: StreamBuilder<List<Map<String, dynamic>>>(
+        stream: _notesService.getMyNotes(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
 
-**Objective:** Create a shopping list that multiple users can edit together.
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
 
-```
-FEATURES:
-□ Create shopping list items
-□ Check off items when purchased
-□ Delete items
-□ Real-time updates (all users see changes)
-□ Show who added each item
-□ Show when item was checked off
-```
+          final notes = snapshot.data ?? [];
 
-### Challenge
+          if (notes.isEmpty) {
+            return Center(child: Text('No notes yet. Add one!'));
+          }
 
-Multiple users should be able to:
-1. Share the same shopping list
-2. See each other's changes instantly
-3. Know who added/checked each item
-
-### Hints
-
-```dart
-// Single shared list with real-time updates
-FirebaseFirestore.instance
-    .collection('shopping_lists')
-    .doc('family_list')  // Shared list ID
-    .collection('items')
-    .snapshots();
-```
-
----
-
-## Exercise 4: Profile Picture Upload
-
-**Objective:** Add profile picture functionality with Firebase Storage.
-
-```
-FEATURES:
-□ Pick image from gallery or camera
-□ Show upload progress
-□ Save image to Firebase Storage
-□ Update user profile with photo URL
-□ Display profile picture
-□ Handle errors gracefully
-```
-
-### Requirements
-
-1. Compress images before upload (max 512x512)
-2. Store in `profile_pictures/{userId}.jpg`
-3. Update Firebase Auth profile with `updatePhotoURL()`
-4. Show loading indicator during upload
-
-### Starter Code
-
-```dart
-class ProfileService {
-  final _storage = FirebaseStorage.instance;
-  final _auth = FirebaseAuth.instance;
-
-  Future<String> uploadProfilePicture(File image) async {
-    final userId = _auth.currentUser!.uid;
-    final ref = _storage.ref('profile_pictures/$userId.jpg');
-
-    // TODO: Upload file with progress tracking
-    // TODO: Get download URL
-    // TODO: Update user profile
-    // TODO: Return URL
+          return ListView.builder(
+            itemCount: notes.length,
+            itemBuilder: (context, index) {
+              final note = notes[index];
+              return ListTile(
+                title: Text(note['title']),
+                subtitle: Text(note['content']),
+                trailing: IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () => _notesService.deleteNote(note['id']),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EditNoteScreen(note: note),
+                    ),
+                  );
+                },
+              );
+            },
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddNoteScreen()),
+          );
+        },
+      ),
+    );
   }
 }
 ```
 
----
-
-## Exercise 5: Chat Room
-
-**Objective:** Build a simple chat room with Firebase.
-
-```
-FEATURES:
-□ Send messages
-□ View messages in real-time
-□ Show sender name and timestamp
-□ Auto-scroll to new messages
-□ Show "typing" indicator (bonus)
-```
-
-### Data Structure
-
-```
-messages (Collection)
-├── {messageId} (Document)
-│   ├── text: "Hello!"
-│   ├── senderId: "user123"
-│   ├── senderName: "John"
-│   ├── timestamp: Timestamp
-```
-
-### Requirements
-
-1. Messages appear instantly for all users
-2. Show newest messages at bottom
-3. Limit to last 100 messages
-4. Display time nicely (e.g., "2:30 PM")
+**Key Features:**
+- Real-time updates with StreamBuilder
+- User-specific notes with where clause
+- CRUD operations (Create, Read, Update, Delete)
+- Clean separation of concerns
+</details>
 
 ---
 
-## Exercise 6: Favorites with Cloud Sync
+## PART 3: Firebase Storage
 
-**Objective:** Add favorites feature that syncs across devices.
+Learn to upload and download files.
 
-```
-FEATURES:
-□ Mark items as favorites
-□ View all favorites
-□ Remove from favorites
-□ Favorites sync across devices
-□ Show favorite count
-```
+### Exercise 3.1: Upload a File
 
-### Scenario
+**Goal:** Upload an image to Firebase Storage.
 
-Users can favorite recipes/products/articles. Their favorites should:
-- Persist when app restarts
-- Sync across all their devices
-- Load quickly on app start
-
-### Hints
+**Your Task:** Upload a file and get its URL.
 
 ```dart
-// Store favorites in user's subcollection
-FirebaseFirestore.instance
-    .collection('users')
-    .doc(userId)
-    .collection('favorites')
-    .doc(itemId)
-    .set({'addedAt': FieldValue.serverTimestamp()});
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
+
+class StorageService {
+  final _storage = FirebaseStorage.instance;
+
+  Future<String> uploadFile(File file, String path) async {
+    // TODO: Create a reference: _storage.ref(path)
+    // TODO: Upload the file: ref.putFile(file)
+    // TODO: Get download URL: await ref.getDownloadURL()
+    // TODO: Return the URL
+  }
+}
 ```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+Future<String> uploadFile(File file, String path) async {
+  final ref = _storage.ref(path);
+  await ref.putFile(file);
+  final url = await ref.getDownloadURL();
+  return url;
+}
+```
+</details>
 
 ---
 
-## Exercise 7: Image Gallery with Storage
+### Exercise 3.2: Upload with Progress
 
-**Objective:** Build an image gallery with upload/delete functionality.
+**Goal:** Show upload progress to the user.
 
+**Your Task:** Track upload progress percentage.
+
+```dart
+class StorageService {
+  final _storage = FirebaseStorage.instance;
+
+  Future<String> uploadFileWithProgress(
+    File file,
+    String path,
+    Function(double) onProgress,
+  ) async {
+    final ref = _storage.ref(path);
+    final uploadTask = ref.putFile(file);
+
+    // TODO: Listen to uploadTask.snapshotEvents
+    // TODO: Calculate progress: bytesTransferred / totalBytes
+    // TODO: Call onProgress with the percentage
+    // TODO: Wait for task to complete
+    // TODO: Return download URL
+  }
+}
 ```
-FEATURES:
-□ Upload multiple images
-□ Display in grid view
-□ View full-screen image
-□ Delete images
-□ Show upload progress for each
-□ Display total storage used
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+Future<String> uploadFileWithProgress(
+  File file,
+  String path,
+  Function(double) onProgress,
+) async {
+  final ref = _storage.ref(path);
+  final uploadTask = ref.putFile(file);
+
+  uploadTask.snapshotEvents.listen((snapshot) {
+    final progress = snapshot.bytesTransferred / snapshot.totalBytes;
+    onProgress(progress);
+  });
+
+  await uploadTask;
+  final url = await ref.getDownloadURL();
+  return url;
+}
 ```
-
-### Requirements
-
-1. Store images in `galleries/{userId}/`
-2. Generate unique filenames
-3. Handle upload cancellation
-4. Show thumbnails in grid
-5. Lazy load images for performance
+</details>
 
 ---
 
-## Exercise 8: Complete Firebase App
+### Exercise 3.3: Delete a File
 
-**Objective:** Build a full app combining Auth + Firestore + Storage.
+**Goal:** Remove a file from Storage.
 
-### App: Simple Social Feed
+**Your Task:** Delete a file by its path.
 
+```dart
+class StorageService {
+  final _storage = FirebaseStorage.instance;
+
+  Future<void> deleteFile(String path) async {
+    // TODO: Get reference and call delete()
+  }
+}
 ```
-FEATURES:
-□ User authentication (sign up/login)
-□ Create posts with text and optional image
-□ View feed of all posts
-□ Like posts
-□ Delete own posts
-□ User profile with picture
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+Future<void> deleteFile(String path) async {
+  final ref = _storage.ref(path);
+  await ref.delete();
+}
 ```
+</details>
 
-### Data Structure
+---
 
+### Exercise 3.4: Storage Challenge - Profile Picture
+
+**Goal:** Add profile picture upload - NO scaffolding!
+
+**Your Task:** Let users upload and update their profile picture.
+
+**Requirements:**
+1. Pick image from gallery (use image_picker package)
+2. Show upload progress
+3. Upload to 'profile_pictures/{userId}.jpg'
+4. Save URL to Firestore user document
+5. Display the profile picture
+6. Allow changing the picture
+
+Try building this completely on your own!
+
+<details>
+<summary>✅ Solution - Key Components</summary>
+
+```dart
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:io';
+
+class ProfileService {
+  final _storage = FirebaseStorage.instance;
+  final _db = FirebaseFirestore.instance;
+  final _auth = FirebaseAuth.instance;
+
+  Future<String?> uploadProfilePicture(File image) async {
+    try {
+      final userId = _auth.currentUser!.uid;
+      final path = 'profile_pictures/$userId.jpg';
+      final ref = _storage.ref(path);
+
+      await ref.putFile(image);
+      final url = await ref.getDownloadURL();
+
+      // Save URL to Firestore
+      await _db.collection('users').doc(userId).update({
+        'photoURL': url,
+      });
+
+      return url;
+    } catch (e) {
+      print('Upload error: $e');
+      return null;
+    }
+  }
+}
+
+// Profile Screen
+class ProfileScreen extends StatefulWidget {
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  final _profileService = ProfileService();
+  final _picker = ImagePicker();
+  bool _isUploading = false;
+
+  Future<void> _pickAndUploadImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile == null) return;
+
+    setState(() => _isUploading = true);
+
+    final url = await _profileService.uploadProfilePicture(
+      File(pickedFile.path),
+    );
+
+    setState(() => _isUploading = false);
+
+    if (url != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Profile picture updated!')),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final userId = FirebaseAuth.instance.currentUser!.uid;
+
+    return Scaffold(
+      appBar: AppBar(title: Text('Profile')),
+      body: StreamBuilder<DocumentSnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('users')
+            .doc(userId)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator());
+          }
+
+          final data = snapshot.data!.data() as Map<String, dynamic>?;
+          final photoURL = data?['photoURL'] as String?;
+
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircleAvatar(
+                  radius: 60,
+                  backgroundImage: photoURL != null
+                      ? NetworkImage(photoURL)
+                      : null,
+                  child: photoURL == null ? Icon(Icons.person, size: 60) : null,
+                ),
+                SizedBox(height: 24),
+                _isUploading
+                    ? CircularProgressIndicator()
+                    : ElevatedButton.icon(
+                        icon: Icon(Icons.camera_alt),
+                        label: Text('Change Picture'),
+                        onPressed: _pickAndUploadImage,
+                      ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+```
+</details>
+
+---
+
+## FINAL PROJECT: Social Feed App
+
+**Goal:** Combine ALL Firebase skills - Auth + Firestore + Storage!
+
+**Your Task:** Build a complete social feed app with NO help!
+
+### Requirements:
+
+**Authentication:**
+- Sign up / Sign in / Sign out
+- User profiles with display name and photo
+
+**Posts:**
+- Create posts with text and optional image
+- View feed of all posts (newest first)
+- Like posts (toggle like/unlike)
+- Delete own posts
+- Show author name and photo with each post
+
+**Data Structure:**
 ```
 users/{userId}
-├── name
-├── email
-├── photoURL
-└── createdAt
+├── name: "John Doe"
+├── email: "john@example.com"
+├── photoURL: "https://..."
+└── createdAt: Timestamp
 
 posts/{postId}
-├── userId
-├── userName
-├── userPhoto
-├── text
-├── imageUrl (optional)
-├── likes: []
-├── createdAt
+├── userId: "user123"
+├── userName: "John Doe"
+├── userPhoto: "https://..."
+├── text: "My first post!"
+├── imageUrl: "https://..." (optional)
+├── likes: ["user1", "user2"]  // Array of user IDs
+└── createdAt: Timestamp
 
 Storage:
 ├── profile_pictures/{userId}.jpg
-└── post_images/{postId}.jpg
+└── post_images/{postId}_{timestamp}.jpg
 ```
 
-### Grading Criteria
+**Features:**
+1. User registration with name and email
+2. Optional profile picture upload
+3. Create text post
+4. Create post with image
+5. Feed showing all posts in real-time
+6. Like/unlike posts
+7. Delete own posts (with confirmation)
+8. Show like count
+9. Display post images
+10. Show timestamps (e.g., "2 hours ago")
 
-```
-BASIC (60%):
-□ Auth works (sign up, login, logout)
-□ Can create text posts
-□ Can view all posts
+**Bonus Features:**
+- Pull-to-refresh
+- Image compression before upload
+- Paginated feed (load 20 posts at a time)
+- User profile page showing their posts
+- Edit post text
+- Comments on posts
 
-GOOD (80%):
-□ All basic features
-□ Can upload images with posts
-□ Profile picture works
-□ Can delete own posts
-
-EXCELLENT (100%):
-□ All good features
-□ Like functionality
-□ Real-time updates
-□ Loading states
-□ Error handling
-□ Clean UI
-```
+### Build this completely on your own using everything you learned!
 
 ---
 
-## Bonus Challenge: Offline Support
+## Submission Checklist
 
-**Objective:** Make your app work offline with Firestore persistence.
+Before moving to the next level:
 
-```dart
-// Enable offline persistence
-FirebaseFirestore.instance.settings = const Settings(
-  persistenceEnabled: true,
-  cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
-);
-```
-
-### Features to Implement
-
-1. Data loads from cache when offline
-2. Changes queue and sync when online
-3. Show online/offline indicator
-4. Handle conflicts gracefully
+- [ ] Completed all PART 1 exercises (Firebase Auth)
+- [ ] Completed all PART 2 exercises (Cloud Firestore)
+- [ ] Completed all PART 3 exercises (Firebase Storage)
+- [ ] Completed the Final Project
+- [ ] Auth works properly (sign up, sign in, sign out)
+- [ ] Real-time updates work in Firestore
+- [ ] File uploads complete successfully
+- [ ] Security rules protect user data
+- [ ] Error handling is implemented
+- [ ] Loading states are shown
 
 ---
 
-## Tips for Success
+## Need Help?
 
-```
-1. TEST AUTHENTICATION FIRST
-   Make sure login/logout work before adding features.
+Review the theory files:
+- [01-FirebaseSetup.md](../Theory/01-FirebaseSetup.md)
+- [02-Authentication.md](../Theory/02-Authentication.md)
+- [03-CloudFirestore.md](../Theory/03-CloudFirestore.md)
+- [04-FirebaseStorage.md](../Theory/04-FirebaseStorage.md)
 
-2. USE SECURITY RULES
-   Protect user data from other users.
-
-3. HANDLE ERRORS
-   Network errors, auth errors, permission errors.
-
-4. OPTIMIZE QUERIES
-   Use limits, don't fetch unnecessary data.
-
-5. CLEAN UP
-   Delete test data from Firebase Console.
-```
+Study the examples in the Examples folder!
 
 ---
 
-## Resources
-
-- [Firebase Flutter Documentation](https://firebase.flutter.dev/)
-- [Cloud Firestore Docs](https://firebase.google.com/docs/firestore)
-- [Firebase Auth Docs](https://firebase.google.com/docs/auth)
-- [Firebase Storage Docs](https://firebase.google.com/docs/storage)
-
-Good luck! 🔥
+**You're building real cloud-powered apps now! Keep going!** 🔥

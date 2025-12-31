@@ -1,34 +1,180 @@
 # Level 2 Exercises: Control Flow
 
-Test your understanding of if/else, switch, loops, and loop control!
+Welcome! These exercises teach you how to control the flow of your programs with decisions and loops. Each part builds on the previous one!
+
+**How these exercises work:**
+- Each PART focuses on ONE control flow concept
+- Within each part, exercises build on each other progressively
+- Try each exercise BEFORE looking at the solution
+- The final exercise in each part combines everything you learned
+- Once you complete all parts, you'll master control flow!
 
 ---
 
-## Exercise 1: Age Category
+## PART 1: If Statements
 
-**Difficulty:** ⭐ Easy
+Learn to make decisions in your programs.
 
-Write a program that categorizes a person based on their age:
+### Exercise 1.1: Simple If ⭐
+
+**Goal:** Check a single condition.
+
+**Your Task:** Print a message only if someone is an adult.
+
+```dart
+void main() {
+  int age = 20;
+
+  // TODO: If age >= 18, print "You are an adult"
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+void main() {
+  int age = 20;
+
+  if (age >= 18) {
+    print('You are an adult');
+  }
+}
+```
+</details>
+
+---
+
+### Exercise 1.2: If-Else ⭐
+
+**Goal:** Handle two cases - true or false.
+
+**Your Task:** Print different messages for adult vs not adult.
+
+```dart
+void main() {
+  int age = 15;
+
+  // TODO: If age >= 18, print "You are an adult"
+  // TODO: Else, print "You are not an adult"
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+void main() {
+  int age = 15;
+
+  if (age >= 18) {
+    print('You are an adult');
+  } else {
+    print('You are not an adult');
+  }
+}
+```
+</details>
+
+---
+
+### Exercise 1.3: Multiple Conditions ⭐
+
+**Goal:** Check for multiple age ranges.
+
+**Your Task:** Categorize age into three groups.
+
+```dart
+void main() {
+  int age = 25;
+
+  // TODO: If age < 18, print "Minor"
+  // TODO: Else if age < 65, print "Adult"
+  // TODO: Else, print "Senior"
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+void main() {
+  int age = 25;
+
+  if (age < 18) {
+    print('Minor');
+  } else if (age < 65) {
+    print('Adult');
+  } else {
+    print('Senior');
+  }
+}
+```
+</details>
+
+---
+
+### Exercise 1.4: Grade Calculator ⭐⭐
+
+**Goal:** Convert a score to a letter grade.
+
+**Your Task:** Use if-else if chains to assign grades.
+
+```dart
+void main() {
+  int score = 85;
+
+  // TODO: Assign grade based on score:
+  // 90+: A, 80-89: B, 70-79: C, 60-69: D, Below 60: F
+  // TODO: Print the grade
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+void main() {
+  int score = 85;
+
+  String grade;
+
+  if (score >= 90) {
+    grade = 'A';
+  } else if (score >= 80) {
+    grade = 'B';
+  } else if (score >= 70) {
+    grade = 'C';
+  } else if (score >= 60) {
+    grade = 'D';
+  } else {
+    grade = 'F';
+  }
+
+  print('Score: $score, Grade: $grade');
+}
+```
+</details>
+
+---
+
+### Exercise 1.5: Age Category Challenge ⭐⭐
+
+**Goal:** Create detailed age categories - NO scaffolding!
+
+**Requirements:**
+Categorize age into:
 - 0-2: Baby
 - 3-12: Child
 - 13-19: Teenager
 - 20-64: Adult
 - 65+: Senior
 
-```dart
-void main() {
-  int age = 25;
+Given: `int age = 25;`
 
-  // TODO: Print the category based on age
-}
-```
+Print: `Age 25 is: Adult`
 
-<details>
-<summary>💡 Hint</summary>
-
-Use if-else if-else chain. Start from the lowest range and work up.
-
-</details>
+Try this on your own!
 
 <details>
 <summary>✅ Solution</summary>
@@ -54,34 +200,128 @@ void main() {
   print('Age $age is: $category');
 }
 ```
-
 </details>
 
 ---
 
-## Exercise 2: Calculator with Switch
+## PART 2: Switch Statements
 
-**Difficulty:** ⭐ Easy
+Learn to handle multiple specific values cleanly.
 
-Create a simple calculator using switch:
+### Exercise 2.1: Day of Week ⭐
+
+**Goal:** Convert a day number to its name.
+
+**Your Task:** Use switch to print day names.
+
+```dart
+void main() {
+  int day = 3;
+
+  // TODO: Use switch to print day name
+  // 1: Monday, 2: Tuesday, 3: Wednesday, etc.
+  // default: Invalid day
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+void main() {
+  int day = 3;
+
+  switch (day) {
+    case 1:
+      print('Monday');
+      break;
+    case 2:
+      print('Tuesday');
+      break;
+    case 3:
+      print('Wednesday');
+      break;
+    case 4:
+      print('Thursday');
+      break;
+    case 5:
+      print('Friday');
+      break;
+    case 6:
+      print('Saturday');
+      break;
+    case 7:
+      print('Sunday');
+      break;
+    default:
+      print('Invalid day');
+  }
+}
+```
+</details>
+
+---
+
+### Exercise 2.2: Weekend or Weekday ⭐
+
+**Goal:** Group multiple cases together.
+
+**Your Task:** Check if a day is weekend or weekday.
+
+```dart
+void main() {
+  int day = 6;
+
+  // TODO: Use switch with multiple cases
+  // 1-5: Weekday, 6-7: Weekend
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+void main() {
+  int day = 6;
+
+  switch (day) {
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+      print('Weekday');
+      break;
+    case 6:
+    case 7:
+      print('Weekend');
+      break;
+    default:
+      print('Invalid day');
+  }
+}
+```
+</details>
+
+---
+
+### Exercise 2.3: Simple Calculator ⭐⭐
+
+**Goal:** Build a calculator with switch.
+
+**Your Task:** Perform operations based on operator.
 
 ```dart
 void main() {
   int a = 10;
   int b = 3;
-  String operator = '%'; // Try: +, -, *, /, %
+  String operator = '+';
 
-  // TODO: Calculate and print result based on operator
-  // Handle division by zero!
+  // TODO: Use switch to calculate based on operator
+  // +, -, *, /, %
+  // Handle division by zero for / and %
 }
 ```
-
-<details>
-<summary>💡 Hint</summary>
-
-Use switch on the operator string. For division and modulo, check if b is 0 first.
-
-</details>
 
 <details>
 <summary>✅ Solution</summary>
@@ -90,7 +330,7 @@ Use switch on the operator string. For division and modulo, check if b is 0 firs
 void main() {
   int a = 10;
   int b = 3;
-  String operator = '%';
+  String operator = '+';
 
   switch (operator) {
     case '+':
@@ -100,53 +340,130 @@ void main() {
       print('$a - $b = ${a - b}');
       break;
     case '*':
-      print('$a × $b = ${a * b}');
+      print('$a * $b = ${a * b}');
       break;
     case '/':
-      if (b == 0) {
-        print('Error: Cannot divide by zero!');
+      if (b != 0) {
+        print('$a / $b = ${a / b}');
       } else {
-        print('$a ÷ $b = ${a / b}');
+        print('Error: Division by zero');
       }
       break;
     case '%':
-      if (b == 0) {
-        print('Error: Cannot divide by zero!');
-      } else {
+      if (b != 0) {
         print('$a % $b = ${a % b}');
+      } else {
+        print('Error: Division by zero');
       }
       break;
     default:
-      print('Unknown operator: $operator');
+      print('Unknown operator');
   }
 }
 ```
-
 </details>
 
 ---
 
-## Exercise 3: FizzBuzz
+## PART 3: For Loops
 
-**Difficulty:** ⭐⭐ Medium
+Learn to repeat actions a specific number of times.
 
-The classic programming challenge! Print numbers 1-30, but:
-- For multiples of 3, print "Fizz"
-- For multiples of 5, print "Buzz"
-- For multiples of both 3 and 5, print "FizzBuzz"
+### Exercise 3.1: Count to 10 ⭐
+
+**Goal:** Print numbers from 1 to 10.
+
+**Your Task:** Use a for loop to count.
 
 ```dart
 void main() {
-  // TODO: Print FizzBuzz for numbers 1 to 30
+  // TODO: Print numbers 1 to 10, each on new line
 }
 ```
 
 <details>
-<summary>💡 Hint</summary>
+<summary>✅ Solution</summary>
 
-Check divisible by both 3 AND 5 FIRST, then by 3, then by 5. Order matters!
-
+```dart
+void main() {
+  for (int i = 1; i <= 10; i++) {
+    print(i);
+  }
+}
+```
 </details>
+
+---
+
+### Exercise 3.2: Count Down ⭐
+
+**Goal:** Print numbers from 10 to 1.
+
+**Your Task:** Use a for loop to count backwards.
+
+```dart
+void main() {
+  // TODO: Print numbers 10 to 1, each on new line
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+void main() {
+  for (int i = 10; i >= 1; i--) {
+    print(i);
+  }
+}
+```
+</details>
+
+---
+
+### Exercise 3.3: Sum of Numbers ⭐⭐
+
+**Goal:** Calculate sum of 1 to 100.
+
+**Your Task:** Use a for loop to sum numbers.
+
+```dart
+void main() {
+  // TODO: Calculate sum of 1 + 2 + 3 + ... + 100
+  // TODO: Print the result
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+void main() {
+  int sum = 0;
+
+  for (int i = 1; i <= 100; i++) {
+    sum += i;
+  }
+
+  print('Sum: $sum');
+}
+```
+</details>
+
+---
+
+### Exercise 3.4: FizzBuzz Challenge ⭐⭐
+
+**Goal:** The classic FizzBuzz problem!
+
+**Requirements:**
+Print numbers 1 to 30, but:
+- If divisible by 3: print "Fizz"
+- If divisible by 5: print "Buzz"
+- If divisible by both: print "FizzBuzz"
+- Otherwise: print the number
+
+Try this on your own!
 
 <details>
 <summary>✅ Solution</summary>
@@ -166,104 +483,93 @@ void main() {
   }
 }
 ```
-
-**Alternative using string building:**
-
-```dart
-void main() {
-  for (int i = 1; i <= 30; i++) {
-    String output = '';
-
-    if (i % 3 == 0) output += 'Fizz';
-    if (i % 5 == 0) output += 'Buzz';
-
-    print(output.isEmpty ? i : output);
-  }
-}
-```
-
 </details>
 
 ---
 
-## Exercise 4: Prime Number Checker
+## PART 4: While Loops
 
-**Difficulty:** ⭐⭐ Medium
+Learn to repeat while a condition is true.
 
-Check if a number is prime (only divisible by 1 and itself):
+### Exercise 4.1: Count with While ⭐
+
+**Goal:** Print numbers using while loop.
+
+**Your Task:** Count from 1 to 5 using while.
 
 ```dart
 void main() {
-  int number = 17;
+  int i = 1;
 
-  // TODO: Check if number is prime
-  // Print "X is prime" or "X is not prime"
+  // TODO: While i <= 5, print i and increment
 }
 ```
-
-<details>
-<summary>💡 Hint</summary>
-
-A number is prime if no number from 2 to sqrt(number) divides it evenly.
-Use break to exit early if you find a divisor.
-
-</details>
 
 <details>
 <summary>✅ Solution</summary>
 
 ```dart
 void main() {
-  int number = 17;
+  int i = 1;
 
-  if (number <= 1) {
-    print('$number is not prime');
-  } else if (number <= 3) {
-    print('$number is prime');
-  } else {
-    bool isPrime = true;
-
-    for (int i = 2; i * i <= number; i++) {
-      if (number % i == 0) {
-        isPrime = false;
-        break;
-      }
-    }
-
-    if (isPrime) {
-      print('$number is prime');
-    } else {
-      print('$number is not prime');
-    }
+  while (i <= 5) {
+    print(i);
+    i++;
   }
 }
 ```
-
 </details>
 
 ---
 
-## Exercise 5: Sum of Digits
+### Exercise 4.2: Do-While ⭐
 
-**Difficulty:** ⭐⭐ Medium
+**Goal:** Use a do-while loop.
 
-Calculate the sum of all digits in a number using a while loop:
+**Your Task:** Print numbers 1 to 5 using do-while.
+
+```dart
+void main() {
+  int i = 1;
+
+  // TODO: Use do-while to print numbers
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+void main() {
+  int i = 1;
+
+  do {
+    print(i);
+    i++;
+  } while (i <= 5);
+}
+```
+</details>
+
+---
+
+### Exercise 4.3: Sum of Digits ⭐⭐
+
+**Goal:** Add all digits in a number.
+
+**Your Task:** Extract and sum each digit.
+
+Given: `int number = 12345;`
+Expected: `Sum of digits: 15` (1+2+3+4+5)
 
 ```dart
 void main() {
   int number = 12345;
 
-  // TODO: Calculate sum of digits (1+2+3+4+5 = 15)
+  // TODO: Sum all digits using while loop
+  // Hint: Use % 10 to get last digit, ~/ 10 to remove it
 }
 ```
-
-<details>
-<summary>💡 Hint</summary>
-
-Use `% 10` to get the last digit, `~/ 10` to remove the last digit.
-Loop while number > 0.
-
-</details>
 
 <details>
 <summary>✅ Solution</summary>
@@ -271,43 +577,31 @@ Loop while number > 0.
 ```dart
 void main() {
   int number = 12345;
-  int original = number;
   int sum = 0;
 
   while (number > 0) {
-    int digit = number % 10;  // Get last digit
-    sum += digit;
-    number ~/= 10;  // Remove last digit
+    sum += number % 10;  // Add last digit
+    number ~/= 10;        // Remove last digit
   }
 
-  print('Sum of digits in $original is $sum');
+  print('Sum of digits: $sum');
 }
 ```
-
 </details>
 
 ---
 
-## Exercise 6: Reverse a Number
+### Exercise 4.4: Reverse Number Challenge ⭐⭐
 
-**Difficulty:** ⭐⭐ Medium
+**Goal:** Reverse the digits of a number - NO scaffolding!
 
-Reverse the digits of a number using a while loop:
+**Requirements:**
+Given: `int number = 12345;`
+Expected: `Reversed: 54321`
 
-```dart
-void main() {
-  int number = 12345;
+Hint: Build the reverse by extracting digits one by one.
 
-  // TODO: Reverse to get 54321
-}
-```
-
-<details>
-<summary>💡 Hint</summary>
-
-Build the reversed number by multiplying by 10 and adding each digit.
-
-</details>
+Try this on your own!
 
 <details>
 <summary>✅ Solution</summary>
@@ -315,7 +609,6 @@ Build the reversed number by multiplying by 10 and adding each digit.
 ```dart
 void main() {
   int number = 12345;
-  int original = number;
   int reversed = 0;
 
   while (number > 0) {
@@ -324,385 +617,278 @@ void main() {
     number ~/= 10;
   }
 
-  print('$original reversed is $reversed');
+  print('Reversed: $reversed');
 }
 ```
-
 </details>
 
 ---
 
-## Exercise 7: Find First and Last Occurrence
+## PART 5: Loop Control
 
-**Difficulty:** ⭐⭐ Medium
+Learn to control loops with break and continue.
 
-Find the first and last position of a value in a list:
+### Exercise 5.1: Break on 5 ⭐
+
+**Goal:** Exit loop when reaching a value.
+
+**Your Task:** Print 1-10 but stop at 5.
 
 ```dart
 void main() {
-  List<int> numbers = [1, 3, 5, 3, 7, 3, 9];
-  int target = 3;
-
-  // TODO: Find first and last index of target
-  // Output: "First: 1, Last: 5"
+  // TODO: Loop 1-10, but break when i == 5
 }
 ```
-
-<details>
-<summary>💡 Hint</summary>
-
-Use one loop going forward (with break for first), another going backward (with break for last).
-Or use a single loop and update lastIndex whenever you find a match.
-
-</details>
 
 <details>
 <summary>✅ Solution</summary>
 
 ```dart
 void main() {
-  List<int> numbers = [1, 3, 5, 3, 7, 3, 9];
-  int target = 3;
+  for (int i = 1; i <= 10; i++) {
+    if (i == 5) {
+      break;
+    }
+    print(i);
+  }
+}
+```
+</details>
 
-  int firstIndex = -1;
-  int lastIndex = -1;
+---
 
-  for (int i = 0; i < numbers.length; i++) {
-    if (numbers[i] == target) {
-      if (firstIndex == -1) {
-        firstIndex = i;  // First occurrence
+### Exercise 5.2: Skip Even Numbers ⭐
+
+**Goal:** Use continue to skip values.
+
+**Your Task:** Print only odd numbers from 1-10.
+
+```dart
+void main() {
+  // TODO: Loop 1-10, continue if even, print if odd
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+void main() {
+  for (int i = 1; i <= 10; i++) {
+    if (i % 2 == 0) {
+      continue;  // Skip even numbers
+    }
+    print(i);
+  }
+}
+```
+</details>
+
+---
+
+### Exercise 5.3: Prime Number Checker ⭐⭐⭐
+
+**Goal:** Check if a number is prime.
+
+**Your Task:** Use loops and break to check for factors.
+
+Given: `int number = 17;`
+
+A prime number is only divisible by 1 and itself.
+
+```dart
+void main() {
+  int number = 17;
+
+  // TODO: Check if number is prime
+  // Hint: Loop from 2 to number-1, if any divides evenly, it's not prime
+}
+```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+void main() {
+  int number = 17;
+  bool isPrime = true;
+
+  if (number <= 1) {
+    isPrime = false;
+  } else {
+    for (int i = 2; i < number; i++) {
+      if (number % i == 0) {
+        isPrime = false;
+        break;  // Found a factor, no need to continue
       }
-      lastIndex = i;  // Keep updating for last
     }
   }
 
-  if (firstIndex == -1) {
-    print('$target not found');
+  if (isPrime) {
+    print('$number is prime');
   } else {
-    print('First: $firstIndex, Last: $lastIndex');
+    print('$number is not prime');
   }
 }
 ```
-
 </details>
 
 ---
 
-## Exercise 8: Pyramid of Numbers
+## FINAL PROJECT: Password Validator ⭐⭐⭐
 
-**Difficulty:** ⭐⭐⭐ Hard
+**Goal:** Build a complete password validator!
 
-Print a centered pyramid with row numbers:
+**Your Task:** Check if a password is strong - NO scaffolding!
 
-```
-    1
-   222
-  33333
- 4444444
-555555555
-```
+### Requirements:
 
+Given a password string, check:
+1. Length >= 8 characters
+2. Contains at least one uppercase letter
+3. Contains at least one lowercase letter
+4. Contains at least one digit
+5. Contains at least one special character (!@#$%^&*)
+
+Print: `Password is valid` or `Password is invalid: [reasons]`
+
+**Example:**
 ```dart
-void main() {
-  int height = 5;
-
-  // TODO: Print the number pyramid
-}
+String password = 'Abc123!@';
 ```
 
-<details>
-<summary>💡 Hint</summary>
+Expected: `Password is valid`
 
-For row i: spaces = height - i, numbers = 2*i - 1.
-Use nested loops or string multiplication.
+**Example 2:**
+```dart
+String password = 'weak';
+```
 
-</details>
+Expected: `Password is invalid: too short, no uppercase, no digits, no special chars`
+
+**Hints:**
+- Use a for loop to check each character
+- Use String methods like contains()
+- Track what's missing in boolean variables
+
+**Build this completely on your own!**
 
 <details>
 <summary>✅ Solution</summary>
 
 ```dart
 void main() {
-  int height = 5;
+  String password = 'Abc123!@';
 
-  for (int row = 1; row <= height; row++) {
-    // Leading spaces
-    String spaces = ' ' * (height - row);
-
-    // Numbers
-    String numbers = '$row' * (2 * row - 1);
-
-    print(spaces + numbers);
-  }
-}
-```
-
-</details>
-
----
-
-## Exercise 9: Validate Password
-
-**Difficulty:** ⭐⭐⭐ Hard
-
-Check if a password meets ALL requirements:
-- At least 8 characters
-- Contains at least one uppercase letter
-- Contains at least one lowercase letter
-- Contains at least one digit
-- Contains at least one special character (!@#$%^&*)
-
-```dart
-void main() {
-  String password = 'MyPass123!';
-
-  // TODO: Validate and print which requirements pass/fail
-}
-```
-
-<details>
-<summary>💡 Hint</summary>
-
-Use boolean flags for each requirement. Loop through each character and set flags.
-Use `continue` to skip to next character after checking.
-
-</details>
-
-<details>
-<summary>✅ Solution</summary>
-
-```dart
-void main() {
-  String password = 'MyPass123!';
-
-  bool hasLength = password.length >= 8;
-  bool hasUpper = false;
-  bool hasLower = false;
+  bool isLongEnough = password.length >= 8;
+  bool hasUppercase = false;
+  bool hasLowercase = false;
   bool hasDigit = false;
   bool hasSpecial = false;
 
-  String specialChars = '!@#\$%^&*';
-
+  // Check each character
   for (int i = 0; i < password.length; i++) {
     String char = password[i];
 
     if (char.toUpperCase() != char.toLowerCase()) {
       // It's a letter
       if (char == char.toUpperCase()) {
-        hasUpper = true;
+        hasUppercase = true;
+      } else {
+        hasLowercase = true;
       }
-      if (char == char.toLowerCase()) {
-        hasLower = true;
-      }
-    } else if ('0123456789'.contains(char)) {
+    } else if (int.tryParse(char) != null) {
       hasDigit = true;
-    } else if (specialChars.contains(char)) {
+    } else if ('!@#\$%^&*'.contains(char)) {
       hasSpecial = true;
     }
   }
 
-  print('Password: $password');
-  print('---');
-  print('${hasLength ? "✓" : "✗"} At least 8 characters');
-  print('${hasUpper ? "✓" : "✗"} Has uppercase');
-  print('${hasLower ? "✓" : "✗"} Has lowercase');
-  print('${hasDigit ? "✓" : "✗"} Has digit');
-  print('${hasSpecial ? "✓" : "✗"} Has special character');
-  print('---');
+  // Check all conditions
+  bool isValid = isLongEnough && hasUppercase && hasLowercase && hasDigit && hasSpecial;
 
-  bool isValid = hasLength && hasUpper && hasLower && hasDigit && hasSpecial;
-  print('Password is ${isValid ? "VALID" : "INVALID"}');
-}
-```
-
-</details>
-
----
-
-## Exercise 10: Find All Pairs
-
-**Difficulty:** ⭐⭐⭐ Hard
-
-Find all pairs of numbers in a list that add up to a target sum:
-
-```dart
-void main() {
-  List<int> numbers = [1, 5, 7, 2, 9, 3, 6, 8];
-  int targetSum = 10;
-
-  // TODO: Find and print all pairs that sum to targetSum
-  // Example: (1, 9), (2, 8), (3, 7)
-}
-```
-
-<details>
-<summary>💡 Hint</summary>
-
-Use nested loops. Outer loop: first number. Inner loop: second number (starting after first).
-Use continue to skip invalid pairs.
-
-</details>
-
-<details>
-<summary>✅ Solution</summary>
-
-```dart
-void main() {
-  List<int> numbers = [1, 5, 7, 2, 9, 3, 6, 8];
-  int targetSum = 10;
-
-  print('Pairs that sum to $targetSum:');
-
-  int pairsFound = 0;
-
-  for (int i = 0; i < numbers.length; i++) {
-    for (int j = i + 1; j < numbers.length; j++) {
-      if (numbers[i] + numbers[j] == targetSum) {
-        print('(${numbers[i]}, ${numbers[j]})');
-        pairsFound++;
-      }
-    }
-  }
-
-  if (pairsFound == 0) {
-    print('No pairs found');
+  if (isValid) {
+    print('Password is valid');
   } else {
-    print('Total pairs: $pairsFound');
+    print('Password is invalid:');
+    if (!isLongEnough) print('- Too short (minimum 8 characters)');
+    if (!hasUppercase) print('- No uppercase letter');
+    if (!hasLowercase) print('- No lowercase letter');
+    if (!hasDigit) print('- No digit');
+    if (!hasSpecial) print('- No special character');
   }
 }
 ```
-
 </details>
 
 ---
 
-## Bonus Challenge: Mini Game Loop
+## Submission Checklist
 
-**Difficulty:** ⭐⭐⭐⭐ Expert
+Before moving to Level 3, make sure you can:
 
-Create a simple text-based adventure using all control flow concepts:
+- [ ] Use if, else if, and else statements correctly
+- [ ] Write switch statements for multiple values
+- [ ] Create for loops to repeat code
+- [ ] Use while and do-while loops
+- [ ] Apply break to exit loops early
+- [ ] Apply continue to skip loop iterations
+- [ ] Combine conditions with && and ||
+- [ ] Choose between if/switch and for/while appropriately
+- [ ] Solve problems without looking at solutions first
 
-```dart
-void main() {
-  // Create a game where:
-  // 1. Player has health (starts at 100)
-  // 2. Each round, show menu: Attack, Defend, Heal, Run
-  // 3. Random enemy attacks back
-  // 4. Game ends when health <= 0 or player runs
-  // 5. Track rounds survived
-}
+---
+
+## Bonus Challenge: Pyramid Pattern ⭐⭐⭐
+
+Print a pyramid of numbers:
 ```
+    1
+   121
+  12321
+ 1234321
+123454321
+```
+
+Use nested for loops!
 
 <details>
 <summary>✅ Solution</summary>
 
 ```dart
-import 'dart:math';
-
 void main() {
-  int playerHealth = 100;
-  int enemyHealth = 80;
-  int rounds = 0;
-  bool gameOver = false;
-  Random random = Random();
+  int rows = 5;
 
-  // Simulate player choices
-  List<int> choices = [1, 2, 1, 3, 1, 2, 1, 1, 4];
-  int choiceIndex = 0;
-
-  print('=== BATTLE BEGINS ===');
-  print('Your health: $playerHealth');
-  print('Enemy health: $enemyHealth\n');
-
-  while (!gameOver && choiceIndex < choices.length) {
-    rounds++;
-    print('--- Round $rounds ---');
-    print('Your HP: $playerHealth | Enemy HP: $enemyHealth');
-    print('1. Attack  2. Defend  3. Heal  4. Run');
-
-    int choice = choices[choiceIndex];
-    print('You chose: $choice\n');
-    choiceIndex++;
-
-    bool defending = false;
-
-    switch (choice) {
-      case 1: // Attack
-        int damage = random.nextInt(20) + 10;
-        enemyHealth -= damage;
-        print('You attack for $damage damage!');
-        break;
-
-      case 2: // Defend
-        defending = true;
-        print('You brace for impact!');
-        break;
-
-      case 3: // Heal
-        int heal = random.nextInt(15) + 5;
-        playerHealth += heal;
-        if (playerHealth > 100) playerHealth = 100;
-        print('You heal for $heal HP!');
-        break;
-
-      case 4: // Run
-        print('You fled the battle!');
-        gameOver = true;
-        continue;
+  for (int i = 1; i <= rows; i++) {
+    // Print spaces
+    for (int j = 1; j <= rows - i; j++) {
+      stdout.write(' ');
     }
 
-    // Check enemy death
-    if (enemyHealth <= 0) {
-      print('\nENEMY DEFEATED! You won in $rounds rounds!');
-      gameOver = true;
-      continue;
+    // Print ascending numbers
+    for (int j = 1; j <= i; j++) {
+      stdout.write(j);
     }
 
-    // Enemy attacks
-    int enemyDamage = random.nextInt(15) + 5;
-    if (defending) {
-      enemyDamage ~/= 2;
-      print('Enemy attacks! Blocked some damage: -$enemyDamage HP');
-    } else {
-      print('Enemy attacks! You take $enemyDamage damage!');
-    }
-    playerHealth -= enemyDamage;
-
-    // Check player death
-    if (playerHealth <= 0) {
-      print('\nYOU DIED! Survived $rounds rounds.');
-      gameOver = true;
+    // Print descending numbers
+    for (int j = i - 1; j >= 1; j--) {
+      stdout.write(j);
     }
 
-    print('');
+    print('');  // New line
   }
-
-  print('=== GAME OVER ===');
 }
 ```
 
+Note: Need `import 'dart:io';` for stdout.
 </details>
-
----
-
-## Self-Assessment
-
-After completing these exercises, you should be able to:
-
-- [ ] Use if/else if/else for multiple conditions
-- [ ] Choose between if-else and switch appropriately
-- [ ] Write for loops with custom start, end, and step
-- [ ] Use while loops when count is unknown
-- [ ] Use do-while when you need at least one iteration
-- [ ] Apply break to exit loops early
-- [ ] Apply continue to skip iterations
-- [ ] Handle nested loops with labels
-- [ ] Combine multiple control structures
 
 ---
 
 **Congratulations!** You've completed Level 2!
 
+You now understand control flow. Time to learn functions and code organization!
+
 ---
 
-**Next Level:** `../../Level-03-Functions-Collections/README.md`
+**Continue to:** `../../Level-03-Functions-Collections/README.md`

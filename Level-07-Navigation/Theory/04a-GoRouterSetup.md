@@ -1,4 +1,4 @@
-# GoRouter Basics
+# GoRouter Setup
 
 Learn the modern, declarative way to handle navigation in Flutter!
 
@@ -145,147 +145,11 @@ Back button: Exits app (nothing to go back to!)
 
 ---
 
-## Path Parameters
-
-### What are Path Parameters?
-
-Like variables in your URL:
-- `/products/123` - 123 is the product ID
-- `/users/john` - john is the username
-
-```dart
-GoRoute(
-  path: '/product/:id',  // :id is a parameter
-  builder: (context, state) {
-    // Get the parameter value
-    final productId = state.pathParameters['id']!;
-    return ProductScreen(id: productId);
-  },
-),
-```
-
-### Navigate with Parameters
-
-```dart
-// Go to product with ID 123
-context.push('/product/123');
-
-// Go to product with ID 456
-context.push('/product/456');
-```
-
-### Multiple Parameters
-
-```dart
-GoRoute(
-  path: '/store/:storeId/product/:productId',
-  builder: (context, state) {
-    final storeId = state.pathParameters['storeId']!;
-    final productId = state.pathParameters['productId']!;
-    return ProductScreen(storeId: storeId, productId: productId);
-  },
-),
-
-// Navigate
-context.push('/store/amazon/product/iphone');
-```
-
----
-
-## Query Parameters
-
-### What are Query Parameters?
-
-Extra information after `?` in the URL:
-- `/search?query=flutter&sort=newest`
-
-```dart
-GoRoute(
-  path: '/search',
-  builder: (context, state) {
-    // Get query parameters
-    final query = state.uri.queryParameters['query'] ?? '';
-    final sort = state.uri.queryParameters['sort'] ?? 'relevance';
-    return SearchScreen(query: query, sort: sort);
-  },
-),
-```
-
-### Navigate with Query Parameters
-
-```dart
-// Search for "flutter" sorted by newest
-context.push('/search?query=flutter&sort=newest');
-
-// Search with just a query
-context.push('/search?query=dart');
-```
-
----
-
-## Extra Data
-
-### Passing Objects (Not in URL)
-
-Sometimes you need to pass complex data that shouldn't be in the URL:
-
-```dart
-GoRoute(
-  path: '/product/:id',
-  builder: (context, state) {
-    // Get path parameter
-    final id = state.pathParameters['id']!;
-
-    // Get extra data (optional)
-    final product = state.extra as Product?;
-
-    return ProductScreen(id: id, product: product);
-  },
-),
-```
-
-### Navigate with Extra Data
-
-```dart
-// With extra data
-context.push(
-  '/product/123',
-  extra: product,  // Pass the entire Product object
-);
-
-// Without extra data
-context.push('/product/123');  // Screen will load product by ID
-```
-
----
-
 ## Complete Example
 
 ```dart
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
-// ═══════════════════════════════════════════════════════════════
-// MODELS
-// ═══════════════════════════════════════════════════════════════
-
-class Product {
-  final String id;
-  final String name;
-  final double price;
-
-  const Product({
-    required this.id,
-    required this.name,
-    required this.price,
-  });
-}
-
-final products = [
-  Product(id: '1', name: 'Laptop', price: 999.99),
-  Product(id: '2', name: 'Phone', price: 699.99),
-  Product(id: '3', name: 'Tablet', price: 499.99),
-];
 
 // ═══════════════════════════════════════════════════════════════
 // ROUTER SETUP
@@ -300,28 +164,16 @@ final router = GoRouter(
       builder: (context, state) => HomeScreen(),
     ),
 
-    // Products list
-    GoRoute(
-      path: '/products',
-      builder: (context, state) => ProductListScreen(),
-    ),
-
-    // Product detail with ID parameter
-    GoRoute(
-      path: '/product/:id',
-      builder: (context, state) {
-        final id = state.pathParameters['id']!;
-        // Find product or pass from extra
-        final product = state.extra as Product? ??
-            products.firstWhere((p) => p.id == id);
-        return ProductDetailScreen(product: product);
-      },
-    ),
-
-    // Settings
+    // Settings route
     GoRoute(
       path: '/settings',
       builder: (context, state) => SettingsScreen(),
+    ),
+
+    // About route
+    GoRoute(
+      path: '/about',
+      builder: (context, state) => AboutScreen(),
     ),
   ],
 );
@@ -365,70 +217,14 @@ class HomeScreen extends StatelessWidget {
 
             // Navigate using context.push
             ElevatedButton(
-              onPressed: () => context.push('/products'),
-              child: Text('View Products'),
+              onPressed: () => context.push('/settings'),
+              child: Text('Go to Settings'),
             ),
             SizedBox(height: 16),
 
             ElevatedButton(
-              onPressed: () => context.push('/settings'),
-              child: Text('Settings'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class ProductListScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Products')),
-      body: ListView.builder(
-        itemCount: products.length,
-        itemBuilder: (context, index) {
-          final product = products[index];
-          return ListTile(
-            title: Text(product.name),
-            subtitle: Text('\$${product.price}'),
-            trailing: Icon(Icons.chevron_right),
-            onTap: () {
-              // Navigate with path parameter and extra data
-              context.push('/product/${product.id}', extra: product);
-            },
-          );
-        },
-      ),
-    );
-  }
-}
-
-class ProductDetailScreen extends StatelessWidget {
-  final Product product;
-
-  const ProductDetailScreen({required this.product});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(product.name)),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('📦', style: TextStyle(fontSize: 80)),
-            SizedBox(height: 20),
-            Text(product.name, style: TextStyle(fontSize: 28)),
-            Text(
-              '\$${product.price}',
-              style: TextStyle(fontSize: 24, color: Colors.green),
-            ),
-            SizedBox(height: 40),
-            ElevatedButton(
-              onPressed: () => context.pop(),
-              child: Text('Go Back'),
+              onPressed: () => context.push('/about'),
+              child: Text('About'),
             ),
           ],
         ),
@@ -455,6 +251,40 @@ class SettingsScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () => context.go('/'),
               child: Text('Go Home'),
+            ),
+            SizedBox(height: 16),
+
+            // Go back
+            ElevatedButton(
+              onPressed: () => context.pop(),
+              child: Text('Go Back'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class AboutScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('About')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('ℹ️', style: TextStyle(fontSize: 80)),
+            SizedBox(height: 20),
+            Text('About This App', style: TextStyle(fontSize: 24)),
+            SizedBox(height: 10),
+            Text('Version 1.0.0'),
+            SizedBox(height: 40),
+
+            ElevatedButton(
+              onPressed: () => context.pop(),
+              child: Text('Go Back'),
             ),
           ],
         ),
@@ -502,71 +332,6 @@ class SettingsScreen extends StatelessWidget {
 
 ---
 
-## Current Location
-
-### Get Current Path
-
-```dart
-// Get the current location
-final location = GoRouterState.of(context).uri.toString();
-print(location);  // e.g., '/products/123?tab=reviews'
-
-// Get just the path
-final path = GoRouterState.of(context).uri.path;
-print(path);  // e.g., '/products/123'
-```
-
-### Check Current Route
-
-```dart
-final currentPath = GoRouterState.of(context).uri.path;
-
-if (currentPath == '/') {
-  // We're at home
-}
-
-if (currentPath.startsWith('/products')) {
-  // We're somewhere in products
-}
-```
-
----
-
-## Named Routes (Optional)
-
-You can also give routes names:
-
-```dart
-final router = GoRouter(
-  routes: [
-    GoRoute(
-      path: '/',
-      name: 'home',  // Give it a name
-      builder: (context, state) => HomeScreen(),
-    ),
-    GoRoute(
-      path: '/product/:id',
-      name: 'product',
-      builder: (context, state) {
-        final id = state.pathParameters['id']!;
-        return ProductScreen(id: id);
-      },
-    ),
-  ],
-);
-
-// Navigate by name
-context.pushNamed(
-  'product',
-  pathParameters: {'id': '123'},
-);
-
-// This is equivalent to:
-context.push('/product/123');
-```
-
----
-
 ## Error Handling
 
 ### Custom Error Page
@@ -604,35 +369,47 @@ final router = GoRouter(
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                  GOROUTER CHEAT SHEET                        │
+│                  GOROUTER SETUP CHEAT SHEET                  │
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
-│  SETUP:                                                     │
-│  final router = GoRouter(routes: [...]);                    │
-│  MaterialApp.router(routerConfig: router)                   │
+│  1. ADD DEPENDENCY:                                         │
+│     go_router: ^14.0.0                                      │
 │                                                             │
-│  ROUTES:                                                    │
-│  GoRoute(                                                   │
-│    path: '/product/:id',                                    │
-│    builder: (context, state) {                              │
-│      final id = state.pathParameters['id']!;                │
-│      return ProductScreen(id: id);                          │
-│    },                                                       │
-│  )                                                          │
+│  2. CREATE ROUTER:                                          │
+│     final router = GoRouter(                                │
+│       routes: [                                             │
+│         GoRoute(                                            │
+│           path: '/',                                        │
+│           builder: (context, state) => HomeScreen(),        │
+│         ),                                                  │
+│       ],                                                    │
+│     );                                                      │
 │                                                             │
-│  NAVIGATION:                                                │
-│  context.go('/path')      // Replace stack                  │
-│  context.push('/path')    // Add to stack                   │
-│  context.pop()            // Go back                        │
+│  3. USE IN APP:                                             │
+│     MaterialApp.router(                                     │
+│       routerConfig: router,                                 │
+│     )                                                       │
 │                                                             │
-│  PARAMETERS:                                                │
-│  Path: /product/:id → state.pathParameters['id']            │
-│  Query: ?sort=new → state.uri.queryParameters['sort']       │
-│  Extra: push('/x', extra: data) → state.extra               │
+│  4. NAVIGATE:                                               │
+│     context.go('/path')      // Replace stack               │
+│     context.push('/path')    // Add to stack                │
+│     context.pop()            // Go back                     │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-[← Passing Data](./03-PassingData.md) | [Next: GoRouter Advanced →](./05-GoRouterAdvanced.md)
+## Continue Learning
+
+Now that you know how to set up GoRouter, let's learn about path parameters and advanced navigation!
+
+**Continue to:** [GoRouter Navigation →](04b-GoRouterNavigation.md)
+
+---
+
+## Navigation
+
+⬅️ **Previous:** [Returning Data](03c-ReturningData.md)
+⬆️ **Back to:** [Learning Path](00-LearningPath.md)
+➡️ **Next:** [GoRouter Navigation](04b-GoRouterNavigation.md)

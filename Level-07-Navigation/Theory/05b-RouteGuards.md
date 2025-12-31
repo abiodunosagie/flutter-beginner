@@ -1,193 +1,6 @@
-# GoRouter Advanced
+# Route Guards and Authentication
 
-Master nested routes, authentication guards, redirects, and more!
-
----
-
-## Nested Routes (Sub-Routes)
-
-### Think of it Like This
-
-Imagine a house with rooms:
-- House = Parent route
-- Rooms = Child routes
-
-```
-/settings                   ← Settings page
-/settings/profile           ← Profile page (inside settings)
-/settings/notifications     ← Notifications (inside settings)
-/settings/privacy           ← Privacy (inside settings)
-```
-
-### Visual Structure
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│  /settings                                                  │
-├─────────────────────────────────────────────────────────────┤
-│  ┌─────────────┐  ┌─────────────────────────────────────┐  │
-│  │  Side Menu  │  │                                     │  │
-│  │             │  │     Content Area                    │  │
-│  │  • Profile  │  │                                     │  │
-│  │  • Notifs   │  │  (Shows Profile, Notifications,     │  │
-│  │  • Privacy  │  │   or Privacy based on sub-route)    │  │
-│  │             │  │                                     │  │
-│  └─────────────┘  └─────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### Code Example
-
-```dart
-final router = GoRouter(
-  routes: [
-    GoRoute(
-      path: '/',
-      builder: (context, state) => HomeScreen(),
-    ),
-
-    // Parent route with nested children
-    GoRoute(
-      path: '/settings',
-      builder: (context, state) => SettingsScreen(),
-      routes: [
-        // These are NESTED under /settings
-        GoRoute(
-          path: 'profile',  // Full path: /settings/profile
-          builder: (context, state) => ProfileSettingsScreen(),
-        ),
-        GoRoute(
-          path: 'notifications',  // Full path: /settings/notifications
-          builder: (context, state) => NotificationSettingsScreen(),
-        ),
-        GoRoute(
-          path: 'privacy',  // Full path: /settings/privacy
-          builder: (context, state) => PrivacySettingsScreen(),
-        ),
-      ],
-    ),
-  ],
-);
-```
-
----
-
-## ShellRoute - Persistent UI
-
-### What is ShellRoute?
-
-A shell that wraps multiple screens with shared UI (like a bottom navigation bar).
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    SHELLROUTE CONCEPT                        │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  WITHOUT ShellRoute:                                        │
-│  Each screen must add its own bottom nav                    │
-│  Nav bar rebuilds on every navigation                       │
-│                                                             │
-│  WITH ShellRoute:                                           │
-│  One shell wraps all screens                                │
-│  Nav bar stays, only content changes                        │
-│                                                             │
-│  ┌─────────────────────────────────────────┐                │
-│  │                                         │                │
-│  │        CONTENT CHANGES HERE             │                │
-│  │                                         │                │
-│  ├─────────────────────────────────────────┤                │
-│  │  [Home]  [Search]  [Profile]            │  ← Stays!     │
-│  └─────────────────────────────────────────┘                │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### ShellRoute Example
-
-```dart
-final router = GoRouter(
-  routes: [
-    // Shell wraps these routes with bottom nav
-    ShellRoute(
-      builder: (context, state, child) {
-        // 'child' is the current screen
-        return ScaffoldWithBottomNav(child: child);
-      },
-      routes: [
-        GoRoute(
-          path: '/',
-          builder: (context, state) => HomeScreen(),
-        ),
-        GoRoute(
-          path: '/search',
-          builder: (context, state) => SearchScreen(),
-        ),
-        GoRoute(
-          path: '/profile',
-          builder: (context, state) => ProfileScreen(),
-        ),
-      ],
-    ),
-
-    // These routes are OUTSIDE the shell (no bottom nav)
-    GoRoute(
-      path: '/login',
-      builder: (context, state) => LoginScreen(),
-    ),
-    GoRoute(
-      path: '/product/:id',
-      builder: (context, state) {
-        final id = state.pathParameters['id']!;
-        return ProductDetailScreen(id: id);
-      },
-    ),
-  ],
-);
-
-// The shell widget
-class ScaffoldWithBottomNav extends StatelessWidget {
-  final Widget child;
-
-  const ScaffoldWithBottomNav({required this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: child,  // The current screen goes here
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _calculateIndex(context),
-        onTap: (index) => _onTap(context, index),
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-        ],
-      ),
-    );
-  }
-
-  int _calculateIndex(BuildContext context) {
-    final location = GoRouterState.of(context).uri.path;
-    if (location.startsWith('/search')) return 1;
-    if (location.startsWith('/profile')) return 2;
-    return 0;
-  }
-
-  void _onTap(BuildContext context, int index) {
-    switch (index) {
-      case 0:
-        context.go('/');
-        break;
-      case 1:
-        context.go('/search');
-        break;
-      case 2:
-        context.go('/profile');
-        break;
-    }
-  }
-}
-```
+Learn how to protect routes and handle authentication with redirects!
 
 ---
 
@@ -263,42 +76,7 @@ final router = GoRouter(
 
 ## Listening to Auth Changes
 
-### With Riverpod
-
-```dart
-// Auth state provider
-final authProvider = StateProvider<bool>((ref) => false);
-
-// Router that refreshes on auth changes
-final routerProvider = Provider<GoRouter>((ref) {
-  final isLoggedIn = ref.watch(authProvider);
-
-  return GoRouter(
-    refreshListenable: GoRouterRefreshStream(
-      ref.watch(authProvider.notifier).stream,
-    ),
-    redirect: (context, state) {
-      if (!isLoggedIn && state.uri.path != '/login') {
-        return '/login';
-      }
-      if (isLoggedIn && state.uri.path == '/login') {
-        return '/';
-      }
-      return null;
-    },
-    routes: [...],
-  );
-});
-
-// Helper class to listen to streams
-class GoRouterRefreshStream extends ChangeNotifier {
-  GoRouterRefreshStream(Stream<dynamic> stream) {
-    stream.listen((_) => notifyListeners());
-  }
-}
-```
-
-### Simple Approach with ValueNotifier
+### With ValueNotifier
 
 ```dart
 // Create a notifier for auth state
@@ -592,97 +370,41 @@ GoRoute(
 
 ---
 
-## Transitions
-
-### Custom Page Transitions
+## Role-Based Access
 
 ```dart
-GoRoute(
-  path: '/details',
-  pageBuilder: (context, state) {
-    return CustomTransitionPage(
-      key: state.pageKey,
-      child: DetailsScreen(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        // Fade transition
-        return FadeTransition(
-          opacity: animation,
-          child: child,
-        );
-      },
-    );
+enum UserRole { guest, user, admin }
+
+class AuthService {
+  UserRole currentRole = UserRole.guest;
+
+  bool canAccessRoute(String path) {
+    if (path.startsWith('/admin')) {
+      return currentRole == UserRole.admin;
+    }
+    if (path.startsWith('/user')) {
+      return currentRole == UserRole.user || currentRole == UserRole.admin;
+    }
+    return true;  // Public routes
+  }
+}
+
+final authService = AuthService();
+
+final router = GoRouter(
+  redirect: (context, state) {
+    if (!authService.canAccessRoute(state.uri.path)) {
+      return '/unauthorized';
+    }
+    return null;
   },
-),
-```
-
-### Common Transitions
-
-```dart
-// Slide from right
-transitionsBuilder: (context, animation, _, child) {
-  return SlideTransition(
-    position: Tween<Offset>(
-      begin: Offset(1, 0),
-      end: Offset.zero,
-    ).animate(animation),
-    child: child,
-  );
-}
-
-// Slide from bottom
-transitionsBuilder: (context, animation, _, child) {
-  return SlideTransition(
-    position: Tween<Offset>(
-      begin: Offset(0, 1),
-      end: Offset.zero,
-    ).animate(animation),
-    child: child,
-  );
-}
-
-// Scale
-transitionsBuilder: (context, animation, _, child) {
-  return ScaleTransition(
-    scale: animation,
-    child: child,
-  );
-}
-```
-
----
-
-## TypedGoRoute (Type-Safe Routes)
-
-### Define Type-Safe Routes
-
-```dart
-import 'package:go_router/go_router.dart';
-
-// Generate routes with types
-part 'routes.g.dart';
-
-@TypedGoRoute<HomeRoute>(path: '/')
-class HomeRoute extends GoRouteData {
-  @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return HomeScreen();
-  }
-}
-
-@TypedGoRoute<ProductRoute>(path: '/product/:id')
-class ProductRoute extends GoRouteData {
-  final String id;
-
-  ProductRoute({required this.id});
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return ProductScreen(id: id);
-  }
-}
-
-// Use like this:
-ProductRoute(id: '123').go(context);
+  routes: [
+    GoRoute(path: '/', builder: (_, __) => HomeScreen()),
+    GoRoute(path: '/user/profile', builder: (_, __) => ProfileScreen()),
+    GoRoute(path: '/admin/dashboard', builder: (_, __) => AdminDashboard()),
+    GoRoute(path: '/unauthorized', builder: (_, __) => UnauthorizedScreen()),
+  ],
+);
 ```
 
 ---
@@ -691,24 +413,10 @@ ProductRoute(id: '123').go(context);
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│               GOROUTER ADVANCED CHEAT SHEET                  │
+│               ROUTE GUARDS CHEAT SHEET                       │
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
-│  NESTED ROUTES:                                             │
-│  GoRoute(                                                   │
-│    path: '/settings',                                       │
-│    routes: [                                                │
-│      GoRoute(path: 'profile', ...),  // /settings/profile   │
-│    ],                                                       │
-│  )                                                          │
-│                                                             │
-│  SHELL ROUTE (persistent UI):                               │
-│  ShellRoute(                                                │
-│    builder: (ctx, state, child) => Shell(child: child),     │
-│    routes: [...],                                           │
-│  )                                                          │
-│                                                             │
-│  AUTH REDIRECT:                                             │
+│  GLOBAL REDIRECT:                                           │
 │  GoRouter(                                                  │
 │    refreshListenable: authState,                            │
 │    redirect: (ctx, state) {                                 │
@@ -717,12 +425,33 @@ ProductRoute(id: '123').go(context);
 │    },                                                       │
 │  )                                                          │
 │                                                             │
-│  CUSTOM TRANSITIONS:                                        │
-│  pageBuilder: (ctx, state) => CustomTransitionPage(...)     │
+│  ROUTE-LEVEL REDIRECT:                                      │
+│  GoRoute(                                                   │
+│    path: '/admin',                                          │
+│    redirect: (ctx, state) {                                 │
+│      if (!isAdmin) return '/unauthorized';                  │
+│      return null;                                           │
+│    },                                                       │
+│  )                                                          │
+│                                                             │
+│  REFRESH ON CHANGE:                                         │
+│  Use ChangeNotifier or ValueNotifier with refreshListenable │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-[← GoRouter Basics](./04-GoRouterBasics.md) | [Next: Deep Linking →](./06-DeepLinking.md)
+## Continue Learning
+
+Excellent! Now you know how to protect routes. Next, let's learn about query parameters and transitions!
+
+**Continue to:** [Query Parameters →](05c-QueryParams.md)
+
+---
+
+## Navigation
+
+⬅️ **Previous:** [Nested Routes](05a-NestedRoutes.md)
+⬆️ **Back to:** [Learning Path](00-LearningPath.md)
+➡️ **Next:** [Query Parameters](05c-QueryParams.md)

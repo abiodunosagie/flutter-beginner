@@ -446,4 +446,7 @@ A widget is the basic building block of Flutter UI. Everything visible (and some
 
 ---
 
-**Continue to:** `02-WidgetBasics.md`
+## Navigation
+
+⬆️ **Back to:** [Learning Path](00-LearningPath.md)
+➡️ **Next:** [Understanding Widgets - Introduction](02a-WidgetIntro.md)

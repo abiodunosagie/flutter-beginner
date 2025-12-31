@@ -532,4 +532,11 @@ MaterialApp(
 
 ---
 
-[← Basic Navigation](./01-BasicNavigation.md) | [Next: Passing Data →](./03-PassingData.md)
+
+---
+
+## Navigation
+
+⬅️ **Previous:** [Basic Navigation](01-BasicNavigation.md)
+⬆️ **Back to:** [Learning Path](00-LearningPath.md)
+➡️ **Next:** [Passing Basics](03a-PassingBasics.md)

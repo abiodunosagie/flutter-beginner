@@ -527,4 +527,7 @@ Congratulations! You now understand three major state management solutions. Next
 
 ---
 
-**Continue to:** `../Examples/Example01-ProviderCounter.dart`
+## Navigation
+
+⬅️ **Previous:** [BLoC Testing](07c-BlocTesting.md)
+⬆️ **Back to:** [Learning Path](00-LearningPath.md)

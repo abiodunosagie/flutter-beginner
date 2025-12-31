@@ -1,283 +1,17 @@
-# Passing Data Between Screens
+# Returning Data from Screens
 
-Learn how to send information from one screen to another!
+Learn how to send data back when navigating backwards!
 
 ---
 
-## Why Pass Data?
+## What is Returning Data?
 
 ### Think of it Like This
 
-Imagine you're at a restaurant:
-- You ORDER food (Screen A sends data)
-- The KITCHEN receives your order (Screen B receives data)
-- After cooking, the kitchen RETURNS your food (Screen B sends data back)
-
-```
-┌─────────────────┐         order: "Pizza"        ┌─────────────────┐
-│                 │ ─────────────────────────────>│                 │
-│   CUSTOMER      │                               │    KITCHEN      │
-│   (Screen A)    │<───────────────────────────── │   (Screen B)    │
-│                 │         food: "🍕"            │                 │
-└─────────────────┘                               └─────────────────┘
-```
-
----
-
-## Method 1: Constructor Parameters (Simplest)
-
-### Passing Data FORWARD
-
-```dart
-// When navigating, pass data to the constructor
-Navigator.push(
-  context,
-  MaterialPageRoute(
-    builder: (context) => DetailsScreen(
-      productId: '123',        // Pass the ID
-      productName: 'Widget',   // Pass the name
-      price: 29.99,           // Pass the price
-    ),
-  ),
-);
-```
-
-### Receiving Data
-
-```dart
-class DetailsScreen extends StatelessWidget {
-  // Define parameters to receive
-  final String productId;
-  final String productName;
-  final double price;
-
-  // Constructor requires these parameters
-  const DetailsScreen({
-    required this.productId,
-    required this.productName,
-    required this.price,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(productName)),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Product ID: $productId'),
-            Text('Name: $productName'),
-            Text('Price: \$${price.toStringAsFixed(2)}'),
-          ],
-        ),
-      ),
-    );
-  }
-}
-```
-
-### Complete Example
-
-```dart
-import 'package:flutter/material.dart';
-
-// Product model
-class Product {
-  final String id;
-  final String name;
-  final double price;
-  final String emoji;
-
-  const Product({
-    required this.id,
-    required this.name,
-    required this.price,
-    required this.emoji,
-  });
-}
-
-// Sample products
-final products = [
-  Product(id: '1', name: 'Apple', price: 1.99, emoji: '🍎'),
-  Product(id: '2', name: 'Pizza', price: 9.99, emoji: '🍕'),
-  Product(id: '3', name: 'Coffee', price: 4.99, emoji: '☕'),
-];
-
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Passing Data Demo',
-      home: ProductListScreen(),
-    );
-  }
-}
-
-// ═══════════════════════════════════════════════════════════════
-// SCREEN 1: Product List
-// ═══════════════════════════════════════════════════════════════
-
-class ProductListScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Products')),
-      body: ListView.builder(
-        itemCount: products.length,
-        itemBuilder: (context, index) {
-          final product = products[index];
-          return ListTile(
-            leading: Text(product.emoji, style: TextStyle(fontSize: 40)),
-            title: Text(product.name),
-            subtitle: Text('\$${product.price}'),
-            trailing: Icon(Icons.chevron_right),
-            onTap: () {
-              // ─────────────────────────────────────────
-              // PASS DATA: Send entire product object
-              // ─────────────────────────────────────────
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ProductDetailScreen(product: product),
-                ),
-              );
-            },
-          );
-        },
-      ),
-    );
-  }
-}
-
-// ═══════════════════════════════════════════════════════════════
-// SCREEN 2: Product Details
-// ═══════════════════════════════════════════════════════════════
-
-class ProductDetailScreen extends StatelessWidget {
-  // Receive the product
-  final Product product;
-
-  const ProductDetailScreen({required this.product});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(product.name)),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(product.emoji, style: TextStyle(fontSize: 100)),
-            SizedBox(height: 20),
-            Text(product.name, style: TextStyle(fontSize: 28)),
-            Text(
-              '\$${product.price.toStringAsFixed(2)}',
-              style: TextStyle(fontSize: 24, color: Colors.green),
-            ),
-            SizedBox(height: 20),
-            Text('Product ID: ${product.id}'),
-          ],
-        ),
-      ),
-    );
-  }
-}
-```
-
----
-
-## Method 2: Named Route Arguments
-
-### Passing Data with Named Routes
-
-```dart
-// Navigate and pass arguments
-Navigator.pushNamed(
-  context,
-  '/details',
-  arguments: {
-    'productId': '123',
-    'productName': 'Widget',
-    'price': 29.99,
-  },
-);
-
-// OR pass an object
-Navigator.pushNamed(
-  context,
-  '/details',
-  arguments: product,  // Pass the whole Product object
-);
-```
-
-### Receiving Arguments
-
-```dart
-class DetailsScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // ─────────────────────────────────────────
-    // GET ARGUMENTS from the route
-    // ─────────────────────────────────────────
-    final args = ModalRoute.of(context)!.settings.arguments;
-
-    // If you passed a Map:
-    if (args is Map<String, dynamic>) {
-      final productId = args['productId'];
-      final productName = args['productName'];
-      final price = args['price'];
-
-      return Scaffold(
-        appBar: AppBar(title: Text(productName)),
-        body: Center(child: Text('Price: \$$price')),
-      );
-    }
-
-    // If you passed a Product object:
-    if (args is Product) {
-      return Scaffold(
-        appBar: AppBar(title: Text(args.name)),
-        body: Center(child: Text('Price: \$${args.price}')),
-      );
-    }
-
-    // Fallback if no arguments
-    return Scaffold(
-      appBar: AppBar(title: Text('Details')),
-      body: Center(child: Text('No product data')),
-    );
-  }
-}
-```
-
-### Better Approach: onGenerateRoute
-
-```dart
-MaterialApp(
-  onGenerateRoute: (settings) {
-    if (settings.name == '/details') {
-      // Extract the arguments
-      final product = settings.arguments as Product;
-
-      return MaterialPageRoute(
-        builder: (context) => ProductDetailScreen(product: product),
-      );
-    }
-
-    // Handle other routes...
-    return MaterialPageRoute(builder: (context) => HomeScreen());
-  },
-);
-```
-
----
-
-## Method 3: Returning Data (Going Back with Results)
-
-### The Scenario
+Imagine sending your friend to the store:
+- You SEND them with a shopping list (passing data forward)
+- They GO to the store
+- They COME BACK with groceries (returning data)
 
 ```
 Screen A: "Pick a color"
@@ -288,22 +22,29 @@ Screen B: Shows color options
     ▼ User picks red
     │
     ▼ pop(result: 'red')
-Screen A: Receives 'red'
+Screen A: Receives 'red' ← Data returned!
 ```
 
-### Sending Data BACK
+---
+
+## Method 3: Returning Data with pop()
+
+### The Basics
 
 ```dart
 // SCREEN B: Return data when going back
 Navigator.pop(context, 'red');  // Pass any data type
+
+// You can return:
 Navigator.pop(context, selectedProduct);
 Navigator.pop(context, {'color': 'red', 'size': 'large'});
+Navigator.pop(context, true);  // Often used for "yes/no" results
 ```
 
 ### Receiving Returned Data
 
 ```dart
-// SCREEN A: Wait for result
+// SCREEN A: Wait for result using await
 ElevatedButton(
   onPressed: () async {
     // push returns a Future that completes when popped
@@ -324,7 +65,9 @@ ElevatedButton(
 )
 ```
 
-### Complete Example: Color Picker
+---
+
+## Complete Example: Color Picker
 
 ```dart
 import 'package:flutter/material.dart';
@@ -461,47 +204,7 @@ class ColorPickerScreen extends StatelessWidget {
 
 ---
 
-## Data Passing Patterns Visual
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                 DATA PASSING PATTERNS                        │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  PATTERN 1: Forward Only                                    │
-│  ──────────────────────                                     │
-│  Screen A ────[data]────> Screen B                          │
-│  Example: Show product details                              │
-│                                                             │
-│  PATTERN 2: Round Trip                                      │
-│  ─────────────────────                                      │
-│  Screen A ────[push]────> Screen B                          │
-│  Screen A <───[result]─── Screen B                          │
-│  Example: Pick a color, select an item                      │
-│                                                             │
-│  PATTERN 3: Chain                                           │
-│  ────────────────────                                       │
-│  Screen A ──> Screen B ──> Screen C                         │
-│      │           │            │                             │
-│    data1       data2        data3                           │
-│  Example: Wizard/multi-step form                            │
-│                                                             │
-│  PATTERN 4: Broadcast (State Management)                    │
-│  ──────────────────────────────────────                     │
-│       ┌─────────────────────┐                               │
-│       │   Shared State      │                               │
-│       │  (Provider/Bloc)    │                               │
-│       └─────────────────────┘                               │
-│         ↑       ↑       ↑                                   │
-│        A       B       C                                    │
-│  Example: Shopping cart, user auth                          │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
-```
-
----
-
-## Complete Example: Product Selection Flow
+## Real-World Example: Shopping Cart
 
 ```dart
 import 'package:flutter/material.dart';
@@ -744,39 +447,166 @@ class CartScreen extends StatelessWidget {
 
 ---
 
-## Summary
+## Data Passing Patterns
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                  PASSING DATA CHEAT SHEET                    │
+│                 DATA PASSING PATTERNS                        │
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
-│  SENDING DATA FORWARD:                                      │
+│  PATTERN 1: Forward Only                                    │
+│  ──────────────────────                                     │
+│  Screen A ────[data]────> Screen B                          │
+│  Example: Show product details                              │
+│                                                             │
+│  PATTERN 2: Round Trip                                      │
 │  ─────────────────────                                      │
+│  Screen A ────[push]────> Screen B                          │
+│  Screen A <───[result]─── Screen B                          │
+│  Example: Pick a color, select an item                      │
 │                                                             │
-│  // Via constructor (recommended)                           │
-│  Navigator.push(                                            │
-│    context,                                                 │
-│    MaterialPageRoute(                                       │
-│      builder: (context) => DetailScreen(item: item),        │
-│    ),                                                       │
-│  );                                                         │
+│  PATTERN 3: Chain                                           │
+│  ────────────────────                                       │
+│  Screen A ──> Screen B ──> Screen C                         │
+│      │           │            │                             │
+│    data1       data2        data3                           │
+│  Example: Wizard/multi-step form                            │
 │                                                             │
-│  // Via named route arguments                               │
-│  Navigator.pushNamed(context, '/details', arguments: item); │
-│                                                             │
-│  RETURNING DATA:                                            │
-│  ───────────────                                            │
-│                                                             │
-│  // Screen B: Return data                                   │
-│  Navigator.pop(context, result);                            │
-│                                                             │
-│  // Screen A: Receive data                                  │
-│  final result = await Navigator.push<Type>(...);            │
+│  PATTERN 4: Broadcast (State Management)                    │
+│  ──────────────────────────────────────                     │
+│       ┌─────────────────────┐                               │
+│       │   Shared State      │                               │
+│       │  (Provider/Bloc)    │                               │
+│       └─────────────────────┘                               │
+│         ↑       ↑       ↑                                   │
+│        A       B       C                                    │
+│  Example: Shopping cart, user auth                          │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-[← Named Routes](./02-NamedRoutes.md) | [Next: GoRouter Basics →](./04-GoRouterBasics.md)
+## Type Safety with Generics
+
+### Specify Return Type
+
+```dart
+// Specify what type will be returned
+final String? color = await Navigator.push<String>(
+  context,
+  MaterialPageRoute(builder: (context) => ColorPicker()),
+);
+
+final bool? confirmed = await Navigator.push<bool>(
+  context,
+  MaterialPageRoute(builder: (context) => ConfirmDialog()),
+);
+
+final Product? selected = await Navigator.push<Product>(
+  context,
+  MaterialPageRoute(builder: (context) => ProductPicker()),
+);
+```
+
+---
+
+## Common Use Cases
+
+### 1. Form/Settings Changes
+
+```dart
+// Settings screen returns true if settings changed
+final changed = await Navigator.push<bool>(
+  context,
+  MaterialPageRoute(builder: (context) => SettingsScreen()),
+);
+
+if (changed == true) {
+  // Reload data with new settings
+  _loadData();
+}
+```
+
+### 2. Confirmation Dialogs
+
+```dart
+final confirmed = await Navigator.push<bool>(
+  context,
+  MaterialPageRoute(builder: (context) => DeleteConfirmation()),
+);
+
+if (confirmed == true) {
+  _deleteItem();
+}
+```
+
+### 3. Item Selection
+
+```dart
+final selected = await Navigator.push<Item>(
+  context,
+  MaterialPageRoute(builder: (context) => ItemPicker()),
+);
+
+if (selected != null) {
+  setState(() {
+    currentItem = selected;
+  });
+}
+```
+
+---
+
+## Summary
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│              RETURNING DATA CHEAT SHEET                      │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  SCREEN B: Return data                                      │
+│  ──────────────────────                                     │
+│  Navigator.pop(context, result);                            │
+│                                                             │
+│  Examples:                                                  │
+│  Navigator.pop(context, selectedColor);                     │
+│  Navigator.pop(context, true);                              │
+│  Navigator.pop(context, {'action': 'save', 'data': data});  │
+│                                                             │
+│  SCREEN A: Receive data                                     │
+│  ───────────────────────                                    │
+│  final result = await Navigator.push<Type>(                 │
+│    context,                                                 │
+│    MaterialPageRoute(builder: (c) => ScreenB()),            │
+│  );                                                         │
+│                                                             │
+│  if (result != null) {                                      │
+│    // Use the returned data                                 │
+│  }                                                          │
+│                                                             │
+│  TYPE SAFETY:                                               │
+│  ────────────                                               │
+│  Use generics to specify return type:                       │
+│  await Navigator.push<String>(...)                          │
+│  await Navigator.push<bool>(...)                            │
+│  await Navigator.push<Product>(...)                         │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Continue Learning
+
+Excellent! You now know all three methods of passing data. Next, let's learn about GoRouter, the modern navigation solution!
+
+**Continue to:** [GoRouter Setup →](04a-GoRouterSetup.md)
+
+---
+
+## Navigation
+
+⬅️ **Previous:** [Route Arguments](03b-RouteArguments.md)
+⬆️ **Back to:** [Learning Path](00-LearningPath.md)
+➡️ **Next:** [GoRouter Setup](04a-GoRouterSetup.md)

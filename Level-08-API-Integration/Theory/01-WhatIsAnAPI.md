@@ -397,3 +397,10 @@ Every API should have documentation that tells you:
 ---
 
 [← Back to Level 08 README](../README.md) | [Next: HTTP Methods →](./02-HTTPMethods.md)
+
+---
+
+## Navigation
+
+⬆️ **Back to:** [Learning Path](00-LearningPath.md)
+➡️ **Next:** [HTTP Methods](02-HTTPMethods.md)
