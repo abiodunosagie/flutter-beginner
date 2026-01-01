@@ -60,12 +60,19 @@ print(squares);  // [0, 1, 4, 9, 16]
 
 ### By Index
 
+Lists use **zero-based indexing**. This means the first item is at position 0, not position 1.
+
+**Why zero?** Think of the index as "how many items to skip from the start":
+- Skip 0 items → first item
+- Skip 1 item → second item
+- Skip 2 items → third item
+
 ```dart
 var fruits = ['apple', 'banana', 'cherry'];
 
-print(fruits[0]);  // apple (first)
-print(fruits[1]);  // banana (second)
-print(fruits[2]);  // cherry (third)
+print(fruits[0]);  // apple (first - skip 0)
+print(fruits[1]);  // banana (second - skip 1)
+print(fruits[2]);  // cherry (third - skip 2)
 
 // Negative index? ❌ Error!
 // print(fruits[-1]);
@@ -78,6 +85,23 @@ Index:    0        1         2
         ┌────┐  ┌──────┐  ┌──────┐
 List:   │apple│  │banana│  │cherry│
         └────┘  └──────┘  └──────┘
+
+Length = 3
+Last valid index = Length - 1 = 2
+```
+
+### Common Beginner Mistake
+
+```dart
+var fruits = ['apple', 'banana', 'cherry'];  // length is 3
+
+// ❌ WRONG: fruits[3] does NOT exist!
+// The last item is at index 2, not 3
+// print(fruits[3]);  // Error: RangeError
+
+// ✅ RIGHT: Last item is at length - 1
+print(fruits[fruits.length - 1]);  // cherry
+print(fruits[2]);  // cherry
 ```
 
 ### First and Last
