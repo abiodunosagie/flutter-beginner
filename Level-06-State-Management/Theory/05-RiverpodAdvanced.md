@@ -796,8 +796,8 @@ final userProvider = FutureProvider.family<User, String>((ref, userId) {
 
 ---
 
-**Next:** Learn BLoC pattern for event-driven state management!
+**Next:** Learn professional Riverpod patterns used in production apps!
 
 ---
 
-**Continue to:** `06-BlocBasics.md`
+**Continue to:** `05b-RiverpodProPatterns.md`
