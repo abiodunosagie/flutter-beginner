@@ -1,22 +1,22 @@
-# Flutter Mastery: Complete Beginner to Pro 🚀
+# Flutter Mastery: Complete Beginner to Pro 
 
 Welcome! This is your complete guide to learning Flutter from **absolute zero** to building professional apps. No prior programming experience needed!
 
 ---
 
-## 👋 New to Programming? Start Here!
+##  New to Programming? Start Here!
 
 If you've never coded before, **don't worry!** This course is designed for you. We start from "What is programming?" and build up step by step.
 
 ### What You Need:
-- ✅ A computer (Windows, Mac, or Linux)
-- ✅ Internet connection
-- ✅ Willingness to learn
-- ❌ NO prior programming experience needed!
+-  A computer (Windows, Mac, or Linux)
+-  Internet connection
+-  Willingness to learn
+-  NO prior programming experience needed!
 
 ---
 
-## 🎯 How to Use This Course (Read This First!)
+##  How to Use This Course (Read This First!)
 
 ### Step 1: Set Up Your Computer
 1. Open the file: `GETTING_STARTED.md` (in this folder)
@@ -42,10 +42,10 @@ If you've never coded before, **don't worry!** This course is designed for you. 
 
 ---
 
-## 📚 Complete Course Roadmap
+##  Complete Course Roadmap
 
-### **Level 1: Dart Fundamentals** 🟢 START HERE!
-**⏱️ Time**: 4-5 hours | **📊 Difficulty**: Absolute Beginner
+### **Level 1: Dart Fundamentals**  START HERE!
+** Time**: 4-5 hours | ** Difficulty**: Absolute Beginner
 
 Your first steps into programming! Learn the basics of Dart.
 
@@ -61,12 +61,12 @@ Your first steps into programming! Learn the basics of Dart.
 - Simple calculator
 - Mad Libs story game
 
-**📂 Start Here:** `Level-01-Dart-Fundamentals/README.md`
+** Start Here:** `Level-01-Dart-Fundamentals/README.md`
 
 ---
 
-### **Level 2: Control Flow** 🟢 Beginner
-**⏱️ Time**: 4-5 hours | **📊 Difficulty**: Beginner
+### **Level 2: Control Flow**  Beginner
+** Time**: 4-5 hours | ** Difficulty**: Beginner
 
 Make decisions and repeat actions in your code.
 
@@ -81,12 +81,12 @@ Make decisions and repeat actions in your code.
 - Number guessing game
 - Pattern printer
 
-**📂 Go to:** `Level-02-Control-Flow/README.md`
+** Go to:** `Level-02-Control-Flow/README.md`
 
 ---
 
-### **Level 3: Functions & Collections** 🟡 Beginner-Intermediate
-**⏱️ Time**: 5-6 hours | **📊 Difficulty**: Beginner-Intermediate
+### **Level 3: Functions & Collections**  Beginner-Intermediate
+** Time**: 5-6 hours | ** Difficulty**: Beginner-Intermediate
 
 Organize your code and work with groups of data.
 
@@ -101,12 +101,12 @@ Organize your code and work with groups of data.
 - Contact book
 - Shopping cart
 
-**📂 Go to:** `Level-03-Functions-Collections/README.md`
+** Go to:** `Level-03-Functions-Collections/README.md`
 
 ---
 
-### **Level 4: Object-Oriented Programming** 🟡 Intermediate
-**⏱️ Time**: 6-7 hours | **📊 Difficulty**: Intermediate
+### **Level 4: Object-Oriented Programming**  Intermediate
+** Time**: 6-7 hours | ** Difficulty**: Intermediate
 
 Think in objects - model real-world things in code!
 
@@ -121,14 +121,14 @@ Think in objects - model real-world things in code!
 - Employee management
 - Game characters with abilities
 
-**📂 Go to:** `Level-04-OOP-Fundamentals/README.md`
+** Go to:** `Level-04-OOP-Fundamentals/README.md`
 
 ---
 
-### **Level 5: Flutter Foundations** 🟡 Intermediate
-**⏱️ Time**: 6-7 hours | **📊 Difficulty**: Intermediate
+### **Level 5: Flutter Foundations**  Intermediate
+** Time**: 6-7 hours | ** Difficulty**: Intermediate
 
-🎉 **Your first Flutter apps!** Build actual mobile apps!
+ **Your first Flutter apps!** Build actual mobile apps!
 
 **What You'll Learn:**
 - What is Flutter?
@@ -141,12 +141,12 @@ Think in objects - model real-world things in code!
 - Business card app
 - Interactive counter app
 
-**📂 Go to:** `Level-05-Flutter-Foundations/README.md`
+** Go to:** `Level-05-Flutter-Foundations/README.md`
 
 ---
 
-### **Level 6: State Management** 🟠 Intermediate-Advanced
-**⏱️ Time**: 7-8 hours | **📊 Difficulty**: Intermediate-Advanced
+### **Level 6: State Management**  Intermediate-Advanced
+** Time**: 7-8 hours | ** Difficulty**: Intermediate-Advanced
 
 Make your apps interactive and responsive!
 
@@ -163,12 +163,12 @@ Make your apps interactive and responsive!
 - Todo app with Riverpod
 - Theme switcher
 
-**📂 Go to:** `Level-06-State-Management/README.md`
+** Go to:** `Level-06-State-Management/README.md`
 
 ---
 
-### **Level 7: Navigation & Routing** 🟠 Intermediate-Advanced
-**⏱️ Time**: 5-6 hours | **📊 Difficulty**: Intermediate-Advanced
+### **Level 7: Navigation & Routing**  Intermediate-Advanced
+** Time**: 5-6 hours | ** Difficulty**: Intermediate-Advanced
 
 Navigate between multiple screens in your app.
 
@@ -183,12 +183,12 @@ Navigate between multiple screens in your app.
 - Login flow
 - Tab-based navigation
 
-**📂 Go to:** `Level-07-Navigation-Routing/README.md`
+** Go to:** `Level-07-Navigation-Routing/README.md`
 
 ---
 
-### **Level 8: API Integration** 🔴 Advanced
-**⏱️ Time**: 7-8 hours | **📊 Difficulty**: Advanced
+### **Level 8: API Integration**  Advanced
+** Time**: 7-8 hours | ** Difficulty**: Advanced
 
 Connect to the internet! Fetch real data from APIs.
 
@@ -204,12 +204,12 @@ Connect to the internet! Fetch real data from APIs.
 - News reader
 - GitHub repository browser
 
-**📂 Go to:** `Level-08-API-Integration/README.md`
+** Go to:** `Level-08-API-Integration/README.md`
 
 ---
 
-### **Level 9: Advanced Features** 🔴 Advanced
-**⏱️ Time**: 5-6 hours | **📊 Difficulty**: Advanced
+### **Level 9: Advanced Features**  Advanced
+** Time**: 5-6 hours | ** Difficulty**: Advanced
 
 Add powerful features to your apps.
 
@@ -225,12 +225,12 @@ Add powerful features to your apps.
 - Offline notes app
 - Task manager
 
-**📂 Go to:** `Level-09-Advanced-Features/README.md`
+** Go to:** `Level-09-Advanced-Features/README.md`
 
 ---
 
-### **Level 10: Final Project** 🏆 Capstone
-**⏱️ Time**: 8-10 hours | **📊 Difficulty**: Advanced
+### **Level 10: Final Project**  Capstone
+** Time**: 8-10 hours | ** Difficulty**: Advanced
 
 Build a complete app using everything you've learned!
 
@@ -240,12 +240,12 @@ Build a complete app using everything you've learned!
 - Test your app
 - Polish and finish
 
-**📂 Go to:** `Level-10-Final-Project/README.md`
+** Go to:** `Level-10-Final-Project/README.md`
 
 ---
 
-### **Level 11: Firebase Integration** 🔴 Advanced
-**⏱️ Time**: 8-10 hours | **📊 Difficulty**: Advanced
+### **Level 11: Firebase Integration**  Advanced
+** Time**: 8-10 hours | ** Difficulty**: Advanced
 
 Add backend features with Google Firebase!
 
@@ -261,12 +261,12 @@ Add backend features with Google Firebase!
 - Real-time chat foundation
 - File upload system
 
-**📂 Go to:** `Level-11-Firebase-Integration/README.md`
+** Go to:** `Level-11-Firebase-Integration/README.md`
 
 ---
 
-### **Level 12: Platform Features** 🔴 Advanced
-**⏱️ Time**: 5-6 hours | **📊 Difficulty**: Advanced
+### **Level 12: Platform Features**  Advanced
+** Time**: 5-6 hours | ** Difficulty**: Advanced
 
 Access device features (camera, location, etc.)
 
@@ -281,12 +281,12 @@ Access device features (camera, location, etc.)
 - Location-based app
 - Notification system
 
-**📂 Go to:** `Level-12-Platform-Features/README.md`
+** Go to:** `Level-12-Platform-Features/README.md`
 
 ---
 
-### **Level 13: Testing & Quality** 🔴 Advanced
-**⏱️ Time**: 5-6 hours | **📊 Difficulty**: Advanced
+### **Level 13: Testing & Quality**  Advanced
+** Time**: 5-6 hours | ** Difficulty**: Advanced
 
 Write reliable, bug-free code!
 
@@ -301,12 +301,12 @@ Write reliable, bug-free code!
 - Test suite for API client
 - Widget test collection
 
-**📂 Go to:** `Level-13-Testing-Quality/README.md`
+** Go to:** `Level-13-Testing-Quality/README.md`
 
 ---
 
-### **Level 14: Animations & Polish** 🔴 Advanced
-**⏱️ Time**: 5-6 hours | **📊 Difficulty**: Advanced
+### **Level 14: Animations & Polish**  Advanced
+** Time**: 5-6 hours | ** Difficulty**: Advanced
 
 Make your apps beautiful and smooth!
 
@@ -321,12 +321,12 @@ Make your apps beautiful and smooth!
 - Card flip animation
 - Loading animations
 
-**📂 Go to:** `Level-14-Animations-Polish/README.md`
+** Go to:** `Level-14-Animations-Polish/README.md`
 
 ---
 
-### **Level 15: App Deployment** 🔴 Advanced
-**⏱️ Time**: 4-5 hours | **📊 Difficulty**: Advanced
+### **Level 15: App Deployment**  Advanced
+** Time**: 4-5 hours | ** Difficulty**: Advanced
 
 Publish your app to app stores!
 
@@ -341,12 +341,12 @@ Publish your app to app stores!
 - Release-ready app bundle
 - Store listing materials
 
-**📂 Go to:** `Level-15-App-Deployment/README.md`
+** Go to:** `Level-15-App-Deployment/README.md`
 
 ---
 
-### **Level 16: Professional Patterns** ⚫ Expert
-**⏱️ Time**: 6-7 hours | **📊 Difficulty**: Expert
+### **Level 16: Professional Patterns**  Expert
+** Time**: 6-7 hours | ** Difficulty**: Expert
 
 Master production-level code architecture!
 
@@ -361,12 +361,12 @@ Master production-level code architecture!
 - Production-ready architecture
 - Scalable app template
 
-**📂 Go to:** `Level-16-Professional-Patterns/README.md`
+** Go to:** `Level-16-Professional-Patterns/README.md`
 
 ---
 
-### **Level 17: Interview Preparation** 🎯 NEW!
-**⏱️ Time**: 12-15 hours | **📊 Difficulty**: All Levels
+### **Level 17: Interview Preparation**  NEW!
+** Time**: 12-15 hours | ** Difficulty**: All Levels
 
 Ace your Flutter developer interviews!
 
@@ -385,11 +385,11 @@ Ace your Flutter developer interviews!
 - Navigation patterns
 - Algorithm problems
 
-**📂 Go to:** `Level-17-Interview-Prep/README.md`
+** Go to:** `Level-17-Interview-Prep/README.md`
 
 ---
 
-## 🎓 How Long Will This Take?
+##  How Long Will This Take?
 
 ### Realistic Timeline:
 
@@ -437,9 +437,9 @@ Level-XX-Topic-Name/
 
 ---
 
-## 💡 Learning Tips for Beginners
+##  Learning Tips for Beginners
 
-### ✅ DO:
+###  DO:
 - **Type code yourself** - Don't copy-paste!
 - **Read error messages** - They help you learn
 - **Take breaks** - Your brain needs rest
@@ -447,7 +447,7 @@ Level-XX-Topic-Name/
 - **Experiment** - Change values, see what happens
 - **Build your own projects** - Best way to learn!
 
-### ❌ DON'T:
+###  DON'T:
 - **Rush through** - Understanding > Speed
 - **Skip exercises** - They're crucial for learning
 - **Compare yourself to others** - Everyone learns at their own pace
@@ -456,7 +456,7 @@ Level-XX-Topic-Name/
 
 ---
 
-## 🆘 When You Get Stuck
+##  When You Get Stuck
 
 ### It's Normal to Feel:
 - Confused (everyone does!)
@@ -473,37 +473,37 @@ Level-XX-Topic-Name/
 
 ---
 
-## 🎯 Learning Goals by Level
+##  Learning Goals by Level
 
 ### After Level 1-4 (Dart Basics)
-✅ Understand variables, functions, and objects
-✅ Write simple Dart programs
-✅ Comfortable with code syntax
+ Understand variables, functions, and objects
+ Write simple Dart programs
+ Comfortable with code syntax
 
 ### After Level 5-7 (Flutter Basics)
-✅ Build basic Flutter UIs
-✅ Create multi-screen apps
-✅ Understand widgets and state
+ Build basic Flutter UIs
+ Create multi-screen apps
+ Understand widgets and state
 
 ### After Level 8-10 (Intermediate)
-✅ Fetch data from APIs
-✅ Save data locally
-✅ Build a complete app
+ Fetch data from APIs
+ Save data locally
+ Build a complete app
 
 ### After Level 11-15 (Advanced)
-✅ Add authentication
-✅ Use device features
-✅ Deploy to app stores
-✅ **Job-ready for junior positions!**
+ Add authentication
+ Use device features
+ Deploy to app stores
+ **Job-ready for junior positions!**
 
 ### After Level 16-17 (Expert)
-✅ Write production-level code
-✅ Ace technical interviews
-✅ **Job-ready for mid-level positions!**
+ Write production-level code
+ Ace technical interviews
+ **Job-ready for mid-level positions!**
 
 ---
 
-## 🚀 Quick Start Guide
+##  Quick Start Guide
 
 ### If You're a Complete Beginner:
 ```
@@ -524,7 +524,7 @@ Week 3+: Level 10-16 (Advanced topics)
 
 ---
 
-## 📊 Progress Tracker
+##  Progress Tracker
 
 Use this to track your journey:
 
@@ -548,20 +548,20 @@ Use this to track your journey:
 
 ---
 
-## 🏆 What You'll Achieve
+##  What You'll Achieve
 
 By completing this course, you will:
 
-✅ **Build Flutter apps from scratch**
-✅ **Understand Flutter & Dart deeply**
-✅ **Deploy apps to Google Play & App Store**
-✅ **Write clean, professional code**
-✅ **Pass Flutter technical interviews**
-✅ **Be job-ready as a Flutter developer**
+ **Build Flutter apps from scratch**
+ **Understand Flutter & Dart deeply**
+ **Deploy apps to Google Play & App Store**
+ **Write clean, professional code**
+ **Pass Flutter technical interviews**
+ **Be job-ready as a Flutter developer**
 
 ---
 
-## 📌 Important Files in This Folder
+##  Important Files in This Folder
 
 - **README.md** (this file) - Course overview and roadmap
 - **GETTING_STARTED.md** - Tool setup instructions
@@ -570,23 +570,23 @@ By completing this course, you will:
 
 ---
 
-## 💬 Final Words
+##  Final Words
 
 **Everyone who codes today was once a complete beginner.**
 
 This course takes you from zero knowledge to job-ready Flutter developer. But here's the secret: **you have to show up and do the work.**
 
 ### Remember:
-- 🐢 **Slow and steady wins** - Don't rush
-- 💪 **Consistency beats intensity** - Code a little every day
-- 🤔 **Confusion is learning** - It means your brain is growing
-- 🎉 **Celebrate small wins** - Every completed lesson is progress!
+-  **Slow and steady wins** - Don't rush
+-  **Consistency beats intensity** - Code a little every day
+-  **Confusion is learning** - It means your brain is growing
+-  **Celebrate small wins** - Every completed lesson is progress!
 
-**You can do this. Welcome to your Flutter journey!** 🚀
+**You can do this. Welcome to your Flutter journey!** 
 
 ---
 
-## ▶️ Ready to Start?
+##  Ready to Start?
 
 ### Step 1: Set up your computer
 👉 **Open `GETTING_STARTED.md`** in this folder
@@ -594,4 +594,4 @@ This course takes you from zero knowledge to job-ready Flutter developer. But he
 ### Step 2: Begin your journey
 👉 **Open `Level-01-Dart-Fundamentals/README.md`**
 
-**Let's build amazing apps together!** 🎯
+**Let's build amazing apps together!** 
