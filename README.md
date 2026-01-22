@@ -365,7 +365,7 @@ Master production-level code architecture!
 
 ---
 
-### **Level 17: Interview Preparation**  NEW!
+### **Level 17: Interview Preparation**
 ** Time**: 12-15 hours | ** Difficulty**: All Levels
 
 Ace your Flutter developer interviews!
@@ -389,6 +389,29 @@ Ace your Flutter developer interviews!
 
 ---
 
+### **Level 18: MCP & AI Integration** NEW!
+** Time**: 6-8 hours | ** Difficulty**: Advanced
+
+Learn to integrate AI capabilities into your Flutter apps!
+
+**What You'll Learn:**
+- MCP (Model Context Protocol) fundamentals
+- MCP vs Traditional APIs
+- MCP architecture (Host, Client, Server)
+- Building MCP servers (Node.js and Python)
+- Flutter AI integration patterns
+- Claude API with tool use
+
+**What You'll Build:**
+- Custom MCP servers
+- AI-powered chat application
+- Currency converter MCP server
+- Flutter app with AI tools
+
+** Go to:** `Level-18-MCP-AI-Integration/README.md`
+
+---
+
 ##  How Long Will This Take?
 
 ### Realistic Timeline:
@@ -400,7 +423,7 @@ Ace your Flutter developer interviews!
 | **Intensive** | 20 hours | 5-6 weeks | ~1.5 months |
 | **Full-time** | 40 hours | 2-3 weeks | ~1 month |
 
-**Total Course Time:** 100-120 hours
+**Total Course Time:** 110-130 hours
 
 **Recommendation for Beginners:** Take 3-6 months. Quality over speed!
 
@@ -496,10 +519,11 @@ Level-XX-Topic-Name/
  Deploy to app stores
  **Job-ready for junior positions!**
 
-### After Level 16-17 (Expert)
+### After Level 16-18 (Expert)
  Write production-level code
  Ace technical interviews
- **Job-ready for mid-level positions!**
+ Integrate AI capabilities
+ **Job-ready for mid-level and senior positions!**
 
 ---
 
@@ -545,6 +569,7 @@ Use this to track your journey:
 - [ ] **Level 15:** App Deployment
 - [ ] **Level 16:** Professional Patterns
 - [ ] **Level 17:** Interview Prep
+- [ ] **Level 18:** MCP & AI Integration
 
 ---
 
@@ -567,6 +592,7 @@ By completing this course, you will:
 - **GETTING_STARTED.md** - Tool setup instructions
 - **Level-01-Dart-Fundamentals/** - Where you begin!
 - **Level-17-Interview-Prep/** - Interview preparation
+- **Level-18-MCP-AI-Integration/** - AI integration (advanced)
 
 ---
 
