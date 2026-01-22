@@ -296,6 +296,29 @@ After each theory file, practice with the matching PART exercises to work with r
 
 ---
 
+#### Step 8d: Folder Structure Guide
+📖 **[09d-FolderStructureGuide.md](09d-FolderStructureGuide.md)**
+- What goes in each folder
+- models/, services/, repositories/, controllers/, screens/, widgets/
+- Clear examples for each folder
+- Common mistakes to avoid
+
+**Time:** 20 minutes
+
+---
+
+#### Step 8e: Dependency Injection
+📖 **[09e-DependencyInjection.md](09e-DependencyInjection.md)**
+- What is dependency injection and WHY
+- Step-by-step explanation
+- Abstract classes explained simply
+- Service Locator pattern
+- Complete wiring example
+
+**Time:** 25 minutes
+
+---
+
 ## Total Time for Level 8 Theory
 
 **Estimated:** 8 - 10 hours (including practice)
