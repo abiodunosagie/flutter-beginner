@@ -227,6 +227,220 @@ Variable names can't start with a number. Should be `String first = 'first';`
 
 ---
 
+## Assignment
+
+### Problem 1: Receipt printer
+
+You are building a checkout receipt. Declare these variables, then print a receipt that uses string interpolation:
+
+- `String storeName = 'Evvy Hairs'`
+- `String customer = 'Ada'`
+- `int items = 3`
+- `double total = 24500.50`
+
+Output should look like:
+```
+Welcome to Evvy Hairs
+Customer: Ada
+You purchased 3 items
+Total: 24500.5 naira
+```
+
+### Problem 2: Predict the output
+
+```dart
+void main() {
+  int a = 10;
+  int b = 3;
+
+  print('a + b = ${a + b}');
+  print('a - b = ${a - b}');
+  print('a * b = ${a * b}');
+  print('a / b = ${a / b}');
+  print('a ~/ b = ${a ~/ b}');
+  print('a % b = ${a % b}');
+}
+```
+
+### Problem 3: BMI calculator
+
+Write a program that calculates a person's BMI given their weight in kg and height in metres. Use this formula:
+
+```
+BMI = weight / (height * height)
+```
+
+Use `double` variables. Print the result rounded to 1 decimal place using `.toStringAsFixed(1)`.
+
+Test with `weight = 70.0` and `height = 1.75`. Expected BMI: 22.9.
+
+### Problem 4: Combine and reassign
+
+What is the value of `result` at the end?
+
+```dart
+void main() {
+  int x = 5;
+  int y = 10;
+  String result = '';
+
+  result = result + 'x is $x';
+  result = result + ', ';
+  result = result + 'y is $y';
+  result = result + ', sum is ${x + y}';
+
+  print(result);
+}
+```
+
+### Problem 5: Total cost with tax
+
+Given:
+
+```dart
+double itemPrice = 1500;
+int quantity = 4;
+double taxRate = 0.075;
+```
+
+Calculate and print:
+- The subtotal (price * quantity).
+- The tax amount (subtotal * taxRate).
+- The grand total (subtotal + tax).
+
+All amounts should be formatted to 2 decimal places.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Receipt printer
+
+```dart
+void main() {
+  String storeName = 'Evvy Hairs';
+  String customer = 'Ada';
+  int items = 3;
+  double total = 24500.50;
+
+  print('Welcome to $storeName');
+  print('Customer: $customer');
+  print('You purchased $items items');
+  print('Total: $total naira');
+}
+```
+
+The trick: each `print` uses `$variableName` to drop the value into the string. No `+` needed for joining. This is one of the best things about Dart strings.
+
+Note about the total: when you assign `24500.50`, Dart drops the trailing zero and stores `24500.5`. That is just how doubles work. To force two decimals on display, use `total.toStringAsFixed(2)`. We will see this in problem 5.
+
+### Problem 2: Predict the output
+
+```
+a + b = 13
+a - b = 7
+a * b = 30
+a / b = 3.3333333333333335
+a ~/ b = 3
+a % b = 1
+```
+
+How each operation works:
+
+- `+`, `-`, `*` are familiar. Result types: int + int = int.
+- `/` always returns a double, even for whole-number division. `10 / 3` is `3.333...`.
+- `~/` is integer division. The decimal part is dropped, not rounded. So `10 ~/ 3` is `3`, not `3.33`.
+- `%` is the remainder. After dividing 10 by 3, the remainder is 1.
+
+The `~/` and `%` are the most useful "less obvious" operators. You will use `%` to test even/odd: `n % 2 == 0` means n is even.
+
+### Problem 3: BMI calculator
+
+```dart
+void main() {
+  double weight = 70.0;
+  double height = 1.75;
+
+  double bmi = weight / (height * height);
+
+  print('BMI: ${bmi.toStringAsFixed(1)}');     // BMI: 22.9
+}
+```
+
+How this works:
+
+1. Calculate `height * height` (squared).
+2. Divide weight by that. Both are doubles, so the result is a double.
+3. `toStringAsFixed(1)` rounds the double to 1 decimal place and returns a String.
+
+For weight 70 and height 1.75:
+- 1.75 * 1.75 = 3.0625
+- 70 / 3.0625 = 22.857...
+- Rounded to 1 decimal: 22.9.
+
+### Problem 4: Combine and reassign
+
+`result` ends up as:
+
+```
+x is 5, y is 10, sum is 15
+```
+
+Trace:
+
+| Line | result after |
+|------|--------------|
+| start | '' |
+| `result + 'x is $x'` | 'x is 5' |
+| `result + ', '` | 'x is 5, ' |
+| `result + 'y is $y'` | 'x is 5, y is 10' |
+| `result + ', sum is ${x + y}'` | 'x is 5, y is 10, sum is 15' |
+
+The lesson: strings can be added with `+`. Each line takes the current string, appends new text, and assigns back. Step by step, the string grows. Interpolation `${x + y}` evaluates the expression inside `{ }` and inserts the result.
+
+In real code you would build this string in one step:
+
+```dart
+String result = 'x is $x, y is $y, sum is ${x + y}';
+```
+
+The exercise is meant to show how reassignment accumulates.
+
+### Problem 5: Total cost with tax
+
+```dart
+void main() {
+  double itemPrice = 1500;
+  int quantity = 4;
+  double taxRate = 0.075;
+
+  double subtotal = itemPrice * quantity;
+  double tax = subtotal * taxRate;
+  double grandTotal = subtotal + tax;
+
+  print('Subtotal: ${subtotal.toStringAsFixed(2)}');
+  print('Tax (7.5%): ${tax.toStringAsFixed(2)}');
+  print('Grand total: ${grandTotal.toStringAsFixed(2)}');
+}
+```
+
+Output:
+```
+Subtotal: 6000.00
+Tax (7.5%): 450.00
+Grand total: 6450.00
+```
+
+How each value is computed:
+
+- subtotal = 1500 * 4 = 6000
+- tax = 6000 * 0.075 = 450
+- grand total = 6000 + 450 = 6450
+
+`toStringAsFixed(2)` ensures every amount shows exactly two decimal places, even when the math gives a whole number. This is the standard format for currency.
+
+---
+
 **Next:** Learn about advanced variable concepts like `var`, `final`, and `const`!
 
 **Continue to:** `02d-VarFinalConst.md`

@@ -1,123 +1,104 @@
-# Return Values & Arrow Functions
+# Return Values: What A Function Hands Back
 
-## What Is a Return Value?
+## Why This Topic Exists
 
-A **return value** is what a function gives back after it finishes.
+A function that only does work (like `print`) is useful, but limited. The most powerful pattern in programming is:
+
+> Take some input, do some work, hand back a result.
+
+That "hand back a result" piece is the **return value**. A function that returns a value is one you can use as a building block in larger expressions.
+
+---
+
+## The Mental Model
+
+A function with a return value is like a **vending machine**:
+
+- You feed it inputs (arguments).
+- It does some work inside.
+- It hands you something back (the return value).
+
+Once you have what it returned, you can do anything with it: store it, print it, pass it to another function, or use it in a calculation.
+
+---
+
+## The Two Pieces That Must Match
 
 ```dart
 int add(int a, int b) {
-  return a + b;  // Give back the sum
-}
-
-void main() {
-  int result = add(5, 3);  // result gets 8
-  print(result);
+  return a + b;
 }
 ```
 
-Think of it like a vending machine:
-- You put in money (arguments)
-- Press a button (call function)
-- Get a snack (return value)
+Two pieces have to agree:
+
+1. The **return type** at the top, here `int`.
+2. The actual value passed to `return`, here `a + b`, which is an `int`.
+
+If they do not match, the program does not compile.
+
+```dart
+int add(int a, int b) {
+  return 'hello';     // ERROR: not an int
+}
+```
+
+This rule is your safety net. The compiler refuses to let you forget what your function is supposed to give back.
 
 ---
 
-## Return Types
-
-### Basic Return Types
+## Common Return Types
 
 ```dart
-// Returns an integer
-int getAge() {
-  return 25;
-}
-
-// Returns a double
-double getPrice() {
-  return 19.99;
-}
-
-// Returns a string
-String getName() {
-  return 'Alice';
-}
-
-// Returns a boolean
-bool isAdult(int age) {
-  return age >= 18;
-}
+int   age()   => 25;
+double price() => 19.99;
+String name()  => 'Ada';
+bool  isAdult(int age) => age >= 18;
+List<int>          numbers() => [1, 2, 3];
+Map<String, int>   scores()  => {'Ada': 95, 'Bola': 87};
 ```
 
-### Collection Return Types
-
-```dart
-// Returns a List
-List<int> getNumbers() {
-  return [1, 2, 3, 4, 5];
-}
-
-// Returns a Map
-Map<String, int> getScores() {
-  return {'Alice': 95, 'Bob': 87};
-}
-
-// Returns a Set
-Set<String> getUniqueNames() {
-  return {'Alice', 'Bob', 'Charlie'};
-}
-```
+The arrow syntax `=>` is the one-liner version of `{ return ...; }`. Both forms mean the same thing.
 
 ---
 
-## void: No Return Value
+## `void`: When Nothing Is Returned
 
-`void` means the function does something but doesn't give anything back.
+If your function does work but does not give a value back, the return type is `void`.
 
 ```dart
-void printMessage(String message) {
-  print(message);
-  // No return needed
-}
-
-void main() {
-  printMessage('Hello');  // Just does something
-
-  // ❌ Cannot save void
-  // var result = printMessage('Hello');  // Error!
+void log(String message) {
+  print('[LOG] $message');
 }
 ```
+
+You cannot store the result of a `void` function:
+
+```dart
+String x = log('hi');     // ERROR
+```
+
+You also do not need a `return` statement. The function ends when the last line runs.
 
 ---
 
-## The return Statement
+## `return` Stops The Function
 
-### Stops Function Execution
+The moment a `return` runs, the function exits. Any code after it is dead.
 
 ```dart
-int findFirstEven(List<int> numbers) {
-  for (int num in numbers) {
-    if (num % 2 == 0) {
-      return num;  // Found! Exit immediately
-    }
-  }
-  return -1;  // Not found
-}
-
-void main() {
-  var nums = [1, 3, 5, 4, 6, 8];
-  print(findFirstEven(nums));  // 4 (stopped at first even)
+int example() {
+  return 5;
+  print('this never prints');
 }
 ```
 
-### Early Return Pattern
-
-Use return to exit early when conditions aren't met:
+This is useful for **early exit** when something is wrong:
 
 ```dart
-String gradeStudent(int score) {
-  // Exit early if invalid
+String grade(int score) {
   if (score < 0 || score > 100) {
-    return 'Invalid score';
+    return 'Invalid';     // bail out, do not continue
   }
 
   if (score >= 90) return 'A';
@@ -128,56 +109,327 @@ String gradeStudent(int score) {
 }
 ```
 
+This pattern, "check the bad cases first and return early", is one of the most common shapes in clean code.
+
 ---
 
-## Nullable Return Types
+## Returning A "Maybe": Nullable Return Types
 
-Sometimes a function might not have a result:
+Sometimes a function might not have an answer. Add a `?` to the return type to say "this might be null":
 
 ```dart
 String? findUser(int id) {
-  if (id == 1) return 'Alice';
-  if (id == 2) return 'Bob';
-  return null;  // Not found
-}
-
-void main() {
-  String? user = findUser(5);
-
-  if (user != null) {
-    print('Found: $user');
-  } else {
-    print('User not found');
-  }
+  if (id == 1) return 'Ada';
+  if (id == 2) return 'Bola';
+  return null;     // not found
 }
 ```
 
-### Handling Nullable Returns
+When you call it, you handle both cases:
 
 ```dart
-void main() {
-  String? result = findUser(5);
+String? user = findUser(99);
 
-  // Option 1: Null check
-  if (result != null) {
-    print(result.toUpperCase());
-  }
+if (user != null) {
+  print('Found $user');
+} else {
+  print('No user');
+}
 
-  // Option 2: Default value
-  print(result ?? 'Unknown');
+// shorter, with the ?? operator from Level 1
+print(findUser(99) ?? 'No user');
+```
 
-  // Option 3: Null-aware call
-  print(result?.toUpperCase());
+`??` reads as "or use this default if the left side is null".
+
+This is the standard pattern for lookups, searches, and any function that may legitimately come up empty.
+
+---
+
+## Arrow Syntax (Recap From Functions Basics)
+
+If the body is a single expression, you can use `=>`:
+
+```dart
+// Long form
+bool isEven(int n) {
+  return n % 2 == 0;
+}
+
+// Short form
+bool isEven(int n) => n % 2 == 0;
+```
+
+Use the long form when:
+- You need multiple statements.
+- You want to add an early-return.
+
+Otherwise prefer the arrow form. It is shorter and more idiomatic.
+
+---
+
+## Bonus: Anonymous Functions (Functions Without A Name)
+
+Sometimes you need a function for one quick task and you do not want to name it. These are called **anonymous functions** or **lambdas**.
+
+```dart
+// Named function
+int doubleIt(int n) => n * 2;
+
+// Same thing, anonymous
+(int n) => n * 2;
+```
+
+The most common place to use them is when you pass a function as an argument:
+
+```dart
+List<int> nums = [1, 2, 3, 4, 5];
+
+// Map every number to its double, anonymously
+var doubled = nums.map((n) => n * 2).toList();
+print(doubled);    // [2, 4, 6, 8, 10]
+```
+
+`map` is a method on lists that takes a function and applies it to every item. We will see more of this in the Lists lesson.
+
+> **A note for teachers:** This is the first time students see "a function as an argument". It feels strange. Use this exact line: "A function is just a value, like a number or a string. You can pass it around the same way." Then move on. Closures and higher-order functions can wait until Level 4.
+
+---
+
+## Why This Matters In Flutter
+
+Many Flutter callbacks are functions that you pass as arguments:
+
+```dart
+ElevatedButton(
+  onPressed: () {
+    print('Tapped');
+  },
+  child: Text('Tap me'),
+)
+```
+
+The `onPressed:` value is an anonymous function. Flutter calls it when the user taps the button.
+
+You will write hundreds of these. Knowing that "a function can be a value" is the door to all of Flutter's interactive UI.
+
+---
+
+## Common Mistakes
+
+### 1. Mismatched return type and value
+
+```dart
+int wrong() {
+  return 'hi';     // ERROR
+}
+```
+
+### 2. Missing return on a non-void function
+
+```dart
+int wrong(int a) {
+  if (a > 0) return a;
+  // ERROR: nothing returned when a <= 0
+}
+```
+
+Either return in every branch, or return one default value at the end.
+
+### 3. Storing the result of a void function
+
+```dart
+void f() { }
+var x = f();    // ERROR: void cannot be stored
+```
+
+### 4. Using `=>` for multi-line bodies
+
+```dart
+int sumAndDouble(int a, int b) =>
+  int s = a + b;          // ERROR: arrow needs an expression
+  return s * 2;
+```
+
+The fix is to switch to `{ ... }`:
+
+```dart
+int sumAndDouble(int a, int b) {
+  int s = a + b;
+  return s * 2;
 }
 ```
 
 ---
 
-## Arrow Functions
+## Recap In One Minute
 
-For simple functions with ONE expression, use arrow syntax:
+- The return type at the top must match what `return` actually hands back.
+- `return` ends the function immediately.
+- `void` means "returns nothing".
+- A `?` after the type means "might be null".
+- Arrow `=>` is for single-expression bodies.
+- Anonymous functions are functions without a name, most often passed as arguments.
 
-### Regular Function
+---
+
+## Quick Quiz
+
+**Q1.** What is the bug?
+```dart
+int score(int grade) {
+  if (grade > 50) return 1;
+}
+```
+
+<details>
+<summary>Answer</summary>
+The function only returns when `grade > 50`. Otherwise it returns nothing, which is illegal for `int`. Add `return 0;` (or some default) at the end.
+</details>
+
+**Q2.** Convert to arrow:
+```dart
+String greet(String name) {
+  return 'Hello, $name';
+}
+```
+
+<details>
+<summary>Answer</summary>
+
+```dart
+String greet(String name) => 'Hello, $name';
+```
+</details>
+
+**Q3.** What does this print?
+```dart
+String? lookup(int id) {
+  if (id == 1) return 'Ada';
+  return null;
+}
+
+void main() {
+  print(lookup(7) ?? 'Unknown');
+}
+```
+
+<details>
+<summary>Answer</summary>
+`Unknown`. `lookup(7)` returns null, and `??` falls back to 'Unknown'.
+</details>
+
+**Q4.** What is the type of this expression?
+```dart
+(int n) => n * 2
+```
+
+<details>
+<summary>Answer</summary>
+A function that takes an `int` and returns an `int`. Written formally: `int Function(int)`.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Add return types and `return`
+
+Each of these functions is broken. Either the return type is missing, the return is missing, or both. Fix each one.
+
+```dart
+// A
+add(int a, int b) {
+  return a + b;
+}
+
+// B
+int subtract(int a, int b) {
+  a - b;
+}
+
+// C
+greaterOf(int a, int b) {
+  if (a > b) return a;
+}
+```
+
+### Problem 2: Nullable returns and `??`
+
+Write a function `int? findFirstEven(List<int> nums)` that returns the first even number in the list, or null if there is none. Test on:
+
+- `[1, 3, 4, 5]` (expected: 4)
+- `[1, 3, 5, 7]` (expected: null)
+
+Then write `int firstEvenOrZero(List<int> nums)` that returns the first even number, or 0 if there is none. Build it using `findFirstEven` and the `??` operator. Do not duplicate the loop.
+
+### Problem 3: Convert all to arrow
+
+Convert each of these to arrow syntax. If a function cannot be converted, explain why.
+
+```dart
+// A
+bool isPositive(int n) {
+  return n > 0;
+}
+
+// B
+String greet(String name) {
+  return 'Hello, $name';
+}
+
+// C
+int absolute(int n) {
+  if (n < 0) return -n;
+  return n;
+}
+
+// D
+double average(int a, int b) {
+  return (a + b) / 2;
+}
+```
+
+### Problem 4: Predict and explain the chain
+
+Without running, what does this print?
+
+```dart
+String? lookup(int id) {
+  if (id == 1) return 'Ada';
+  if (id == 2) return 'Bola';
+  return null;
+}
+
+String formatUser(int id) {
+  return lookup(id)?.toUpperCase() ?? 'No such user';
+}
+
+void main() {
+  print(formatUser(1));
+  print(formatUser(2));
+  print(formatUser(99));
+}
+```
+
+### Problem 5: Use anonymous functions
+
+Given this list, write code that uses **only `map`, `where`, and an anonymous function** to produce a new list of the doubled values of the even numbers.
+
+```dart
+List<int> nums = [1, 2, 3, 4, 5, 6, 7, 8];
+// Expected output: [4, 8, 12, 16]
+```
+
+In your answer, explain the role of each step in the chain.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Add return types and `return`
+
+**A: missing return type.**
 
 ```dart
 int add(int a, int b) {
@@ -185,406 +437,120 @@ int add(int a, int b) {
 }
 ```
 
-### Arrow Function (Same Thing)
+A function declaration without a return type compiles, but Dart treats the type as `dynamic`, which loses type safety. Always declare the return type explicitly.
+
+**B: missing `return` keyword.**
 
 ```dart
-int add(int a, int b) => a + b;
-```
-
-The `=>` replaces `{ return ... }`
-
-### More Examples
-
-```dart
-// Regular
-bool isEven(int n) {
-  return n % 2 == 0;
-}
-
-// Arrow
-bool isEven(int n) => n % 2 == 0;
-
-// Regular
-String greet(String name) {
-  return 'Hello, $name!';
-}
-
-// Arrow
-String greet(String name) => 'Hello, $name!';
-
-// Regular
-double circleArea(double radius) {
-  return 3.14159 * radius * radius;
-}
-
-// Arrow
-double circleArea(double radius) => 3.14159 * radius * radius;
-```
-
-### Arrow with void
-
-```dart
-// Regular
-void sayHello() {
-  print('Hello!');
-}
-
-// Arrow
-void sayHello() => print('Hello!');
-```
-
-### When NOT to Use Arrow
-
-When you need multiple statements:
-
-```dart
-// ❌ Cannot use arrow - multiple statements
-int calculate(int a, int b) {
-  int sum = a + b;
-  int product = a * b;
-  return sum + product;
-}
-
-// ✅ Arrow only for single expressions
-int calculate(int a, int b) => (a + b) + (a * b);
-```
-
----
-
-## Anonymous Functions (Lambdas)
-
-Functions without a name. Often used with collections.
-
-### Regular Function
-
-```dart
-int double(int n) {
-  return n * 2;
+int subtract(int a, int b) {
+  return a - b;
 }
 ```
 
-### Anonymous Function
+The original `a - b;` computed the difference and threw it away. The `return` keyword is what hands the value back to the caller.
+
+**C: missing return for the case `a <= b`.**
 
 ```dart
-(int n) {
-  return n * 2;
+int greaterOf(int a, int b) {
+  if (a > b) return a;
+  return b;
 }
 ```
 
-### Arrow Anonymous Function
+If `a > b` is false, the original function fell off the end without returning anything. That is illegal for a non-void function. Either return in every branch, or add a default return at the bottom.
+
+### Problem 2: Nullable returns and `??`
 
 ```dart
-(int n) => n * 2;
-```
-
-### Using with Collections
-
-```dart
-void main() {
-  var numbers = [1, 2, 3, 4, 5];
-
-  // map() takes a function
-  var doubled = numbers.map((n) => n * 2);
-  print(doubled.toList());  // [2, 4, 6, 8, 10]
-
-  // where() filters with a function
-  var evens = numbers.where((n) => n % 2 == 0);
-  print(evens.toList());  // [2, 4]
-
-  // forEach() does something with each item
-  numbers.forEach((n) => print('Number: $n'));
-}
-```
-
----
-
-## Functions as Variables
-
-Functions are first-class citizens - you can store them in variables!
-
-```dart
-void main() {
-  // Store function in variable
-  var add = (int a, int b) => a + b;
-  var multiply = (int a, int b) => a * b;
-
-  print(add(5, 3));       // 8
-  print(multiply(5, 3));  // 15
-
-  // Pass function as argument
-  int calculate(int a, int b, Function operation) {
-    return operation(a, b);
-  }
-
-  print(calculate(10, 5, add));       // 15
-  print(calculate(10, 5, multiply));  // 50
-}
-```
-
-### Function Types
-
-```dart
-// Type: Function that takes two ints and returns int
-typedef MathOperation = int Function(int, int);
-
-void main() {
-  MathOperation add = (a, b) => a + b;
-  MathOperation subtract = (a, b) => a - b;
-
-  print(add(10, 5));       // 15
-  print(subtract(10, 5));  // 5
-}
-```
-
----
-
-## Higher-Order Functions
-
-Functions that take or return other functions.
-
-### Function That Takes a Function
-
-```dart
-void repeat(int times, void Function() action) {
-  for (int i = 0; i < times; i++) {
-    action();
-  }
-}
-
-void main() {
-  repeat(3, () => print('Hello!'));
-  // Hello!
-  // Hello!
-  // Hello!
-}
-```
-
-### Function That Returns a Function
-
-```dart
-Function(int) createMultiplier(int factor) {
-  return (int value) => value * factor;
-}
-
-void main() {
-  var double = createMultiplier(2);
-  var triple = createMultiplier(3);
-
-  print(double(5));  // 10
-  print(triple(5));  // 15
-}
-```
-
----
-
-## Closures
-
-Functions that "remember" variables from their surrounding scope.
-
-```dart
-Function makeCounter() {
-  int count = 0;  // This is "captured"
-
-  return () {
-    count++;
-    return count;
-  };
-}
-
-void main() {
-  var counter = makeCounter();
-
-  print(counter());  // 1
-  print(counter());  // 2
-  print(counter());  // 3
-
-  // Each counter has its own count
-  var counter2 = makeCounter();
-  print(counter2());  // 1
-}
-```
-
----
-
-## Practical Examples
-
-### Example 1: Calculator Operations
-
-```dart
-// Define operations as functions
-int add(int a, int b) => a + b;
-int subtract(int a, int b) => a - b;
-int multiply(int a, int b) => a * b;
-double divide(int a, int b) => b != 0 ? a / b : 0;
-
-// Use operation based on symbol
-dynamic calculate(int a, int b, String op) {
-  var operations = {
-    '+': add,
-    '-': subtract,
-    '*': multiply,
-    '/': divide,
-  };
-
-  var operation = operations[op];
-  if (operation != null) {
-    return operation(a, b);
-  }
-  return 'Unknown operation';
-}
-
-void main() {
-  print(calculate(10, 5, '+'));  // 15
-  print(calculate(10, 5, '-'));  // 5
-  print(calculate(10, 5, '*'));  // 50
-  print(calculate(10, 5, '/'));  // 2.0
-}
-```
-
-### Example 2: List Processing
-
-```dart
-void main() {
-  var numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
-  // Filter evens
-  var evens = numbers.where((n) => n % 2 == 0).toList();
-  print('Evens: $evens');
-
-  // Square each
-  var squares = numbers.map((n) => n * n).toList();
-  print('Squares: $squares');
-
-  // Sum all
-  var sum = numbers.reduce((a, b) => a + b);
-  print('Sum: $sum');
-
-  // Find first > 5
-  var firstBig = numbers.firstWhere((n) => n > 5);
-  print('First > 5: $firstBig');
-}
-```
-
-### Example 3: Validation Functions
-
-```dart
-// Return function type for clarity
-typedef Validator = bool Function(String);
-
-Validator minLength(int min) {
-  return (String value) => value.length >= min;
-}
-
-Validator maxLength(int max) {
-  return (String value) => value.length <= max;
-}
-
-Validator contains(String pattern) {
-  return (String value) => value.contains(pattern);
-}
-
-void main() {
-  var password = 'Secret123';
-
-  var isLongEnough = minLength(8);
-  var notTooLong = maxLength(20);
-  var hasNumber = contains(RegExp(r'[0-9]').pattern);
-
-  print('Long enough: ${isLongEnough(password)}');
-  print('Not too long: ${notTooLong(password)}');
-  print('Has number: ${password.contains(RegExp(r'[0-9]'))}');
-}
-```
-
----
-
-## Summary
-
-### Return Values
-- `return` gives back a value and exits
-- Return type must match declared type
-- `void` means no return value
-- `?` makes return type nullable
-
-### Arrow Functions
-- `=> expression` replaces `{ return expression; }`
-- Only for single expressions
-- Makes code shorter and cleaner
-
-### Anonymous Functions
-- Functions without names
-- `(params) => expression` or `(params) { code }`
-- Commonly used with collections
-
-### Key Points
-1. Every non-void function must return a value
-2. `return` immediately exits the function
-3. Use arrow syntax for simple functions
-4. Functions can be stored in variables
-5. Functions can take/return other functions
-
----
-
-## Quick Quiz
-
-**Q1:** Convert to arrow function:
-
-```dart
-bool isPositive(int n) {
-  return n > 0;
-}
-```
-
-<details>
-<summary>Answer</summary>
-
-```dart
-bool isPositive(int n) => n > 0;
-```
-
-</details>
-
-**Q2:** What does this return?
-
-```dart
-int? findIndex(List<int> list, int target) {
-  for (int i = 0; i < list.length; i++) {
-    if (list[i] == target) return i;
+int? findFirstEven(List<int> nums) {
+  for (var n in nums) {
+    if (n.isEven) return n;
   }
   return null;
 }
 
-void main() {
-  print(findIndex([1, 2, 3], 5));
+int firstEvenOrZero(List<int> nums) {
+  return findFirstEven(nums) ?? 0;
 }
 ```
 
-<details>
-<summary>Answer</summary>
+How this works:
 
-`null` - 5 is not in the list.
+1. **`findFirstEven` returns `int?`.** That is the right type because the answer might not exist. We loop over the list and return the first even number we find. If the loop finishes without finding one, we return `null`.
+2. **`firstEvenOrZero` reuses `findFirstEven`.** The `??` operator says "if the left side is null, use the right side instead". So if `findFirstEven` returns null, we return 0. Otherwise we return whatever it found.
 
-</details>
+This is a powerful pattern. The lower-level function honestly says "I might not find anything". A higher-level function can convert that null into whatever default it wants. Different callers can use different defaults without us touching `findFirstEven`.
 
-**Q3:** What's the output?
+### Problem 3: Convert all to arrow
+
+**A:** `bool isPositive(int n) => n > 0;`
+
+The body is a single expression `n > 0`. Arrow form fits perfectly.
+
+**B:** `String greet(String name) => 'Hello, $name';`
+
+Single expression with string interpolation. Arrow.
+
+**C: cannot convert directly.** The body has an `if` statement and two `return`s. Arrow needs a single expression. We **can** convert it using the ternary operator, which is an expression:
 
 ```dart
-var numbers = [1, 2, 3, 4, 5];
-var result = numbers.map((n) => n * 2).toList();
-print(result);
+int absolute(int n) => n < 0 ? -n : n;
 ```
 
-<details>
-<summary>Answer</summary>
+This is a valid alternative when the logic is simple enough to fit in a ternary.
 
-`[2, 4, 6, 8, 10]`
+**D:** `double average(int a, int b) => (a + b) / 2;`
 
-</details>
+Single expression. Arrow form is straightforward.
+
+### Problem 4: Predict and explain the chain
+
+Output:
+
+```
+ADA
+BOLA
+No such user
+```
+
+How each line resolves:
+
+1. `formatUser(1)`: `lookup(1)` returns `'Ada'`. The `?.` operator on a non-null value calls the method. `'Ada'.toUpperCase()` is `'ADA'`. The `??` is not needed because the left side is not null. We print `'ADA'`.
+2. `formatUser(2)`: `lookup(2)` returns `'Bola'`. Same path. We print `'BOLA'`.
+3. `formatUser(99)`: `lookup(99)` returns `null`. The `?.` operator on null **does not** call `toUpperCase`. Instead the whole `?.toUpperCase()` expression evaluates to null. Then `?? 'No such user'` substitutes the right side. We print `'No such user'`.
+
+This problem brings together three null-aware operators:
+
+- `?.` calls a method only if the left side is not null.
+- `??` provides a default if the left side is null.
+- A nullable return type `String?` is the trigger that makes both safe.
+
+Once you grok this chain, you can write very compact null-safe code.
+
+### Problem 5: Use anonymous functions
+
+```dart
+List<int> nums = [1, 2, 3, 4, 5, 6, 7, 8];
+
+List<int> result = nums
+    .where((n) => n.isEven)
+    .map((n) => n * 2)
+    .toList();
+
+print(result);     // [4, 8, 12, 16]
+```
+
+How the chain works, step by step:
+
+1. **`nums.where((n) => n.isEven)`** keeps only the items where the function returns true. Even numbers in our list: 2, 4, 6, 8.
+2. **`.map((n) => n * 2)`** transforms every item by the function. Each remaining number is doubled: 4, 8, 12, 16.
+3. **`.toList()`** finalises the chain into a real `List`. Without this you would get an `Iterable`, which is fine for some uses but not when you need a List.
+
+The two anonymous functions are `(n) => n.isEven` and `(n) => n * 2`. Each takes one int parameter and returns one value (a bool, then an int). They are passed into `where` and `map` as arguments. This is exactly the "function is a value" idea from the lesson.
+
+You could write the same logic with a regular for loop and a temporary list, but it would be longer and noisier. The chain version expresses the intent in three short lines: filter, transform, collect.
 
 ---
 
-**Next:** Learn about Lists - the most common collection.
-
----
-
-**Continue to:** `04-Lists.md`
+**Next:** `04-Lists.md` to learn how to store and work with collections of values.

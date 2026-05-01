@@ -1,238 +1,201 @@
-# Maps: Key-Value Collections
+# Maps: Looking Up Values By Name
 
-## What Is a Map?
+## Why This Topic Exists
 
-A **Map** stores data as key-value pairs. Think of it like a dictionary:
-- **Key** = the word you look up
-- **Value** = the definition you find
+A list is great when you have a row of items and you only care about their order. But what if you have **named** data?
+
+- A user profile: name, age, email, city.
+- A product: id, title, price, in-stock.
+- A score sheet: each subject gets a score.
+
+You could try to use a list, but that would be weird. Index 0 is the name, index 1 is the age, index 2 is the email? Nobody can read that.
+
+A **Map** solves this. It stores data as **key-value pairs**. You look up a value by its key.
+
+```dart
+Map<String, int> scores = {
+  'Math': 95,
+  'English': 87,
+  'Science': 92,
+};
+
+print(scores['Math']);     // 95
+```
+
+You ask for the Math score and you get 95. Clean.
+
+---
+
+## The Mental Model
+
+A map is a **phone book**.
+
+- Each entry has a **name** (the key) and a **number** (the value).
+- You look up by name, not by position.
+- Each name is unique. You cannot have two entries with the same name.
+
+That is the entire idea. The rest is syntax.
+
+---
+
+## Creating A Map
+
+The shortest form:
 
 ```dart
 Map<String, int> ages = {
-  'Alice': 25,
-  'Bob': 30,
-  'Charlie': 35,
+  'Ada': 25,
+  'Bola': 30,
+  'Chidi': 28,
 };
 ```
 
-Key characteristics:
-- **Key-value pairs**: Every entry has a key and a value
-- **Unique keys**: Each key can only appear once
-- **Fast lookup**: Finding a value by key is very fast
-- **Any type**: Keys and values can be any type
+Read it as: "a map where keys are strings and values are ints."
 
----
-
-## Creating Maps
-
-### Empty Map
+`<String, int>` is the type. The first part is the key type, the second is the value type. They can be anything:
 
 ```dart
-// Using literal
+Map<int, String> idToName = {1: 'Ada', 2: 'Bola'};
+Map<String, double> prices = {'shirt': 19.99, 'cap': 9.50};
+```
+
+An empty map:
+
+```dart
+Map<String, String> settings = {};
 var scores = <String, int>{};
-
-// Using constructor
-var ages = Map<String, int>();
-
-// Type-inferred
-Map<String, String> names = {};
-```
-
-### Map with Initial Values
-
-```dart
-var person = {
-  'name': 'Alice',
-  'city': 'NYC',
-  'country': 'USA',
-};
-
-Map<String, int> scores = {
-  'math': 95,
-  'science': 87,
-  'english': 92,
-};
-```
-
-### From Lists
-
-```dart
-// From list of entries
-var list = [
-  MapEntry('a', 1),
-  MapEntry('b', 2),
-];
-var map = Map.fromEntries(list);
-
-// From two lists (keys and values)
-var keys = ['name', 'age', 'city'];
-var values = ['Alice', 25, 'NYC'];
-var combined = Map.fromIterables(keys, values);
-print(combined);  // {name: Alice, age: 25, city: NYC}
 ```
 
 ---
 
-## Visual: Map Structure
+## Reading A Value By Key
 
-```
-   Key        Value
-  ┌─────┐    ┌─────┐
-  │'Alice'│ → │ 25  │
-  └─────┘    └─────┘
-  ┌─────┐    ┌─────┐
-  │'Bob' │ → │ 30  │
-  └─────┘    └─────┘
-  ┌─────┐    ┌─────┐
-  │'Charlie'│ → │ 35  │
-  └─────┘    └─────┘
-```
-
----
-
-## Accessing Values
-
-### By Key
+Use square brackets, but with the key, not an index:
 
 ```dart
-var ages = {'Alice': 25, 'Bob': 30, 'Charlie': 35};
+var ages = {'Ada': 25, 'Bola': 30};
 
-print(ages['Alice']);    // 25
-print(ages['Bob']);      // 30
-print(ages['Unknown']);  // null (key doesn't exist)
+print(ages['Ada']);     // 25
+print(ages['Bola']);    // 30
+print(ages['Zara']);    // null
 ```
 
-### Safe Access
+Notice the last line. **Looking up a key that does not exist returns `null`**, not an error. This is the most important thing to remember about maps.
+
+That means the result type of `ages[...]` is always nullable. If you want to use it as a real value, you must handle the null case:
 
 ```dart
-var ages = {'Alice': 25, 'Bob': 30};
+int? age = ages['Ada'];
 
-// Returns null if key doesn't exist
-int? aliceAge = ages['Alice'];  // 25
-int? daveAge = ages['Dave'];    // null
-
-// With default value
-int age = ages['Dave'] ?? 0;  // 0
-```
-
-### Check if Key Exists
-
-```dart
-var ages = {'Alice': 25, 'Bob': 30};
-
-if (ages.containsKey('Alice')) {
-  print('Alice is in the map');
+if (age != null) {
+  print('Ada is $age');
 }
 
-if (ages.containsValue(30)) {
-  print('Someone is 30');
-}
+// Or with a default
+print(ages['Zara'] ?? 0);     // 0
 ```
 
 ---
 
-## Modifying Maps
+## Adding And Updating
 
-### Adding/Updating
+Both use the same square-bracket syntax:
 
 ```dart
-var ages = {'Alice': 25};
+var ages = {'Ada': 25};
 
-// Add new key
-ages['Bob'] = 30;
-print(ages);  // {Alice: 25, Bob: 30}
+// Add a new key
+ages['Bola'] = 30;
 
-// Update existing key
-ages['Alice'] = 26;
-print(ages);  // {Alice: 26, Bob: 30}
+// Update an existing key
+ages['Ada'] = 26;
 
-// Add multiple
-ages.addAll({'Charlie': 35, 'Dave': 40});
-print(ages);  // {Alice: 26, Bob: 30, Charlie: 35, Dave: 40}
+print(ages);    // {Ada: 26, Bola: 30}
 ```
 
-### Conditional Add
+Whether the key exists or not, `map[key] = value` does the right thing. New key, it gets added. Existing key, the value gets replaced.
+
+---
+
+## Removing Items
 
 ```dart
-var ages = {'Alice': 25};
+var ages = {'Ada': 25, 'Bola': 30, 'Chidi': 28};
 
-// Only adds if key doesn't exist
-ages.putIfAbsent('Alice', () => 100);  // Won't change, Alice exists
-ages.putIfAbsent('Bob', () => 30);     // Adds Bob: 30
+ages.remove('Bola');
+print(ages);    // {Ada: 25, Chidi: 28}
 
-print(ages);  // {Alice: 25, Bob: 30}
-```
-
-### Removing
-
-```dart
-var ages = {'Alice': 25, 'Bob': 30, 'Charlie': 35};
-
-// Remove by key
-ages.remove('Bob');
-print(ages);  // {Alice: 25, Charlie: 35}
-
-// Remove by condition
-ages.removeWhere((key, value) => value > 30);
-print(ages);  // {Alice: 25}
-
-// Clear all
 ages.clear();
-print(ages);  // {}
+print(ages);    // {}
 ```
+
+`remove` returns the value that was removed, or null if the key was not there.
 
 ---
 
-## Map Properties
+## Checking If A Key Or Value Exists
 
 ```dart
-var ages = {'Alice': 25, 'Bob': 30, 'Charlie': 35};
+var ages = {'Ada': 25, 'Bola': 30};
 
-print(ages.length);      // 3
-print(ages.isEmpty);     // false
-print(ages.isNotEmpty);  // true
-print(ages.keys);        // (Alice, Bob, Charlie)
-print(ages.values);      // (25, 30, 35)
-print(ages.entries);     // (MapEntry(Alice: 25), ...)
+print(ages.containsKey('Ada'));      // true
+print(ages.containsKey('Zara'));     // false
+
+print(ages.containsValue(25));       // true
+print(ages.containsValue(99));       // false
 ```
+
+`containsKey` is what you reach for most. Always use it before reading a key when you want to be sure the value exists.
 
 ---
 
-## Iterating Through Maps
-
-### Using forEach
+## Useful Map Properties
 
 ```dart
-var ages = {'Alice': 25, 'Bob': 30, 'Charlie': 35};
+var ages = {'Ada': 25, 'Bola': 30, 'Chidi': 28};
 
-ages.forEach((key, value) {
-  print('$key is $value years old');
+print(ages.length);       // 3
+print(ages.isEmpty);      // false
+print(ages.isNotEmpty);   // true
+
+print(ages.keys);         // (Ada, Bola, Chidi)
+print(ages.values);       // (25, 30, 28)
+```
+
+`keys` and `values` give you iterables of just the keys or just the values. You can convert them to lists with `.toList()`.
+
+---
+
+## Looping Through A Map
+
+There are two common shapes.
+
+### `forEach` with key and value
+
+```dart
+var ages = {'Ada': 25, 'Bola': 30};
+
+ages.forEach((name, age) {
+  print('$name is $age');
 });
 ```
 
-### Using for-in with entries
+### `for-in` over entries
 
 ```dart
-var ages = {'Alice': 25, 'Bob': 30, 'Charlie': 35};
-
 for (var entry in ages.entries) {
   print('${entry.key}: ${entry.value}');
 }
 ```
 
-### Iterate Keys Only
+`entries` gives you a list of `MapEntry` objects. Each entry has a `.key` and a `.value`.
+
+If you only need the keys or only the values:
 
 ```dart
-var ages = {'Alice': 25, 'Bob': 30, 'Charlie': 35};
-
 for (var name in ages.keys) {
   print(name);
 }
-```
-
-### Iterate Values Only
-
-```dart
-var ages = {'Alice': 25, 'Bob': 30, 'Charlie': 35};
 
 for (var age in ages.values) {
   print(age);
@@ -241,297 +204,99 @@ for (var age in ages.values) {
 
 ---
 
-## Transforming Maps
+## Maps Inside Maps (Real-World Data)
 
-### map() - Transform Entries
-
-```dart
-var ages = {'Alice': 25, 'Bob': 30, 'Charlie': 35};
-
-// Double all ages
-var doubled = ages.map((key, value) => MapEntry(key, value * 2));
-print(doubled);  // {Alice: 50, Bob: 60, Charlie: 70}
-
-// Uppercase keys
-var upper = ages.map((key, value) => MapEntry(key.toUpperCase(), value));
-print(upper);  // {ALICE: 25, BOB: 30, CHARLIE: 35}
-```
-
-### Convert to List
+In real apps, your data is often nested. A user might be:
 
 ```dart
-var ages = {'Alice': 25, 'Bob': 30, 'Charlie': 35};
-
-// Keys to list
-List<String> names = ages.keys.toList();
-
-// Values to list
-List<int> ageList = ages.values.toList();
-
-// Entries to list of strings
-List<String> info = ages.entries
-    .map((e) => '${e.key}: ${e.value}')
-    .toList();
-print(info);  // [Alice: 25, Bob: 30, Charlie: 35]
-```
-
-### Filter Entries
-
-```dart
-var scores = {'Alice': 95, 'Bob': 67, 'Charlie': 82, 'Dave': 45};
-
-// Keep only passing scores (>= 70)
-var passing = Map.fromEntries(
-  scores.entries.where((e) => e.value >= 70)
-);
-print(passing);  // {Alice: 95, Charlie: 82}
-```
-
----
-
-## Nested Maps
-
-Maps can contain other maps:
-
-```dart
-var users = {
-  'user1': {
-    'name': 'Alice',
-    'age': 25,
-    'address': {
-      'city': 'NYC',
-      'country': 'USA',
-    },
+Map<String, dynamic> user = {
+  'name': 'Ada',
+  'age': 25,
+  'address': {
+    'city': 'Lagos',
+    'country': 'Nigeria',
   },
-  'user2': {
-    'name': 'Bob',
-    'age': 30,
-    'address': {
-      'city': 'London',
-      'country': 'UK',
-    },
-  },
+  'hobbies': ['reading', 'coding'],
 };
 
-// Access nested values
-print(users['user1']?['name']);  // Alice
-print(users['user1']?['address']?['city']);  // NYC
+print(user['name']);                  // Ada
+print(user['address']['city']);       // Lagos
+print(user['hobbies'][0]);            // reading
 ```
+
+The type `dynamic` means "could be anything". This is what you get when JSON arrives from an API. We will cover this fully in Level 8.
 
 ---
 
-## Common Patterns
+## Why This Matters In Flutter
 
-### Counting Occurrences
+Every API response in your future app will arrive as a `Map<String, dynamic>` (the JSON shape). Reading user info, product details, weather data, all of it is map lookup.
 
-```dart
-void main() {
-  var words = ['apple', 'banana', 'apple', 'cherry', 'banana', 'apple'];
-
-  var counts = <String, int>{};
-
-  for (var word in words) {
-    counts[word] = (counts[word] ?? 0) + 1;
-  }
-
-  print(counts);  // {apple: 3, banana: 2, cherry: 1}
-}
-```
-
-### Grouping Items
+Tiny preview, do not run yet:
 
 ```dart
-void main() {
-  var people = [
-    {'name': 'Alice', 'city': 'NYC'},
-    {'name': 'Bob', 'city': 'LA'},
-    {'name': 'Charlie', 'city': 'NYC'},
-    {'name': 'Dave', 'city': 'LA'},
-  ];
-
-  var byCity = <String, List<String>>{};
-
-  for (var person in people) {
-    var city = person['city'] as String;
-    var name = person['name'] as String;
-
-    byCity.putIfAbsent(city, () => []);
-    byCity[city]!.add(name);
-  }
-
-  print(byCity);
-  // {NYC: [Alice, Charlie], LA: [Bob, Dave]}
-}
-```
-
-### Inverting a Map
-
-```dart
-void main() {
-  var original = {'a': 1, 'b': 2, 'c': 3};
-
-  var inverted = original.map((key, value) => MapEntry(value, key));
-  print(inverted);  // {1: a, 2: b, 3: c}
-}
-```
-
----
-
-## Map vs List: When to Use Which?
-
-### Use List When:
-- Order matters
-- You access by position (index)
-- You have a sequence of similar items
-
-```dart
-var todos = ['Buy milk', 'Call mom', 'Do laundry'];
-print(todos[0]);  // First item
-```
-
-### Use Map When:
-- You need to look up by a specific identifier
-- Data has natural key-value relationship
-- Fast lookup is important
-
-```dart
-var userById = {
-  'user123': 'Alice',
-  'user456': 'Bob',
+Map<String, dynamic> response = {
+  'temperature': 28,
+  'condition': 'Sunny',
 };
-print(userById['user123']);  // Direct lookup
+
+return Text('It is ${response['temperature']}° and ${response['condition']}');
 ```
+
+That is what every weather app, every news app, every social app does. Maps are the gateway between the network and your UI.
 
 ---
 
-## Practical Examples
+## Common Mistakes
 
-### Example 1: Configuration
-
-```dart
-void main() {
-  Map<String, dynamic> config = {
-    'appName': 'MyApp',
-    'version': '1.0.0',
-    'debug': true,
-    'maxRetries': 3,
-    'apiUrl': 'https://api.example.com',
-  };
-
-  print('App: ${config['appName']}');
-  print('Version: ${config['version']}');
-
-  if (config['debug'] == true) {
-    print('Running in debug mode');
-  }
-}
-```
-
-### Example 2: User Profile
+### 1. Treating a map like a list
 
 ```dart
-void main() {
-  Map<String, dynamic> user = {
-    'id': 12345,
-    'name': 'Alice Smith',
-    'email': 'alice@email.com',
-    'preferences': {
-      'theme': 'dark',
-      'notifications': true,
-      'language': 'en',
-    },
-  };
-
-  // Access nested preference
-  var theme = user['preferences']?['theme'] ?? 'light';
-  print('Theme: $theme');
-
-  // Update preference
-  (user['preferences'] as Map)['theme'] = 'light';
-  print('Updated theme: ${user['preferences']['theme']}');
-}
+var m = {'Ada': 25};
+print(m[0]);     // returns null, NOT the first entry
 ```
 
-### Example 3: Word Frequency Counter
+Maps are looked up by key, not by position. `m[0]` is "the value at key 0", which probably does not exist.
+
+### 2. Forgetting that lookups can be null
 
 ```dart
-void main() {
-  String text = 'the quick brown fox jumps over the lazy dog the fox';
-
-  // Split into words
-  var words = text.toLowerCase().split(' ');
-
-  // Count each word
-  var frequency = <String, int>{};
-  for (var word in words) {
-    frequency[word] = (frequency[word] ?? 0) + 1;
-  }
-
-  // Sort by frequency
-  var sorted = frequency.entries.toList()
-    ..sort((a, b) => b.value.compareTo(a.value));
-
-  // Print results
-  print('Word Frequency:');
-  for (var entry in sorted) {
-    print('${entry.key}: ${entry.value}');
-  }
-}
+var m = {'Ada': 25};
+int age = m['Bola'];      // ERROR: m['Bola'] is int? not int
 ```
 
-### Example 4: Menu with Prices
+The return type is always nullable. Use `??` to give a default, or check for null first.
+
+### 3. Adding duplicate keys
 
 ```dart
-void main() {
-  Map<String, double> menu = {
-    'Coffee': 3.50,
-    'Tea': 2.50,
-    'Sandwich': 7.00,
-    'Salad': 6.50,
-    'Cake': 4.00,
-  };
-
-  // Order
-  Map<String, int> order = {
-    'Coffee': 2,
-    'Sandwich': 1,
-    'Cake': 1,
-  };
-
-  // Calculate total
-  double total = 0;
-  order.forEach((item, quantity) {
-    double price = menu[item] ?? 0;
-    double subtotal = price * quantity;
-    print('$quantity x $item @ \$${price.toStringAsFixed(2)} = \$${subtotal.toStringAsFixed(2)}');
-    total += subtotal;
-  });
-
-  print('---');
-  print('Total: \$${total.toStringAsFixed(2)}');
-}
+var m = {'a': 1, 'a': 2};    // a warning, only the last wins
+print(m);                    // {a: 2}
 ```
+
+Each key is unique. Re-adding a key replaces the value.
+
+### 4. Confusing keys with values
+
+`containsKey` checks the keys. `containsValue` checks the values. Use the right one for what you need.
 
 ---
 
-## Summary
+## Recap In One Minute
 
-| Operation | Method | Example |
-|-----------|--------|---------|
-| Create | `{}` or `Map()` | `var m = {'a': 1}` |
-| Access | `[]` | `m['a']` |
-| Add/Update | `[]=` | `m['b'] = 2` |
-| Remove | `remove()` | `m.remove('a')` |
-| Check key | `containsKey()` | `m.containsKey('a')` |
-| Iterate | `forEach()`, `entries` | `m.forEach((k,v) => ...)` |
-| Transform | `map()` | `m.map((k,v) => ...)` |
+- A `Map` stores key-value pairs.
+- Look up with `map[key]`. Returns `null` if the key is missing.
+- Add or update with `map[key] = value`.
+- Remove with `map.remove(key)`.
+- Check existence with `containsKey` or `containsValue`.
+- Loop with `forEach`, `entries`, `keys`, or `values`.
+- API responses arrive as maps in Flutter.
 
 ---
 
 ## Quick Quiz
 
-**Q1:** What does this print?
-
+**Q1.** What does this print?
 ```dart
 var m = {'a': 1, 'b': 2};
 print(m['c']);
@@ -539,40 +304,363 @@ print(m['c']);
 
 <details>
 <summary>Answer</summary>
-
-`null` - key 'c' doesn't exist.
-
+`null`. The key 'c' is not in the map.
 </details>
 
-**Q2:** How do you add a key only if it doesn't exist?
+**Q2.** Add a key 'c' with value 3, then print the map.
 
 <details>
 <summary>Answer</summary>
 
 ```dart
-map.putIfAbsent('key', () => value);
+m['c'] = 3;
+print(m);    // {a: 1, b: 2, c: 3}
 ```
-
 </details>
 
-**Q3:** What's wrong here?
-
+**Q3.** What is wrong here?
 ```dart
-var ages = {'Alice': 25, 'Alice': 30};
-print(ages['Alice']);
+Map<String, int> scores = {'math': 95};
+int x = scores['english'];
 ```
 
 <details>
 <summary>Answer</summary>
+`scores['english']` returns `int?`, not `int`. The key may not exist. Either change the type to `int? x` or use `int x = scores['english'] ?? 0;`.
+</details>
 
-Keys must be unique. The second 'Alice' overwrites the first. Prints `30`.
+**Q4.** How do you check if a map has a particular key?
 
+<details>
+<summary>Answer</summary>
+`map.containsKey('the-key')`. Returns true or false.
 </details>
 
 ---
 
-**Next:** Learn about Sets for unique collections.
+## Assignment
+
+### Problem 1: Predict the output
+
+What does this print?
+
+```dart
+void main() {
+  Map<String, int> ages = {'Ada': 25, 'Bola': 30};
+  ages['Chidi'] = 28;
+  ages['Ada'] = 26;
+  ages.remove('Bola');
+
+  print(ages);
+  print(ages['Ada']);
+  print(ages['Bola']);
+  print(ages.containsKey('Chidi'));
+  print(ages.length);
+}
+```
+
+### Problem 2: Word frequency counter
+
+Write a function `Map<String, int> wordCount(List<String> words)` that takes a list of words and returns a map from each unique word to the number of times it appears.
+
+Test on `['cat', 'dog', 'cat', 'bird', 'dog', 'cat']`. Expected:
+```
+{cat: 3, dog: 2, bird: 1}
+```
+
+The trick: for each word, you must check if it is already a key in the map. If yes, increment. If no, set to 1.
+
+### Problem 3: Safe lookup
+
+Given:
+
+```dart
+Map<String, int> stockLevels = {
+  'shirt': 25,
+  'shoe': 0,
+  'cap': 12,
+};
+```
+
+Write a function `String stockMessage(String product)` that returns:
+
+- `'In stock: 25'` if there are 5 or more.
+- `'Low stock: 3'` if there are 1 to 4.
+- `'Out of stock'` if there are exactly 0.
+- `'Product not found'` if the product is not in the map.
+
+Test with: `'shirt'`, `'cap'`, `'shoe'`, `'phone'`.
+
+### Problem 4: Merge two maps with a rule
+
+Write a function `Map<String, int> mergeStocks(Map<String, int> a, Map<String, int> b)` that returns a new map with all the keys from both. If the same key appears in both, the result should hold the **larger** of the two values.
+
+Example:
+```dart
+mergeStocks(
+  {'shirt': 5, 'cap': 10},
+  {'shirt': 8, 'shoe': 3},
+);
+// Expected: {shirt: 8, cap: 10, shoe: 3}
+```
+
+Do not modify the input maps.
+
+### Problem 5: Mini grade book
+
+Build a small program with these functions, all working on a `Map<String, List<int>>` where the key is a student name and the value is a list of their scores.
+
+- `void addScore(Map<String, List<int>> book, String student, int score)` adds one score to that student's list. If the student is not in the map yet, create an entry.
+- `double averageOf(Map<String, List<int>> book, String student)` returns the average score for one student. Return -1 if the student does not exist or has no scores.
+- `String topStudent(Map<String, List<int>> book)` returns the name of the student with the highest average. Tiebreaks go to whichever student appears first in the iteration.
+
+Test with three students adding several scores each.
 
 ---
 
-**Continue to:** `06-Sets.md`
+## Assignment Answers
+
+### Problem 1: Predict the output
+
+```
+{Ada: 26, Chidi: 28}
+26
+null
+true
+2
+```
+
+Trace:
+
+| Step | Action | Map after |
+|------|--------|-----------|
+| Start | --- | {Ada: 25, Bola: 30} |
+| 1 | ages['Chidi'] = 28 | {Ada: 25, Bola: 30, Chidi: 28} |
+| 2 | ages['Ada'] = 26 | {Ada: 26, Bola: 30, Chidi: 28} |
+| 3 | ages.remove('Bola') | {Ada: 26, Chidi: 28} |
+
+Then:
+
+- `print(ages)` shows the final map.
+- `ages['Ada']` is 26 (the value we just updated).
+- `ages['Bola']` is null (the key was removed).
+- `containsKey('Chidi')` is true.
+- `length` is 2 because we have two entries left.
+
+This problem reinforces three behaviours: assignment can both add and update, remove returns the value (we ignored it here), and lookup returns null if missing.
+
+### Problem 2: Word frequency counter
+
+```dart
+Map<String, int> wordCount(List<String> words) {
+  Map<String, int> counts = {};
+
+  for (String w in words) {
+    if (counts.containsKey(w)) {
+      counts[w] = counts[w]! + 1;
+    } else {
+      counts[w] = 1;
+    }
+  }
+
+  return counts;
+}
+```
+
+How the logic works:
+
+1. **Start with an empty map.**
+2. **For each word, check if it is already a key.** If yes, increment its count. If no, set its count to 1.
+3. **The `!` in `counts[w]!`** tells Dart "I know this is not null right now, trust me". This is safe because we just confirmed the key exists in the line above.
+
+Trace on `['cat', 'dog', 'cat', 'bird', 'dog', 'cat']`:
+
+| Word | Key exists? | Action | Map after |
+|------|-------------|--------|-----------|
+| cat | no | set to 1 | {cat: 1} |
+| dog | no | set to 1 | {cat: 1, dog: 1} |
+| cat | yes (1) | set to 2 | {cat: 2, dog: 1} |
+| bird | no | set to 1 | {cat: 2, dog: 1, bird: 1} |
+| dog | yes (1) | set to 2 | {cat: 2, dog: 2, bird: 1} |
+| cat | yes (2) | set to 3 | {cat: 3, dog: 2, bird: 1} |
+
+A more compact alternative using the null-aware operator:
+
+```dart
+counts[w] = (counts[w] ?? 0) + 1;
+```
+
+This says "take the current value or 0 if missing, add 1, store back". One line replaces the `if-else`. Both versions are equally correct.
+
+### Problem 3: Safe lookup
+
+```dart
+String stockMessage(String product) {
+  Map<String, int> stockLevels = {
+    'shirt': 25,
+    'shoe': 0,
+    'cap': 12,
+  };
+
+  if (!stockLevels.containsKey(product)) {
+    return 'Product not found';
+  }
+
+  int level = stockLevels[product]!;
+
+  if (level == 0) return 'Out of stock';
+  if (level < 5) return 'Low stock: $level';
+  return 'In stock: $level';
+}
+```
+
+How the design handles each case:
+
+1. **First, check if the product exists.** If not, return early. This is the guard pattern we have used before.
+2. **Then read the level** safely. The `!` is okay because we just confirmed the key exists.
+3. **Check the level in order from most specific to least.** Zero first, then 1-4, then 5+.
+
+Test results:
+
+- `stockMessage('shirt')` returns `'In stock: 25'`.
+- `stockMessage('cap')` returns `'In stock: 12'`.
+- `stockMessage('shoe')` returns `'Out of stock'`.
+- `stockMessage('phone')` returns `'Product not found'`.
+
+The order of checks matters. If you put `level >= 5` first, you would never reach the "out of stock" branch for level 0.
+
+### Problem 4: Merge two maps with a rule
+
+```dart
+Map<String, int> mergeStocks(Map<String, int> a, Map<String, int> b) {
+  Map<String, int> result = {};
+
+  // Copy everything from a
+  for (var entry in a.entries) {
+    result[entry.key] = entry.value;
+  }
+
+  // Now consider b
+  for (var entry in b.entries) {
+    if (result.containsKey(entry.key)) {
+      // Both maps have this key, keep the larger value
+      if (entry.value > result[entry.key]!) {
+        result[entry.key] = entry.value;
+      }
+    } else {
+      // Only b has this key
+      result[entry.key] = entry.value;
+    }
+  }
+
+  return result;
+}
+```
+
+How the algorithm works:
+
+1. **Build a new map.** We do not touch the input maps. This is important when callers pass shared references.
+2. **First pass: copy everything from `a`.** The result now has every key from `a` with its value.
+3. **Second pass: walk every entry of `b`.** For each one:
+   - If the result already has this key (it came from a), compare the two values and keep the larger.
+   - If the result does not have this key, just add it.
+
+Trace on the example:
+
+- After first pass: `{shirt: 5, cap: 10}` (from a).
+- Now process b:
+  - `shirt: 8`. Result has shirt with 5. 8 > 5, update. Result: `{shirt: 8, cap: 10}`.
+  - `shoe: 3`. Result does not have shoe. Add. Result: `{shirt: 8, cap: 10, shoe: 3}`.
+
+Final result matches the expected output.
+
+A more compact version using `forEach`:
+
+```dart
+Map<String, int> mergeStocks(Map<String, int> a, Map<String, int> b) {
+  final result = {...a};
+  b.forEach((k, v) {
+    final existing = result[k];
+    if (existing == null || v > existing) {
+      result[k] = v;
+    }
+  });
+  return result;
+}
+```
+
+The `{...a}` spreads `a` into a new map. Modern Dart supports this. Cleaner than the manual loop, but the manual version is easier to debug when learning.
+
+### Problem 5: Mini grade book
+
+```dart
+void addScore(Map<String, List<int>> book, String student, int score) {
+  if (!book.containsKey(student)) {
+    book[student] = [];
+  }
+  book[student]!.add(score);
+}
+
+double averageOf(Map<String, List<int>> book, String student) {
+  if (!book.containsKey(student)) return -1;
+
+  List<int> scores = book[student]!;
+  if (scores.isEmpty) return -1;
+
+  int sum = 0;
+  for (int s in scores) sum += s;
+  return sum / scores.length;
+}
+
+String topStudent(Map<String, List<int>> book) {
+  String? best;
+  double bestAvg = -1;
+
+  for (var entry in book.entries) {
+    double avg = averageOf(book, entry.key);
+    if (avg > bestAvg) {
+      bestAvg = avg;
+      best = entry.key;
+    }
+  }
+
+  return best ?? 'No students';
+}
+
+void main() {
+  Map<String, List<int>> book = {};
+
+  addScore(book, 'Ada', 80);
+  addScore(book, 'Ada', 90);
+  addScore(book, 'Bola', 70);
+  addScore(book, 'Bola', 75);
+  addScore(book, 'Bola', 80);
+  addScore(book, 'Chidi', 100);
+
+  print('Ada avg: ${averageOf(book, 'Ada')}');     // 85.0
+  print('Bola avg: ${averageOf(book, 'Bola')}');   // 75.0
+  print('Chidi avg: ${averageOf(book, 'Chidi')}'); // 100.0
+  print('Zara avg: ${averageOf(book, 'Zara')}');   // -1.0
+  print('Top: ${topStudent(book)}');               // Chidi
+}
+```
+
+How each function was designed:
+
+1. **`addScore` first ensures the student has an entry.** If not, create an empty list. Then append the score. The `!` is safe because we either created the list or it was already there.
+2. **`averageOf` has two failure cases.** Student missing returns -1. Student exists but has no scores returns -1. Both cases use early return.
+3. **`topStudent` walks every entry,** computing each student's average and tracking the highest seen so far. Tiebreak goes to whichever student appears first because we only update on strict `>`, not `>=`.
+
+The pattern "if key missing, initialise; then append" is common. You can simplify with `putIfAbsent`:
+
+```dart
+void addScore(Map<String, List<int>> book, String student, int score) {
+  book.putIfAbsent(student, () => []).add(score);
+}
+```
+
+`putIfAbsent` returns the existing list if the key was there, or runs the function to create a new one. Either way, you get a list to append to. Cleaner once you are comfortable with maps.
+
+---
+
+**Next:** `06-Sets.md` for the third and last collection type, used when uniqueness matters.

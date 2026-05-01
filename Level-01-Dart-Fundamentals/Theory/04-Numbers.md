@@ -566,6 +566,240 @@ Division `/` always returns a `double`, even when the result is a whole number. 
 
 ---
 
+## Assignment
+
+### Problem 1: Predict the output
+
+```dart
+void main() {
+  int a = 17;
+  int b = 5;
+
+  print(a + b);
+  print(a - b);
+  print(a * b);
+  print(a / b);
+  print(a ~/ b);
+  print(a % b);
+  print((a / b).toStringAsFixed(2));
+}
+```
+
+### Problem 2: Even or odd
+
+Without using any if statement, write a function `String evenOrOdd(int n)` that returns `'even'` for even numbers and `'odd'` for odd numbers. Use the ternary operator and the `%` operator.
+
+### Problem 3: Total seconds to time format
+
+Given a number of seconds, convert to hours, minutes, and remaining seconds. Write a function `String formatDuration(int totalSeconds)` that returns the formatted string in `HH:MM:SS` form, with each component zero-padded to 2 digits.
+
+Examples:
+- `formatDuration(75)` returns `'00:01:15'`.
+- `formatDuration(3661)` returns `'01:01:01'`.
+- `formatDuration(0)` returns `'00:00:00'`.
+
+Hint: use `~/` and `%`. Use `padLeft(2, '0')` to pad.
+
+### Problem 4: Tip calculator
+
+Given a bill amount and a tip percentage, calculate:
+1. The tip amount.
+2. The total (bill plus tip).
+3. The amount each of N people pays if they split equally.
+
+Write `void splitBill(double bill, double tipPercent, int people)` that prints all three, formatted to 2 decimals.
+
+Test with `splitBill(2500, 10, 4)`. Expected:
+```
+Tip: 250.00
+Total: 2750.00
+Each pays: 687.50
+```
+
+### Problem 5: Number summary
+
+Given a list of integers, print:
+- The sum.
+- The smallest.
+- The largest.
+- The count of negatives.
+- The count of evens.
+
+Use a single for loop. No `where`, no `reduce`, no helper methods.
+
+Test on `[5, -3, 8, -1, 4, 0, 7, -2]`.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Predict the output
+
+```
+22
+12
+85
+3.4
+3
+2
+3.40
+```
+
+How each line:
+
+- `17 + 5 = 22`.
+- `17 - 5 = 12`.
+- `17 * 5 = 85`.
+- `17 / 5 = 3.4`. Division always returns a double, even when the result is exact.
+- `17 ~/ 5 = 3`. Integer division drops the decimal.
+- `17 % 5 = 2`. After 17 / 5 = 3 with remainder 2, modulo gives 2.
+- `(17/5).toStringAsFixed(2) = '3.40'`. Forces two decimals as a string.
+
+The pair `~/` and `%` is so common you should memorise it: `a = (a ~/ b) * b + (a % b)`. The integer-division part times the divisor, plus the remainder, equals the original. This is just school division written in code.
+
+### Problem 2: Even or odd
+
+```dart
+String evenOrOdd(int n) => n % 2 == 0 ? 'even' : 'odd';
+```
+
+How it works:
+
+- `n % 2` is the remainder when dividing by 2. For even numbers, this is 0. For odd, it is 1 (or -1 for negative odds, both are nonzero).
+- `n % 2 == 0` is a boolean: true if even, false if odd.
+- The ternary `condition ? a : b` returns `a` when the condition is true, `b` otherwise.
+
+So we get `'even'` when the modulo is 0, and `'odd'` otherwise.
+
+This is the classic compact pattern. No if statement, just one expression.
+
+### Problem 3: Total seconds to time format
+
+```dart
+String formatDuration(int totalSeconds) {
+  int hours = totalSeconds ~/ 3600;
+  int remainAfterHours = totalSeconds % 3600;
+
+  int minutes = remainAfterHours ~/ 60;
+  int seconds = remainAfterHours % 60;
+
+  String hh = hours.toString().padLeft(2, '0');
+  String mm = minutes.toString().padLeft(2, '0');
+  String ss = seconds.toString().padLeft(2, '0');
+
+  return '$hh:$mm:$ss';
+}
+```
+
+How the calculation works:
+
+1. **Hours:** there are 3600 seconds in an hour. Integer-divide to get whole hours.
+2. **Remaining:** modulo 3600 gives the seconds left after subtracting full hours.
+3. **Minutes:** 60 seconds in a minute. Integer-divide the remaining.
+4. **Seconds:** modulo 60 gives the leftover.
+5. **Padding:** convert each to a string and pad with `'0'` so single digits become two.
+
+Trace for 3661 seconds:
+- hours = 3661 ~/ 3600 = 1
+- remainAfterHours = 3661 % 3600 = 61
+- minutes = 61 ~/ 60 = 1
+- seconds = 61 % 60 = 1
+- Padded: '01:01:01'.
+
+Trace for 75 seconds:
+- hours = 75 ~/ 3600 = 0
+- remainAfterHours = 75
+- minutes = 75 ~/ 60 = 1
+- seconds = 75 % 60 = 15
+- Padded: '00:01:15'.
+
+This integer-divide-then-modulo pattern is one of the most useful number tricks in programming. You will use it in clocks, currency formatting, address parsing, and many other places.
+
+### Problem 4: Tip calculator
+
+```dart
+void splitBill(double bill, double tipPercent, int people) {
+  double tip = bill * tipPercent / 100;
+  double total = bill + tip;
+  double perPerson = total / people;
+
+  print('Tip: ${tip.toStringAsFixed(2)}');
+  print('Total: ${total.toStringAsFixed(2)}');
+  print('Each pays: ${perPerson.toStringAsFixed(2)}');
+}
+```
+
+How each calculation:
+
+- Tip: bill times percentage divided by 100. So 2500 times 10 / 100 = 250.
+- Total: bill + tip = 2500 + 250 = 2750.
+- Per person: total / people = 2750 / 4 = 687.5.
+
+`toStringAsFixed(2)` formats each as a string with two decimals. 687.5 becomes "687.50".
+
+Watch out: `tipPercent / 100` is a `double / int`, which gives a `double`. If you wrote `bill * tipPercent ~/ 100`, you would lose precision. Always use plain `/` for currency math.
+
+### Problem 5: Number summary
+
+```dart
+void summarize(List<int> nums) {
+  if (nums.isEmpty) {
+    print('Empty list');
+    return;
+  }
+
+  int sum = 0;
+  int smallest = nums[0];
+  int largest = nums[0];
+  int negatives = 0;
+  int evens = 0;
+
+  for (int n in nums) {
+    sum += n;
+    if (n < smallest) smallest = n;
+    if (n > largest) largest = n;
+    if (n < 0) negatives++;
+    if (n.isEven) evens++;
+  }
+
+  print('Sum: $sum');
+  print('Smallest: $smallest');
+  print('Largest: $largest');
+  print('Negatives: $negatives');
+  print('Evens: $evens');
+}
+```
+
+How the loop computes everything in one pass:
+
+For each number, we update five different running totals:
+
+1. Add it to `sum`.
+2. If it is smaller than the current smallest, update.
+3. If it is larger than the current largest, update.
+4. If it is negative, increment negatives counter.
+5. If it is even, increment evens counter.
+
+Trace on `[5, -3, 8, -1, 4, 0, 7, -2]`:
+
+| n | sum | smallest | largest | negatives | evens |
+|---|-----|----------|---------|-----------|-------|
+| start | 0 | 5 | 5 | 0 | 0 |
+| 5 | 5 | 5 | 5 | 0 | 0 |
+| -3 | 2 | -3 | 5 | 1 | 0 |
+| 8 | 10 | -3 | 8 | 1 | 1 |
+| -1 | 9 | -3 | 8 | 2 | 1 |
+| 4 | 13 | -3 | 8 | 2 | 2 |
+| 0 | 13 | -3 | 8 | 2 | 3 |
+| 7 | 20 | -3 | 8 | 2 | 3 |
+| -2 | 18 | -3 | 8 | 3 | 4 |
+
+Final: sum 18, smallest -3, largest 8, negatives 3, evens 4 (note: 0 is even).
+
+The lesson: a single loop can compute many statistics if you keep separate running variables. This is much more efficient than running `where(...).length` for each statistic, because you only walk the list once.
+
+---
+
 **Next:** Let's learn about booleans and logical operations.
 
 ---

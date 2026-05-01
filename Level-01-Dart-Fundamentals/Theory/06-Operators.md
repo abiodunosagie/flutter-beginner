@@ -546,6 +546,236 @@ Adds 5 to x. Same as `x = x + 5`.
 
 ---
 
+## Assignment
+
+### Problem 1: Predict the output
+
+```dart
+void main() {
+  int a = 7;
+  int b = 3;
+
+  print(a + b);
+  print(a - b);
+  print(a * b);
+  print(a / b);
+  print(a ~/ b);
+  print(a % b);
+  print(a == b);
+  print(a != b);
+  print(a > b);
+  print(a < b);
+}
+```
+
+### Problem 2: Compound assignment
+
+Replace each long form with the shortest equivalent compound assignment.
+
+```dart
+int x = 10;
+x = x + 5;     // ?
+x = x - 2;     // ?
+x = x * 3;     // ?
+x = x ~/ 2;    // ?
+x = x % 4;     // ?
+```
+
+### Problem 3: Operator precedence
+
+Without running, what does each expression evaluate to? Show the order in which Dart applies the operators.
+
+```dart
+print(2 + 3 * 4);
+print((2 + 3) * 4);
+print(10 - 4 - 2);
+print(10 - (4 - 2));
+print(20 / 4 / 2);
+print(2 + 3 > 4);
+print(true && false || true);
+```
+
+### Problem 4: Build a class-grade calculator
+
+Given five test scores, calculate:
+1. The total.
+2. The average.
+3. Whether the student passed (average >= 50).
+4. The highest score.
+5. The lowest score.
+
+Print all five results. Use `??=` somewhere if you find a use for it.
+
+Test with `[72, 85, 60, 90, 55]`. Expected:
+- Total: 362
+- Average: 72.4
+- Passed: true
+- Highest: 90
+- Lowest: 55
+
+### Problem 5: Null-aware operators in practice
+
+Given:
+```dart
+String? username = null;
+String? nickname = 'Boss';
+String? bio;
+```
+
+Write expressions that use `??`, `??=`, and `?.` to do each of these. Predict the result.
+
+1. Print the username, or `'Guest'` if it is null.
+2. Set `bio` to `'No bio yet'` only if it is currently null.
+3. Print the length of `nickname`, or print `'no name'` if nickname is null.
+4. Print `username ?? nickname ?? 'Anon'`. Why does this work?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Predict the output
+
+```
+10
+4
+21
+2.3333333333333335
+2
+1
+false
+true
+true
+false
+```
+
+How each:
+
+- `7 + 3 = 10`.
+- `7 - 3 = 4`.
+- `7 * 3 = 21`.
+- `7 / 3 = 2.333...`. Division is always double.
+- `7 ~/ 3 = 2`. Integer division drops the decimal.
+- `7 % 3 = 1`. Remainder.
+- `7 == 3` is false. They are not equal.
+- `7 != 3` is true. They are not equal.
+- `7 > 3` is true.
+- `7 < 3` is false.
+
+### Problem 2: Compound assignment
+
+```dart
+int x = 10;
+x += 5;     // x = x + 5
+x -= 2;     // x = x - 2
+x *= 3;     // x = x * 3
+x ~/= 2;    // x = x ~/ 2
+x %= 4;     // x = x % 4
+```
+
+These shortcuts exist for every arithmetic operator. They mean exactly the same thing as the long form. Use whichever reads better. Most Dart code uses the short form.
+
+### Problem 3: Operator precedence
+
+```
+14         // 2 + (3 * 4) = 2 + 12 = 14
+20         // (2 + 3) * 4 = 5 * 4 = 20
+4          // (10 - 4) - 2 = 6 - 2 = 4
+8          // 10 - (4 - 2) = 10 - 2 = 8
+2.5        // (20 / 4) / 2 = 5 / 2 = 2.5
+true       // (2 + 3) > 4 = 5 > 4 = true
+true       // (true && false) || true = false || true = true
+```
+
+The rules:
+
+1. **Multiplication and division before addition and subtraction.** Same as school maths. `2 + 3 * 4` is `2 + 12`, not `5 * 4`.
+2. **Same-level operators go left to right.** `10 - 4 - 2` is `(10 - 4) - 2 = 4`, not `10 - (4 - 2) = 8`.
+3. **Comparison happens after arithmetic.** `2 + 3 > 4` is `(2 + 3) > 4`, not `2 + (3 > 4)`.
+4. **`&&` binds tighter than `||`.** `true && false || true` is `(true && false) || true`.
+
+When in doubt, add parentheses. They cost nothing and make intent obvious.
+
+### Problem 4: Build a class-grade calculator
+
+```dart
+void main() {
+  List<int> scores = [72, 85, 60, 90, 55];
+
+  int total = 0;
+  int highest = scores[0];
+  int lowest = scores[0];
+
+  for (int score in scores) {
+    total += score;
+    if (score > highest) highest = score;
+    if (score < lowest) lowest = score;
+  }
+
+  double average = total / scores.length;
+  bool passed = average >= 50;
+
+  print('Total: $total');
+  print('Average: ${average.toStringAsFixed(1)}');
+  print('Passed: $passed');
+  print('Highest: $highest');
+  print('Lowest: $lowest');
+}
+```
+
+How the calculation works:
+
+1. **Walk the list once,** updating total, highest, and lowest on each step.
+2. **Average is total divided by count.** Since total is int and count is int, but division returns double, the result is a double.
+3. **Passed is a comparison** that returns a boolean directly.
+
+Output:
+```
+Total: 362
+Average: 72.4
+Passed: true
+Highest: 90
+Lowest: 55
+```
+
+The `??=` operator was a hint, but in this clean version we did not need it. It would be useful if you were building this incrementally and wanted to default a value once: e.g. `lowest ??= score;`. That would mean "set lowest to score only if lowest is currently null". Since we initialised lowest to the first score, that is not needed.
+
+### Problem 5: Null-aware operators in practice
+
+```dart
+String? username = null;
+String? nickname = 'Boss';
+String? bio;
+
+void main() {
+  // 1. username or 'Guest'
+  print(username ?? 'Guest');           // Guest
+
+  // 2. set bio to 'No bio yet' only if null
+  bio ??= 'No bio yet';
+  print(bio);                            // No bio yet
+
+  // 3. nickname.length or 'no name'
+  print(nickname?.length ?? 'no name');  // 4
+
+  // 4. first non-null
+  print(username ?? nickname ?? 'Anon'); // Boss
+}
+```
+
+How each operator works:
+
+1. **`??`** picks the right side when the left is null. `username ?? 'Guest'` returns `'Guest'`.
+
+2. **`??=`** assigns only if the variable is currently null. Since `bio` was null, the assignment happens. After this line, `bio` is `'No bio yet'`. If `bio` had already been set, this would do nothing.
+
+3. **`?.`** calls a method only if the left side is not null. `nickname?.length` returns 4 because `'Boss'` has 4 characters. If `nickname` were null, the whole `?.length` expression would be null, and `??` would substitute `'no name'`.
+
+4. **Chained `??`** evaluates left to right, returning the first non-null value. `username` is null, so we move to `nickname`. `nickname` is `'Boss'`, so we stop and return that. `'Anon'` is never used. This is the most common way to "find the first non-null value" in a list of options.
+
+These three operators (`??`, `??=`, `?.`) are everywhere in real Dart code. Understanding them deeply makes you write cleaner null-safe code.
+
+---
+
 **Congratulations!** You've completed all the theory for Level 1!
 
 Now it's time to practice with the Examples and Exercises.

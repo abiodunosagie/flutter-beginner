@@ -1,511 +1,608 @@
-# Parameters: Passing Data to Functions
+# Parameters: The Four Ways To Pass Data Into A Function
 
-## What Are Parameters?
+## Why This Topic Exists
 
-Parameters are the "inputs" to a function. They let you customize what the function does.
+A function with no inputs always does the same thing. That is rarely useful.
 
 ```dart
-void greet(String name) {  // name is a parameter
-  print('Hello, $name!');
-}
-
-void main() {
-  greet('Alice');  // 'Alice' is an argument
+void greet() {
+  print('Hello');
 }
 ```
 
-**Parameter** = Variable in function declaration
-**Argument** = Actual value passed when calling
+Most of the time, you want the function to do something **specific** based on the data you give it.
+
+```dart
+void greet(String name) {
+  print('Hello, $name');
+}
+```
+
+The `String name` part is a **parameter**. Parameters let one function handle many different cases.
+
+Dart has four ways to declare parameters. They look different but all do the same job: feed data into a function. Learn them in order.
 
 ---
 
-## Types of Parameters
+## A Quick Note On Vocabulary
 
-Dart has several types:
+This trips up beginners, so write it on the board:
 
-1. **Required Positional** - Must provide, in order
-2. **Optional Positional** - Can skip
-3. **Named** - Specify by name
-4. **Required Named** - Named, but required
+- A **parameter** is the placeholder in the function definition.
+- An **argument** is the actual value passed when calling.
+
+```dart
+void greet(String name) {       // 'name' is a parameter
+  print('Hello, $name');
+}
+
+greet('Ada');                    // 'Ada' is an argument
+```
+
+You will often hear people use them interchangeably. That is fine in conversation. On a test or in code review, the distinction matters.
+
+---
+
+## The Four Kinds Of Parameters
+
+| Style | Syntax | When to use |
+|-------|--------|-------------|
+| Required positional | `(String a, int b)` | 1-2 simple inputs, order is obvious |
+| Optional positional | `(String a, [int? b])` | One or two extras that often default |
+| Named (optional) | `({String? a, int? b})` | 3+ inputs, want clear call sites |
+| Named (required) | `({required String a})` | Named, but you must supply it |
+
+We will go through each in turn.
 
 ---
 
 ## 1. Required Positional Parameters
 
-The most basic type. Must provide ALL values in ORDER.
+This is what you have already been writing. The values must be passed **in order**, and **all of them are required**.
 
 ```dart
-void introduce(String name, int age, String city) {
-  print('I am $name, $age years old, from $city');
+void introduce(String name, int age) {
+  print('I am $name, $age years old');
 }
 
 void main() {
-  introduce('Alice', 25, 'NYC');  // ✅ All required, in order
-  introduce('NYC', 25, 'Alice');  // ❌ Wrong order = wrong output
-  introduce('Alice', 25);         // ❌ Error: Missing city
+  introduce('Ada', 25);     // works
+  introduce(25, 'Ada');     // ERROR: types do not match
+  introduce('Ada');         // ERROR: missing age
 }
 ```
 
-### When to Use
+Use this when:
+- The function has 1 or 2 parameters.
+- The order is obvious from the name (`add(a, b)`).
 
-- When ALL parameters are necessary
-- When there are only 1-2 parameters
-- When order is obvious
+When the parameters get to 3 or more, switch to named.
 
 ---
 
 ## 2. Optional Positional Parameters
 
-Wrap in `[ ]` to make optional. Must provide default values or handle null.
+If a parameter is optional, wrap it in **square brackets** `[ ]`. You also have to give it a default value or make it nullable.
 
 ```dart
 void greet(String name, [String greeting = 'Hello']) {
-  print('$greeting, $name!');
+  print('$greeting, $name');
 }
 
 void main() {
-  greet('Alice');           // Hello, Alice!
-  greet('Bob', 'Hi');       // Hi, Bob!
-  greet('Charlie', 'Hey');  // Hey, Charlie!
+  greet('Ada');             // Hello, Ada
+  greet('Ada', 'Welcome');  // Welcome, Ada
 }
 ```
 
-### Multiple Optional Parameters
+Two important rules:
+
+1. Optional parameters must come **after** required ones.
+2. You either give them a default value (`= 'Hello'`) or make the type nullable (`String?`).
 
 ```dart
-void createProfile(String name, [int? age, String? city]) {
-  print('Name: $name');
-  if (age != null) print('Age: $age');
-  if (city != null) print('City: $city');
-}
+// Default value
+void f(String a, [int x = 0]) { }
 
-void main() {
-  createProfile('Alice');
-  createProfile('Bob', 30);
-  createProfile('Charlie', 25, 'NYC');
-}
+// Nullable
+void f(String a, [int? x]) { }
 ```
 
-### Important Rules
-
-```dart
-// ✅ Correct: Required first, then optional
-void function(String required, [String? optional]) { }
-
-// ❌ Error: Optional cannot come before required
-void function([String? optional], String required) { }
-```
+If you make it nullable without a default, you have to handle the `null` case yourself inside the function.
 
 ---
 
 ## 3. Named Parameters
 
-Wrap in `{ }`. Specify by name when calling.
+Named parameters use **curly braces** `{ }`. When calling, you label each value with the parameter name.
 
 ```dart
-void createUser({String? name, int? age, String? email}) {
-  print('Name: $name');
-  print('Age: $age');
-  print('Email: $email');
+void createUser({String? name, int? age, String? city}) {
+  print('Name: $name, Age: $age, City: $city');
 }
 
 void main() {
-  createUser(name: 'Alice', age: 25, email: 'alice@email.com');
-  createUser(age: 30, name: 'Bob');  // Order doesn't matter!
-  createUser(email: 'test@email.com');  // Can skip some
+  createUser(name: 'Ada', age: 25, city: 'Lagos');
+  createUser(age: 30, name: 'Bola');     // order does not matter
+  createUser(city: 'Lagos');             // can skip the rest
 }
 ```
 
-### With Default Values
+Two things change from positional:
+
+1. You **label** each argument when calling.
+2. The **order does not matter**.
+
+By default, named parameters are **optional**. If you do not pass them, they are `null`. You can also give them defaults:
 
 ```dart
 void greet({String name = 'Guest', String greeting = 'Hello'}) {
-  print('$greeting, $name!');
+  print('$greeting, $name');
 }
 
-void main() {
-  greet();                        // Hello, Guest!
-  greet(name: 'Alice');          // Hello, Alice!
-  greet(greeting: 'Hi');         // Hi, Guest!
-  greet(name: 'Bob', greeting: 'Hey');  // Hey, Bob!
-}
+greet();                              // Hello, Guest
+greet(name: 'Ada');                   // Hello, Ada
+greet(greeting: 'Hi', name: 'Bola');  // Hi, Bola
 ```
 
-### When to Use Named Parameters
+Use named parameters when:
+- The function has 3 or more parameters.
+- The meaning of an argument is not obvious from its position.
 
-- When function has many parameters (3+)
-- When parameter meaning isn't obvious
-- When most parameters have defaults
-- For better readability
+Compare:
+
+```dart
+// Hard to read
+showDialog('Are you sure?', true, false, 5);
+
+// Easy to read
+showDialog(
+  message: 'Are you sure?',
+  cancellable: true,
+  destructive: false,
+  delaySeconds: 5,
+);
+```
+
+The second one needs no explanation.
 
 ---
 
 ## 4. Required Named Parameters
 
-Named, but MUST be provided. Use `required` keyword.
+Named parameters are optional by default. If you want them named **and** required, add the `required` keyword:
 
 ```dart
 void createAccount({
   required String email,
   required String password,
-  String? nickname,
+  String? phone,                 // optional
+  bool agreed = false,           // optional with default
 }) {
-  print('Creating account for: $email');
+  print('Account: $email');
 }
 
 void main() {
-  // ✅ Required ones provided
-  createAccount(email: 'test@email.com', password: 'secret123');
-
-  // ✅ With optional nickname
-  createAccount(
-    email: 'test@email.com',
-    password: 'secret123',
-    nickname: 'Tester',
-  );
-
-  // ❌ Error: email and password are required
-  createAccount(nickname: 'Tester');
+  createAccount(email: 'a@b.com', password: '123');           // ok
+  createAccount(email: 'a@b.com');                            // ERROR
 }
 ```
+
+This is the form Flutter uses everywhere. Get used to it now.
 
 ---
 
-## Comparison Chart
+## Side By Side: Same Function In All Four Styles
 
-| Type | Syntax | Required? | Order Matters? |
-|------|--------|-----------|----------------|
-| Required Positional | `(Type param)` | Yes | Yes |
-| Optional Positional | `([Type? param])` | No | Yes |
-| Named | `({Type? param})` | No | No |
-| Required Named | `({required Type param})` | Yes | No |
+```dart
+// Required positional
+void f1(String name, int age) { }
+f1('Ada', 25);
+
+// Optional positional
+void f2(String name, [int age = 0]) { }
+f2('Ada');
+f2('Ada', 25);
+
+// Named (optional)
+void f3({String? name, int? age}) { }
+f3();
+f3(name: 'Ada');
+f3(name: 'Ada', age: 25);
+
+// Named (required)
+void f4({required String name, required int age}) { }
+f4(name: 'Ada', age: 25);
+```
+
+Pick the style that makes the call site easiest to read.
 
 ---
 
-## Mixing Parameter Types
+## Default Values Recap
 
-You CAN mix positional and named:
-
-```dart
-void orderFood(
-  String item,           // Required positional
-  int quantity,          // Required positional
-  {
-    bool? spicy,         // Named optional
-    String? notes,       // Named optional
-    required String table,  // Named required
-  }
-) {
-  print('Order: $quantity x $item for table $table');
-  if (spicy == true) print('Make it spicy!');
-  if (notes != null) print('Note: $notes');
-}
-
-void main() {
-  orderFood('Pizza', 2, table: 'A5');
-  orderFood('Burger', 1, table: 'B3', spicy: true, notes: 'No onions');
-}
-```
-
-### Rules for Mixing
+You can give default values to optional positional **and** named parameters:
 
 ```dart
-// ✅ Correct order: positional first, then named
-void function(int a, int b, {String? c, required String d}) { }
-
-// ❌ Cannot mix optional positional and named
-void function([int? a], {String? b}) { }  // Error!
+void f([int x = 10]) { }            // optional positional default
+void f({int x = 10}) { }            // named default
 ```
+
+The default is used when the caller does not supply a value.
+
+You **cannot** put a default on a required parameter. If something is required, the caller must always pass it.
 
 ---
 
-## Default Values
+## Why This Matters In Flutter
 
-Provide fallback values for optional parameters:
-
-```dart
-// Optional positional with default
-void greet([String name = 'World']) {
-  print('Hello, $name!');
-}
-
-// Named with default
-void configure({int timeout = 30, bool debug = false}) {
-  print('Timeout: $timeout seconds');
-  print('Debug mode: $debug');
-}
-
-void main() {
-  greet();              // Hello, World!
-  greet('Alice');       // Hello, Alice!
-
-  configure();          // Uses all defaults
-  configure(timeout: 60);  // Override timeout only
-}
-```
-
-### Default Value Rules
-
-Defaults must be:
-- Compile-time constants
-- Literals (numbers, strings, booleans)
-- Const constructors
+Open any Flutter widget. You will see named parameters everywhere:
 
 ```dart
-// ✅ Valid defaults
-void function({
-  int count = 0,
-  String name = 'default',
-  bool flag = true,
-  List<int> items = const [],  // const required for collections
-}) { }
-
-// ❌ Invalid defaults
-void function({
-  DateTime date = DateTime.now(),  // Error: not const
-  List<int> items = [],  // Error: needs const
-}) { }
+Padding(
+  padding: EdgeInsets.all(16),
+  child: Text(
+    'Hello',
+    style: TextStyle(fontSize: 24),
+    textAlign: TextAlign.center,
+  ),
+)
 ```
+
+Notice how every argument is labelled (`padding:`, `child:`, `style:`, `textAlign:`). That is exactly the named-parameter syntax we just learned. Flutter chose this style because widgets often have 5-15 parameters, and labelled arguments are the only readable way to pass them all.
+
+When you build your own widgets in Level 5, you will use `required` named parameters for the things the widget cannot work without, and optional named for the rest.
 
 ---
 
-## Null Safety with Parameters
+## Common Mistakes
 
-### Nullable vs Non-Nullable
-
-```dart
-// Non-nullable: Must always have a value
-void greet(String name) { }  // name is never null
-
-// Nullable: Can be null
-void greet(String? name) {
-  if (name != null) {
-    print('Hello, $name!');
-  } else {
-    print('Hello, stranger!');
-  }
-}
-```
-
-### Optional = Nullable (Usually)
+### 1. Forgetting the parameter label on a named call
 
 ```dart
-void process([int? value]) {
-  // value might be null
-  print(value ?? 'No value provided');
-}
+void show({required String message}) { }
 
-void configure({int? timeout}) {
-  // timeout might be null
-  print('Timeout: ${timeout ?? 30}');
-}
+show('Hi');               // ERROR
+show(message: 'Hi');      // ok
 ```
+
+### 2. Putting required after optional
+
+```dart
+void f([int? a], int b) { }    // ERROR: required after optional
+void f(int b, [int? a]) { }    // ok
+```
+
+### 3. Missing a default or nullable mark
+
+```dart
+void f([int x]) { }            // ERROR: needs default or `int?`
+void f([int x = 0]) { }        // ok
+void f([int? x]) { }           // ok
+```
+
+### 4. Mixing positional and named when both work
+
+If you switch to named in one place, switch everywhere in that function. Mixing the two styles makes the function hard to call.
 
 ---
 
-## Practical Examples
+## Recap In One Minute
 
-### Example 1: User Registration
-
-```dart
-void registerUser({
-  required String email,
-  required String password,
-  String? username,
-  int age = 0,
-  bool newsletter = false,
-}) {
-  print('Email: $email');
-  print('Username: ${username ?? email.split('@')[0]}');
-  print('Age: ${age > 0 ? age : 'Not provided'}');
-  print('Newsletter: ${newsletter ? 'Yes' : 'No'}');
-}
-
-void main() {
-  registerUser(
-    email: 'alice@email.com',
-    password: 'secure123',
-    newsletter: true,
-  );
-}
-```
-
-### Example 2: HTTP Request
-
-```dart
-void makeRequest(
-  String url, {
-  String method = 'GET',
-  Map<String, String>? headers,
-  String? body,
-  int timeout = 30,
-}) {
-  print('$method $url');
-  print('Timeout: ${timeout}s');
-  if (headers != null) print('Headers: $headers');
-  if (body != null) print('Body: $body');
-}
-
-void main() {
-  // Simple GET
-  makeRequest('https://api.example.com/users');
-
-  // POST with body
-  makeRequest(
-    'https://api.example.com/users',
-    method: 'POST',
-    body: '{"name": "Alice"}',
-    headers: {'Content-Type': 'application/json'},
-  );
-}
-```
-
-### Example 3: Drawing Shapes
-
-```dart
-void drawRectangle(
-  int width,
-  int height, {
-  String char = '*',
-  bool filled = true,
-}) {
-  for (int row = 0; row < height; row++) {
-    String line = '';
-    for (int col = 0; col < width; col++) {
-      if (filled || row == 0 || row == height - 1 ||
-          col == 0 || col == width - 1) {
-        line += '$char ';
-      } else {
-        line += '  ';
-      }
-    }
-    print(line);
-  }
-}
-
-void main() {
-  print('Filled:');
-  drawRectangle(5, 3);
-
-  print('\nHollow:');
-  drawRectangle(5, 3, filled: false);
-
-  print('\nCustom:');
-  drawRectangle(6, 4, char: '#', filled: false);
-}
-```
-
----
-
-## Best Practices
-
-### 1. Use Named Parameters for Clarity
-
-```dart
-// ❌ What does true mean?
-createUser('Alice', 25, true, false, true);
-
-// ✅ Clear what each value means
-createUser(
-  name: 'Alice',
-  age: 25,
-  isAdmin: true,
-  isActive: false,
-  sendWelcomeEmail: true,
-);
-```
-
-### 2. Keep Required Parameters Minimal
-
-```dart
-// ❌ Too many required parameters
-void process(int a, int b, int c, int d, int e, int f) { }
-
-// ✅ Better: Required essentials, named options
-void process(int id, {int? limit, int? offset, String? filter}) { }
-```
-
-### 3. Use Meaningful Defaults
-
-```dart
-// ✅ Good defaults
-void paginate({int page = 1, int pageSize = 20}) { }
-void connect({int timeout = 30, int retries = 3}) { }
-
-// ❌ Unclear defaults
-void paginate({int page = 0, int pageSize = 0}) { }  // 0 is meaningless
-```
-
----
-
-## Summary
-
-| Parameter Type | Syntax | Example Call |
-|---------------|--------|--------------|
-| Required Positional | `(int a)` | `func(5)` |
-| Optional Positional | `([int a = 0])` | `func()` or `func(5)` |
-| Named | `({int? a})` | `func()` or `func(a: 5)` |
-| Required Named | `({required int a})` | `func(a: 5)` |
+- Required positional: pass in order, all required.
+- Optional positional: square brackets, default or nullable.
+- Named optional: curly braces, label when calling, defaults to null.
+- Named required: curly braces with the `required` keyword.
+- Use named for any function with 3 or more parameters. It is what Flutter uses.
 
 ---
 
 ## Quick Quiz
 
-**Q1:** What's wrong?
-
+**Q1.** What is wrong here?
 ```dart
-void func([int a], int b) { }
+void greet({String name}) {
+  print('Hello, $name');
+}
+```
+
+<details>
+<summary>Answer</summary>
+A named parameter without a default and without `?` is a compile error. Either make it `String? name` or add `required String name` or give it a default like `String name = 'Guest'`.
+</details>
+
+**Q2.** Which call works?
+```dart
+void f(String a, [int b = 0, String? c]) { }
+
+// 1. f('hi');
+// 2. f('hi', 5);
+// 3. f('hi', 5, 'x');
+// 4. f();
+```
+
+<details>
+<summary>Answer</summary>
+1, 2, and 3 all work. Call 4 fails because `a` is required.
+</details>
+
+**Q3.** Convert this to use required named parameters:
+```dart
+void register(String email, String password, int age) { }
 ```
 
 <details>
 <summary>Answer</summary>
 
-Required parameters must come BEFORE optional ones.
-
 ```dart
-void func(int b, [int? a]) { }
+void register({
+  required String email,
+  required String password,
+  required int age,
+}) { }
 ```
-
 </details>
 
-**Q2:** How do you call this function to set only `debug` to true?
+---
+
+## Assignment
+
+### Problem 1: Convert to named parameters
+
+This function is hard to call because the arguments are all the same type. Convert it to use **required named parameters**, then show how the call site changes.
 
 ```dart
-void config({int port = 8080, bool debug = false}) { }
-```
-
-<details>
-<summary>Answer</summary>
-
-```dart
-config(debug: true);  // port uses default 8080
-```
-
-</details>
-
-**Q3:** What's the output?
-
-```dart
-void greet([String name = 'World']) {
-  print('Hello, $name!');
+void createOrder(String productName, int quantity, double price, bool express) {
+  // ...
 }
 
 void main() {
-  greet();
+  createOrder('Shirt', 2, 19.99, true);
 }
 ```
 
-<details>
-<summary>Answer</summary>
+### Problem 2: Add smart defaults
 
-`Hello, World!` - uses the default value.
+Take this function and decide:
+- Which parameters should be required.
+- Which should be optional with a default.
+- Which should be optional and nullable.
 
-</details>
+Justify each decision in your answer.
+
+```dart
+void registerUser(
+  String email,
+  String password,
+  String? phoneNumber,
+  String country,
+  bool subscribeNewsletter,
+) { }
+```
+
+The function should be callable in at least these ways:
+
+```dart
+registerUser(email: 'a@b.com', password: 'pass1234');
+registerUser(email: 'a@b.com', password: 'pass1234', country: 'NG');
+registerUser(
+  email: 'a@b.com',
+  password: 'pass1234',
+  country: 'NG',
+  subscribeNewsletter: true,
+  phoneNumber: '0801',
+);
+```
+
+### Problem 3: Predict the output
+
+Without running, what does this print?
+
+```dart
+void show({String name = 'Guest', int age = 0, String? city}) {
+  print('$name, age $age, city: ${city ?? 'unknown'}');
+}
+
+void main() {
+  show();
+  show(name: 'Ada');
+  show(age: 25, name: 'Bola');
+  show(city: 'Lagos', name: 'Chidi', age: 30);
+}
+```
+
+### Problem 4: Refactor to better parameter style
+
+This function has 6 positional parameters. That is a sign you should use named parameters. Refactor it to use named parameters with appropriate defaults and `required` markers. Then write three example calls that show the named version is more readable than the positional one.
+
+```dart
+void sendEmail(
+  String to,
+  String from,
+  String subject,
+  String body,
+  bool isHtml,
+  bool isUrgent,
+) { }
+```
+
+### Problem 5: Spot the design issues
+
+This function declaration has multiple problems. List them and rewrite the function in the cleanest way you can.
+
+```dart
+void f([String? a], int b, {required String c, int d = 0, String? e}) { }
+```
 
 ---
 
-**Next:** Learn about return values and arrow functions.
+## Assignment Answers
+
+### Problem 1: Convert to named parameters
+
+```dart
+void createOrder({
+  required String productName,
+  required int quantity,
+  required double price,
+  required bool express,
+}) {
+  // ...
+}
+
+void main() {
+  createOrder(
+    productName: 'Shirt',
+    quantity: 2,
+    price: 19.99,
+    express: true,
+  );
+}
+```
+
+How the conversion was done:
+
+1. **Wrap all parameters in `{ }`** to make them named.
+2. **Add `required`** to each, because the original function expected all four values to be supplied.
+3. **At the call site, label every argument** with its parameter name.
+
+Why this is better:
+
+The original call `createOrder('Shirt', 2, 19.99, true)` requires the reader to remember the order. Is `true` the express flag, or some other boolean? With named parameters, the call literally says `express: true`. No memory required.
+
+The refactor is most valuable when the function has many parameters of the same type, like our case where two are bool-related and the others are mixed. Named parameters make order mistakes impossible.
+
+### Problem 2: Add smart defaults
+
+```dart
+void registerUser({
+  required String email,
+  required String password,
+  String? phoneNumber,
+  String country = 'NG',
+  bool subscribeNewsletter = false,
+}) { }
+```
+
+Justification for each decision:
+
+1. **`email` and `password` are required.** A user cannot register without them. There is no sensible default. Making them required forces the caller to supply them, and the compiler will catch any missing argument.
+2. **`phoneNumber` is optional and nullable.** Some users will not give a phone number. There is no good default value (an empty string would be misleading). Nullable is exactly the right shape: "may have a phone, may not".
+3. **`country` has a default of `'NG'`.** In a Nigerian-focused app, most users will be from Nigeria. A default avoids forcing every caller to spell it out. Callers from other countries override it.
+4. **`subscribeNewsletter` defaults to `false`.** This is the **safe** default. If we accidentally subscribed users by default, we would be spamming people. Privacy-respecting defaults matter.
+
+The principle: ask yourself "what should happen if the caller does not specify this?". If there is a good answer (a sensible default), give it one. If "we cannot proceed without this", make it required. If "may not exist at all", make it nullable.
+
+### Problem 3: Predict the output
+
+Output:
+
+```
+Guest, age 0, city: unknown
+Ada, age 0, city: unknown
+Bola, age 25, city: unknown
+Chidi, age 30, city: Lagos
+```
+
+How each call resolves:
+
+1. `show()`: no arguments. All defaults kick in. `name = 'Guest'`, `age = 0`, `city = null`. The `city ?? 'unknown'` handles the null and prints `'unknown'`.
+2. `show(name: 'Ada')`: only `name` overridden. `age` stays at 0, `city` stays at null.
+3. `show(age: 25, name: 'Bola')`: `name` and `age` overridden. The order of arguments at the call site does not matter for named parameters. `city` is still null.
+4. `show(city: 'Lagos', name: 'Chidi', age: 30)`: all three are overridden. Notice we pass them in a different order than they were declared. That is allowed because they are named.
+
+This problem cements three things: named parameters can be skipped, can be passed in any order, and play well with defaults.
+
+### Problem 4: Refactor to better parameter style
+
+```dart
+void sendEmail({
+  required String to,
+  required String subject,
+  required String body,
+  String from = 'no-reply@example.com',
+  bool isHtml = false,
+  bool isUrgent = false,
+}) { }
+```
+
+Three example calls:
+
+```dart
+// Minimal
+sendEmail(
+  to: 'ada@example.com',
+  subject: 'Welcome',
+  body: 'Thanks for signing up',
+);
+
+// Marketing email
+sendEmail(
+  to: 'bola@example.com',
+  from: 'newsletter@example.com',
+  subject: 'New products',
+  body: '<h1>See our latest</h1>',
+  isHtml: true,
+);
+
+// Urgent alert
+sendEmail(
+  to: 'admin@example.com',
+  subject: 'Server down',
+  body: 'The production server is unresponsive',
+  isUrgent: true,
+);
+```
+
+Compare with the equivalent positional version:
+
+```dart
+sendEmail('ada@example.com', 'no-reply@example.com', 'Welcome', 'Thanks', false, false);
+```
+
+The named version is self-documenting. You can see at a glance what each argument means. The positional version requires you to remember the order and the meaning of each `false` and `true`.
+
+Design choices:
+
+- **`to`, `subject`, `body` are required.** No email makes sense without them.
+- **`from` has a default sender.** Most emails go from the same address. Override only when needed (e.g. marketing).
+- **`isHtml` and `isUrgent` default to false.** These are flags. Most emails are plain text and not urgent.
+
+### Problem 5: Spot the design issues
+
+The function declaration has three problems:
+
+```dart
+void f([String? a], int b, {required String c, int d = 0, String? e}) { }
+```
+
+1. **Optional positional `[String? a]` comes before required positional `int b`.** This is a syntax error. Optional positional parameters must come after all required positional parameters.
+
+2. **Mixing optional positional `[ ]` with named `{ }`** in the same function is allowed in theory but very confusing. Pick one style.
+
+3. **The function has too many parameters with no clear meaning.** Names like `a`, `b`, `c` say nothing.
+
+A clean rewrite, assuming we want to keep the same general shape:
+
+```dart
+void f({
+  required int b,
+  required String c,
+  String? a,
+  int d = 0,
+  String? e,
+}) { }
+```
+
+Now:
+- All parameters are named.
+- `b` and `c` are required because they had no defaults before.
+- `a` and `e` are optional and nullable.
+- `d` keeps its default of 0.
+- The order is conventional: required first, then optional.
+
+Of course in real code you would also rename `a, b, c, d, e` to descriptive names. The exercise here is about parameter shape, not naming, but in practice both matter.
 
 ---
 
-**Continue to:** `03-ReturnValues.md`
+**Next:** `03-ReturnValues.md` to focus on what comes back out of a function.

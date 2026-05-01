@@ -532,6 +532,250 @@ Escape it: `'It\'s great'` or use double quotes: `"It's great"`
 
 ---
 
+## Assignment
+
+### Problem 1: Predict the output
+
+```dart
+void main() {
+  String name = 'Ada';
+  String greeting = 'Hello, ' + name + '!';
+  String again = 'Hello, $name!';
+  print(greeting);
+  print(again);
+  print(name.length);
+  print(name.toUpperCase());
+  print(name.toLowerCase());
+}
+```
+
+### Problem 2: Build a full name
+
+Given:
+```dart
+String first = 'ada';
+String last = 'ogundimu';
+```
+
+Build and print these formats:
+1. `'ada ogundimu'`
+2. `'Ada Ogundimu'` (each word capitalized)
+3. `'A. Ogundimu'` (initial of first name, then last)
+4. `'OGUNDIMU, ADA'` (last in caps, then first in caps, separated by a comma)
+
+You will need methods like `toUpperCase`, `toLowerCase`, and substring access.
+
+### Problem 3: Validate an email shape
+
+Write a function `bool looksLikeEmail(String text)` that returns true if `text` looks like a valid email. Your rules:
+
+- Contains exactly one `@`.
+- Has at least one character before the `@`.
+- Has at least one `.` after the `@`.
+- Has at least one character after the last `.`.
+
+You do not have to handle every real-world edge case. The four rules are enough.
+
+Test on:
+- `'ada@example.com'` (true)
+- `'ada@example'` (false: no dot after `@`)
+- `'@example.com'` (false: nothing before `@`)
+- `'ada@@example.com'` (false: two `@`)
+- `'ada.example.com'` (false: no `@`)
+
+### Problem 4: Reverse a string
+
+Without using `String.fromCharCodes` or any reverse method, write a function `String reverseString(String text)` that returns the input reversed.
+
+`reverseString('Flutter')` should return `'rettulF'`.
+
+### Problem 5: Word counter
+
+Write a function `int countWords(String sentence)` that returns the number of words in the input. Words are separated by one or more spaces. Trim leading and trailing whitespace before counting.
+
+Test on:
+- `'hello world'` (2)
+- `'   one two   three '` (3)
+- `''` (0)
+- `'lonely'` (1)
+
+Hint: `split(' ')` splits on spaces. `trim()` removes leading and trailing whitespace.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Predict the output
+
+```
+Hello, Ada!
+Hello, Ada!
+3
+ADA
+ada
+```
+
+How each line works:
+
+1. `'Hello, ' + name + '!'` builds the string by concatenation. Each `+` joins.
+2. `'Hello, $name!'` does the same job using interpolation. Cleaner and more idiomatic.
+3. `name.length` returns 3, the number of characters in `'Ada'`.
+4. `name.toUpperCase()` returns a new string `'ADA'`. The original `name` is unchanged.
+5. `name.toLowerCase()` returns `'ada'`. Again, a new string.
+
+A common confusion point: string methods like `toUpperCase` do not modify the original. They return a new string. If you want to update `name`, write `name = name.toUpperCase();`.
+
+### Problem 2: Build a full name
+
+```dart
+void main() {
+  String first = 'ada';
+  String last = 'ogundimu';
+
+  // 1. lowercase, with space
+  print('$first $last');
+
+  // 2. each word capitalized
+  String firstCap = first[0].toUpperCase() + first.substring(1);
+  String lastCap = last[0].toUpperCase() + last.substring(1);
+  print('$firstCap $lastCap');
+
+  // 3. first initial, dot, last name capitalized
+  print('${first[0].toUpperCase()}. $lastCap');
+
+  // 4. last upper, comma, first upper
+  print('${last.toUpperCase()}, ${first.toUpperCase()}');
+}
+```
+
+How "capitalize a word" works:
+
+`first[0]` gets the first character. `toUpperCase()` makes it uppercase. `first.substring(1)` returns everything from index 1 onward, unchanged. Concatenate them. So `'ada'` becomes `'A' + 'da'` = `'Ada'`.
+
+Output:
+```
+ada ogundimu
+Ada Ogundimu
+A. Ogundimu
+OGUNDIMU, ADA
+```
+
+### Problem 3: Validate an email shape
+
+```dart
+bool looksLikeEmail(String text) {
+  // Rule 1: exactly one @
+  int firstAt = text.indexOf('@');
+  int lastAt = text.lastIndexOf('@');
+  if (firstAt == -1 || firstAt != lastAt) return false;
+
+  // Rule 2: at least one character before @
+  if (firstAt == 0) return false;
+
+  // Rule 3: at least one . after @
+  String afterAt = text.substring(firstAt + 1);
+  int dot = afterAt.indexOf('.');
+  if (dot == -1) return false;
+
+  // Rule 4: at least one character after the last .
+  int lastDot = afterAt.lastIndexOf('.');
+  if (lastDot == afterAt.length - 1) return false;
+
+  return true;
+}
+```
+
+How each rule maps to code:
+
+1. **Exactly one `@`:** if the first and last `@` are at the same index, there is exactly one. If `indexOf` returns -1, there are zero. Both bad cases are filtered.
+2. **At least one character before `@`:** if `firstAt` is 0, there is nothing before. Reject.
+3. **At least one `.` after `@`:** look at the part after the `@`. If it contains no dot, reject.
+4. **At least one character after the last `.`:** if the last dot is at the very last position, there is nothing after it. Reject.
+
+Trace on `'ada@example'`:
+- firstAt = 3, lastAt = 3, equal, one @ exists.
+- firstAt is 3, not 0, so there is something before.
+- afterAt = `'example'`. dot = -1. Return false.
+
+Trace on `'ada@example.com'`:
+- firstAt = 3, lastAt = 3, equal.
+- firstAt is 3, ok.
+- afterAt = `'example.com'`. dot = 7, ok.
+- lastDot = 7. afterAt.length is 11. 7 is not 10, so there are characters after the last dot.
+- Return true.
+
+This kind of validation is approximate. Real email validation uses regular expressions, but the explicit version teaches the underlying logic.
+
+### Problem 4: Reverse a string
+
+```dart
+String reverseString(String text) {
+  String result = '';
+  for (int i = text.length - 1; i >= 0; i--) {
+    result += text[i];
+  }
+  return result;
+}
+```
+
+How the algorithm works:
+
+1. **Start with an empty string.**
+2. **Walk the input from the last index to the first.** Each step, append the current character to the result.
+3. **Return the result.**
+
+Trace on `'Flutter'`:
+
+| i | char | result after |
+|---|------|--------------|
+| 6 | r | 'r' |
+| 5 | e | 're' |
+| 4 | t | 'ret' |
+| 3 | t | 'rett' |
+| 2 | u | 'rettu' |
+| 1 | l | 'rettul' |
+| 0 | F | 'rettulF' |
+
+Return `'rettulF'`. Correct.
+
+A more idiomatic version using `split('').reversed.join('')`:
+
+```dart
+String reverseString(String text) => text.split('').reversed.join();
+```
+
+This splits into characters, reverses, and joins back. Both work. The manual version teaches the underlying loop pattern.
+
+### Problem 5: Word counter
+
+```dart
+int countWords(String sentence) {
+  String trimmed = sentence.trim();
+  if (trimmed.isEmpty) return 0;
+
+  // Split on any whitespace, including multiple spaces
+  List<String> parts = trimmed.split(RegExp(r'\s+'));
+  return parts.length;
+}
+```
+
+How it handles each case:
+
+1. **`trim()`** removes leading and trailing whitespace. So `'   hello   '` becomes `'hello'`.
+2. **Empty check.** If after trimming there is nothing, the answer is 0.
+3. **`split(RegExp(r'\s+'))`** splits on any run of whitespace (spaces, tabs, etc.) of one or more characters. This handles `'one  two'` (two spaces) correctly. A simpler `split(' ')` would create empty entries for consecutive spaces.
+
+Test results:
+
+- `'hello world'` -> trim 'hello world' -> split ['hello', 'world'] -> length 2.
+- `'   one two   three '` -> trim 'one two   three' -> split ['one', 'two', 'three'] -> length 3.
+- `''` -> trim '' -> empty, return 0.
+- `'lonely'` -> trim 'lonely' -> split ['lonely'] -> length 1.
+
+The `RegExp(r'\s+')` is a regular expression that matches one or more whitespace characters. The `r` makes it a "raw" string so the backslash means what it should. Regex is a big topic; for now, just remember that `\s+` is "one or more whitespace".
+
+---
+
 **Next:** Let's learn about working with numbers.
 
 ---

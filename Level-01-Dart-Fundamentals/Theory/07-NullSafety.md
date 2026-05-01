@@ -630,4 +630,230 @@ A: Old Dart caused crashes at runtime. New Dart catches bugs at compile time (be
 
 ---
 
-**Practice these concepts and null safety will become second nature! 🎯**
+## Assignment
+
+### Problem 1: Spot what compiles and what does not
+
+For each declaration, predict whether the line is legal.
+
+```dart
+String name = null;            // 1
+String? nickname = null;       // 2
+int age = null;                // 3
+int? grade;                    // 4
+double price;                  // 5
+String city = '';              // 6
+```
+
+### Problem 2: Add the right `?` and `!`
+
+This code does not compile. Add `?` (to types) and `!` (to expressions) where appropriate to make it work. Do not change the logic.
+
+```dart
+String getName(String input) {
+  if (input.isEmpty) return null;
+  return input.toUpperCase();
+}
+
+void main() {
+  String result = getName('ada');
+  print(result.length);
+}
+```
+
+### Problem 3: Predict the output
+
+```dart
+void main() {
+  String? a = 'hello';
+  String? b;
+  String? c = null;
+
+  print(a ?? 'default');
+  print(b ?? 'default');
+  print(c ?? 'default');
+
+  print(a?.length);
+  print(b?.length);
+
+  b ??= 'set now';
+  print(b);
+
+  b ??= 'try again';
+  print(b);
+}
+```
+
+### Problem 4: Safe integer parser
+
+Dart's `int.parse('123')` returns 123, but `int.parse('not a number')` **throws** an exception. There is also `int.tryParse(...)` that returns `int?` (null on failure).
+
+Write a function `int parseOrZero(String text)` that returns the parsed integer, or 0 if parsing fails. Use `??` and `tryParse`.
+
+Test on `'42'`, `'7'`, `''`, and `'hello'`. Expected: 42, 7, 0, 0.
+
+### Problem 5: Build a profile getter
+
+You have:
+
+```dart
+class User {
+  String? name;
+  int? age;
+}
+```
+
+(Classes come in Level 4. Just read this for now.)
+
+Write a function `String greetUser(User? user)` that returns:
+
+- `'Hello, $name (age $age)'` if everything is non-null.
+- `'Hello, $name'` if user and name are non-null but age is null.
+- `'Hello, friend'` if user is non-null but name is null.
+- `'No user signed in'` if user itself is null.
+
+You will need `?.`, `??`, and a couple of explicit null checks. Walk the cases in your answer.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Spot what compiles and what does not
+
+```dart
+String name = null;            // 1. ERROR: String cannot be null
+String? nickname = null;       // 2. ok: String? can be null
+int age = null;                // 3. ERROR: int cannot be null
+int? grade;                    // 4. ok: nullable, defaults to null
+double price;                  // 5. ERROR: non-nullable cannot be uninitialised
+String city = '';              // 6. ok: empty string is not null
+```
+
+The rules:
+
+- A type without `?` cannot be null. If you do not give it a value, the compiler refuses, unless you mark it `late`.
+- A type with `?` can be null, and defaults to null if not initialised.
+- An empty string `''` is **not** null. It is a real string with zero characters.
+
+### Problem 2: Add the right `?` and `!`
+
+```dart
+String? getName(String input) {
+  if (input.isEmpty) return null;
+  return input.toUpperCase();
+}
+
+void main() {
+  String? result = getName('ada');
+  print(result!.length);
+}
+```
+
+What was added and why:
+
+1. **Return type became `String?`.** The function can return null, so the type must say so.
+2. **`result` is `String?`** because it stores the function's return value, which is nullable.
+3. **`result!.length`** uses the bang `!` to assert "trust me, this is not null right now". We know it is not null because we passed `'ada'` (non-empty).
+
+A safer version without `!`:
+
+```dart
+String? result = getName('ada');
+if (result != null) {
+  print(result.length);
+}
+```
+
+After the null check, Dart "knows" `result` is not null inside the if, and the dot access is safe without `!`. This is called **flow analysis**.
+
+### Problem 3: Predict the output
+
+```
+hello
+default
+default
+5
+null
+set now
+set now
+```
+
+Trace each:
+
+1. `a ?? 'default'`: a is `'hello'`, not null. Result is `'hello'`.
+2. `b ?? 'default'`: b is null. Result is `'default'`.
+3. `c ?? 'default'`: c is null. Result is `'default'`.
+4. `a?.length`: a is `'hello'`. Length is 5. Result is 5.
+5. `b?.length`: b is null. The whole expression is null. Result is null.
+6. `b ??= 'set now'`: b is null, so it gets set to `'set now'`. Then we print b, which is `'set now'`.
+7. `b ??= 'try again'`: b is no longer null (we just set it). The assignment is skipped. b stays `'set now'`. Print again.
+
+The lesson: `??=` only assigns when the variable is null. Once it has a value, repeated `??=` calls do nothing.
+
+### Problem 4: Safe integer parser
+
+```dart
+int parseOrZero(String text) {
+  return int.tryParse(text) ?? 0;
+}
+
+void main() {
+  print(parseOrZero('42'));      // 42
+  print(parseOrZero('7'));       // 7
+  print(parseOrZero(''));        // 0
+  print(parseOrZero('hello'));   // 0
+}
+```
+
+How the one-liner works:
+
+- `int.tryParse(text)` returns the parsed int if the text is a valid number. Otherwise it returns null.
+- `?? 0` falls back to 0 when the left side is null.
+
+This is a perfect use of nullable types. The "I might fail" return type forces the caller to handle the null case. The `??` operator handles it cleanly in one expression.
+
+The contrast: `int.parse` would throw an exception, which would crash unless you wrap it in try/catch. `tryParse` is much friendlier.
+
+### Problem 5: Build a profile getter
+
+```dart
+class User {
+  String? name;
+  int? age;
+}
+
+String greetUser(User? user) {
+  if (user == null) return 'No user signed in';
+  if (user.name == null) return 'Hello, friend';
+  if (user.age == null) return 'Hello, ${user.name}';
+  return 'Hello, ${user.name} (age ${user.age})';
+}
+```
+
+How each case is reached:
+
+1. **First, check if `user` itself is null.** If so, no point looking inside. Return the global default.
+2. **Then check if `user.name` is null.** Inside this branch, we know user is non-null. We can read `user.name`. If it is null, return the friend version.
+3. **Then check if `user.age` is null.** At this point, user and name are both non-null. We can use `user.name` directly.
+4. **If we get here, everything is non-null.** Return the full version.
+
+Note how each check narrows the unknown. After the first early-return, Dart knows `user` is non-null. After the second, both `user` and `user.name` are non-null. This is the "guard clause" pattern from earlier, applied to nullables.
+
+A version using `??`:
+
+```dart
+String greetUser(User? user) {
+  if (user == null) return 'No user signed in';
+
+  String name = user.name ?? 'friend';
+
+  if (user.age == null) return 'Hello, $name';
+  return 'Hello, $name (age ${user.age})';
+}
+```
+
+This is shorter but slightly different. It always prints `'friend'` instead of just dropping the part. Whether that is better depends on the requirements. The first version follows the spec exactly.
+
+---
+
+**Practice these concepts and null safety will become second nature.**
