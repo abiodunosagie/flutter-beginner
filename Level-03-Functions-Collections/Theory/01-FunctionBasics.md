@@ -1,53 +1,47 @@
-# Functions: Reusable Blocks Of Code
+# Function Basics: Saving Code So You Can Reuse It
 
-## Why This Topic Exists
+## The Big Idea In One Sentence
 
-You have been writing all your code inside `main()`. That works for small examples. Real apps have hundreds of operations: validate input, calculate totals, send emails, format dates. If you keep stuffing all of that into `main`, you end up with a single 2000-line file that nobody, including you, can read.
+> A function is a **piece of code with a name on it**, so you can use it again whenever you want.
 
-Functions solve this. A function is a **named block of code** that does one job. Once you write it, you can use it as many times as you want, from anywhere.
-
----
-
-## The Mental Model
-
-A function is like a **machine**.
-
-- It has a name on the side.
-- It takes inputs (raw materials).
-- It does some work inside.
-- It produces an output (a finished product).
-
-You do not need to know how the machine works on the inside. You only need to know:
-1. What you have to feed it.
-2. What it gives you back.
-
-That is the same way you should treat functions you write. Each function should do **one job**, and the rest of your code should just call it.
+That is it. Everything else on this page just shows you how to write one.
 
 ---
 
-## Without Functions vs With Functions
+## Why Functions Exist (The Real Reason)
 
-Without:
+Imagine you are writing code that calculates the area of a room. Length times width.
+
+You do it once:
 
 ```dart
-void main() {
-  int len1 = 5, wid1 = 3;
-  int area1 = len1 * wid1;
-  print(area1);
-
-  int len2 = 8, wid2 = 4;
-  int area2 = len2 * wid2;
-  print(area2);
-
-  int len3 = 6, wid3 = 2;
-  int area3 = len3 * wid3;
-  print(area3);
-}
+int length1 = 5;
+int width1 = 3;
+int area1 = length1 * width1;
+print(area1);
 ```
 
-The same logic, written three times. Boring and bug-prone.
+Then you need to do it for a second room:
 
-With:
+```dart
+int length2 = 8;
+int width2 = 4;
+int area2 = length2 * width2;
+print(area2);
+```
+
+And a third:
+
+```dart
+int length3 = 6;
+int width3 = 2;
+int area3 = length3 * width3;
+print(area3);
+```
+
+Look at all that copy-paste. Same recipe, different ingredients. If we ever need to change how area is calculated, we have to change it in three places. Easy to forget one.
+
+A **function** lets you write the recipe once and use it as many times as you want.
 
 ```dart
 int areaOf(int length, int width) {
@@ -61,36 +55,64 @@ void main() {
 }
 ```
 
-Same result. One source of truth. If we ever change the formula, we change it once.
+Same result. One recipe. No copy-paste.
 
-This is the core promise of functions: **write once, use many times.**
+That is the whole reason functions exist: **write the recipe once, use it as many times as you want.**
 
 ---
 
-## The Anatomy
+## A Picture To Hold In Your Head
+
+Think of a function like a **machine in a factory**:
+
+- It has a **name** painted on the side.
+- You feed it **inputs** (raw materials).
+- It does its **work** inside.
+- It hands you back **an output** (the finished product).
+
+You do not need to know how the machine works inside. You just need to know two things:
+
+1. What you have to feed in.
+2. What you get back.
+
+That is exactly how you should think about every function you write.
+
+---
+
+## The Four Parts Of A Function
+
+Every function has the same four parts, in the same order:
 
 ```dart
-int add(int a, int b) {
-  return a + b;
+int  add  (int a, int b)  { return a + b; }
+//↑     ↑       ↑                  ↑
+// 1   2       3                  4
+```
+
+| # | Part | Example | What it means |
+|---|------|---------|---------------|
+| 1 | Return type | `int` | What kind of answer comes back |
+| 2 | Name | `add` | What you call it |
+| 3 | Parameters | `(int a, int b)` | What you feed in |
+| 4 | Body | `{ return a + b; }` | The work it does |
+
+Read it left to right: "return type, name, inputs, body." Every Dart function follows this order.
+
+If the function does not give anything back, write `void` instead of a real type:
+
+```dart
+void sayHello() {
+  print('hello');
 }
 ```
 
-Four parts, in this exact order:
-
-| Part | Example | What it means |
-|------|---------|---------------|
-| Return type | `int` | The type of value the function gives back |
-| Name | `add` | What you call when you want to use it |
-| Parameters | `(int a, int b)` | Inputs the function expects |
-| Body | `{ return a + b; }` | The work the function does |
-
-If the function does not give anything back (it just does work like printing), the return type is `void`.
+`void` just means "this function does its job, but does not hand anything back."
 
 ---
 
-## Calling A Function
+## How To Use A Function
 
-Calling means "run the function now". You write the name, followed by parentheses. Inside the parentheses, you pass values that match the parameters.
+Using a function is called **calling** it. You write its name, then a pair of parentheses with the inputs inside.
 
 ```dart
 int add(int a, int b) {
@@ -98,25 +120,48 @@ int add(int a, int b) {
 }
 
 void main() {
-  int result = add(5, 3);     // call it, save the answer
-  print(result);              // 8
+  int result = add(5, 3);   // call it, catch the answer
+  print(result);            // 8
 
-  print(add(10, 20));         // call it, print the answer directly
+  print(add(10, 20));       // call it directly inside print
 }
 ```
 
-**Watch the parentheses.** Writing `add` without `()` does not call the function. It just refers to the function as a value, which is almost never what a beginner wants.
+Two important things:
+
+1. **The parentheses are required.** Even if there are no inputs, you still need `()`.
+2. **Without parentheses, the function does not run.**
 
 ```dart
-add;        // does nothing
-add(5, 3);  // runs the function, returns 8
+add;        // does nothing, just refers to the function
+add(5, 3);  // actually runs it, gives back 8
 ```
+
+This trips up beginners all the time. If you ever wonder "why is my function not running?" check that you wrote `()` at the end.
 
 ---
 
-## `void`: When A Function Returns Nothing
+## A Function With No Inputs
 
-If your function only does work (like printing) and does not need to give back a value, use `void`:
+Not every function needs inputs. Some functions just do a job.
+
+```dart
+void sayHello() {
+  print('Hello!');
+}
+
+void main() {
+  sayHello();   // prints "Hello!"
+}
+```
+
+The empty `()` after the name means "no inputs needed." You still write the parentheses.
+
+---
+
+## A Function With Inputs
+
+Inputs go inside the parentheses. Each one needs a type and a name.
 
 ```dart
 void greet(String name) {
@@ -124,134 +169,90 @@ void greet(String name) {
 }
 
 void main() {
-  greet('Ada');     // prints "Hello, Ada"
+  greet('Ada');     // Hello, Ada
+  greet('Bola');    // Hello, Bola
 }
 ```
 
-There is no `return` statement, because there is nothing to return. You also cannot save the result to a variable, because there is nothing to save.
+The same function works for any name you give it. That is the whole point.
+
+You can have more than one input. Separate them with commas.
 
 ```dart
-String x = greet('Ada');   // ERROR: cannot store void
-```
-
-If you ever need a function to give back a value later, just change `void` to the proper type and add a `return`.
-
----
-
-## `return`: How A Function Hands Back A Value
-
-`return` does two things at once:
-
-1. It sends the value out of the function.
-2. It immediately exits the function. Code after `return` does not run.
-
-```dart
-int doubleIt(int n) {
-  return n * 2;
-  print('this never runs');   // dead code, ignored
+void introduce(String name, int age) {
+  print('I am $name, $age years old');
 }
-```
-
-You can also use `return` early to bail out:
-
-```dart
-int firstIndexOf(List<int> nums, int target) {
-  for (int i = 0; i < nums.length; i++) {
-    if (nums[i] == target) {
-      return i;     // found it, hand back the index, stop
-    }
-  }
-  return -1;        // got through the whole list, not found
-}
-```
-
-This is a common pattern: search, return on the first match, return a "not found" value at the end.
-
----
-
-## Where Functions Live
-
-You can place functions in three different places:
-
-### 1. Top-level (most common)
-
-Outside any other function. They are visible to the whole file.
-
-```dart
-int square(int n) => n * n;
 
 void main() {
-  print(square(4));
+  introduce('Ada', 25);   // I am Ada, 25 years old
 }
 ```
-
-### 2. Local (inside another function)
-
-Useful for tiny helpers that nobody else needs.
-
-```dart
-void main() {
-  String shout(String s) => '${s.toUpperCase()}!';
-  print(shout('hello'));
-}
-```
-
-### 3. Inside classes (called *methods*)
-
-You will meet these in Level 4. Same idea, just attached to an object.
 
 ---
 
-## Arrow Syntax: One-Line Shortcut
+## A Short Way: Arrow Syntax
 
-If a function is just a single expression that returns a value, you can write it on one line with `=>`:
+If your function body is **just one line that gives back an answer**, you can use a shortcut: `=>`.
 
 ```dart
-// Long form
+// Long way
 int square(int n) {
   return n * n;
 }
 
-// Short form
+// Short way (same thing)
 int square(int n) => n * n;
 ```
 
-`=>` is read as "returns". It only works for functions whose body is a single expression. If you need multiple lines, stick with `{ ... }`.
+The arrow `=>` reads as "gives back." So `int square(int n) => n * n` reads: "square takes an int and gives back n times n."
 
-This shortcut shows up everywhere in Flutter code. Get used to it now.
+Use the arrow when:
+- The body is one expression.
+- You do not need any `if` statements or extra steps.
+
+For longer bodies, stick with the curly braces.
 
 ---
 
-## Naming Rules That Make Code Readable
+## Naming Your Functions Well
 
-Function names should be **verbs** because they do something:
+A function's name should be a **verb** (an action word), because functions do things.
 
-- `calculateTotal`, `sendEmail`, `formatDate`. All good.
-- `data`, `info`, `helper`. All bad. They are nouns, and they say nothing about what the function does.
+Good names:
+- `calculateTotal`
+- `sendEmail`
+- `formatDate`
+- `loginUser`
 
-Common prefixes that signal what a function returns:
+Bad names:
+- `data`, `info`, `helper` (these are nouns, they say nothing about what happens)
+- `f`, `g`, `x` (single letters, you will forget in a week)
 
-| Prefix | Returns | Example |
-|--------|---------|---------|
-| `is` | bool | `isAdult(age)` |
-| `has` | bool | `hasAccount(user)` |
-| `get` | a value | `getUser(id)` |
-| `set` | nothing | `setName(value)` |
-| `calculate` | a value | `calculateTax(amount)` |
+Some name prefixes have a clear meaning to other programmers:
 
-Pick names that read like sentences:
+| Prefix | Means | Example |
+|--------|-------|---------|
+| `is` | gives back true/false | `isAdult(age)` |
+| `has` | gives back true/false | `hasAccount(user)` |
+| `get` | gives back a value | `getUser(id)` |
+| `set` | changes something, no answer | `setName('Ada')` |
+| `calculate` | does math, gives an answer | `calculateTax(amount)` |
+
+Names like these make code read like sentences:
 
 ```dart
-if (isAdult(age) && hasAccount(user)) { ... }
+if (isAdult(age) && hasAccount(user)) {
+  // do something
+}
 ```
 
-You can almost speak that out loud.
+You can almost read that out loud in plain English.
 
 ---
 
 ## Why This Matters In Flutter
 
-Every Flutter widget you ever build is wrapped in a function. The most common one looks like this:
+Every screen in Flutter is built by a function. The most common one looks like this:
 
 ```dart
 Widget build(BuildContext context) {
@@ -259,22 +260,29 @@ Widget build(BuildContext context) {
 }
 ```
 
-`Widget` is the return type. `build` is the function name. `BuildContext context` is a parameter. `return Text('Hello')` is the body.
+Look at the four parts:
 
-Every screen you build, every button, every list item, comes from a function like this. Master functions now and you have already learned the shape of every Flutter file you will ever read.
+- Return type: `Widget`
+- Name: `build`
+- Input: `BuildContext context`
+- Body: returns a `Text` widget
+
+The moment you understand functions, you already understand the shape of every Flutter screen you will ever see.
 
 ---
 
-## Common Mistakes
+## The Top Mistakes Beginners Make
 
-### 1. Forgetting parentheses when calling
+### Mistake 1: Forgetting the parentheses
 
 ```dart
 greet;     // does nothing
-greet();   // calls the function
+greet();   // actually runs the function
 ```
 
-### 2. Wrong return type
+If your function is not running, check for `()`.
+
+### Mistake 2: Promising to return something but not doing it
 
 ```dart
 int add(int a, int b) {
@@ -282,40 +290,49 @@ int add(int a, int b) {
 }
 ```
 
-If the type says `int`, the function must `return` an int.
+You said `int` at the top. Dart expects `return ...;` somewhere. Either return the answer, or change the type to `void`.
 
-### 3. Ignoring the return value
+### Mistake 3: Calling but not using the answer
 
 ```dart
-int add(int a, int b) => a + b;
+int doubleIt(int n) => n * 2;
 
 void main() {
-  add(5, 3);              // result thrown away
-  int x = add(5, 3);      // saved, can be used
-  print(x);
+  doubleIt(5);   // calculated 10, then threw it away
 }
 ```
 
-### 4. Doing too much in one function
+The function did its job. But we did not catch the answer. Nothing prints.
 
-If your function is 80 lines long, it is not one function, it is five disguised as one. Split it.
+Fix it:
+
+```dart
+void main() {
+  print(doubleIt(5));   // 10
+}
+```
+
+### Mistake 4: One function doing way too much
+
+If your function is 80 lines long, it is probably five functions in disguise. Split it. A good function does **one thing**.
 
 ---
 
-## Recap In One Minute
+## One-Minute Recap
 
-- A function is a named block of code that does one job.
-- Four parts: return type, name, parameters, body.
-- Use `void` when nothing comes back.
-- `return` sends a value out and exits the function.
-- Arrow syntax `=>` is a one-line shortcut.
-- Name functions as verbs. Pick names that read like sentences.
+- A function is a named piece of code you can reuse.
+- Four parts: **return type, name, parameters, body**.
+- Use `void` when there is no answer to give back.
+- Call a function with `()`. No `()` means it does not run.
+- Use arrow `=>` for short, one-line bodies.
+- Name functions as verbs that describe what they do.
 
 ---
 
 ## Quick Quiz
 
 **Q1.** Spot the bug:
+
 ```dart
 int add(int a, int b) {
   print(a + b);
@@ -324,10 +341,11 @@ int add(int a, int b) {
 
 <details>
 <summary>Answer</summary>
-The return type is `int` but the function never returns anything. Either change `int` to `void`, or replace `print(a + b)` with `return a + b`.
+The return type is `int` but the function never uses `return`. Either change `int` to `void`, or replace `print(a + b)` with `return a + b`.
 </details>
 
 **Q2.** What does this print?
+
 ```dart
 String greet(String name) => 'Hello, $name';
 
@@ -338,17 +356,18 @@ void main() {
 
 <details>
 <summary>Answer</summary>
-Nothing. The function returns the string but `main` never prints it. The fix is `print(greet('Ada'));`.
+Nothing. The function returns the string but `main` never prints it. Fix it with `print(greet('Ada'));`.
 </details>
 
 **Q3.** What is a good name for a function that returns true if a number is even?
 
 <details>
 <summary>Answer</summary>
-`isEven(int n)`. The `is` prefix tells the reader the function returns a bool.
+`isEven(int n)`. The `is` prefix tells the reader the function gives back true or false.
 </details>
 
 **Q4.** Convert this to arrow syntax:
+
 ```dart
 int triple(int n) {
   return n * 3;
@@ -367,9 +386,9 @@ int triple(int n) => n * 3;
 
 ## Assignment
 
-### Problem 1: Refactor repetition into a function
+### Problem 1: Refactor the repetition
 
-Take this messy block of code and rewrite it using a single function. Then call that function three times to produce the same output.
+This block of code repeats the same calculation three times. Rewrite it using a single function, then call that function three times.
 
 ```dart
 void main() {
@@ -390,19 +409,21 @@ void main() {
 }
 ```
 
-### Problem 2: Function composition
+### Problem 2: Build small functions, then combine them
 
-Write three small functions:
+Write three tiny functions:
 
-- `int addOne(int n)` returns `n + 1`.
-- `int doubleIt(int n)` returns `n * 2`.
-- `int square(int n)` returns `n * n`.
+- `int addOne(int n)` gives back `n + 1`.
+- `int doubleIt(int n)` gives back `n * 2`.
+- `int square(int n)` gives back `n * n`.
 
-Then write a fourth function `int processNumber(int n)` that returns the result of applying `addOne`, then `doubleIt`, then `square`, in that order. Predict the result for `n = 3`. Then verify by running.
+Then write a fourth function `int processNumber(int n)` that uses `addOne` first, then `doubleIt`, then `square`, in that order.
 
-### Problem 3: Predict and explain
+Predict what `processNumber(3)` returns. Then run it and check.
 
-Without running, what does this print? Explain why each line prints what it does.
+### Problem 3: Predict the output
+
+Without running it, what does this print?
 
 ```dart
 int mystery(int x) {
@@ -421,18 +442,18 @@ void main() {
 
 ### Problem 4: Build a small library
 
-Write four functions in one file, all using arrow syntax where the body is a single expression:
+Write four functions in one file. Use arrow syntax where the body is one expression.
 
 - `bool isEven(int n)`
 - `bool isOdd(int n)`
-- `int absoluteOf(int n)` (returns the positive version of any number)
-- `String describeNumber(int n)` that returns `'positive even'`, `'positive odd'`, `'negative even'`, `'negative odd'`, or `'zero'`.
+- `int absoluteOf(int n)` gives back the positive version of any number.
+- `String describeNumber(int n)` gives back `'positive even'`, `'positive odd'`, `'negative even'`, `'negative odd'`, or `'zero'`.
 
-Hint: `describeNumber` will not be a one-liner. Use a regular block body for that one.
+Hint: `describeNumber` cannot be a one-liner. Use a regular block body for that one.
 
 ### Problem 5: Spot the bug
 
-Each of these functions has at least one bug. Find them, explain what is wrong, and fix them.
+Each of these has at least one bug. Find each one, explain it, and fix it.
 
 ```dart
 // A
@@ -461,7 +482,7 @@ void main() {
 
 ## Assignment Answers
 
-### Problem 1: Refactor repetition into a function
+### Problem 1: Refactor the repetition
 
 ```dart
 int perimeterOf(int length, int width) {
@@ -475,15 +496,15 @@ void main() {
 }
 ```
 
-How the refactor was done:
+How we did it:
 
-1. **Identify the repeated pattern.** Three blocks all do the same thing: declare a length, declare a width, compute `2 * (length + width)`, print the result. Only the inputs change.
-2. **Pull the calculation into a function.** The function takes the inputs that vary (length, width) and returns the result.
-3. **The print statements become single lines that call the function.** String interpolation `${...}` lets us call the function inside the message and convert the result to a string in one step.
+1. **Find the repeated part.** All three blocks calculate `2 * (length + width)`. Only the inputs change.
+2. **Move the calculation into a function.** The inputs (length, width) become parameters. The result is what we return.
+3. **Replace each block with one line** that calls the function.
 
-This is the single most important lesson about functions. When you see the same operation done with different inputs, that operation belongs in a function.
+This is the most important habit you will build with functions: when you see the same operation repeated with different inputs, that operation belongs in a function.
 
-### Problem 2: Function composition
+### Problem 2: Combine small functions
 
 ```dart
 int addOne(int n) => n + 1;
@@ -498,27 +519,27 @@ int processNumber(int n) {
 }
 
 void main() {
-  print(processNumber(3));     // 64
+  print(processNumber(3));   // 64
 }
 ```
 
-Walkthrough for `n = 3`:
+For `n = 3`:
 
-1. `addOne(3)` returns `4`.
-2. `doubleIt(4)` returns `8`.
-3. `square(8)` returns `64`.
+1. `addOne(3)` gives back `4`.
+2. `doubleIt(4)` gives back `8`.
+3. `square(8)` gives back `64`.
 
-Final result: 64.
+Final answer: 64.
 
-You could also write `processNumber` more compactly by chaining:
+You can also write `processNumber` more compactly by chaining:
 
 ```dart
 int processNumber(int n) => square(doubleIt(addOne(n)));
 ```
 
-This is the same logic but read inside-out. The innermost call runs first. Either form works. The first version is friendlier when learning, the chained version is more idiomatic.
+The innermost call runs first. Both versions do the same thing. The first one is friendlier when learning. The second is shorter.
 
-### Problem 3: Predict and explain
+### Problem 3: Predict the output
 
 Output:
 
@@ -529,14 +550,14 @@ Output:
 200
 ```
 
-Why each one:
+Walk through each call:
 
-1. `mystery(-5)`: the first `if` matches because `-5 < 0`. We return -1 immediately. The other lines are skipped.
-2. `mystery(0)`: the first `if` is false (0 is not less than 0). The second `if` is true (`0 == 0`). We return 0.
-3. `mystery(7)`: both `if`s are false (7 is not less than 0, 7 is not 0). We fall through to the last line, return `7 * 2`, which is 14.
-4. `mystery(100)`: same as above, return `100 * 2`, which is 200.
+1. `mystery(-5)`: `-5 < 0` is true. Return -1 right away. Skip the rest.
+2. `mystery(0)`: `0 < 0` is false. Then `0 == 0` is true. Return 0.
+3. `mystery(7)`: both `if`s are false. Fall through to `return x * 2` = 14.
+4. `mystery(100)`: same path as 7. Return 200.
 
-This problem reinforces the most important property of `return`: it exits the function. The "early return" pattern means later code only runs if no earlier return matched.
+This problem teaches the most important property of `return`: it stops the function. Code after a matched return never runs.
 
 ### Problem 4: Build a small library
 
@@ -560,25 +581,23 @@ String describeNumber(int n) {
 
 How the design works:
 
-1. **`isEven` and `isOdd`** use the modulo operator. `n % 2` is the remainder when `n` is divided by 2. Even numbers leave 0, odd numbers leave 1 (or -1 for negative odd).
-2. **`absoluteOf`** uses the ternary operator. If the number is negative, flip its sign. Otherwise return as-is.
-3. **`describeNumber`** is the only one that needs a block body, because it has more than one return statement. We handle zero first (special case), then split into positive/negative, then split each into even/odd.
+1. **`isEven` and `isOdd`** use the modulo operator `%`. `n % 2` is the leftover when you divide n by 2. Even numbers leave 0.
+2. **`absoluteOf`** uses the ternary `?` operator. If n is negative, flip the sign. Otherwise leave it.
+3. **`describeNumber`** has more than one branch, so it needs a block body. We handle zero first as a special case, then split the other cases.
 
-We also reuse `isEven` inside `describeNumber`. That is a sign of good function design: small functions get composed into bigger ones.
-
-Quick test:
-
-- `describeNumber(0)` returns `'zero'`.
-- `describeNumber(8)` returns `'positive even'`.
-- `describeNumber(-7)` returns `'negative odd'`.
+Notice how `describeNumber` reuses `isEven`. This is a sign of good function design: small functions plug into bigger ones.
 
 ### Problem 5: Spot the bug
 
-**A. `int multiply(int a, int b) { print(a * b); }`**
+**A.** Says `int` at the top but never returns.
 
-Bug: the return type is `int`, but the function never returns anything. It only prints.
+```dart
+int multiply(int a, int b) {
+  print(a * b);
+}
+```
 
-Fix:
+Fix: replace `print` with `return`.
 
 ```dart
 int multiply(int a, int b) {
@@ -586,34 +605,44 @@ int multiply(int a, int b) {
 }
 ```
 
-Or change `int` to `void` if printing is really all you wanted.
+**B.** Calls `shout('hello')` but never prints the answer.
 
-**B. `void main() { shout('hello'); }`**
-
-Bug: `shout` returns a string, but we never print it. Calling a function and ignoring the return value gives no visible output.
+```dart
+void main() {
+  shout('hello');   // 'HELLO' was made, then thrown away
+}
+```
 
 Fix:
 
 ```dart
 void main() {
-  print(shout('hello'));     // HELLO
+  print(shout('hello'));   // HELLO
 }
 ```
 
-**C. `void main() { half; }`**
+**C.** `half;` does not call the function. Missing `()` and an input.
 
-Bug: `half;` does not call the function. It just refers to the function as a value. Without `()`, no work happens.
+```dart
+void main() {
+  half;     // does nothing
+}
+```
 
 Fix:
 
 ```dart
 void main() {
-  print(half(10));     // 5.0
+  print(half(10));   // 5.0
 }
 ```
 
-Notice how all three bugs are very different but share a theme: a function declaration looks correct, but the call site (or the body) is missing the piece that makes it actually do work. When debugging functions, always check three places: the declaration, the body (does it return?), and the call site (parentheses, captured result).
+All three bugs share a theme: the function declaration looks fine, but something is wrong at the call site or in the body. When debugging functions, always check three places:
+
+1. The declaration (do the parts match?).
+2. The body (does it actually return?).
+3. The call site (parentheses, captured answer).
 
 ---
 
-**Next:** `02-Parameters.md` to learn the four kinds of parameters Dart supports.
+**Next:** `02-Parameters.md` to learn the four ways to pass data into a function.

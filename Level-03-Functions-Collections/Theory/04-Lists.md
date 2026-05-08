@@ -1,57 +1,72 @@
-# Lists: Storing Many Values In One Variable
+# Lists: One Variable That Holds Many Values
 
-## Why This Topic Exists
+## The Big Idea In One Sentence
 
-So far, every variable you wrote held **one** value. One name. One number. One bool.
+> A **List** is one variable that holds many values, lined up in order.
 
-What if you want to store all the products in a shopping cart? You could write:
+That is it. The rest of this page just shows you how to make one and use it.
+
+---
+
+## Why Lists Exist
+
+So far, every variable held **one** value.
 
 ```dart
-String item1 = 'T-shirt';
+String name = 'Ada';   // one value
+int age = 25;          // one value
+```
+
+But what if you want to store all the items in a shopping cart? You could write:
+
+```dart
+String item1 = 'Shirt';
 String item2 = 'Jeans';
 String item3 = 'Cap';
 ```
 
-This breaks down fast. What if there are 50 items? What if items are added at runtime?
+That is painful. What if there are 50 items? What if the items change at runtime? You cannot keep making new variables.
 
-The answer is a **List**: one variable that holds many values, in order.
+A **List** solves this. One variable. Many values.
 
 ```dart
-List<String> cart = ['T-shirt', 'Jeans', 'Cap'];
+List<String> cart = ['Shirt', 'Jeans', 'Cap'];
 ```
 
-One variable. Three values. Easy to grow, easy to shrink, easy to loop over.
+One variable named `cart`. It holds three values. You can add more, remove some, or loop through all of them.
 
 ---
 
-## The Mental Model
+## A Picture To Hold In Your Head
 
 A list is a **row of numbered boxes**.
 
 ```
 Index:    0          1         2
-        ┌──────┐  ┌──────┐  ┌──────┐
-        │T-shirt│  │ Jeans│  │ Cap  │
-        └──────┘  └──────┘  └──────┘
+        ┌───────┐  ┌───────┐  ┌───────┐
+        │ Shirt │  │ Jeans │  │ Cap   │
+        └───────┘  └───────┘  └───────┘
 ```
 
-You access each box by its **index**, which is just its position. The first box is at index `0`, not `1`. Yes, programmers count from zero. Get used to this now, you will see it forever.
+Each box has a **number** above it. That number is called the **index**. You use the index to grab the value out of the box.
+
+**The first box is at index 0, not index 1.** Yes, programmers count from zero. It feels weird at first. Just remember: the first item is `[0]`.
 
 ---
 
-## Creating A List
+## Making A List
 
-The shortest form, with values:
+Quick way, with values inside:
 
 ```dart
 List<String> fruits = ['apple', 'banana', 'cherry'];
 ```
 
-Read it as: "a list of strings, called fruits, containing three values."
+Read it as: "a list of strings called fruits, holding three values."
 
-The `<String>` part is the **type**. It tells Dart what is allowed inside. A `List<int>` only holds ints. A `List<String>` only holds strings.
+The `<String>` part says **what kind of values are allowed inside**. A `List<int>` only holds whole numbers. A `List<String>` only holds text.
 
-You can let Dart figure out the type with `var`:
+You can also let Dart guess the type:
 
 ```dart
 var fruits = ['apple', 'banana'];   // Dart sees strings, infers List<String>
@@ -66,9 +81,9 @@ var names = <String>[];
 
 ---
 
-## Reading From A List
+## Reading A Value From A List
 
-Use square brackets and the index:
+Use square brackets and the index number.
 
 ```dart
 var fruits = ['apple', 'banana', 'cherry'];
@@ -78,49 +93,47 @@ print(fruits[1]);    // banana
 print(fruits[2]);    // cherry
 ```
 
-You can also use the helpers `.first` and `.last`:
+Lists also have two friendly helpers:
 
 ```dart
-print(fruits.first);    // apple
-print(fruits.last);     // cherry
+print(fruits.first);   // apple    (same as fruits[0])
+print(fruits.last);    // cherry   (the last value)
 ```
 
-### The Index-Out-Of-Range Trap
+### The Out-Of-Range Trap
 
 ```dart
-var fruits = ['apple', 'banana', 'cherry'];   // length is 3
+var fruits = ['apple', 'banana', 'cherry'];   // 3 values, indexes 0, 1, 2
 
-print(fruits[3]);    // ERROR: RangeError
+print(fruits[3]);   // ERROR: there is no box at index 3
 ```
 
-The list has 3 items, but their indexes are 0, 1, 2. There is **no** index 3. The last valid index is always `length - 1`.
+**Memorise this:** the last valid index is `length minus 1`.
 
-Memorise this: **last index = length minus one.**
+If a list has 3 values, the last valid index is 2. Reaching for `[3]` crashes.
 
 ---
 
-## Length
-
-`length` tells you how many items the list holds:
+## How Many Values?
 
 ```dart
 var fruits = ['apple', 'banana', 'cherry'];
 
 print(fruits.length);     // 3
-print(fruits.isEmpty);    // false
-print(fruits.isNotEmpty); // true
+print(fruits.isEmpty);    // false  (it has stuff)
+print(fruits.isNotEmpty); // true   (it has stuff)
 ```
 
-`isEmpty` and `isNotEmpty` are shortcuts for "is the list empty?" and "does it have anything?". Use them instead of `length == 0`. They read better.
+Use `isEmpty` and `isNotEmpty` instead of `length == 0`. They read better.
 
 ---
 
-## Adding And Removing Items
+## Adding Values
 
 ```dart
 var fruits = ['apple', 'banana'];
 
-// Add to the end
+// Add one value to the end
 fruits.add('cherry');
 // fruits is now: [apple, banana, cherry]
 
@@ -133,123 +146,129 @@ fruits.insert(0, 'avocado');
 // fruits is now: [avocado, apple, banana, cherry, date, elder]
 ```
 
+These methods change the list **in place**. They do not give back a new list. The original list itself changes.
+
+---
+
+## Removing Values
+
 ```dart
 // Remove the first match by value
 fruits.remove('banana');
 
-// Remove by index
+// Remove the value at a specific index
 fruits.removeAt(0);
 
-// Remove the last item
+// Remove the last value
 fruits.removeLast();
 
-// Remove all items
+// Remove everything
 fruits.clear();
 ```
 
-These methods modify the list **in place**. They do not return a new list. The change happens to the original.
+Same idea: these all change the list itself.
 
 ---
 
-## Updating An Item
+## Updating A Value
 
-Just assign to the index:
+Just assign to the index.
 
 ```dart
 var fruits = ['apple', 'banana', 'cherry'];
 
 fruits[1] = 'blueberry';
-print(fruits);     // [apple, blueberry, cherry]
+print(fruits);   // [apple, blueberry, cherry]
 ```
 
 ---
 
-## Searching
+## Searching In A List
 
 ```dart
 var fruits = ['apple', 'banana', 'cherry'];
 
-print(fruits.contains('banana'));    // true
-print(fruits.contains('mango'));     // false
+print(fruits.contains('banana'));   // true
+print(fruits.contains('mango'));    // false
 
-print(fruits.indexOf('cherry'));     // 2
-print(fruits.indexOf('mango'));      // -1, meaning not found
+print(fruits.indexOf('cherry'));    // 2
+print(fruits.indexOf('mango'));     // -1   (not found)
 ```
 
-`indexOf` returns `-1` when nothing matches. Always check before using the result as an index, or you will hit the range error from earlier.
+`indexOf` returns `-1` when the value is not in the list. Always check for `-1` before using the result as an index.
 
 ---
 
 ## Looping Through A List
 
-You already saw this in Level 2. Two clean ways:
+You saw this in Level 2. Two clean ways.
 
 ```dart
 var fruits = ['apple', 'banana', 'cherry'];
 
-// for-in: when you only need each item
+// Way 1: for-in loop (when you only need the value)
 for (var fruit in fruits) {
   print(fruit);
 }
 
-// classic for: when you need the index too
+// Way 2: classic for loop (when you also need the index)
 for (int i = 0; i < fruits.length; i++) {
   print('$i: ${fruits[i]}');
 }
 ```
 
-If you do not need the index, prefer `for-in`. It is shorter and clearer.
+If you do not need the index number, use `for-in`. It is shorter and clearer.
 
-There is also `forEach`, which takes an anonymous function:
+There is also `forEach`:
 
 ```dart
 fruits.forEach((fruit) {
   print(fruit);
 });
 
-// or, one line
+// or one line
 fruits.forEach((fruit) => print(fruit));
 ```
 
-All three forms do the same thing. Pick the one that reads best for your code.
+All three forms do the same thing. Pick whichever reads best to you.
 
 ---
 
-## Two Powerful Methods: `map` And `where`
+## Two Powerful Tools: `map` And `where`
 
-These are everywhere in real Dart code. Once you understand them, you write less code and fewer bugs.
+These two are everywhere in real Dart code. Once you understand them, you write less code and fewer bugs.
 
-### `map`: Transform Every Item
+### `map`: Change Every Value
 
-`map` takes a function and applies it to each item, returning a new list:
+`map` takes a function and applies it to **every** value in the list. It gives back a new list with the changed values.
 
 ```dart
 var nums = [1, 2, 3, 4, 5];
 
 var doubled = nums.map((n) => n * 2).toList();
-print(doubled);     // [2, 4, 6, 8, 10]
+print(doubled);   // [2, 4, 6, 8, 10]
 ```
 
-Read it as: "for every `n` in `nums`, give me `n * 2`."
+Read it as: "for every n in nums, give me n times 2."
 
-The `.toList()` at the end is required because `map` returns an `Iterable`, which is a kind of "list-in-progress". Calling `.toList()` finalises it.
+The `.toList()` at the end is important. `map` gives back something called an `Iterable`, which is like a list-in-progress. `.toList()` finalises it into a real list.
 
-### `where`: Keep Only The Items That Match
+### `where`: Keep Only Some Values
 
-`where` filters a list. It returns a new list with only the items where your function returns true:
+`where` filters a list. It keeps only the values where your function returns `true`.
 
 ```dart
 var nums = [1, 2, 3, 4, 5, 6];
 
 var evens = nums.where((n) => n % 2 == 0).toList();
-print(evens);      // [2, 4, 6]
+print(evens);   // [2, 4, 6]
 ```
 
-Read it as: "give me the `n` values where `n % 2 == 0`."
+Read it as: "give me the n values where n is even."
 
-### Chaining
+### Chaining Them Together
 
-You can chain them. This is one of the cleanest patterns in Dart:
+You can stack them. This is one of the cleanest patterns in Dart.
 
 ```dart
 var nums = [1, 2, 3, 4, 5, 6];
@@ -259,7 +278,7 @@ var result = nums
     .map((n) => n * 10)
     .toList();
 
-print(result);     // [10, 30, 50]
+print(result);   // [10, 30, 50]
 ```
 
 In English: "take the odd numbers, multiply each by 10, give me the result as a list."
@@ -268,39 +287,43 @@ In English: "take the odd numbers, multiply each by 10, give me the result as a 
 
 ## Why This Matters In Flutter
 
-Every product list, every chat history, every notification feed in your phone is a `List` under the hood.
+Every product list, every chat message history, every notification feed in your phone is a `List` under the hood.
 
 Tiny preview, do not run yet:
 
 ```dart
-List<String> products = ['T-shirt', 'Shoes', 'Cap'];
+List<String> products = ['Shirt', 'Shoes', 'Cap'];
 
 return Column(
   children: products.map((p) => Text(p)).toList(),
 );
 ```
 
-That code transforms a list of product names into a list of `Text` widgets, which Flutter then displays vertically. Every shopping app in the world uses this pattern. It is the same `map` you just learned.
+That code turns a list of names into a list of `Text` widgets. Flutter then displays them stacked vertically. Every shopping app does this.
 
 ---
 
-## Common Mistakes
+## The Top Mistakes Beginners Make
 
-### 1. Off-by-one indexing
+### Mistake 1: Off-by-one indexes
 
 ```dart
 var nums = [10, 20, 30];
-print(nums[3]);     // ERROR
-print(nums[nums.length - 1]);   // 30, correct
+print(nums[3]);                  // ERROR
+print(nums[nums.length - 1]);    // GOOD: 30
 ```
 
-### 2. Mixing types
+Remember: last valid index = length minus one.
+
+### Mistake 2: Mixing types
 
 ```dart
-List<int> nums = [1, 2, 'three'];   // ERROR: string in a list of ints
+List<int> nums = [1, 2, 'three'];   // ERROR: 'three' is not an int
 ```
 
-### 3. Modifying a list while looping over it
+If the type says `<int>`, every value must be an int.
+
+### Mistake 3: Changing a list while looping over it
 
 ```dart
 var nums = [1, 2, 3];
@@ -315,23 +338,25 @@ If you need to remove items, use `removeWhere`:
 nums.removeWhere((n) => n == 2);
 ```
 
-### 4. Forgetting `.toList()` after `map` or `where`
+### Mistake 4: Forgetting `.toList()`
 
 ```dart
-var doubled = nums.map((n) => n * 2);    // returns Iterable, not List
-print(doubled.toList());                  // converts to a List
+var doubled = nums.map((n) => n * 2);   // this is an Iterable, not a List
+print(doubled.toList());                 // now it is a List
 ```
+
+After `map` or `where`, end the chain with `.toList()` if you want a real list.
 
 ---
 
-## Recap In One Minute
+## One-Minute Recap
 
-- A `List` holds many values in order, accessed by index starting at 0.
-- Last valid index is `length - 1`.
-- `add`, `remove`, `insert`, `removeAt`, `clear` modify the list in place.
+- A `List` holds many values, lined up in order.
+- Index starts at 0. Last valid index is `length - 1`.
+- `add`, `remove`, `insert`, `removeAt`, `clear` change the list itself.
 - `contains`, `indexOf` for searching.
-- Loop with `for-in` when you do not need the index, classic `for` when you do.
-- `map` transforms every item; `where` filters; both return iterables, finish with `.toList()`.
+- Loop with `for-in` (no index needed) or classic `for` (index needed).
+- `map` changes every value. `where` filters values. End with `.toList()`.
 
 ---
 
@@ -345,6 +370,7 @@ print(doubled.toList());                  // converts to a List
 </details>
 
 **Q2.** What does this print?
+
 ```dart
 var nums = [1, 2, 3];
 nums.add(4);
@@ -354,10 +380,11 @@ print(nums);
 
 <details>
 <summary>Answer</summary>
-`[2, 3, 4]`. Add appends 4 to the end, then removeAt(0) removes the first item (1).
+`[2, 3, 4]`. Add appends 4 to the end. Then removeAt(0) removes the first item (1).
 </details>
 
 **Q3.** Convert this loop to use `where`:
+
 ```dart
 List<int> nums = [1, 2, 3, 4, 5];
 List<int> result = [];
@@ -375,6 +402,7 @@ var result = nums.where((n) => n > 2).toList();
 </details>
 
 **Q4.** What is wrong here?
+
 ```dart
 var nums = [1, 2, 3];
 print(nums[3]);
@@ -382,7 +410,7 @@ print(nums[3]);
 
 <details>
 <summary>Answer</summary>
-There is no index 3. The list has 3 items at indexes 0, 1, 2. The fix is `nums[2]` or `nums.last`.
+There is no index 3. The list has 3 items at indexes 0, 1, 2. Use `nums[2]` or `nums.last`.
 </details>
 
 ---
@@ -405,19 +433,21 @@ void main() {
 }
 ```
 
-### Problem 2: Custom helpers
+### Problem 2: Custom helpers (twice)
 
-Write each of these without using `map`, `where`, or `forEach`. Use only basic for loops, if statements, and basic List methods (`add`, `length`, indexing).
+Write each of these **without** using `map`, `where`, or `forEach`. Use only basic for loops, if statements, and basic List methods.
 
-- `int sumOfList(List<int> nums)` returns the sum of all values.
-- `int countMatching(List<String> words, String target)` returns the number of times `target` appears in `words`.
-- `List<int> doubledValues(List<int> nums)` returns a new list where each value is doubled.
+- `int sumOfList(List<int> nums)` gives back the sum of all values.
+- `int countMatching(List<String> words, String target)` gives back the number of times `target` appears.
+- `List<int> doubledValues(List<int> nums)` gives back a new list where each value is doubled.
 
-Then rewrite all three using `map`, `where`, `reduce`, `forEach`, or any combination. Compare the two versions in your answer.
+Then write each one again using `map`, `where`, `reduce`, or `forEach`. Compare both versions.
 
-### Problem 3: Find largest and smallest
+### Problem 3: Find smallest and largest
 
-Without using any built-in `min` or `max`, write a function `({int min, int max}) minMax(List<int> nums)` that returns both the smallest and largest values in one pass over the list. The return type uses a Dart record. If the list is empty, the function should throw an `ArgumentError` with a clear message.
+Without using any built-in `min` or `max`, write a function `({int min, int max}) minMax(List<int> nums)` that gives back both the smallest and the largest value, in one walk through the list.
+
+If the list is empty, throw an `ArgumentError` with a clear message.
 
 Test on `[5, 2, 9, 1, 7, 3]`. Expected: `min: 1, max: 9`.
 
@@ -431,19 +461,19 @@ List<int> prices = [1500, 800, 2400, 600, 9999, 1200, 250, 3500];
 
 Use a chain of `where`, `map`, and `toList` to:
 
-1. Keep only prices between 500 and 2000 inclusive.
+1. Keep only prices between 500 and 2000 (inclusive).
 2. Apply a 10% discount to each.
 3. Convert to a list of ints (rounded down).
 
-Show your code, predict the output, then verify.
+Show your code, predict the output, then check.
 
-### Problem 5: Build a contact-list manager
+### Problem 5: Build a contact list
 
-Build a small program that simulates a contact list. The list holds `String` names. Implement these as functions, then call them in `main` to demonstrate.
+Build a small program that simulates a contact list. The list holds `String` names. Implement these as functions, then call them in `main`.
 
-- `void add(List<String> contacts, String name)` adds a name unless it is already in the list.
-- `bool removeContact(List<String> contacts, String name)` removes the first matching name and returns true. If the name is not found, return false.
-- `int findIndexOf(List<String> contacts, String name)` returns the index, or -1 if not found.
+- `void add(List<String> contacts, String name)` adds a name unless it is already there.
+- `bool removeContact(List<String> contacts, String name)` removes the first match and gives back true. Gives back false if not found.
+- `int findIndexOf(List<String> contacts, String name)` gives back the index, or -1.
 - `void printAll(List<String> contacts)` prints each name on its own line, prefixed with its index.
 
 Demonstrate by:
@@ -461,8 +491,8 @@ Demonstrate by:
 ### Problem 1: Predict the output
 
 ```
-[100, 40, 99, 50, 60]
-5
+[100, 30, 99, 40, 50, 60]
+6
 ```
 
 Trace step by step:
@@ -475,23 +505,11 @@ Trace step by step:
 | 3 | insert(2, 99) | [20, 30, 99, 40, 50, 60] |
 | 4 | nums[0] = 100 | [100, 30, 99, 40, 50, 60] |
 
-Wait, that gives a length of 6, not 5. Let me retrace more carefully.
+Length is 6.
 
-- After removeAt(0): we removed the first element (10). List is `[20, 30, 40, 50]`. Length 4.
-- After add(60): appended 60. List is `[20, 30, 40, 50, 60]`. Length 5.
-- After insert(2, 99): inserted 99 at index 2. List is `[20, 30, 99, 40, 50, 60]`. Length 6.
-- After nums[0] = 100: replaced first item. List is `[100, 30, 99, 40, 50, 60]`. Length 6.
+The lesson: each list method changes both the contents and (sometimes) the length. When tracing, update both.
 
-So the actual output is:
-
-```
-[100, 30, 99, 40, 50, 60]
-6
-```
-
-The lesson here: each list method changes the list and may change the length. You must mentally update both the contents and the length after every call. When in doubt, write each step out on paper.
-
-### Problem 2: Custom helpers
+### Problem 2: Custom helpers (twice)
 
 **Manual versions:**
 
@@ -521,7 +539,7 @@ List<int> doubledValues(List<int> nums) {
 }
 ```
 
-**Idiomatic versions using `map`, `where`, `reduce`:**
+**Idiomatic versions:**
 
 ```dart
 int sumOfList(List<int> nums) =>
@@ -536,14 +554,14 @@ List<int> doubledValues(List<int> nums) =>
 
 Comparison:
 
-- The manual versions are explicit. You can see every step. They are great for learning.
-- The idiomatic versions are short, but require knowing what `map`, `where`, and `reduce` do. They become natural after some practice.
-- `reduce` requires a non-empty list, so we add a guard. Otherwise it throws.
-- `where(...).length` is a common idiom for counting matches. It builds the matching list and asks for its length.
+- The manual versions are explicit. You can see every step. Great for learning.
+- The short versions are clean and tight, but you have to know what `map`, `where`, and `reduce` do.
+- `reduce` crashes on an empty list, so we add a guard.
+- `where(...).length` is a common pattern for counting matches.
 
-In real code, prefer the idiomatic versions for clarity. In a teaching context, write the manual version first, then show the shortcut.
+In real code, prefer the short versions. While learning, write the manual version first.
 
-### Problem 3: Find largest and smallest
+### Problem 3: Smallest and largest
 
 ```dart
 ({int min, int max}) minMax(List<int> nums) {
@@ -563,17 +581,17 @@ In real code, prefer the idiomatic versions for clarity. In a teaching context, 
 }
 ```
 
-How the algorithm works:
+How it works:
 
-1. **Empty list guard.** Throwing is the right choice here. There is no sensible "min" of nothing. We refuse to make up an answer.
-2. **Seed with the first element.** Both `currentMin` and `currentMax` start as `nums[0]`. We cannot start them at 0 (what if all values are negative?) or at "infinity" (Dart has no easy literal for that). Using the first element guarantees a valid starting comparison.
-3. **Loop from index 1 onward.** We already used index 0 as the seed. Starting at 1 avoids comparing it to itself.
-4. **Two independent comparisons per round.** Update min if smaller, update max if larger. Both checks happen even if one matched. (A value cannot be both smaller than current min and larger than current max at the same time, but writing it as two `if`s is clearer than nested logic.)
+1. **Empty list guard.** Throwing is correct here. There is no sensible "min" of nothing.
+2. **Seed both with the first value.** We cannot start at 0 (what if all values are negative?). The first item is always a valid starting point.
+3. **Loop from index 1.** We already used index 0 as the seed.
+4. **Two checks per round.** Update min if smaller, update max if larger.
 
 Trace on `[5, 2, 9, 1, 7, 3]`:
 
-| i | num | currentMin | currentMax |
-|---|-----|------------|------------|
+| i | num | min | max |
+|---|-----|-----|-----|
 | start | 5 | 5 | 5 |
 | 1 | 2 | 2 | 5 |
 | 2 | 9 | 2 | 9 |
@@ -581,9 +599,9 @@ Trace on `[5, 2, 9, 1, 7, 3]`:
 | 4 | 7 | 1 | 9 |
 | 5 | 3 | 1 | 9 |
 
-Final: min 1, max 9. Correct.
+Final: min 1, max 9.
 
-This is "one-pass" because we go through the list exactly once, even though we compute two answers.
+This is "one pass" because we walk the list exactly once.
 
 ### Problem 4: Filter, transform, collect
 
@@ -598,33 +616,25 @@ List<int> result = prices
 print(result);
 ```
 
-Predicted output:
+Walk through each step:
 
-Let us trace each step carefully.
-
-After `where((p) => p >= 500 && p <= 2000)`:
-- 1500 passes, 800 passes, 2400 fails, 600 passes, 9999 fails, 1200 passes, 250 fails, 3500 fails.
+After `where`:
+- 1500 ok, 800 ok, 2400 too big, 600 ok, 9999 too big, 1200 ok, 250 too small, 3500 too big.
 - Remaining: `[1500, 800, 600, 1200]`.
 
-After `map((p) => (p * 0.9).floor())`:
-- 1500 * 0.9 = 1350, floor 1350.
-- 800 * 0.9 = 720, floor 720.
-- 600 * 0.9 = 540, floor 540.
-- 1200 * 0.9 = 1080, floor 1080.
+After `map` (each times 0.9, then floor):
+- 1500 * 0.9 = 1350.
+- 800 * 0.9 = 720.
+- 600 * 0.9 = 540.
+- 1200 * 0.9 = 1080.
 
-After `.toList()`:
-- `[1350, 720, 540, 1080]`.
-
-So the output is:
-```
-[1350, 720, 540, 1080]
-```
+Final: `[1350, 720, 540, 1080]`.
 
 Notes:
-- `.floor()` rounds down to the nearest int. We use it because `0.9 * price` is a `double` and we want `int` results.
-- `floor()` returns `int` when called on `double`, so the resulting list type is `List<int>`. Match the requirement.
+- `.floor()` rounds a double down to the nearest int.
+- `floor()` returns an `int`, so the result list type is `List<int>`.
 
-### Problem 5: Build a contact-list manager
+### Problem 5: Contact list
 
 ```dart
 void add(List<String> contacts, String name) {
@@ -657,7 +667,7 @@ void main() {
   print('Added Chidi -> $contacts');
 
   add(contacts, 'Ada');
-  print('Tried to add Ada (duplicate) -> $contacts');
+  print('Tried Ada (duplicate) -> $contacts');
 
   bool ok1 = removeContact(contacts, 'Bola');
   print('Removed Bola? $ok1 -> $contacts');
@@ -674,7 +684,7 @@ Expected output:
 
 ```
 Added Chidi -> [Ada, Bola, Chidi]
-Tried to add Ada (duplicate) -> [Ada, Bola, Chidi]
+Tried Ada (duplicate) -> [Ada, Bola, Chidi]
 Removed Bola? true -> [Ada, Chidi]
 Removed Zara? false -> [Ada, Chidi]
 Final state:
@@ -682,14 +692,14 @@ Final state:
 1: Chidi
 ```
 
-How each function was designed:
+How each function works:
 
-1. **`add` uses `contains` to check for duplicates.** If the name is already there, we do nothing. Otherwise we append.
-2. **`removeContact` uses `indexOf` to find the position, then `removeAt`.** This avoids the issue with `remove(name)` returning a bool but only telling us whether something happened. Using indexOf gives us the same info plus we can confirm by checking for -1.
-3. **`findIndexOf` is a thin wrapper.** In a real library you might add additional checks, but here it just delegates.
-4. **`printAll` uses a classic for loop with the index.** We need `i` for the prefix, so for-in is not enough.
+1. **`add` checks `contains` first.** If the name is already there, do nothing. Otherwise append.
+2. **`removeContact` uses `indexOf` to find the position.** If not found (-1), return false. Otherwise remove and return true.
+3. **`findIndexOf` is a thin wrapper** around `indexOf`.
+4. **`printAll` uses a classic for loop** because we need the index for the prefix.
 
-This whole pattern of "wrap a List in functions that enforce rules" is the seed of Object-Oriented Programming. In Level 4 you will learn how to bundle the list and the functions together into a single `ContactList` class. Same idea, cleaner package.
+Notice how we wrap a List in functions that enforce rules (no duplicates, return success). This is the seed of Object-Oriented Programming, which you will learn in Level 4.
 
 ---
 
