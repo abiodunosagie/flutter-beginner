@@ -445,11 +445,11 @@ Then write each one again using `map`, `where`, `reduce`, or `forEach`. Compare 
 
 ### Problem 3: Find smallest and largest
 
-Without using any built-in `min` or `max`, write a function `({int min, int max}) minMax(List<int> nums)` that gives back both the smallest and the largest value, in one walk through the list.
+Without using any built-in `min` or `max`, write a function `List<int> minMax(List<int> nums)` that gives back a list of exactly two values: `[min, max]`. The smallest value at index 0, the largest at index 1. Find both in one walk through the input.
 
 If the list is empty, throw an `ArgumentError` with a clear message.
 
-Test on `[5, 2, 9, 1, 7, 3]`. Expected: `min: 1, max: 9`.
+Test on `[5, 2, 9, 1, 7, 3]`. Expected: `[1, 9]`.
 
 ### Problem 4: Filter, transform, collect
 
@@ -564,7 +564,7 @@ In real code, prefer the short versions. While learning, write the manual versio
 ### Problem 3: Smallest and largest
 
 ```dart
-({int min, int max}) minMax(List<int> nums) {
+List<int> minMax(List<int> nums) {
   if (nums.isEmpty) {
     throw ArgumentError('Cannot find min/max of an empty list');
   }
@@ -577,7 +577,12 @@ In real code, prefer the short versions. While learning, write the manual versio
     if (nums[i] > currentMax) currentMax = nums[i];
   }
 
-  return (min: currentMin, max: currentMax);
+  return [currentMin, currentMax];
+}
+
+void main() {
+  List<int> result = minMax([5, 2, 9, 1, 7, 3]);
+  print('min: ${result[0]}, max: ${result[1]}');   // min: 1, max: 9
 }
 ```
 
@@ -587,6 +592,7 @@ How it works:
 2. **Seed both with the first value.** We cannot start at 0 (what if all values are negative?). The first item is always a valid starting point.
 3. **Loop from index 1.** We already used index 0 as the seed.
 4. **Two checks per round.** Update min if smaller, update max if larger.
+5. **Return a list of two values:** `[min, max]`. The caller reads `result[0]` for the min and `result[1]` for the max.
 
 Trace on `[5, 2, 9, 1, 7, 3]`:
 
@@ -599,9 +605,9 @@ Trace on `[5, 2, 9, 1, 7, 3]`:
 | 4 | 7 | 1 | 9 |
 | 5 | 3 | 1 | 9 |
 
-Final: min 1, max 9.
+Final: `[1, 9]`.
 
-This is "one pass" because we walk the list exactly once.
+This is "one pass" because we walk the list exactly once, even though we compute two answers.
 
 ### Problem 4: Filter, transform, collect
 

@@ -332,7 +332,7 @@ void main() {
 
 ### Problem 2: Deduplicate while keeping order
 
-A set does not keep order, but sometimes you need both uniqueness **and** the original order. Write a function `List<T> dedupe<T>(List<T> items)` that gives back a new list with duplicates removed, keeping the order they first appeared.
+A set does not keep order, but sometimes you need both uniqueness **and** the original order. Write a function `List<int> dedupe(List<int> items)` that gives back a new list of integers with duplicates removed, keeping the order they first appeared.
 
 Test on `[3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5]`. Expected: `[3, 1, 4, 5, 9, 2, 6]`.
 
@@ -419,11 +419,11 @@ Note: the printed order may vary. `{4, 2, 3}` would also be a valid output. If o
 ### Problem 2: Deduplicate while keeping order
 
 ```dart
-List<T> dedupe<T>(List<T> items) {
-  Set<T> seen = {};
-  List<T> result = [];
+List<int> dedupe(List<int> items) {
+  Set<int> seen = {};
+  List<int> result = [];
 
-  for (T item in items) {
+  for (int item in items) {
     if (!seen.contains(item)) {
       seen.add(item);
       result.add(item);

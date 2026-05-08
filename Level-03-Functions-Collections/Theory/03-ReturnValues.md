@@ -240,6 +240,47 @@ Otherwise stick with the curly-brace version. Both work.
 
 ---
 
+## Functions Without A Name (Anonymous Functions)
+
+Sometimes you need a tiny one-shot function and you do not want to bother giving it a name. Dart lets you write a function with **no name at all**. These are called **anonymous functions**.
+
+Compare:
+
+```dart
+// Named function (what you have been writing)
+int doubleIt(int n) => n * 2;
+
+// Same thing, with no name
+(int n) => n * 2;
+```
+
+The unnamed version starts straight at the parentheses. No return type, no name. Dart can figure both of those out from how you use it.
+
+### Why would you want an unnamed function?
+
+The most common reason is to **hand a function to another function as an input**. Yes, a function can be a value, just like a number or a string.
+
+In `04-Lists.md` you will meet a tool called `map`. Here is a sneak peek so this idea has a place to land:
+
+```dart
+List<int> nums = [1, 2, 3, 4, 5];
+
+var doubled = nums.map((n) => n * 2).toList();
+print(doubled);   // [2, 4, 6, 8, 10]
+```
+
+Read it like this: "for every `n` in `nums`, give me `n * 2`."
+
+The piece `(n) => n * 2` is the anonymous function. It says: "I take an `n`, and I give back `n * 2`." `map` takes that little function and runs it on every value in the list.
+
+You will see this pattern a lot in the next three lessons (`04-Lists.md`, `05-Maps.md`, `06-Sets.md`). It is the standard way to transform or filter a collection. The big idea to hold in your head:
+
+> A function is a value. You can pass it to another function as an input.
+
+That is all anonymous functions are. A small, no-name function used right where it is needed.
+
+---
+
 ## Sometimes The Answer Might Not Exist
 
 Some functions might fail to find an answer. Like looking up a friend in a contact book. Maybe the friend is there. Maybe not.
@@ -388,6 +429,7 @@ void main() {
 - `void` means "no answer, just do the work".
 - A `?` after the type means "the answer might be empty".
 - `=>` is a one-line shortcut for `{ return ...; }`.
+- A function can be a value. An unnamed (anonymous) function `(n) => n * 2` can be passed to another function as an input.
 
 That is everything. Re-read this list once. If each line makes sense, you are ready.
 
