@@ -1,249 +1,206 @@
-# Part 4: var, final, and const
+# var, final, and const: Shortcuts And Locked Boxes
 
-You've been using explicit types like `String name = 'Alex'`. Now let's learn other ways to create variables!
+## The Big Idea In One Sentence
 
----
+> `var` is a shortcut for making a box, and `final`/`const` make a box that can **never be changed** after you fill it.
 
-## The `var` Keyword
-
-If you don't want to write the type, use `var`:
-
-```dart
-var name = 'Alex';   // Dart knows it's a String
-var age = 25;        // Dart knows it's an int
-var price = 19.99;   // Dart knows it's a double
-var active = true;   // Dart knows it's a bool
-```
-
-Dart **infers** the type from the value. But once set, it's fixed:
-
-```dart
-var name = 'Alex';
-name = 'Bob';    // ✅ OK - still a String
-name = 42;       // ❌ ERROR - can't change to int
-```
-
-### When to Use `var` vs Explicit Type
-
-```dart
-// Use explicit type when it's not obvious
-String jsonResponse = fetchData();
-int parsedValue = parse(someString);
-
-// Use var when it's obvious
-var name = 'Alex';
-var count = 0;
-var isActive = true;
-```
+So far you always wrote the type, like `String name = 'Ada'`. This lesson shows you three handy extra words.
 
 ---
 
-## Constants: `final` and `const`
+## `var`: Let Dart Figure Out The Type
 
-Sometimes you want a variable that can't change.
-
-### `final` - Set Once, Never Change
+When you put a value in a box, Dart can usually **guess the type by itself**. Instead of writing the type, you can just write `var`:
 
 ```dart
-final String name = 'Alex';
-name = 'Bob';  // ❌ ERROR - can't change final
-
-final age = 25;  // Type inference works with final too
+var name = 'Ada';    // Dart sees text, so this is a String
+var age = 25;        // Dart sees a whole number, so this is an int
+var price = 19.99;   // Dart sees a decimal, so this is a double
+var happy = true;    // Dart sees true/false, so this is a bool
 ```
 
-Use `final` when the value is set at runtime but shouldn't change after.
+`var name = 'Ada'` and `String name = 'Ada'` do the **exact same thing**. `var` is just less typing.
 
-**Example:**
-```dart
-void main() {
-  final currentTime = DateTime.now();
-  final userName = getUserName();
-
-  // Can't change these after they're set
-  // currentTime = DateTime.now();  // ❌ ERROR
-}
-```
-
-### `const` - Compile-Time Constant
+But here is the catch: even with `var`, **the type is still locked in** once Dart guesses it.
 
 ```dart
-const double pi = 3.14159;
-const int maxUsers = 100;
-
-pi = 3.14;  // ❌ ERROR - can't change const
+var age = 25;       // Dart locks this as a whole number
+age = 30;           // GOOD: still a whole number
+age = 'thirty';     // BAD: it is locked as a number, cannot become text
 ```
 
-Use `const` when the value is known BEFORE the program runs.
-
-**Example:**
-```dart
-const int maxAttempts = 3;
-const double taxRate = 0.08;
-const String appName = 'MyApp';
-```
+So `var` does not mean "anything goes." It means "Dart, please guess the type for me."
 
 ---
 
-## When to Use Which?
+## `final`: Fill It Once, Then Lock It
+
+Sometimes you want a box that **must not change** after you set it. Use `final`:
 
 ```dart
-// var - normal variable that can change
-var score = 0;
-score = 10;  // ✅ OK
+final name = 'Ada';
+print(name);     // Ada
 
-// final - set once at runtime, then unchangeable
-final userId = generateId();
-// userId = generateId();  // ❌ ERROR
-
-// const - value known before program runs
-const maxLoginAttempts = 3;
-// maxLoginAttempts = 5;  // ❌ ERROR
+name = 'Bola';   // BAD: a final box cannot be changed
 ```
 
-### Visual Guide
+Once a `final` box is filled, it is locked. If anyone tries to change it, Dart stops them with an error. This is helpful: it protects values that are not supposed to change, like your date of birth.
 
-```
-┌─────────────────────────────────────────────┐
-│  var    → Can change, type inferred         │
-│  final  → Set once (at runtime)             │
-│  const  → Fixed value (at compile time)     │
-└─────────────────────────────────────────────┘
-```
+You do not need to write the type with `final` either. Dart still guesses it.
 
 ---
 
-## Practical Examples
+## `const`: A Value You Already Know
 
-### Example 1: Mix of All Types
+`const` is like `final`, it also makes a box that can never change. The difference is small:
+
+> Use `const` for a value you **already know as you type the code**, like a fixed fact.
+
+Examples of fixed facts:
 
 ```dart
-void main() {
-  // var - can change
-  var currentLevel = 1;
-  currentLevel = 2;  // ✅ OK
-
-  // final - set once at runtime
-  final startTime = DateTime.now();
-
-  // const - fixed value
-  const maxLevels = 10;
-
-  print('Level: $currentLevel / $maxLevels');
-  print('Started at: $startTime');
-}
+const daysInWeek = 7;
+const pi = 3.14;
+const appName = 'My App';
 ```
 
-### Example 2: Configuration
+These never change, ever, and you know them right now while writing. That is a perfect job for `const`.
 
 ```dart
-void main() {
-  // Constants for configuration
-  const String apiUrl = 'https://api.example.com';
-  const int timeout = 30;
-  const bool debugMode = false;
+const daysInWeek = 7;
+daysInWeek = 8;     // BAD: const can never change (and a week is always 7 days)
+```
 
-  // Final for user-specific data
-  final String userId = getCurrentUserId();
-  final String sessionToken = generateToken();
+For a beginner, a simple rule of thumb:
 
-  print('API: $apiUrl');
-  print('User: $userId');
-}
+- If you are typing the exact fixed value yourself (like `7` or `3.14`), `const` is great.
+- Both `final` and `const` give you a box that cannot change. `const` is just the stricter one for fixed, known-ahead values.
+
+---
+
+## Which One Should I Use?
+
+Ask one question first: **will this value ever change?**
+
+```
+Will it change?
+   |
+   |-- Yes  ->  use  var
+   |
+   |-- No   ->  use  final
+                 (or const if you already know the exact value as you type)
+```
+
+A few examples:
+
+```dart
+var score = 0;          // changes during the game -> var
+final birthYear = 2010; // your birth year never changes -> final
+const pi = 3.14;        // a fixed fact you know now -> const
+```
+
+A good habit: if a value does not need to change, lock it with `final` or `const`. It stops accidental changes and makes your code safer.
+
+---
+
+## The Top Mistakes Beginners Make
+
+### Mistake 1: Trying to change a final or const box
+
+```dart
+final city = 'Lagos';
+city = 'Abuja';     // BAD: final cannot change
+```
+
+If you need it to change, use `var` instead.
+
+### Mistake 2: Thinking `var` means "any type"
+
+```dart
+var age = 25;
+age = 'old';     // BAD: var still locks the type (here: number)
+```
+
+### Mistake 3: Writing the type AND var together
+
+```dart
+var int age = 25;   // BAD: pick one
+var age = 25;       // GOOD
+int age = 25;       // also GOOD
+```
+
+### Mistake 4: Using const for something that changes
+
+```dart
+const score = 0;
+score = 10;     // BAD: a score changes, so it should be var
+var score = 0;  // GOOD
 ```
 
 ---
 
-## The Difference Between final and const
+## One-Minute Recap
 
-```dart
-// final - value set when program runs
-final time1 = DateTime.now();  // ✅ OK - runtime value
-final time2 = DateTime.now();  // Different value!
-
-// const - must be known before program runs
-const time3 = DateTime.now();  // ❌ ERROR - can't use runtime value
-const maxValue = 100;          // ✅ OK - known at compile time
-```
-
----
-
-## Summary Cheat Sheet
-
-```dart
-// Explicit type - clear but verbose
-String name = 'Alex';
-
-// var - type inferred, can change
-var name = 'Alex';
-name = 'Bob';  // ✅ OK
-
-// final - set once at runtime
-final name = 'Alex';
-// name = 'Bob';  // ❌ ERROR
-
-// const - compile-time constant
-const name = 'Alex';
-// name = 'Bob';  // ❌ ERROR
-```
-
----
-
-## Practice Exercise
-
-Create a program with:
-1. A `const` for app version (e.g., "1.0.0")
-2. A `final` for launch time (use `DateTime.now()`)
-3. A `var` for user score that starts at 0
-4. Increase the score by 10
-5. Print all values
+- `var` lets Dart guess the type so you type less. The type is still locked once guessed.
+- `final` makes a box you fill once and then cannot change.
+- `const` is like `final`, used for fixed values you already know as you type (like `7` or `3.14`).
+- First question to ask: will it change? Yes -> `var`. No -> `final` (or `const` for known fixed values).
+- Locking values you do not want to change keeps your program safe.
 
 ---
 
 ## Quick Quiz
 
-**Q1:** What's the difference between `final` and `const`?
+**Q1.** What type does Dart give `var count = 5;`?
 
 <details>
 <summary>Answer</summary>
-`final` is set once at runtime. `const` must be a compile-time constant (known before the program runs).
+`int`, because `5` is a whole number. Dart guesses the type from the value.
 </details>
 
-**Q2:** Why won't this work?
+**Q2.** Why does the second line fail?
+
 ```dart
-final name = 'Alex';
-name = 'Bob';
+final name = 'Ada';
+name = 'Bola';
 ```
 
 <details>
 <summary>Answer</summary>
-`final` variables can only be assigned once. After `name = 'Alex'`, it can't be changed.
+`final` boxes can be filled only once. After `name = 'Ada'`, it is locked and cannot change.
 </details>
 
-**Q3:** Can you use `var` with a final?
+**Q3.** Which keyword fits a player's score that goes up during the game?
 
 <details>
 <summary>Answer</summary>
-No, use `final name = 'Alex'` not `var final name = 'Alex'`. But `final` has type inference built-in.
+`var`, because the score changes.
+</details>
+
+**Q4.** Which keyword fits the number of hours in a day (24)?
+
+<details>
+<summary>Answer</summary>
+`const`, because it is a fixed value you already know and it never changes.
 </details>
 
 ---
 
 ## Assignment
 
+Try each in [dartpad.dev](https://dartpad.dev) before checking the answers.
+
 ### Problem 1: Pick var, final, or const
 
-For each scenario, decide which keyword you would use. Justify briefly.
+For each, write which keyword you would use and one short reason:
 
-1. The user's name, set when they log in.
-2. The maximum login attempts, the same for the whole app (3).
-3. A counter that goes up every time a button is tapped.
-4. The app's brand color, the same for every screen.
-5. The current page number when paginating a list.
-6. The launch year of the app (2026).
+1. A score that goes up while playing.
+2. The number of days in a week.
+3. Your birth year.
+4. The current page number as you scroll a list.
+5. The value of pi (3.14).
 
-### Problem 2: Predict the errors
-
-Each line below tries to do something illegal. Which lines compile? Which fail? Explain why.
+### Problem 2: Predict which lines fail
 
 ```dart
 void main() {
@@ -251,58 +208,47 @@ void main() {
   a = 20;
   a = 'hello';
 
-  final b = 10;
-  b = 20;
+  final b = 5;
+  b = 6;
 
-  const c = 10;
-  c = 20;
-
-  final d;
-  d = 5;
-  d = 6;
+  const c = 7;
+  c = 8;
 }
 ```
 
-### Problem 3: const list vs final list
+Which lines are fine, and which cause an error? Say why for each error.
 
-Predict the behaviour. Which line throws and which line works?
+### Problem 3: Rewrite with var
+
+Rewrite these three lines using `var` instead of the explicit type:
+
+```dart
+String pet = 'cat';
+int legs = 4;
+bool friendly = true;
+```
+
+### Problem 4: Lock the right boxes
+
+Here is some code using `var` for everything. Change each box to the best keyword (`var`, `final`, or `const`):
 
 ```dart
 void main() {
-  final fruits = ['apple', 'banana'];
-  fruits.add('cherry');
-  print(fruits);
-
-  const colors = ['red', 'green'];
-  colors.add('blue');
-  print(colors);
+  var appName = 'Evvy Hairs';   // never changes, known now
+  var taxRate = 0.05;           // never changes, known now
+  var cartCount = 0;            // changes as items are added
 }
 ```
 
-### Problem 4: Build a config
+### Problem 5: Find the mistake
 
-Create a small program that simulates an app config. It should have:
-
-- A `const` for the app name (`'Evvy Hairs'`).
-- A `const` for the launch year (`2026`).
-- A `final` for the user's session ID (decided at runtime).
-- A regular `var` for the current cart count, that changes during the program.
-
-Set them up, change the cart count three times, then print everything.
-
-### Problem 5: Spot the design issue
-
-Look at this code and explain why every variable should be `final` instead of `var`. What problem does the current code allow?
+This code does not run. Find the mistake and fix it.
 
 ```dart
-void calculateBill() {
-  var basePrice = 100.0;
-  var quantity = 5;
-  var subtotal = basePrice * quantity;
-
-  // ...later in the function...
-  basePrice = 200.0;     // someone changed it!
-  print('Subtotal was: $subtotal');
+void main() {
+  const greeting = 'Hello';
+  greeting = 'Hi';
+  print(greeting);
 }
 ```
 
@@ -312,119 +258,77 @@ void calculateBill() {
 
 ### Problem 1: Pick var, final, or const
 
-| Scenario | Choice | Why |
-|----------|--------|-----|
-| User's name from login | `final` | known at runtime, never changes after login |
-| Max login attempts (3) | `const` | known at compile time, fixed forever |
-| Tap counter | `var` | needs to change every tap |
-| Brand color | `const` | fixed at compile time, used everywhere |
-| Current page number | `var` | changes as user paginates |
-| Launch year (2026) | `const` | fixed forever, known when code is written |
+| Value | Choice | Why |
+|-------|--------|-----|
+| Score while playing | `var` | it changes |
+| Days in a week | `const` | fixed value (7), known now |
+| Birth year | `final` (or `const`) | never changes; if you type the exact year, `const` works too |
+| Current page number | `var` | it changes as you scroll |
+| Value of pi (3.14) | `const` | fixed value, known now |
 
-The decision tree:
+The first question is always: will it change? If yes, `var`. If no, `final`, or `const` when you already know the exact value.
 
-1. Will the value change during the program? Yes -> `var`.
-2. Set once and never changes again, but the value is known only at runtime? -> `final`.
-3. Known at compile time and never changes? -> `const`.
-
-`const` is the strictest. Use it whenever you can, then `final`, then `var`.
-
-### Problem 2: Predict the errors
+### Problem 2: Predict which lines fail
 
 ```dart
 var a = 10;
-a = 20;             // ok, var allows reassignment to same type
-a = 'hello';        // ERROR: var locks in type, a is int
+a = 20;          // FINE: var can change to another whole number
+a = 'hello';     // ERROR: a is locked as a number, cannot become text
 
-final b = 10;
-b = 20;             // ERROR: final cannot be reassigned
+final b = 5;
+b = 6;           // ERROR: final cannot be changed after it is set
 
-const c = 10;
-c = 20;             // ERROR: const cannot be reassigned
-
-final d;            // ok, declare without initial value
-d = 5;              // ok, set once
-d = 6;              // ERROR: final can only be assigned once
+const c = 7;
+c = 8;           // ERROR: const cannot be changed
 ```
 
-The lessons:
+So one line is fine (`a = 20`) and three lines cause errors.
 
-- `var` allows reassignment, but only to the same type.
-- `final` allows exactly one assignment. After that, locked.
-- `const` is the same as final but stricter (must be known at compile time).
-- A `final` variable can be declared without an initial value, then assigned later, but only once.
-
-### Problem 3: const list vs final list
+### Problem 3: Rewrite with var
 
 ```dart
-final fruits = ['apple', 'banana'];
-fruits.add('cherry');     // works, prints [apple, banana, cherry]
-
-const colors = ['red', 'green'];
-colors.add('blue');       // ERROR at runtime
+var pet = 'cat';
+var legs = 4;
+var friendly = true;
 ```
 
-Why the difference:
+Dart guesses the types: `pet` is a String, `legs` is an int, `friendly` is a bool. The result is exactly the same as writing the types yourself.
 
-- `final` means the variable cannot be reassigned to a new list. But the list itself is still mutable. You can add, remove, or change items.
-- `const` means the list itself is immutable. You cannot add, remove, or change anything inside it.
-
-So `final` is about the **variable**, while `const` is about the **value** (and the variable, since you cannot reassign a const variable either).
-
-If you want a list that cannot be reassigned **and** cannot be modified, use `const`.
-
-### Problem 4: Build a config
+### Problem 4: Lock the right boxes
 
 ```dart
 void main() {
-  const String appName = 'Evvy Hairs';
-  const int launchYear = 2026;
-  final String sessionId = 'sess_${DateTime.now().millisecondsSinceEpoch}';
-  var cartCount = 0;
-
-  cartCount = 1;
-  cartCount = 3;
-  cartCount = 5;
-
-  print('App: $appName ($launchYear)');
-  print('Session: $sessionId');
-  print('Cart items: $cartCount');
+  const appName = 'Evvy Hairs';   // fixed and known now -> const
+  const taxRate = 0.05;           // fixed and known now -> const
+  var cartCount = 0;              // changes -> var
 }
 ```
 
-Why each choice:
+The two values that never change become `const`. The one that changes stays `var`.
 
-- `appName` and `launchYear` are `const`. They are part of the app's identity, fixed forever, known at compile time.
-- `sessionId` is `final`. It is set once at app start using a runtime value (the current time). After that, it never changes.
-- `cartCount` is `var`. It changes every time the user adds or removes a product.
+### Problem 5: Find the mistake
 
-This is the typical shape of a real app: a few constants, a few values fixed at startup, and the rest that changes during runtime.
+The mistake: `greeting` is `const`, so it can never change, but the next line tries to change it to `'Hi'`.
 
-### Problem 5: Spot the design issue
-
-The problem: `basePrice` and `quantity` are declared with `var`. That means they can be changed at any point in the function. The line `basePrice = 200.0;` changes the value **after** `subtotal` was already computed. That is misleading: the printed subtotal still shows 500 (5 * 100), but the new `basePrice` is 200. A reader of the code might assume the subtotal was based on 200.
-
-Better design:
+Two ways to fix it. If the greeting should be able to change, use `var`:
 
 ```dart
-void calculateBill() {
-  final basePrice = 100.0;
-  final quantity = 5;
-  final subtotal = basePrice * quantity;
-
-  // basePrice = 200.0;     // would now fail to compile
-  print('Subtotal was: $subtotal');
+void main() {
+  var greeting = 'Hello';
+  greeting = 'Hi';
+  print(greeting);     // Hi
 }
 ```
 
-Now the compiler refuses to allow the reassignment. The values are pinned. If someone tries to change `basePrice`, they get an error and have to think about it.
+Or, if it should stay `'Hello'`, just remove the line that changes it:
 
-The principle: **`final` by default**. Use `var` only when you actually need the value to change. This prevents bugs where someone modifies a value you assumed was fixed.
+```dart
+void main() {
+  const greeting = 'Hello';
+  print(greeting);     // Hello
+}
+```
 
 ---
 
-**Congratulations!** You now understand variables completely!
-
-**Next:** Let's dive into working with Strings in detail.
-
-**Continue to:** `03-Strings.md`
+**Next:** `03-Strings.md`, where you learn lots of handy things you can do with text.
