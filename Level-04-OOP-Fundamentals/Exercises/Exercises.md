@@ -8,29 +8,83 @@ Test your understanding of classes, inheritance, polymorphism, and more!
 
 **Difficulty:** ⭐ Easy
 
-Create a `Book` class with properties and methods:
+> If you have not read `../Theory/01-ClassesAndObjects.md` yet, read it first. This exercise uses exactly those ideas: properties, a constructor with `this.`, and methods.
+
+### First, a fully worked example (study this, do not skip it)
+
+Before you write your own, here is a complete `Dog` class built the same way you will build yours. Read every comment, then notice how `main` uses it.
+
+```dart
+class Dog {
+  // 1. Properties: the data every Dog has.
+  String name;
+  int age;
+
+  // 2. Constructor: the `this.` shortcut stores each value you pass in.
+  Dog(this.name, this.age);
+
+  // 3. A method that DOES something.
+  void bark() {
+    print('$name says Woof!');
+  }
+
+  // 4. A method that RETURNS a value (note the String return type).
+  String describe() {
+    return '$name is $age years old';
+  }
+}
+
+void main() {
+  var rex = Dog('Rex', 4);   // build a Dog object
+  rex.bark();                // Rex says Woof!
+  print(rex.describe());     // Rex is 4 years old
+}
+```
+
+That is the whole pattern. Your `Book` class will look almost identical.
+
+### Now your turn
+
+Create a `Book` class so that the `main` below runs and prints the comments shown:
 
 ```dart
 void main() {
-  // TODO: Create Book class with:
-  // Properties: title, author, pages, isRead (default false)
-  // Methods:
-  //   - markAsRead() - sets isRead to true
-  //   - summary() - returns "Title by Author (X pages)"
+  // TODO: Create a Book class with:
+  //
+  //   Properties:
+  //     - title   (String)
+  //     - author  (String)
+  //     - pages   (int)
+  //     - isRead  (bool) that DEFAULTS to false
+  //
+  //   Methods:
+  //     - markAsRead()  -> sets isRead to true (returns nothing)
+  //     - summary()     -> RETURNS the String "Title by Author (X pages)"
 
   var book = Book('The Hobbit', 'J.R.R. Tolkien', 310);
-  print(book.summary());
-  print('Read: ${book.isRead}');
+  print(book.summary());          // The Hobbit by J.R.R. Tolkien (310 pages)
+  print('Read: ${book.isRead}');  // Read: false
 
   book.markAsRead();
-  print('Read: ${book.isRead}');
+  print('Read: ${book.isRead}');  // Read: true
 }
 ```
 
 <details>
-<summary>💡 Hint</summary>
+<summary>💡 Hint (step by step)</summary>
 
-Use a basic constructor with `this.` shorthand. The `isRead` property can have a default value.
+1. Start the blueprint: `class Book {`
+2. Declare the four properties, each on its own line, like `String title;`.
+3. For `isRead`, give it a default value right in the blueprint: `bool isRead = false;`
+   (Then you do not need to pass it into the constructor at all.)
+4. Write the constructor using the `this.` shortcut for the three required values:
+   `Book(this.title, this.author, this.pages);`
+5. `markAsRead()` returns nothing, so its return type is `void`. Inside, set `isRead = true;`.
+6. `summary()` returns text, so its return type is `String`. Use string interpolation:
+   `return '$title by $author ($pages pages)';`
+7. Close the class with `}`.
+
+Compare your result to the `Dog` example above. The shape is the same.
 
 </details>
 
@@ -42,9 +96,9 @@ class Book {
   String title;
   String author;
   int pages;
-  bool isRead;
+  bool isRead = false;   // default value lives right here in the blueprint
 
-  Book(this.title, this.author, this.pages, [this.isRead = false]);
+  Book(this.title, this.author, this.pages);
 
   void markAsRead() {
     isRead = true;
@@ -57,11 +111,11 @@ class Book {
 
 void main() {
   var book = Book('The Hobbit', 'J.R.R. Tolkien', 310);
-  print(book.summary());  // The Hobbit by J.R.R. Tolkien (310 pages)
-  print('Read: ${book.isRead}');  // false
+  print(book.summary());          // The Hobbit by J.R.R. Tolkien (310 pages)
+  print('Read: ${book.isRead}');  // Read: false
 
   book.markAsRead();
-  print('Read: ${book.isRead}');  // true
+  print('Read: ${book.isRead}');  // Read: true
 }
 ```
 
