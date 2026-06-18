@@ -1,446 +1,387 @@
-# Part 3: Using Variables
+# Using Variables: Doing Things With Your Boxes
 
-Now that you can create variables of different types, let's learn how to USE them!
+## The Big Idea In One Sentence
+
+> Once a value is in a box, you can **show it, join it with other text, and do maths with it** to make new values.
+
+You already know how to make boxes. Now you put them to work.
 
 ---
 
-## Printing Variables
+## Showing A Variable
 
-### Basic Printing
+Two ways, and you have seen both:
 
 ```dart
 void main() {
-  String name = 'Alex';
-  int age = 25;
+  String name = 'Ada';
+  int age = 12;
 
-  print(name);  // Output: Alex
-  print(age);   // Output: 25
+  print(name);              // Ada      (just the value)
+  print('I am $name');      // I am Ada (value inside a sentence with $)
 }
 ```
 
-### String Interpolation (The Cool Way!)
-
-To include variables in strings, use `$`:
-
-```dart
-String name = 'Alex';
-int age = 25;
-
-print('My name is $name');        // My name is Alex
-print('I am $age years old');     // I am 25 years old
-```
-
-For expressions (calculations), use `${}`:
-
-```dart
-int age = 25;
-print('Next year: ${age + 1}');  // Next year: 26
-
-String name = 'alex';
-print('Name: ${name.toUpperCase()}');  // Name: ALEX
-```
+Quick reminder: no quotes shows the value, and `$name` drops the value into a sentence.
 
 ---
 
-## Using Variables in Calculations
+## Joining Text With `+`
+
+You can stick two strings together with a `+`. This is called **joining** (or "concatenation", a big word for a simple thing).
 
 ```dart
 void main() {
-  int a = 10;
-  int b = 5;
+  String first = 'Ada';
+  String last = 'Bello';
 
-  int sum = a + b;
-  int difference = a - b;
-  int product = a * b;
-
-  print('Sum: $sum');          // Sum: 15
-  print('Difference: $difference');  // Difference: 5
-  print('Product: $product');   // Product: 50
+  String full = first + ' ' + last;
+  print(full);     // Ada Bello
 }
 ```
 
+The `' '` in the middle is a space, so the two names do not get stuck together as `AdaBello`.
+
+Most of the time the `$` way is cleaner, and it does the same thing:
+
+```dart
+String full = '$first $last';   // same result: Ada Bello
+```
+
+Use whichever feels clearer. Both are correct.
+
 ---
 
-## Changing Values
+## Doing Maths With Number Boxes
 
-Variables can be reassigned to new values:
+If a box holds a number, you can do maths with it. For now we will use three simple ones:
+
+- `+` adds
+- `-` subtracts
+- `*` multiplies
+
+```dart
+void main() {
+  int apples = 5;
+  int oranges = 3;
+
+  int total = apples + oranges;
+  print('Total fruit: $total');     // Total fruit: 8
+}
+```
+
+The right side (`apples + oranges`) is worked out first, and the answer (`8`) is stored in the new box `total`.
+
+> There are more maths signs (like divide and remainder). You will meet the full set later in `06-Operators.md`. For now, `+`, `-`, and `*` are all you need.
+
+---
+
+## Putting A Calculation Inside A Sentence
+
+You know `$name` drops a value into a sentence. But what if you want to drop in the **answer to a calculation**? For that, wrap the calculation in `${ ... }` (with curly braces):
+
+```dart
+void main() {
+  int age = 12;
+
+  print('Next year you will be ${age + 1}');   // Next year you will be 13
+}
+```
+
+The rule is small and worth remembering:
+
+- `$name` for a **single variable**.
+- `${ ... }` for a **calculation** (anything with maths in it).
+
+---
+
+## Making New Variables From Old Ones
+
+A very common pattern: build a new value out of values you already have.
+
+```dart
+void main() {
+  double price = 100.0;
+  int quantity = 3;
+
+  double total = price * quantity;
+
+  print('Price: $price');
+  print('Quantity: $quantity');
+  print('Total: $total');
+}
+```
+
+Output:
+
+```
+Price: 100.0
+Quantity: 3
+Total: 300.0
+```
+
+`total` was not typed in by hand. It was **calculated** from `price` and `quantity`.
+
+---
+
+## Changing A Variable Using Itself
+
+You can update a box using its own current value. This looks strange the first time:
 
 ```dart
 void main() {
   int score = 0;
-  print(score);  // Output: 0
+  print(score);     // 0
 
-  score = 10;
-  print(score);  // Output: 10
+  score = score + 10;   // take the old score (0), add 10, store 10 back
+  print(score);     // 10
 
-  score = 25;
-  print(score);  // Output: 25
+  score = score + 5;    // take 10, add 5, store 15 back
+  print(score);     // 15
 }
 ```
+
+Read `score = score + 10` as: *"work out the right side using the current score, then put the answer back in score."* The right side is always worked out first.
 
 ---
 
-## Practical Examples
+## The Top Mistakes Beginners Make
 
-### Example 1: Shopping Cart
-
-```dart
-void main() {
-  String product = 'Laptop';
-  double price = 999.99;
-  int quantity = 2;
-
-  double total = price * quantity;
-
-  print('Product: $product');
-  print('Price: \$$price');
-  print('Quantity: $quantity');
-  print('Total: \$$total');
-}
-```
-
-### Example 2: User Info
+### Mistake 1: Joining two names with no space
 
 ```dart
-void main() {
-  String username = 'alex_dev';
-  String email = 'alex@example.com';
-  int age = 28;
-  bool isPremium = true;
-
-  print('Username: $username');
-  print('Email: $email');
-  print('Age: $age');
-  print('Premium: $isPremium');
-}
+String full = first + last;     // AdaBello  (stuck together)
+String full = first + ' ' + last; // Ada Bello (better)
 ```
 
-### Example 3: Temperature Converter
+### Mistake 2: Using `$` for a calculation
 
 ```dart
-void main() {
-  double celsius = 25.0;
-  double fahrenheit = (celsius * 9/5) + 32;
-
-  print('$celsius°C = $fahrenheit°F');
-}
+print('Total: $apples + oranges');    // BAD: shows "Total: 5 + oranges"
+print('Total: ${apples + oranges}');  // GOOD: shows "Total: 8"
 ```
+
+A calculation needs the curly braces `${ ... }`.
+
+### Mistake 3: Thinking `score = score + 10` is impossible
+
+It is not a contradiction. The `=` means "store", not "equals". The right side is worked out with the old value, then saved back.
 
 ---
 
-## Variable Naming Rules
+## One-Minute Recap
 
-### Must Follow (Syntax Rules)
-
-```dart
-// ✅ Valid names
-String name;
-String firstName;
-String first_name;
-String _private;
-String name1;
-
-// ❌ Invalid names
-String 1name;      // Can't start with number
-String first-name; // Can't use hyphen
-String first name; // Can't have spaces
-String class;      // Can't use reserved words
-```
-
-### Should Follow (Best Practices)
-
-```dart
-// ✅ Good - camelCase
-String firstName;
-int userAge;
-bool isLoggedIn;
-double accountBalance;
-
-// ❌ Bad - hard to read
-String firstname;
-String FIRSTNAME;
-String First_Name;
-```
-
-**Convention:** Use `camelCase` - first word lowercase, subsequent words capitalized.
-
-### Meaningful Names
-
-```dart
-// ❌ Bad - unclear
-int x = 25;
-String s = 'Alex';
-bool b = true;
-
-// ✅ Good - clear purpose
-int userAge = 25;
-String userName = 'Alex';
-bool isSubscribed = true;
-```
-
----
-
-## Practice Exercise
-
-Create a program that calculates the area of a rectangle:
-1. Create width (int)
-2. Create height (int)
-3. Calculate area = width * height
-4. Print the result
-
-Example:
-```
-Width: 10
-Height: 5
-Area: 50
-```
+- Show a value with `print(name)` or inside a sentence with `$name`.
+- Join text with `+` (remember to add a space if you need one).
+- Do maths on number boxes with `+`, `-`, `*` (more signs in lesson 06).
+- Drop a single variable in a sentence with `$name`; drop a calculation with `${ ... }`.
+- You can build new variables from old ones, and update a box using its own value.
 
 ---
 
 ## Quick Quiz
 
-**Q1:** What does this print?
+**Q1.** What does this show?
+
 ```dart
-var x = 10;
-x = 20;
-print(x);
+void main() {
+  int a = 4;
+  int b = 6;
+  print('Sum: ${a + b}');
+}
 ```
 
 <details>
 <summary>Answer</summary>
-`20` - Variables can be reassigned to new values of the same type.
+
+```
+Sum: 10
+```
+
+`${a + b}` works out the calculation (10) and drops it in.
 </details>
 
-**Q2:** How do you include a variable in a string?
+**Q2.** Why does this show `Sum: 4 + 6` instead of `Sum: 10`?
+
+```dart
+print('Sum: $a + b');
+```
 
 <details>
 <summary>Answer</summary>
-Use `$variableName` like: `print('Hello $name');`
+`$a` drops in just the value of `a` (4). The rest (`+ b`) is treated as plain text. For a calculation you need `${a + b}`.
 </details>
 
-**Q3:** What's wrong with `String 1st = 'first';`?
+**Q3.** What is `total` at the end?
+
+```dart
+int total = 0;
+total = total + 5;
+total = total + 5;
+```
 
 <details>
 <summary>Answer</summary>
-Variable names can't start with a number. Should be `String first = 'first';`
+`10`. Each line takes the current total and adds 5. 0, then 5, then 10.
+</details>
+
+**Q4.** What does this print?
+
+```dart
+String first = 'Sun';
+String second = 'shine';
+print(first + second);
+```
+
+<details>
+<summary>Answer</summary>
+
+```
+Sunshine
+```
+
+`+` joins the two strings with no space between them.
 </details>
 
 ---
 
 ## Assignment
 
-### Problem 1: Receipt printer
+Try each in [dartpad.dev](https://dartpad.dev) before checking the answers.
 
-You are building a checkout receipt. Declare these variables, then print a receipt that uses string interpolation:
+### Problem 1: Full name
 
-- `String storeName = 'Evvy Hairs'`
-- `String customer = 'Ada'`
-- `int items = 3`
-- `double total = 24500.50`
+Make two String boxes, `first` and `last`, with your first and last name. Print your full name with a space between, using `$`.
 
-Output should look like:
-```
-Welcome to Evvy Hairs
-Customer: Ada
-You purchased 3 items
-Total: 24500.5 naira
-```
+### Problem 2: Add two numbers
 
-### Problem 2: Predict the output
+Make two int boxes, `a = 8` and `b = 5`. Print one line: `8 plus 5 is 13`, using `${ ... }` for the calculation.
+
+### Problem 3: Predict the output
 
 ```dart
 void main() {
-  int a = 10;
-  int b = 3;
+  int pens = 4;
+  int books = 2;
 
-  print('a + b = ${a + b}');
-  print('a - b = ${a - b}');
-  print('a * b = ${a * b}');
-  print('a / b = ${a / b}');
-  print('a ~/ b = ${a ~/ b}');
-  print('a % b = ${a % b}');
+  print('I have ${pens + books} things');
+  print('Pens cost ${pens * 50} naira');
 }
 ```
 
-### Problem 3: BMI calculator
+### Problem 4: Score keeper
 
-Write a program that calculates a person's BMI given their weight in kg and height in metres. Use this formula:
+Make an int box `score = 0`. Add 10 to it, then add 20 to it, each time using `score = score + ...`. Print the score after each change. The final score should be 30.
+
+### Problem 5: Simple bill
+
+Make `double price = 250.0` and `int quantity = 3`. Calculate `total` as price times quantity, then print:
 
 ```
-BMI = weight / (height * height)
+Price: 250.0
+Quantity: 3
+Total: 750.0
 ```
-
-Use `double` variables. Print the result rounded to 1 decimal place using `.toStringAsFixed(1)`.
-
-Test with `weight = 70.0` and `height = 1.75`. Expected BMI: 22.9.
-
-### Problem 4: Combine and reassign
-
-What is the value of `result` at the end?
-
-```dart
-void main() {
-  int x = 5;
-  int y = 10;
-  String result = '';
-
-  result = result + 'x is $x';
-  result = result + ', ';
-  result = result + 'y is $y';
-  result = result + ', sum is ${x + y}';
-
-  print(result);
-}
-```
-
-### Problem 5: Total cost with tax
-
-Given:
-
-```dart
-double itemPrice = 1500;
-int quantity = 4;
-double taxRate = 0.075;
-```
-
-Calculate and print:
-- The subtotal (price * quantity).
-- The tax amount (subtotal * taxRate).
-- The grand total (subtotal + tax).
-
-All amounts should be formatted to 2 decimal places.
 
 ---
 
 ## Assignment Answers
 
-### Problem 1: Receipt printer
+### Problem 1: Full name
 
 ```dart
 void main() {
-  String storeName = 'Evvy Hairs';
-  String customer = 'Ada';
-  int items = 3;
-  double total = 24500.50;
+  String first = 'Ada';
+  String last = 'Bello';
 
-  print('Welcome to $storeName');
-  print('Customer: $customer');
-  print('You purchased $items items');
-  print('Total: $total naira');
-}
-```
-
-The trick: each `print` uses `$variableName` to drop the value into the string. No `+` needed for joining. This is one of the best things about Dart strings.
-
-Note about the total: when you assign `24500.50`, Dart drops the trailing zero and stores `24500.5`. That is just how doubles work. To force two decimals on display, use `total.toStringAsFixed(2)`. We will see this in problem 5.
-
-### Problem 2: Predict the output
-
-```
-a + b = 13
-a - b = 7
-a * b = 30
-a / b = 3.3333333333333335
-a ~/ b = 3
-a % b = 1
-```
-
-How each operation works:
-
-- `+`, `-`, `*` are familiar. Result types: int + int = int.
-- `/` always returns a double, even for whole-number division. `10 / 3` is `3.333...`.
-- `~/` is integer division. The decimal part is dropped, not rounded. So `10 ~/ 3` is `3`, not `3.33`.
-- `%` is the remainder. After dividing 10 by 3, the remainder is 1.
-
-The `~/` and `%` are the most useful "less obvious" operators. You will use `%` to test even/odd: `n % 2 == 0` means n is even.
-
-### Problem 3: BMI calculator
-
-```dart
-void main() {
-  double weight = 70.0;
-  double height = 1.75;
-
-  double bmi = weight / (height * height);
-
-  print('BMI: ${bmi.toStringAsFixed(1)}');     // BMI: 22.9
-}
-```
-
-How this works:
-
-1. Calculate `height * height` (squared).
-2. Divide weight by that. Both are doubles, so the result is a double.
-3. `toStringAsFixed(1)` rounds the double to 1 decimal place and returns a String.
-
-For weight 70 and height 1.75:
-- 1.75 * 1.75 = 3.0625
-- 70 / 3.0625 = 22.857...
-- Rounded to 1 decimal: 22.9.
-
-### Problem 4: Combine and reassign
-
-`result` ends up as:
-
-```
-x is 5, y is 10, sum is 15
-```
-
-Trace:
-
-| Line | result after |
-|------|--------------|
-| start | '' |
-| `result + 'x is $x'` | 'x is 5' |
-| `result + ', '` | 'x is 5, ' |
-| `result + 'y is $y'` | 'x is 5, y is 10' |
-| `result + ', sum is ${x + y}'` | 'x is 5, y is 10, sum is 15' |
-
-The lesson: strings can be added with `+`. Each line takes the current string, appends new text, and assigns back. Step by step, the string grows. Interpolation `${x + y}` evaluates the expression inside `{ }` and inserts the result.
-
-In real code you would build this string in one step:
-
-```dart
-String result = 'x is $x, y is $y, sum is ${x + y}';
-```
-
-The exercise is meant to show how reassignment accumulates.
-
-### Problem 5: Total cost with tax
-
-```dart
-void main() {
-  double itemPrice = 1500;
-  int quantity = 4;
-  double taxRate = 0.075;
-
-  double subtotal = itemPrice * quantity;
-  double tax = subtotal * taxRate;
-  double grandTotal = subtotal + tax;
-
-  print('Subtotal: ${subtotal.toStringAsFixed(2)}');
-  print('Tax (7.5%): ${tax.toStringAsFixed(2)}');
-  print('Grand total: ${grandTotal.toStringAsFixed(2)}');
+  print('$first $last');
 }
 ```
 
 Output:
+
 ```
-Subtotal: 6000.00
-Tax (7.5%): 450.00
-Grand total: 6450.00
+Ada Bello
 ```
 
-How each value is computed:
+The space between `$first` and `$last` inside the quotes keeps the names apart.
 
-- subtotal = 1500 * 4 = 6000
-- tax = 6000 * 0.075 = 450
-- grand total = 6000 + 450 = 6450
+### Problem 2: Add two numbers
 
-`toStringAsFixed(2)` ensures every amount shows exactly two decimal places, even when the math gives a whole number. This is the standard format for currency.
+```dart
+void main() {
+  int a = 8;
+  int b = 5;
+
+  print('$a plus $b is ${a + b}');
+}
+```
+
+Output:
+
+```
+8 plus 5 is 13
+```
+
+`$a` and `$b` drop in the single values. `${a + b}` does the maths and drops in the answer.
+
+### Problem 3: Predict the output
+
+```
+I have 6 things
+Pens cost 200 naira
+```
+
+`pens + books` is `4 + 2 = 6`. `pens * 50` is `4 * 50 = 200`. Both are inside `${ ... }`, so the calculations run and the answers appear.
+
+### Problem 4: Score keeper
+
+```dart
+void main() {
+  int score = 0;
+
+  score = score + 10;
+  print(score);     // 10
+
+  score = score + 20;
+  print(score);     // 30
+}
+```
+
+Output:
+
+```
+10
+30
+```
+
+Each line takes the current score, adds to it, and stores the new value back in the same box.
+
+### Problem 5: Simple bill
+
+```dart
+void main() {
+  double price = 250.0;
+  int quantity = 3;
+
+  double total = price * quantity;
+
+  print('Price: $price');
+  print('Quantity: $quantity');
+  print('Total: $total');
+}
+```
+
+Output:
+
+```
+Price: 250.0
+Quantity: 3
+Total: 750.0
+```
+
+`total` is built from `price` and `quantity` using `*`. Because `price` is a `double`, the total is a `double` too, so it shows as `750.0`.
 
 ---
 
-**Next:** Learn about advanced variable concepts like `var`, `final`, and `const`!
-
-**Continue to:** `02d-VarFinalConst.md`
+**Next:** `02d-VarFinalConst.md`, where you learn shortcuts for making boxes and how to make a box that can never change.
