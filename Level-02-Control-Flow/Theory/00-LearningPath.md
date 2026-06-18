@@ -1,141 +1,68 @@
-# Level 2: Control Flow - Learning Path
+# Level 2: Control Flow (Learning Path)
 
-Welcome to Level 2! This level teaches you how to make decisions and repeat actions in your programs.
+Welcome to Level 2! In Level 1 your programs ran straight down, top to bottom. Now you teach them to **make decisions** and **repeat actions**. This is where programs start to feel alive.
 
----
-
-## How to Use These Theory Files
-
-Read these theory files **in order**, one at a time. Each file teaches you ONE control flow concept.
-
-After reading each theory file, try the exercises in that section!
+You should finish Level 1 first. Everything here builds on variables, types, booleans, and operators.
 
 ---
 
-## Your Learning Path
+## How To Use These Lessons
 
-Follow these files in this exact order:
+Read them **in order**, one at a time. Each lesson only uses ideas from earlier lessons, so do not skip.
 
-### Step 1: If Statements - Making Decisions
-📖 **[01-IfStatements.md](01-IfStatements.md)**
-- Basic if statements
-- if-else for two choices
-- if-else if-else for many choices
-- Nested if statements
-- Combining conditions with && and ||
+For every lesson:
 
-**Time:** 20-25 minutes
-
-**Then Practice:** Do PART 1 exercises (If Statements)
+1. Read it slowly.
+2. Type the examples into [dartpad.dev](https://dartpad.dev) and press Run.
+3. Do the **Assignment** at the bottom before peeking at the answers.
 
 ---
 
-### Step 2: Switch Statements - Cleaner Choices
-📖 **[02-SwitchStatements.md](02-SwitchStatements.md)**
-- When to use switch instead of if
-- Basic switch syntax
-- Multiple cases for same code
-- Default case
-- Switch vs if comparison
+## The Path (Follow In Order)
 
-**Time:** 15-20 minutes
+### 1. If Statements
+**[01-IfStatements.md](01-IfStatements.md)**
+Make a decision: run some code only when a condition is true. Covers `if`, `else`, `else if`, combining conditions, and nesting.
 
-**Then Practice:** Do PART 2 exercises (Switch Statements)
+### 2. Switch Statements
+**[02-SwitchStatements.md](02-SwitchStatements.md)**
+A tidy way to pick one branch out of many exact values. Covers the classic `switch` (with `break`) and the modern switch expression.
 
----
+### 3. For Loops
+**[03-ForLoops.md](03-ForLoops.md)**
+Repeat code a set number of times with a counter. Covers counting up and down, stepping, and loops inside loops.
 
-### Step 3: For Loops - Repeating Actions
-📖 **[03-ForLoops.md](03-ForLoops.md)**
-- Basic for loop
-- Counting up and down
-- Looping through ranges
-- for-in loops for lists
+### 4. While Loops
+**[04-WhileLoops.md](04-WhileLoops.md)**
+Repeat code as long as a condition stays true, when you do not know the count in advance. Covers `while` and `do-while`.
 
-**Time:** 20-25 minutes
-
-**Then Practice:** Do PART 3 exercises (For Loops)
+### 5. Loop Control
+**[05-LoopControl.md](05-LoopControl.md)**
+Two keywords that bend the rules: `break` (stop the loop now) and `continue` (skip this round, keep going).
 
 ---
 
-### Step 4: While Loops - Conditional Repetition
-📖 **[04-WhileLoops.md](04-WhileLoops.md)**
-- while loops
-- do-while loops
-- Difference between while and do-while
-- When to use while vs for
+## After The Theory
 
-**Time:** 15-20 minutes
+When you finish all five lessons:
 
-**Then Practice:** Do PART 4 exercises (While Loops)
+1. **Practice** with the files in the `../Examples/` folder. Run each one.
+2. **Do the Exercises** in `../Exercises/`. Try them before looking at the answers.
+3. **Check yourself:** Can you say when to use `if` vs `switch`? When to use `for` vs `while`? What `break` and `continue` each do?
 
 ---
 
-### Step 5: Loop Control - Breaking and Continuing
-📖 **[05-LoopControl.md](05-LoopControl.md)**
-- break statement (exit loop)
-- continue statement (skip to next iteration)
-- return statement in functions
-- Practical loop control examples
+## Tips For Success
 
-**Time:** 15 minutes
+Do:
+- Type the code yourself and run it.
+- Change the conditions and see what happens.
+- Trace tricky loops on paper, round by round.
 
-**Then Practice:** Do PART 5 exercises (Loop Control)
-
----
-
-## Total Time for Level 2 Theory
-
-**Estimated:** 2 - 2.5 hours (including practice)
-
-Take breaks between topics!
+Do not:
+- Skip the assignments.
+- Move to Level 3 before this feels comfortable.
 
 ---
 
-## Learning Strategy
-
-1. **Read one theory file**
-2. **Immediately do the matching PART exercises**
-3. **Take a break**
-4. **Move to next theory file**
-
-This way, you learn → practice → reinforce → repeat!
-
----
-
-## After Completing Level 2
-
-Once you've finished all theory and exercises:
-
-1. **Review the concepts:**
-   - Can you explain when to use if vs switch?
-   - Do you know the difference between for and while loops?
-   - Can you use break and continue correctly?
-
-2. **Complete the Final Project:**
-   - Put all concepts together
-   - Build something real
-
-3. **Self-Assessment Checklist:**
-   - Check off all items before moving to Level 3
-
----
-
-## Learning Tips
-
-✅ **DO:**
-- Type out the code examples yourself
-- Experiment with different conditions
-- Try breaking the code to see what happens
-- Do exercises WITHOUT looking at solutions first
-
-❌ **DON'T:**
-- Rush through without practicing
-- Skip the exercises
-- Just read - you must write code!
-- Move to Level 3 before you're comfortable
-
----
-
-**Ready to start?**
-
-👉 Begin with [01-IfStatements.md](01-IfStatements.md)
+**Ready? Start here:** [01-IfStatements.md](01-IfStatements.md)
