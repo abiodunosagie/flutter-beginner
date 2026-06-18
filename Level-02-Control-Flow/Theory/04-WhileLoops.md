@@ -368,6 +368,8 @@ while (i <= 5) {
 
 ## Assignment
 
+Try each in [dartpad.dev](https://dartpad.dev) before reading the answer. Everything uses `while` loops in `main`. (Functions and Lists come in Level 3, so we do not need them yet.)
+
 ### Problem 1: Predict the output
 
 What does this print?
@@ -389,7 +391,7 @@ void main() {
 
 ### Problem 2: Convert a for loop to a while loop
 
-Take this for loop and rewrite it using a `while` loop. The output must be identical.
+Rewrite this for loop using a `while` loop in `main`. The output must be identical. Then say, in one sentence, which form you find clearer here and why.
 
 ```dart
 for (int i = 10; i >= 0; i -= 2) {
@@ -397,30 +399,17 @@ for (int i = 10; i >= 0; i -= 2) {
 }
 ```
 
-Then, in your own words, explain which form (for or while) is more readable here, and why.
+### Problem 3: Count the digits
 
-### Problem 3: Count digits
+In `main`, make `int n = 12345`. Use a `while` loop to count how many digits it has, then print `12345 has 5 digits`. (Hint: `n ~/ 10` chops off the last digit. Keep going until `n` reaches 0.) Keep the original number in a second box so you can print it.
 
-Write a function `int digitCount(int n)` that returns the number of digits in a positive integer. Use a while loop. Test on 7 (1 digit), 100 (3 digits), and 12345 (5 digits). What should it return for 0? Make a decision and justify it in your answer.
+### Problem 4: First power of 2 above a target
 
-### Problem 4: Find first power of 2 above a target
+In `main`, make `int target = 10`. Use a `while` loop to find the first power of 2 that is bigger than `target`, then print it. (Start at `power = 1` and keep doubling while `power <= target`.) For 10, the answer is 16.
 
-Write a function `int firstPowerAbove(int target)` that returns the first power of 2 that is strictly greater than `target`. For example:
-- `firstPowerAbove(10)` returns 16 (because 8 is not greater than 10, but 16 is).
-- `firstPowerAbove(50)` returns 64.
-- `firstPowerAbove(1)` returns 2.
+### Problem 5: Months to a savings goal
 
-Use a while loop. Do not hard-code any values.
-
-### Problem 5: Simulate a password retry
-
-Write a function `bool tryLogin(String correct, List<String> attempts, int maxTries)` that walks through the `attempts` list one at a time. It should:
-
-- Return `true` if any attempt matches `correct`, but only if it happens within `maxTries` tries.
-- Return `false` if `maxTries` is reached without a match.
-- Return `false` if the list ends before `maxTries` (out of attempts).
-
-Test with `tryLogin('open', ['x', 'y', 'open', 'z'], 3)` (expected: true) and `tryLogin('open', ['x', 'y', 'z'], 3)` (expected: false).
+In `main`, you start with `int balance = 1000` and add 150 every month. Use a `while` loop to find how many months it takes for the balance to reach at least 5000. Print the number of months and the final balance.
 
 ---
 
@@ -436,161 +425,98 @@ After step 4, n is 1
 Total steps: 4
 ```
 
-Walkthrough:
-
-| Round | n before | Check `n > 1` | n after `~/2` | steps |
-|-------|----------|---------------|---------------|-------|
+| Round | n before | `n > 1`? | n after `~/2` | steps |
+|-------|----------|----------|---------------|-------|
 | 1 | 16 | true | 8 | 1 |
 | 2 | 8 | true | 4 | 2 |
 | 3 | 4 | true | 2 | 3 |
 | 4 | 2 | true | 1 | 4 |
-| Stop | 1 | false (1 is not > 1) | --- | 4 |
+| Stop | 1 | false | --- | 4 |
 
-`~/` is integer division (covered in Level 1). `16 ~/ 2 = 8`, `8 ~/ 2 = 4`, and so on. Once we hit 1, the condition `1 > 1` is false, the loop stops.
-
-What this loop actually computes: how many times you can halve a number before it drops to 1 or below. For powers of 2, this equals the exponent. 16 is 2 to the 4, so it takes 4 halvings.
+`~/` is integer divide (from Level 1). Once `n` is 1, `1 > 1` is false and the loop stops. This counts how many times you can halve 16 before reaching 1, which is 4.
 
 ### Problem 2: Convert a for loop to a while loop
 
 ```dart
-int i = 10;
-while (i >= 0) {
-  print(i);
-  i -= 2;
+void main() {
+  int i = 10;
+  while (i >= 0) {
+    print(i);
+    i -= 2;
+  }
 }
 ```
 
 How the conversion was done:
 
-1. The init `int i = 10` moves **outside** the while loop.
-2. The condition `i >= 0` becomes the while condition.
-3. The update `i -= 2` moves **inside** the loop body, at the bottom.
+1. The start `int i = 10` moves **above** the loop.
+2. The condition `i >= 0` becomes the `while` condition.
+3. The step `i -= 2` moves **inside** the body, at the bottom.
 
-Output of both versions: 10, 8, 6, 4, 2, 0.
+Both print 10, 8, 6, 4, 2, 0. The **for** form is clearer here, because the start, stop, and step all sit together on one line. Use `for` when you know the count; use `while` when you do not.
 
-**Which is more readable?** The `for` form is better here. When you know:
-- Where you start (10),
-- When you stop (>= 0),
-- How you step (subtract 2),
-
-a for loop puts all three in one line at the top. The while form scatters them across three different places. Pick whatever makes the intent obvious. For "count from A to B by C", that is almost always for.
-
-### Problem 3: Count digits
+### Problem 3: Count the digits
 
 ```dart
-int digitCount(int n) {
-  if (n == 0) return 1;     // see explanation below
-
+void main() {
+  int n = 12345;
+  int original = n;
   int count = 0;
+
   while (n > 0) {
     n = n ~/ 10;
     count++;
   }
-  return count;
+
+  print('$original has $count digits');   // 12345 has 5 digits
 }
 ```
 
-How the loop works:
+Each round chops off the last digit with `n ~/ 10` (12345 to 1234 to 123 to 12 to 1 to 0) and counts the chop. After 5 chops, `n` is 0 and the loop stops. We saved `original` first because the loop destroys `n`.
 
-Each round, we throw away the last digit using `n ~/ 10`. We count how many times we can do this before `n` reaches 0.
-
-Trace for `n = 12345`:
-
-| Round | n before | n ~/ 10 | count |
-|-------|----------|---------|-------|
-| 1 | 12345 | 1234 | 1 |
-| 2 | 1234 | 123 | 2 |
-| 3 | 123 | 12 | 3 |
-| 4 | 12 | 1 | 4 |
-| 5 | 1 | 0 | 5 |
-| Stop | 0 | --- | 5 |
-
-Returns 5.
-
-**Why we special-case 0:**
-
-If we feed in `n = 0`, the while loop's condition `n > 0` is false at the very start. The loop never runs, count stays at 0, and we would return 0. But the number 0 visually has one digit. Returning 0 is wrong by human convention.
-
-So we add a guard at the top: if `n == 0`, return 1. This is a judgement call. The rule is: if the natural behaviour of your loop produces a wrong answer for an edge case, handle the edge case before the loop runs.
-
-### Problem 4: Find first power of 2 above a target
+### Problem 4: First power of 2 above a target
 
 ```dart
-int firstPowerAbove(int target) {
+void main() {
+  int target = 10;
   int power = 1;
+
   while (power <= target) {
     power *= 2;
   }
-  return power;
+
+  print('First power of 2 above $target is $power');   // 16
 }
 ```
 
-How the logic was built:
-
-1. Start with `power = 1`. This is 2 to the 0.
-2. As long as `power` is **less than or equal to** `target`, double it. (`power <= target` rather than `<` because we want strictly greater than target at the end.)
-3. The first time `power` becomes greater than `target`, the condition fails and we exit. We return that `power`.
-
-Trace for `target = 10`:
-
-| Round | power before | power <= 10? | power after `*= 2` |
-|-------|--------------|--------------|--------------------|
+| Round | power before | `power <= 10`? | power after `*= 2` |
+|-------|--------------|----------------|--------------------|
 | 1 | 1 | true | 2 |
 | 2 | 2 | true | 4 |
 | 3 | 4 | true | 8 |
 | 4 | 8 | true | 16 |
 | Stop | 16 | false | --- |
 
-Returns 16. Correct.
+We keep doubling while `power` is still at or below the target. The moment it goes past, the loop stops and `power` is the answer (16). We cannot know in advance how many doublings we need, which is exactly why a `while` loop fits.
 
-This is a classic use of a while loop: we cannot pre-compute how many doublings we need, so we let the condition control when to stop.
-
-### Problem 5: Simulate a password retry
+### Problem 5: Months to a savings goal
 
 ```dart
-bool tryLogin(String correct, List<String> attempts, int maxTries) {
-  int tries = 0;
+void main() {
+  int balance = 1000;
+  int months = 0;
 
-  while (tries < maxTries && tries < attempts.length) {
-    if (attempts[tries] == correct) {
-      return true;
-    }
-    tries++;
+  while (balance < 5000) {
+    balance += 150;
+    months++;
   }
 
-  return false;
+  print('Months needed: $months');     // 27
+  print('Final balance: $balance');    // 5050
 }
 ```
 
-How this was built:
-
-1. **Two stop conditions, joined by `&&`.** We stop if we run out of tries `tries < maxTries` becomes false, **or** if we run out of attempts `tries < attempts.length` becomes false. Both must remain true to keep going.
-2. **Check the current attempt.** If it matches `correct`, return `true` immediately. No reason to keep checking.
-3. **Move forward.** If no match, increment `tries` and continue.
-4. **If we exit the loop without returning,** we never matched. Return `false`.
-
-Trace for `tryLogin('open', ['x', 'y', 'open', 'z'], 3)`:
-
-| Round | tries | attempt | match? |
-|-------|-------|---------|--------|
-| 1 | 0 | 'x' | no, tries++ |
-| 2 | 1 | 'y' | no, tries++ |
-| 3 | 2 | 'open' | yes, return true |
-
-Returns true. Correct.
-
-Trace for `tryLogin('open', ['x', 'y', 'z'], 3)`:
-
-| Round | tries | attempt | match? |
-|-------|-------|---------|--------|
-| 1 | 0 | 'x' | no, tries++ |
-| 2 | 1 | 'y' | no, tries++ |
-| 3 | 2 | 'z' | no, tries++ |
-| Stop | 3 | --- | tries < 3 is false |
-
-Loop exits without a match. Return false. Correct.
-
-The `&&` in the loop condition saves us from a crash. Without `tries < attempts.length`, we would try to read `attempts[3]` on a list of length 3, which would throw a RangeError. Both conditions together guarantee we never read past the list.
+Each round is one month: add 150 and count the month. The loop keeps going while the balance is still under 5000. Starting at 1000, after 26 months the balance is 4900 (still under), and after 27 months it is 5050 (reached the goal), so the loop stops at 27 months. This is a real-world "loop until a goal is met" where you do not know the count beforehand.
 
 ---
 
