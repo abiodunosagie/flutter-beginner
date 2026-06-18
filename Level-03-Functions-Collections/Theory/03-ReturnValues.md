@@ -509,15 +509,17 @@ greaterOf(int a, int b) {
 }
 ```
 
-### Problem 2: First even number
+### Problem 2: Medal titles
 
-Write a function `int? findFirstEven(List<int> nums)` that gives back the first even number it finds in the list, or `null` if there is none.
+Write a function `String? rankTitle(int rank)` that gives back `'Gold'` for rank 1, `'Silver'` for 2, `'Bronze'` for 3, and `null` for anything else.
 
-Test on:
-- `[1, 3, 4, 5]` (expected: 4)
-- `[1, 3, 5, 7]` (expected: null)
+Test:
+- `rankTitle(1)` (expected: Gold)
+- `rankTitle(5)` (expected: null)
 
-Then write a second function `int firstEvenOrZero(List<int> nums)` that gives back the first even number, or `0` if there is none. Build it on top of `findFirstEven` using `??`. Do not write the loop twice.
+Then write a second function `String rankTitleOrNone(int rank)` that gives back the title, or `'No medal'` if there is none. Build it on top of `rankTitle` using `??`. Do not repeat the logic.
+
+(Lists come in the next lesson, so we are not using them yet.)
 
 ### Problem 3: Convert to arrow
 
@@ -605,25 +607,32 @@ int greaterOf(int a, int b) {
 
 Every path through the function must give back a value. Here the original only handled `a > b`. We added `return b;` for the other case.
 
-### Problem 2: First even number
+### Problem 2: Medal titles
 
 ```dart
-int? findFirstEven(List<int> nums) {
-  for (var n in nums) {
-    if (n.isEven) return n;
-  }
+String? rankTitle(int rank) {
+  if (rank == 1) return 'Gold';
+  if (rank == 2) return 'Silver';
+  if (rank == 3) return 'Bronze';
   return null;
 }
 
-int firstEvenOrZero(List<int> nums) {
-  return findFirstEven(nums) ?? 0;
+String rankTitleOrNone(int rank) {
+  return rankTitle(rank) ?? 'No medal';
+}
+
+void main() {
+  print(rankTitle(1));          // Gold
+  print(rankTitle(5));          // null
+  print(rankTitleOrNone(2));    // Silver
+  print(rankTitleOrNone(5));    // No medal
 }
 ```
 
 How this works:
 
-1. `findFirstEven` walks through the list. The moment it finds an even number, it returns it and stops. If the loop ends without finding one, it returns `null`.
-2. `firstEvenOrZero` uses `findFirstEven` and adds the `?? 0` shortcut. If the answer is null, hand back 0 instead.
+1. `rankTitle` checks the rank and returns the matching title, stopping as soon as it finds one. If nothing matches, it returns `null`.
+2. `rankTitleOrNone` calls `rankTitle` and adds the `?? 'No medal'` shortcut. If the answer is null, it hands back `'No medal'` instead.
 
 This is a really nice pattern. The first function is honest: "I might not find anything." The second function takes that honesty and turns null into a default. Two callers can pick two different defaults without changing the first function at all.
 
