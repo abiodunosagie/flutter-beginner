@@ -102,11 +102,13 @@ class Person {
 
 Now the blueprint says: "Every person has a name, an age, and an email."
 
+> Heads up: this snippet on its own is **not finished yet**, so do not paste it into DartPad and expect it to run. Dart will complain that `name`, `age`, and `email` have no values. That is fine. We give them values with the constructor in the very next step, and from Step 3 onward every block runs.
+
 ### Step 3: add the constructor (the setup instructions)
 
 When you build a real Person, you need to give it an actual name, age, and email. The piece of code that does this setup is called the **constructor**.
 
-A constructor looks like a function, but it has the **exact same name as the class**, and it has no return type. Here is the full, spelled-out version:
+A constructor looks like a function, but it has the **exact same name as the class**, and it has no return type. Here it is:
 
 ```dart
 class Person {
@@ -115,38 +117,19 @@ class Person {
   String email;
 
   // This is the constructor. It runs when you build a Person.
-  Person(String name, int age, String email) {
-    this.name = name;     // take the name we were given, store it in this object
-    this.age = age;       // same for age
-    this.email = email;   // same for email
-  }
-}
-```
-
-**Wait, what is `this`?**
-
-`this` means **"this particular object I am building right now"**. Inside the constructor, `name` (no `this`) is the value passed in, and `this.name` is the property that belongs to the object. So `this.name = name;` means *"put the value I was given into this object's name slot"*.
-
-You only need `this` when a parameter and a property share the same name and you have to tell them apart. That is exactly the situation above.
-
-### Step 4: the shortcut every Dart developer uses
-
-Typing `this.name = name;` for every property is repetitive. Dart gives you a shortcut that does the exact same thing automatically. You write `this.` directly in the parentheses:
-
-```dart
-class Person {
-  String name;
-  int age;
-  String email;
-
-  // Shortcut: this.name, this.age, this.email are filled in for you.
   Person(this.name, this.age, this.email);
 }
 ```
 
-This shortcut version and the spelled-out version in Step 3 do **exactly the same thing**. The short one is just less typing. From now on you will see this short form everywhere, and now you know what it means: *take each value passed in and store it in the matching property of this object.*
+**What is that `this.` doing in the parentheses?**
 
-### Step 5: add methods (the actions)
+`this` means **"this particular object I am building right now"**. So `this.name` means *"this object's name property"*.
+
+Writing `this.name` in the constructor's parentheses is Dart's built-in shortcut for: *"take the value passed in for name and store it in this object's name property."* It does that for `age` and `email` too. So with one short line, the constructor fills in all three properties whenever you build a Person.
+
+This `this.` form is what every Dart developer uses. You will see it everywhere, and now you know exactly what it means.
+
+### Step 4: add methods (the actions)
 
 Methods are functions that live inside the class. They describe what a Person can *do*. They can use the object's own properties directly by name.
 
@@ -165,13 +148,43 @@ class Person {
 
   // A method that changes a property.
   void haveBirthday() {
-    age = age + 1;
+    age = age + 1;   // shorthand for this you will also see: age += 1
     print('Happy birthday! Now $age years old.');
   }
 }
 ```
 
 That is a complete, useful class. Properties, a constructor, and methods. That is all a class is.
+
+### A closer look at `this`
+
+You just saw `this.` used as a shortcut in the constructor. Here is the deeper idea, because you will meet `this` again.
+
+Sometimes a method has a parameter with the **same name** as a property. When that happens, plain `name` means the parameter, and `this.name` means the object's property. `this` is how you tell the two apart:
+
+```dart
+class Person {
+  String name;
+  int age;
+  String email;
+
+  Person(this.name, this.age, this.email);
+
+  // The parameter is also called 'name', so we use 'this' to be clear:
+  void rename(String name) {
+    this.name = name;   // this.name = the object's property, name = the new value
+  }
+}
+
+void main() {
+  var p = Person('Alice', 25, 'alice@email.com');
+  print(p.name);   // Alice
+  p.rename('Alicia');
+  print(p.name);   // Alicia
+}
+```
+
+If the names were different (say the parameter was `newName`), you would not need `this` at all. You only reach for `this` when two things share a name and you must point at the right one.
 
 ---
 
@@ -324,6 +337,8 @@ Everything here is something you have already met:
 - **Constructor**: `BankAccount(this.owner, [this.balance = 0])` sets it up. The `[... = 0]` part makes `balance` optional with a default of 0.
 - **Methods**: `deposit` and `withdraw` are the actions, and they use `if` to protect the account from bad input.
 
+> One small thing you may notice: we pass `100` and `50` (whole numbers), but the output shows `100.0` and `50.0`. That is because `balance` is a `double` (a decimal number), and Dart always prints doubles with a `.0` on the end. Nothing is wrong.
+
 ---
 
 ## 8. Recap
@@ -361,7 +376,7 @@ A class is the blueprint (the plan). An object is a real thing built from that b
 <details>
 <summary>Answer</summary>
 
-It takes the value passed into the constructor and stores it in this object's `name` property. It is the shortcut for writing `this.name = name;` inside the constructor body.
+It takes the value passed into the constructor and stores it in this object's `name` property. `this.name` means "this object's name", so the constructor fills it in for you automatically when you build the object.
 
 </details>
 
