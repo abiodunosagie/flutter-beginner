@@ -1,167 +1,100 @@
-# Level 1: Dart Fundamentals - Learning Path
+# Level 1: Dart Fundamentals (Learning Path)
 
-Welcome to Level 1! This level teaches you the absolute basics of programming with Dart.
+Welcome! This is where you start. Level 1 teaches you the very basics of telling a computer what to do, using a language called **Dart**.
 
----
-
-## How to Use These Theory Files
-
-These theory files are designed to be read **in order**, one at a time. Each file teaches you ONE concept before moving to the next.
-
-Think of it like climbing stairs - you take one step at a time!
+No experience needed. We go one tiny step at a time.
 
 ---
 
-## Your Learning Path
+## How To Use These Lessons
 
-Follow these files in this exact order:
+Read them **in order**, one at a time. Each lesson teaches one idea and only uses things you already learned in the lessons before it. It is like climbing stairs: one step at a time, and you never skip a step.
 
-### Step 1: Introduction to Programming
-📖 **[01-WhatIsProgramming.md](01-WhatIsProgramming.md)**
-- What is programming?
-- How computers think
-- Your first "Hello World" program
-- Understanding main() and print()
+For every lesson:
 
-**Time:** 15-20 minutes
+1. Read it slowly.
+2. Type the examples into [dartpad.dev](https://dartpad.dev) and press Run.
+3. Do the **Assignment** at the bottom before peeking at the answers.
 
----
-
-### Step 2: Variables (4 Parts)
-
-#### Part 1: Understanding Variables
-📖 **[02-VariablesAndTypes.md](02-VariablesAndTypes.md)**
-- What is a variable?
-- Creating your first variable
-- Changing variable values
-
-**Time:** 10 minutes
-
-#### Part 2: Data Types
-📖 **[02b-DataTypes.md](02b-DataTypes.md)**
-- The four basic types: String, int, double, bool
-- Type safety
-- Using all types together
-
-**Time:** 10 minutes
-
-#### Part 3: Using Variables
-📖 **[02c-UsingVariables.md](02c-UsingVariables.md)**
-- Printing variables
-- String interpolation
-- Calculations with variables
-- Variable naming rules
-
-**Time:** 15 minutes
-
-#### Part 4: var, final, const
-📖 **[02d-VarFinalConst.md](02d-VarFinalConst.md)**
-- Type inference with var
-- Unchangeable variables with final
-- Compile-time constants with const
-
-**Time:** 15 minutes
+You learn by typing and running, not just reading.
 
 ---
 
-### Step 3: Working with Strings
-📖 **[03-Strings.md](03-Strings.md)**
-- String interpolation
-- String methods (toUpperCase, toLowerCase, trim, etc.)
-- String properties (length, isEmpty)
-- Practical string examples
+## The Path (Follow In Order)
 
-**Time:** 20-25 minutes
+### 1. What Is Programming?
+**[01-WhatIsProgramming.md](01-WhatIsProgramming.md)**
+Your very first program. Meet `main`, `print`, and how to show text on the screen.
 
----
+### 2. Variables
+**[02-VariablesAndTypes.md](02-VariablesAndTypes.md)**
+A variable is a labeled box that remembers a value. How to make one and put a value inside.
 
-### Step 4: Working with Numbers
-📖 **[04-Numbers.md](04-Numbers.md)**
-- int vs double
-- Arithmetic operators (+, -, *, /, ~/, %)
-- Number methods (round, floor, ceil)
-- Type conversion
-- dart:math library
+### 3. Data Types
+**[02b-DataTypes.md](02b-DataTypes.md)**
+The four kinds of boxes: text (`String`), whole numbers (`int`), decimals (`double`), and yes/no (`bool`).
 
-**Time:** 20-25 minutes
+### 4. Using Variables
+**[02c-UsingVariables.md](02c-UsingVariables.md)**
+Show your boxes, join text, and do simple maths to make new values.
 
----
+### 5. var, final, const
+**[02d-VarFinalConst.md](02d-VarFinalConst.md)**
+Shortcuts for making boxes, and how to make a box that can never change.
 
-### Step 5: Booleans and Logic
-📖 **[05-Booleans.md](05-Booleans.md)**
-- True and false
-- Comparison operators (==, !=, <, >, <=, >=)
-- Logical operators (&&, ||, !)
-- Using booleans
+### 6. Strings
+**[03-Strings.md](03-Strings.md)**
+Handy tricks for text: measuring it, changing its case, cleaning it up, and searching inside.
 
-**Time:** 15 minutes
+### 7. Numbers
+**[04-Numbers.md](04-Numbers.md)**
+Doing maths: the divide family (`/`, `~/`, `%`), rounding, and showing money nicely.
 
----
+### 8. Booleans
+**[05-Booleans.md](05-Booleans.md)**
+True/false values, comparing things, and combining yes/no answers with AND, OR, NOT.
 
-### Step 6: Operators Summary
-📖 **[06-Operators.md](06-Operators.md)**
-- All operators at a glance
-- Operator precedence
-- Practical operator examples
+### 9. Operators
+**[06-Operators.md](06-Operators.md)**
+All the signs in one place: maths, shortcuts, comparing, combining, and choosing with `? :`.
 
-**Time:** 15 minutes
-
----
-
-## Total Time for Level 1 Theory
-
-**Estimated:** 2.5 - 3 hours
-
-But don't rush! Take breaks. Come back to sections if you need to review.
+### 10. Null Safety
+**[07-NullSafety.md](07-NullSafety.md)**
+What "nothing" (null) means, and the tools Dart gives you to handle empty boxes safely.
 
 ---
 
-## After Reading the Theory
+## After The Theory
 
-Once you've read all the theory files:
+When you finish all ten lessons:
 
-1. **Practice with Examples**
-   - Go to `../Examples/` folder
-   - Run each example and understand how it works
-
-2. **Do the Exercises**
-   - Go to `../Exercises/Exercises.md`
-   - Complete all 9 exercises
-   - Try to do them WITHOUT looking at solutions first!
-
-3. **Check Your Understanding**
-   - Can you explain what a variable is to a friend?
-   - Can you write a simple program from scratch?
-   - Do the self-assessment checklist in the exercises
+1. **Practice** with the files in the `../Examples/` folder. Run each one.
+2. **Do the Exercises** in `../Exercises/`. Try them yourself before looking at the answers.
+3. **Check yourself:** can you explain what a variable is to a friend? Can you write a tiny program from scratch?
 
 ---
 
-## Learning Tips
+## Tips For Success
 
-✅ **DO:**
-- Read one file at a time
-- Type out the code examples yourself (don't just read!)
-- Experiment by changing values
-- Take breaks between topics
-- Review topics that feel unclear
+Do:
+- Read one lesson at a time.
+- Type the code yourself. Do not just read it.
+- Change the examples and see what happens.
+- Take breaks.
 
-❌ **DON'T:**
-- Rush through everything in one sitting
-- Skip the practice exercises
-- Just copy-paste code without understanding
-- Move to Level 2 before you're confident with Level 1
+Do not:
+- Rush through everything at once.
+- Skip the assignments.
+- Move to Level 2 before Level 1 feels comfortable.
 
 ---
 
 ## Need Help?
 
-- Reread the section that's confusing
-- Try the examples in DartPad (dartpad.dev)
-- Ask questions in the community
-- Review the Quick Quiz sections
+- Reread the part that confused you. That is normal.
+- Run the examples in [dartpad.dev](https://dartpad.dev) and play with them.
+- Review the Quick Quiz and Assignment Answers in each lesson.
 
 ---
 
-**Ready to start?**
-
-👉 Begin with [01-WhatIsProgramming.md](01-WhatIsProgramming.md)
+**Ready? Start here:** [01-WhatIsProgramming.md](01-WhatIsProgramming.md)
