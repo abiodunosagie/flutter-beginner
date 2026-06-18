@@ -1,92 +1,64 @@
-# What Is Programming?
+# What Is Programming? Telling A Computer Exactly What To Do
 
-## The Simple Explanation
+## The Big Idea In One Sentence
 
-Imagine you have a robot assistant that's incredibly fast and never gets tired, but it only understands very specific instructions.
+> Programming is **giving a computer a list of small, clear steps to follow**, one after another.
 
-You can't say: "Make me breakfast."
-
-You have to say:
-1. Walk to the kitchen
-2. Open the refrigerator
-3. Take out 2 eggs
-4. Take out the butter
-5. Close the refrigerator
-6. Walk to the stove
-7. Turn on the burner to medium heat
-8. Place the pan on the burner
-9. ...and so on
-
-**That's programming.** You're giving a computer step-by-step instructions.
-
-The computer is incredibly fast and never makes mistakes following your instructions. But it's also incredibly literal - it does **exactly** what you tell it. Not what you meant. What you said.
+That is the whole idea. Everything else in this lesson just shows you how to write those steps.
 
 ---
 
-## How Computers Think
+## A Picture To Hold In Your Head
 
-### Computers Are Literal
+Imagine you have a **robot friend**. This robot is super fast and never gets tired. But it has one funny rule:
 
-```
-Human thinking: "Get me some coffee"
-  - Understands context
-  - Knows where coffee is
-  - Knows how to make it
-  - Uses common sense
+> It only does **exactly** what you say. Not what you mean. What you say.
 
-Computer thinking: "Get me some coffee"
-  - What is "me"?
-  - What is "coffee"?
-  - Where is it?
-  - How do I "get"?
-  - ERROR: Instructions unclear
-```
+So if you tell your robot, "make breakfast," it just stares at you. It does not know what that means. You have to break it into tiny steps it can follow:
 
-### Computers Need Exact Steps
+1. Walk to the kitchen.
+2. Open the fridge.
+3. Take out two eggs.
+4. Close the fridge.
 
-```
-✅ Computer-friendly instructions:
-1. Variable: cupLocation = kitchen cabinet, shelf 2
-2. Open cabinet door
-3. Reach to position (x: 10, y: 5)
-4. Grasp object at position
-5. Move object to counter
-6. ...
-```
-
-This is why programming languages exist - they let us write these exact instructions in a way computers understand.
+That list of tiny steps is a **program**. You are the boss. The computer is the robot. Programming is writing the steps.
 
 ---
 
-## What Is a Programming Language?
+## Computers Are Very, Very Literal
 
-A programming language is a translator between human thinking and computer operations.
+A person has common sense. A computer does not. Watch the difference:
 
 ```
-Human Idea     →     Programming Language     →     Computer Action
-"Show a greeting"    print('Hello!')               Displays "Hello!" on screen
+You tell a friend: "Get me a cup of water."
+Your friend: walks to the kitchen, finds a cup, fills it, brings it back. Easy.
+
+You tell a computer: "Get me a cup of water."
+The computer: "What is a cup? Where is the kitchen? What is water? I do not understand."
 ```
 
-### Why So Many Languages?
+This is not the computer being silly. It just needs every step spelled out. Once you give it clear steps, it follows them perfectly, every time, faster than you can blink.
 
-Different tools for different jobs:
+So the skill you are learning is simple to say: **break a big job into small, clear steps.**
 
-| Language | Best For |
-|----------|----------|
-| **Dart** | Mobile apps (Flutter), web |
-| JavaScript | Websites, web apps |
-| Python | Data science, automation |
-| Swift | iPhone apps |
-| Java | Android apps, enterprise |
-| C++ | Games, operating systems |
+---
 
-We're learning **Dart** because it powers **Flutter**, which lets us build beautiful apps for iOS, Android, web, and desktop from a single codebase.
+## What Is A Programming Language?
+
+You speak English. The computer speaks in 1s and 0s. A **programming language** sits in the middle and lets you write steps in a way the computer can understand.
+
+```
+What you want          What you write           What the computer does
+"Show a hello"    →    print('Hello!')     →    shows  Hello!  on the screen
+```
+
+The language we use in this course is called **Dart**. We use Dart because it powers **Flutter**, the tool that builds real phone apps. Learn Dart first, build apps later.
 
 ---
 
 ## Your First Program
 
-Let's write the most famous program in programming history: **Hello World**
+Here is the most famous tiny program in the world. It just shows the words "Hello, World!".
 
 ```dart
 void main() {
@@ -94,298 +66,194 @@ void main() {
 }
 ```
 
-That's it. Three lines. Let's break it down word by word.
+Three lines. That is a real program. Let us read it slowly.
 
 ---
 
-## Breaking Down the Code
+## Reading It Word By Word
 
-### `void main()`
+Do not worry about memorizing this. Just get the feel.
 
-```dart
-void main() {
-```
-
-- **`main`** - This is the name of a special function (think: a recipe name)
-- **`()`** - Parentheses indicate it's a function
-- **`void`** - Means this function doesn't give anything back (don't worry about this yet)
-- **`{`** - Opens the function body
-
-**Every Dart program starts with `main()`.** It's the entry point - where the computer begins reading your instructions.
-
-Think of `main()` as the front door of your house. No matter how big your house is, guests always enter through the front door. The computer always starts at `main()`.
-
-### The Curly Braces `{ }`
-
-```dart
-void main() {
-  // Everything here is INSIDE main
-  // This is where your instructions go
-}
-```
-
-Curly braces are containers. Everything between `{` and `}` belongs to that function.
-
-### `print('Hello, World!');`
-
-```dart
-print('Hello, World!');
-```
-
-- **`print`** - A built-in function that displays text on screen
-- **`(`** - Opens what you want to print
-- **`'Hello, World!'`** - The text to display (called a "string")
-- **`)`** - Closes the print function
-- **`;`** - Semicolon means "end of instruction"
-
-The semicolon is like a period at the end of a sentence. It tells the computer "this instruction is complete."
-
----
-
-## Running Your First Program
-
-### Option 1: DartPad (Easiest)
-
-1. Open your browser
-2. Go to [dartpad.dev](https://dartpad.dev)
-3. Delete any existing code
-4. Type:
 ```dart
 void main() {
   print('Hello, World!');
 }
 ```
-5. Click **Run**
-6. See the output in the console (right side)
 
-**Try it now!**
+- **`main`** is the **starting point**. Every Dart program begins here. Think of `main` as the front door: the computer always walks in through this door first.
+- **`{` and `}`** are a **box**. Everything inside the box is the list of steps for `main` to do.
+- **`print(...)`** is a ready-made helper that **shows something on the screen**.
+- **`'Hello, World!'`** is the **text** we want to show. Text always goes inside quotes `' '`.
+- **`;`** (a semicolon) means **"this step is finished."** It is like the full stop at the end of a sentence.
 
-### Option 2: VS Code
-
-If you've set up VS Code with Dart:
-1. Create a new file: `hello.dart`
-2. Type the code above
-3. Open terminal
-4. Run: `dart hello.dart`
+So in plain English, this program says: *"Start here. Show the words Hello, World! on the screen. Done."*
 
 ---
 
-## Experimenting
+## How To Run It (Free, No Setup)
 
-Change the code and see what happens:
+1. Open your web browser.
+2. Go to **[dartpad.dev](https://dartpad.dev)**.
+3. Delete whatever code is there.
+4. Type the Hello World program from above.
+5. Click **Run**.
+6. Look at the box on the right. You will see `Hello, World!`.
 
-### Print Your Name
+That is it. You just ran a program. Do this now before reading on. Seeing it work makes everything click.
+
+---
+
+## Playing Around
+
+Change the program and run it again. Playing is how you learn.
+
+**Show your own name:**
+
 ```dart
 void main() {
-  print('My name is Alex');
+  print('My name is Ada');
 }
 ```
 
-### Print Multiple Lines
+**Show three lines:**
+
 ```dart
 void main() {
-  print('Line 1');
-  print('Line 2');
-  print('Line 3');
+  print('Line one');
+  print('Line two');
+  print('Line three');
 }
 ```
 
-**Output:**
+Output:
+
 ```
-Line 1
-Line 2
-Line 3
+Line one
+Line two
+Line three
 ```
 
-Each `print()` displays on a new line.
+Each `print` puts its text on a **new line**.
 
-### Print Numbers
+**Show numbers (no quotes needed for numbers):**
+
 ```dart
 void main() {
   print(42);
-  print(3.14);
+  print(7);
 }
 ```
 
-**Output:**
+Output:
+
 ```
 42
-3.14
+7
 ```
 
-Numbers don't need quotes. Quotes are for text.
+Quotes are for text. Numbers do not need them.
 
 ---
 
-## Comments - Notes for Humans
+## Comments: Notes For You, Ignored By The Computer
 
-Sometimes you want to leave notes in your code. These notes are called **comments**. The computer ignores them completely.
-
-### Single-Line Comments
-
-```dart
-// This is a comment
-// The computer ignores this
-
-void main() {
-  print('Hello!');  // This prints a greeting
-}
-```
-
-Use `//` for comments. Everything after `//` on that line is ignored.
-
-### Multi-Line Comments
-
-```dart
-/*
-This is a multi-line comment.
-You can write many lines here.
-The computer ignores all of this.
-*/
-
-void main() {
-  print('Hello!');
-}
-```
-
-Use `/* */` for multiple lines.
-
-### Why Comments Matter
+Sometimes you want to leave yourself a note inside the code. That is a **comment**. The computer skips it completely.
 
 ```dart
 void main() {
-  // Calculate price with 8% sales tax
-  print(99.99 * 1.08);
+  // This is a note for me. The computer ignores it.
+  print('Hello!');   // you can also leave a note at the end of a line
 }
 ```
 
-In 6 months, the comment reminds you what this code does.
-
-**Rule of thumb:**
-- Good code tells you **HOW**
-- Good comments tell you **WHY**
+Anything after `//` is a note. Use comments to remind yourself what something does.
 
 ---
 
-## Common Mistakes
+## The Top Mistakes Beginners Make
 
-### Mistake 1: Forgetting Semicolon
+### Mistake 1: Forgetting the semicolon
 
 ```dart
-// ❌ ERROR
 void main() {
-  print('Hello')  // Missing semicolon!
+  print('Hello')     // BAD: no semicolon, the computer complains
 }
+```
 
-// ✅ CORRECT
+Fix: put a `;` at the end.
+
+```dart
+void main() {
+  print('Hello');    // GOOD
+}
+```
+
+### Mistake 2: Forgetting the quotes around text
+
+```dart
+void main() {
+  print(Hello);      // BAD: without quotes, the computer thinks Hello is a thing it should already know
+}
+```
+
+Fix: wrap text in quotes.
+
+```dart
+void main() {
+  print('Hello');    // GOOD
+}
+```
+
+### Mistake 3: A box that does not close
+
+Every `{` needs a matching `}`. Every `(` needs a matching `)`. They come in pairs.
+
+```dart
 void main() {
   print('Hello');
-}
+                     // BAD: the main box was never closed with }
 ```
 
-### Mistake 2: Missing Quotes for Text
-
 ```dart
-// ❌ ERROR
-void main() {
-  print(Hello);  // Dart thinks Hello is a variable name
-}
-
-// ✅ CORRECT
-void main() {
-  print('Hello');  // Quotes tell Dart it's text
-}
-```
-
-### Mistake 3: Mismatched Braces
-
-```dart
-// ❌ ERROR
 void main() {
   print('Hello');
-// Missing closing brace!
-
-// ✅ CORRECT
-void main() {
-  print('Hello');
-}
+}                    // GOOD: box is closed
 ```
 
-**Rule:** Every `{` needs a `}`. Every `(` needs a `)`. They come in pairs.
+### Mistake 4: Wrong capital letters
 
----
+Dart cares about capital letters. `print` works. `Print` does not.
 
-## The Rules of Dart
-
-### Rule 1: Case Sensitive
 ```dart
-Print('Hello');  // ❌ ERROR - "Print" is not "print"
-print('Hello');  // ✅ Correct
-```
-
-### Rule 2: Whitespace Mostly Ignored
-```dart
-// These are all valid:
-print('Hello');
-print(    'Hello'    );
-print(
-  'Hello'
-);
-```
-
-But be consistent for readability.
-
-### Rule 3: Execution Order
-Code runs top to bottom, line by line:
-```dart
-void main() {
-  print('First');   // Runs 1st
-  print('Second');  // Runs 2nd
-  print('Third');   // Runs 3rd
-}
+Print('Hello');      // BAD
+print('Hello');      // GOOD
 ```
 
 ---
 
-## Summary
+## One-Minute Recap
 
-### Key Takeaways
-
-1. **Programming** = Giving computers precise, step-by-step instructions
-2. **Dart** = The language we use to write Flutter apps
-3. **`main()`** = Where every Dart program starts
-4. **`print()`** = Displays output to the screen
-5. **Semicolons** = End every statement
-6. **Quotes** = Surround text (strings)
-7. **Comments** = Notes for humans, ignored by computer
-
-### Mental Model
-
-```
-┌─────────────────────────────────────┐
-│           Your Dart Program          │
-├─────────────────────────────────────┤
-│  void main() {                       │
-│    // Computer starts here           │
-│    instruction 1;                    │
-│    instruction 2;  ←── runs in order │
-│    instruction 3;                    │
-│  }                                   │
-└─────────────────────────────────────┘
-```
+- Programming is giving a computer small, clear steps in order.
+- A computer is very literal: it does exactly what you say.
+- We write steps in a language called **Dart**.
+- Every program starts at **`main`**.
+- **`print('...')`** shows text on the screen. Text goes in quotes.
+- End every step with a **semicolon** `;`.
+- **Comments** (`//`) are notes for you that the computer ignores.
 
 ---
 
 ## Quick Quiz
 
-**Q1:** What function does every Dart program need?
+**Q1.** Where does every Dart program start?
 
 <details>
 <summary>Answer</summary>
-`main()` - It's the entry point where execution begins.
+At `main`. It is the front door. The computer always begins there.
 </details>
 
-**Q2:** What does this print?
+**Q2.** What does this show on the screen?
+
 ```dart
 void main() {
   print('One');
@@ -395,14 +263,17 @@ void main() {
 
 <details>
 <summary>Answer</summary>
+
 ```
 One
 Two
 ```
-Each print() outputs on its own line.
+
+Each `print` goes on its own new line.
 </details>
 
-**Q3:** What's wrong with this code?
+**Q3.** What is wrong here?
+
 ```dart
 void main() {
   print('Hello')
@@ -411,20 +282,153 @@ void main() {
 
 <details>
 <summary>Answer</summary>
-Missing semicolon after `print('Hello')`. Should be `print('Hello');`
+The semicolon is missing. It should be `print('Hello');`.
 </details>
 
-**Q4:** Why use comments?
+**Q4.** Why do we use comments?
 
 <details>
 <summary>Answer</summary>
-To leave notes for yourself and other programmers. Comments explain WHY code does something, making it easier to understand later.
+To leave notes for ourselves (and other people) explaining what the code does. The computer ignores them.
 </details>
 
 ---
 
-**Next:** Now that you understand the basics, let's learn how to store and use data with variables.
+## Assignment
+
+Try these yourself in [dartpad.dev](https://dartpad.dev) before peeking at the answers.
+
+### Problem 1: Say hello to yourself
+
+Write a program that shows one line: `Hello, my name is ` followed by your own name.
+
+### Problem 2: A tiny poem
+
+Write a program that shows these three lines, each on its own line:
+
+```
+Roses are red
+Code is fun
+I am learning Dart
+```
+
+### Problem 3: Predict the output
+
+Without running it, what does this show?
+
+```dart
+void main() {
+  print('Top');
+  print(100);
+  print('Bottom');
+}
+```
+
+### Problem 4: Spot the bugs
+
+This program has two mistakes. Find them and fix them.
+
+```dart
+void main() {
+  print('Good morning')
+  print(Sunshine);
+}
+```
+
+### Problem 5: Add a comment
+
+Take your answer from Problem 1 and add a comment above the `print` line that says what the line does. Make sure the program still runs.
 
 ---
 
-**Continue to:** `02-VariablesAndTypes.md`
+## Assignment Answers
+
+### Problem 1: Say hello to yourself
+
+```dart
+void main() {
+  print('Hello, my name is Ada');
+}
+```
+
+Output:
+
+```
+Hello, my name is Ada
+```
+
+You just put your own name inside the quotes. The text inside quotes is shown exactly as you write it.
+
+### Problem 2: A tiny poem
+
+```dart
+void main() {
+  print('Roses are red');
+  print('Code is fun');
+  print('I am learning Dart');
+}
+```
+
+Output:
+
+```
+Roses are red
+Code is fun
+I am learning Dart
+```
+
+Three steps, three `print` lines, each ending with a semicolon. Each one shows up on its own line.
+
+### Problem 3: Predict the output
+
+Output:
+
+```
+Top
+100
+Bottom
+```
+
+The program runs top to bottom. `'Top'` is text in quotes. `100` is a number, so it needs no quotes. `'Bottom'` is text again. Each `print` is on its own line.
+
+### Problem 4: Spot the bugs
+
+The two mistakes:
+
+1. The first `print` is missing a semicolon.
+2. `Sunshine` has no quotes, so the computer does not know what it is.
+
+Fixed:
+
+```dart
+void main() {
+  print('Good morning');   // added the semicolon
+  print('Sunshine');       // added the quotes
+}
+```
+
+Output:
+
+```
+Good morning
+Sunshine
+```
+
+### Problem 5: Add a comment
+
+```dart
+void main() {
+  // Show a friendly greeting with my name
+  print('Hello, my name is Ada');
+}
+```
+
+The line starting with `//` is a note for you. The computer skips it, so the program still runs and shows:
+
+```
+Hello, my name is Ada
+```
+
+---
+
+**Next:** `02-VariablesAndTypes.md`, where you learn how to store information so your program can remember it.
