@@ -1,241 +1,405 @@
-# Part 1: Understanding Variables
+# Variables: How A Program Remembers Things
 
-## What Is a Variable?
+## The Big Idea In One Sentence
 
-A **variable** is a container that holds a piece of information. Think of it as a labeled box where you store something.
+> A variable is a **labeled box** that holds a value so your program can remember it and use it later.
 
-```
-┌─────────────┐
-│    "Alex"   │  ← The value inside
-├─────────────┤
-│    name     │  ← The label (variable name)
-└─────────────┘
-```
-
-In real life:
-- A **name tag** holds your name
-- A **wallet** holds your money
-- A **phone contact** holds a phone number
-
-In programming:
-- A **variable** holds data (text, numbers, true/false, etc.)
+That is the whole idea. Let us see it in action.
 
 ---
 
-## Creating Your First Variable
+## A Picture To Hold In Your Head
 
-### The Basic Pattern
+Think of a variable like a **box with a label on the front**:
 
-```dart
-type name = value;
+```
+┌──────────────┐
+│    'Ada'     │   <- the value inside the box
+├──────────────┤
+│     name     │   <- the label on the box (the variable name)
+└──────────────┘
 ```
 
-- **type** - What kind of data it holds
-- **name** - What you call it
-- **value** - What's inside
+You put something in the box and write a label on it. Later, when you say the label out loud (`name`), the program hands you what is inside (`'Ada'`).
 
-### Your First String Variable
+You already use this idea every day:
+
+- A **name tag** holds your name.
+- A **contact** in your phone holds a number.
+- A **jar labeled "sugar"** holds sugar.
+
+A variable is the same: a label, and a value inside.
+
+---
+
+## Making Your First Variable
+
+In Dart, you make a variable like this:
 
 ```dart
-String name = 'Alex';
+String name = 'Ada';
 ```
 
-Let's break this down:
-- `String` = This variable holds text
-- `name` = We're calling this variable "name"
-- `=` = Assignment operator (puts value into variable)
-- `'Alex'` = The actual text we're storing
-- `;` = End of statement
+Read it left to right:
 
-### Try It!
+- **`String`** says what kind of value goes in the box. `String` means **text**. (The word "string" just means "a string of letters".)
+- **`name`** is the label you chose for the box.
+- **`=`** means **"put this value into the box."** It does not mean "equals" like in maths. It means "store this here."
+- **`'Ada'`** is the value going in. Text always sits inside quotes.
+- **`;`** ends the step.
+
+So this line says: *"Make a text box called name, and put Ada inside it."*
+
+---
+
+## Using The Variable
+
+Once the box has a value, you can use the label anywhere you want the value:
 
 ```dart
 void main() {
-  String name = 'Alex';
-  print(name);  // Output: Alex
+  String name = 'Ada';
+  print(name);
+}
+```
+
+Output:
+
+```
+Ada
+```
+
+Notice we wrote `print(name)`, not `print('name')`.
+
+- `print(name)` with **no quotes** shows what is **inside the box**: `Ada`.
+- `print('name')` **with quotes** shows the plain word: `name`.
+
+This is a very common mix-up. Quotes mean "use these exact letters." No quotes means "use the value in the box."
+
+---
+
+## Putting A Variable Inside A Sentence
+
+Most of the time you want a variable inside a longer sentence, like "Hello, Ada!". Dart has a neat way to do this. Inside a text string, put a `$` in front of the variable name:
+
+```dart
+void main() {
+  String name = 'Ada';
+  print('Hello, $name!');
+}
+```
+
+Output:
+
+```
+Hello, Ada!
+```
+
+The `$name` part gets swapped out for the value in the box. Everything else in the quotes stays exactly as written. This swapping trick is called **string interpolation**. Fancy name, simple idea: *drop the value of a variable into a sentence with `$`.*
+
+If you forget the `$`, you get the plain word instead:
+
+```dart
+void main() {
+  String name = 'Ada';
+  print('Hello, name!');    // shows: Hello, name!
 }
 ```
 
 ---
 
-## Changing Variable Values
+## Changing What Is In The Box
 
-Variables can change (that's why they're called "variables"):
+It is called a *variable* because the value can **vary** (change). You can put a new value in the box later. When you change it, you do **not** write the type again:
 
 ```dart
 void main() {
-  String favoriteColor = 'blue';
-  print(favoriteColor);  // Output: blue
+  String mood = 'happy';
+  print('I feel $mood');     // I feel happy
 
-  favoriteColor = 'red';
-  print(favoriteColor);  // Output: red
+  mood = 'excited';          // put a new value in the same box (no String here)
+  print('I feel $mood');     // I feel excited
 }
+```
+
+Output:
+
+```
+I feel happy
+I feel excited
+```
+
+The box now holds `'excited'`. The old value `'happy'` is gone. A box only holds one thing at a time.
+
+---
+
+## Naming Your Variables
+
+A few simple rules for labels:
+
+- Start with a **lowercase letter**: `name`, `city`, `favoriteColor`.
+- **No spaces.** If the name has two words, stick them together and capitalize the second word: `firstName`, `favoriteFood`. This style is called **camelCase** (the humps look like a camel).
+- **No starting with a number.** `name1` is fine, `1name` is not.
+- Pick names that **say what is inside**. `city` is good. `x` tells you nothing.
+
+```dart
+String firstName = 'Ada';     // good: clear, lowercase, camelCase
+String favoriteFood = 'rice'; // good
 ```
 
 ---
 
-## Practice Exercise
+## The Top Mistakes Beginners Make
 
-Create three String variables:
-1. Your name
-2. Your favorite food
-3. Your city
+### Mistake 1: Quotes around the variable name when you want the value
 
-Print all three.
+```dart
+String name = 'Ada';
+print('name');     // BAD: shows the word "name"
+print(name);       // GOOD: shows Ada
+```
+
+### Mistake 2: Forgetting the `$` inside a sentence
+
+```dart
+String name = 'Ada';
+print('Hi name');    // BAD: shows "Hi name"
+print('Hi $name');   // GOOD: shows "Hi Ada"
+```
+
+### Mistake 3: Writing the type again when changing the value
+
+```dart
+String mood = 'happy';
+String mood = 'sad';   // BAD: you cannot make the box "mood" twice
+mood = 'sad';          // GOOD: just put a new value in the existing box
+```
+
+### Mistake 4: Starting a name with a capital or a number
+
+```dart
+String City = 'Lagos';   // works, but bad style: start variables lowercase
+String 1stName = 'Ada';  // BAD: cannot start with a number
+String firstName = 'Ada';// GOOD
+```
+
+---
+
+## One-Minute Recap
+
+- A variable is a labeled box that holds a value.
+- `String name = 'Ada';` makes a text box called `name` holding `Ada`.
+- `=` means "put this value in the box," not "equals."
+- Use the label with **no quotes** to get the value: `print(name)`.
+- Drop a variable into a sentence with `$`: `print('Hi $name')`.
+- Change a value by assigning again, **without** the type: `name = 'Bola';`.
+- Name variables in lowercase camelCase, and make the name describe the value.
+
+---
+
+## Quick Quiz
+
+**Q1.** What does this show?
+
+```dart
+void main() {
+  String city = 'Lagos';
+  print(city);
+}
+```
+
+<details>
+<summary>Answer</summary>
+
+```
+Lagos
+```
+
+`city` with no quotes shows the value inside the box.
+</details>
+
+**Q2.** What does this show?
+
+```dart
+void main() {
+  String city = 'Lagos';
+  print('city');
+}
+```
+
+<details>
+<summary>Answer</summary>
+
+```
+city
+```
+
+With quotes, it shows the plain word, not the value.
+</details>
+
+**Q3.** What does this show?
+
+```dart
+void main() {
+  String pet = 'cat';
+  print('I have a $pet');
+}
+```
+
+<details>
+<summary>Answer</summary>
+
+```
+I have a cat
+```
+
+`$pet` is swapped for the value `cat`.
+</details>
+
+**Q4.** Why is the second line wrong?
+
+```dart
+String color = 'blue';
+String color = 'green';
+```
+
+<details>
+<summary>Answer</summary>
+You are trying to make a box called `color` twice. To change it, just write `color = 'green';` without `String`.
+</details>
 
 ---
 
 ## Assignment
 
-### Problem 1: Predict the output
+Try each one in [dartpad.dev](https://dartpad.dev) before checking the answers.
 
-What does this print?
+### Problem 1: Make and show a variable
 
-```dart
-void main() {
-  String name = 'Ada';
-  int age = 25;
-  double height = 1.65;
-  bool isStudent = true;
+Make a `String` variable called `name` holding your own name. Then print `My name is ` followed by the name, using `$`.
 
-  print('$name is $age years old');
-  print('Height: $height m, Student: $isStudent');
-}
-```
-
-### Problem 2: Build a personal profile
-
-Declare four variables that describe yourself: a `String` name, an `int` age, a `double` height in metres, and a `bool` `isLearningFlutter`. Then print a one-line summary using string interpolation.
-
-### Problem 3: Spot the bugs
-
-Each line below has a problem. Find it and fix it.
-
-```dart
-int price = 19.99;
-String 1stName = 'Ada';
-bool active = "true";
-double age = 25;
-```
-
-### Problem 4: Variable swap (without a third variable)
-
-You have two int variables `a = 10` and `b = 20`. Swap their values so that `a` becomes 20 and `b` becomes 10. Do not declare a third variable. Use only addition and subtraction.
-
-### Problem 5: Reassignment trace
-
-Predict the value of `x` at the end of this program. Walk through it step by step.
+### Problem 2: Predict the output
 
 ```dart
 void main() {
-  int x = 5;
-  x = x + 3;
-  x = x * 2;
-  x = x - 1;
-  print(x);
+  String drink = 'water';
+  print('I like $drink');
+  print('drink');
 }
 ```
+
+What are the two lines it shows?
+
+### Problem 3: Change the value
+
+Make a `String` variable `weather` holding `'sunny'` and print `Today is sunny`. Then change `weather` to `'rainy'` and print `Now it is rainy`. Use `$` both times.
+
+### Problem 4: Spot the bugs
+
+Two of these lines are wrong. Find them and fix them.
+
+```dart
+String 2ndName = 'Bola';
+String food = 'rice';
+print('I eat food');
+```
+
+### Problem 5: Build a tiny intro
+
+Make three `String` variables: `name`, `city`, and `hobby`. Then print one sentence that uses all three, like: `Ada lives in Lagos and loves drawing.`
 
 ---
 
 ## Assignment Answers
 
-### Problem 1: Predict the output
-
-```
-Ada is 25 years old
-Height: 1.65 m, Student: true
-```
-
-How interpolation works:
-
-- `$name` is replaced by the value of `name`, which is `'Ada'`.
-- `$age` becomes `25`.
-- `$height` becomes `1.65` (a double prints with its decimal).
-- `$isStudent` becomes `true` (a bool prints as the word `true` or `false`).
-
-The literal text outside the `$...` parts stays the same.
-
-### Problem 2: Build a personal profile
-
-Example answer:
+### Problem 1: Make and show a variable
 
 ```dart
 void main() {
   String name = 'Ada';
-  int age = 25;
-  double height = 1.65;
-  bool isLearningFlutter = true;
-
-  print('$name is $age, $height m tall, learning Flutter: $isLearningFlutter');
+  print('My name is $name');
 }
 ```
 
-Output: `Ada is 25, 1.65 m tall, learning Flutter: true`.
+Output:
 
-The lesson: each type has a specific keyword (`String`, `int`, `double`, `bool`) and the value must match the type. You cannot put a number in a `String` variable.
+```
+My name is Ada
+```
 
-### Problem 3: Spot the bugs
+The `$name` drops the value of the box into the sentence.
+
+### Problem 2: Predict the output
+
+```
+I like water
+drink
+```
+
+First line: `$drink` becomes `water`. Second line: `'drink'` is in quotes, so it shows the plain word `drink`, not the value.
+
+### Problem 3: Change the value
 
 ```dart
-double price = 19.99;          // int can only hold whole numbers, 19.99 is a decimal
-String firstName = 'Ada';      // names cannot start with a digit
-bool active = true;            // bool needs true/false, not the string "true"
-double age = 25;               // 25 is an int. Either change type to int OR write 25.0
+void main() {
+  String weather = 'sunny';
+  print('Today is $weather');
+
+  weather = 'rainy';
+  print('Now it is $weather');
+}
 ```
 
-Notes on the last one: `double age = 25;` is actually accepted by Dart in this context because Dart will convert `25` to `25.0`. But conceptually it is misleading. If you mean a whole number, use `int`. If you really mean a decimal, write `25.0`.
+Output:
 
-The first three are real compile errors. The fourth is a style issue rather than a bug, but worth flagging.
+```
+Today is sunny
+Now it is rainy
+```
 
-### Problem 4: Variable swap
+Notice the second `weather =` does not repeat `String`. The box already exists, we just put a new value in it.
+
+### Problem 4: Spot the bugs
+
+The two problems:
+
+1. `2ndName` starts with a number, which is not allowed.
+2. `'I eat food'` shows the plain word `food`. To show the value, it needs `$food`.
+
+Fixed:
 
 ```dart
-int a = 10;
-int b = 20;
-
-a = a + b;     // a is now 30
-b = a - b;     // b is now 30 - 20 = 10
-a = a - b;     // a is now 30 - 10 = 20
-
-print('a = $a, b = $b');     // a = 20, b = 10
+String secondName = 'Bola';    // does not start with a number
+String food = 'rice';
+print('I eat $food');          // added the $
 ```
 
-How the trick works:
+Output:
 
-1. After `a = a + b`, `a` holds the sum (30). `b` is still its original value.
-2. To get `b` to be the original value of `a`, subtract `b` (its original value) from the sum: `30 - 20 = 10`. Now `b` is 10 (which was originally `a`).
-3. To get `a` to be the original value of `b`, subtract the new `b` from the sum: `30 - 10 = 20`. Now `a` is 20 (which was originally `b`).
+```
+I eat rice
+```
 
-This trick is mostly for fun and to test understanding of order of operations. In real code, the simple version with a temporary is fine and clearer:
+### Problem 5: Build a tiny intro
 
 ```dart
-int temp = a;
-a = b;
-b = temp;
+void main() {
+  String name = 'Ada';
+  String city = 'Lagos';
+  String hobby = 'drawing';
+
+  print('$name lives in $city and loves $hobby.');
+}
 ```
 
-### Problem 5: Reassignment trace
+Output:
 
 ```
-15
+Ada lives in Lagos and loves drawing.
 ```
 
-Trace:
-
-| Line | What happens | x after |
-|------|--------------|---------|
-| `int x = 5` | declare and assign | 5 |
-| `x = x + 3` | x becomes 5 + 3 | 8 |
-| `x = x * 2` | x becomes 8 * 2 | 16 |
-| `x = x - 1` | x becomes 16 - 1 | 15 |
-
-The print at the end shows 15.
-
-The key idea: `x = x + 3` is not "x equals x plus 3", which would be a contradiction. It is "take the current value of x, add 3 to it, store the result back in x". The right side is computed first using the old value, then assigned.
+You can put as many `$variable` drops in one sentence as you like. Each one is swapped for the value in its box.
 
 ---
 
-**Next:** Learn about different types of data you can store!
-
-**Continue to:** `02b-DataTypes.md`
+**Next:** `02b-DataTypes.md`, where you learn the other kinds of boxes: numbers and true/false values.
