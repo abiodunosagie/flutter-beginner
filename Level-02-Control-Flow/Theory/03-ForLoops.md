@@ -399,6 +399,8 @@ The update is `i--` (subtract), but the condition expects `i` to grow toward 5. 
 
 ## Assignment
 
+Try each in [dartpad.dev](https://dartpad.dev) before reading the answer. Everything uses classic `for` loops in `main`. (Functions and Lists come in Level 3, so we do not need them yet.)
+
 ### Problem 1: Predict the output
 
 Without running, what does this print?
@@ -413,9 +415,9 @@ void main() {
 }
 ```
 
-### Problem 2: Multiplication table generator
+### Problem 2: Multiplication table
 
-Write a function `void printTable(int n)` that prints the multiplication table for `n` from `n x 1` up to `n x 12`. Then call it for 7 and 9. The output for `printTable(7)` should look like:
+In `main`, make `int n = 7`. Use a `for` loop to print the table from `7 x 1` up to `7 x 12`:
 
 ```
 7 x 1 = 7
@@ -424,13 +426,13 @@ Write a function `void printTable(int n)` that prints the multiplication table f
 7 x 12 = 84
 ```
 
-### Problem 3: Sum and average
+### Problem 3: Sum and average of 1 to N
 
-Without using any list method (no `reduce`, no `fold`), write a function `double averageOf(List<int> nums)` that returns the average of the values in the list. Handle the empty list by returning 0. Test it on `[2, 4, 6, 8]` (expected: 5.0) and `[]` (expected: 0.0).
+In `main`, make `int n = 5`. Use a `for` loop to add up all the numbers from 1 to `n` into an `int total`. Then print the total and the average (`total / n`). For `n = 5`, the total is 15 and the average is 3.0.
 
-### Problem 4: Star pyramid
+### Problem 4: Star pyramids
 
-Write a function `void pyramid(int height)` that prints a left-aligned star pyramid. For `pyramid(5)`:
+In `main`, make `int height = 5`. First print a left-aligned pyramid using a `for` loop:
 
 ```
 *
@@ -440,7 +442,7 @@ Write a function `void pyramid(int height)` that prints a left-aligned star pyra
 *****
 ```
 
-Then write a second function `void centerPyramid(int height)` that prints a centred pyramid. For `centerPyramid(5)`:
+Then, below it, print a centred pyramid:
 
 ```
     *
@@ -450,13 +452,19 @@ Then write a second function `void centerPyramid(int height)` that prints a cent
 *********
 ```
 
-This second one will need both spaces and stars on each line.
+Hint for the centred one: on row `i`, print `(height - i)` spaces, then `(2 * i - 1)` stars. Remember `' ' * n` repeats a space `n` times.
 
-### Problem 5: Reverse a list manually
+### Problem 5: Multiplication grid (nested loops)
 
-Without using `list.reversed`, write a function `List<int> reverseList(List<int> nums)` that returns a **new** list with the items in reverse order. Use a classic for loop and explain in plain words how the loop walks through the original list.
+In `main`, use a loop inside a loop to print a 3 by 3 grid of products. Each line should show one row, like this:
 
-Hint: there are two clean ways. Either count down on the source, or count up but build backwards on the result.
+```
+1 2 3
+2 4 6
+3 6 9
+```
+
+Hint: the outer loop is the row (1 to 3), the inner loop is the column (1 to 3), and each cell is `row * col`. Build each row into a `String` and print it once per row.
 
 ---
 
@@ -472,87 +480,63 @@ After round 4, sum is 10
 After round 5, sum is 15
 ```
 
-How the trace was done, round by round:
+Round by round:
 
-| i | sum before | sum after `sum += i` | What prints |
-|---|------------|----------------------|-------------|
+| i | sum before | sum after `sum += i` | prints |
+|---|------------|----------------------|--------|
 | 1 | 0 | 1 | After round 1, sum is 1 |
 | 2 | 1 | 3 | After round 2, sum is 3 |
 | 3 | 3 | 6 | After round 3, sum is 6 |
 | 4 | 6 | 10 | After round 4, sum is 10 |
 | 5 | 10 | 15 | After round 5, sum is 15 |
 
-The key is the order: we first update `sum`, then we print. That is why the printed value already includes `i`. If `print` came before `sum += i`, the values would be 0, 1, 3, 6, 10.
+We update `sum` first, then print, so the printed value already includes `i`. After round 5, `i` becomes 6, the check `i <= 5` fails, and the loop stops.
 
-After round 5, `i` becomes 6, the condition `i <= 5` fails, the loop exits.
-
-### Problem 2: Multiplication table generator
+### Problem 2: Multiplication table
 
 ```dart
-void printTable(int n) {
+void main() {
+  int n = 7;
   for (int i = 1; i <= 12; i++) {
     print('$n x $i = ${n * i}');
   }
 }
-
-void main() {
-  printTable(7);
-  print('---');
-  printTable(9);
-}
 ```
 
-How this was built:
+The loop runs 12 times with `i` going 1 to 12. Inside, `${n * i}` works out the product and drops it into the sentence, while `$n` and `$i` drop in the plain values.
 
-1. The loop has to run 12 times. With the form `i = 1` and `i <= 12`, we get `i` taking values 1, 2, 3, ... 12. Twelve rounds.
-2. Inside the body, we use string interpolation: `${n * i}` calculates the product on the fly and converts to a string. `$n` and `$i` are simpler interpolations because they are just variables.
-3. Calling `printTable(7)` and `printTable(9)` from `main` gives us both tables, separated by a divider.
-
-The whole point of putting the loop inside a function: we wrote the table-printing logic once, but we use it twice with two different inputs. That is the function-plus-loop combo at work.
-
-### Problem 3: Sum and average
+### Problem 3: Sum and average of 1 to N
 
 ```dart
-double averageOf(List<int> nums) {
-  if (nums.isEmpty) return 0;
-
+void main() {
+  int n = 5;
   int total = 0;
-  for (int n in nums) {
-    total += n;
+
+  for (int i = 1; i <= n; i++) {
+    total += i;
   }
 
-  return total / nums.length;
+  print('Total: $total');           // Total: 15
+  print('Average: ${total / n}');   // Average: 3.0
 }
 ```
 
-Walkthrough:
+Each round adds `i` to `total`: 1, then 3, then 6, then 10, then 15. The average is `total / n`, which is `15 / 5 = 3.0`. (Divide always gives a decimal, so it shows `3.0`.)
 
-1. **Guard against the empty list first.** Dividing by zero would crash, so we return 0 right away. This is the early-return pattern from the if-statements assignment.
-2. **Sum with a `for-in` loop.** We do not need indexes, just the values. Each round, add the value to `total`.
-3. **Divide.** `total` is an `int`, and `nums.length` is also an `int`. In Dart, `int / int` returns a `double`. Perfect, since the return type is `double`.
-
-Testing:
-- `averageOf([2, 4, 6, 8])`: total = 2+4+6+8 = 20, length = 4, 20/4 = 5.0. Correct.
-- `averageOf([])`: empty, returns 0. Correct.
-
-### Problem 4: Star pyramid
-
-**Left-aligned:**
+### Problem 4: Star pyramids
 
 ```dart
-void pyramid(int height) {
+void main() {
+  int height = 5;
+
+  // Left-aligned
   for (int i = 1; i <= height; i++) {
     print('*' * i);
   }
-}
-```
 
-The trick: `'*' * i` is string multiplication. It repeats `'*'` exactly `i` times. So row 1 prints 1 star, row 2 prints 2 stars, all the way to `height`.
+  print('');   // a blank line between the two
 
-**Centred pyramid:**
-
-```dart
-void centerPyramid(int height) {
+  // Centred
   for (int i = 1; i <= height; i++) {
     int spaces = height - i;
     int stars = 2 * i - 1;
@@ -561,68 +545,50 @@ void centerPyramid(int height) {
 }
 ```
 
-How the formula was derived:
+The left pyramid uses `'*' * i`, which repeats a star `i` times, so each row has one more star.
 
-For `height = 5`, the output rows have these counts:
+For the centred one, look at the pattern for `height = 5`:
 
-| Row i | Spaces before | Stars |
-|-------|---------------|-------|
+| Row i | Spaces | Stars |
+|-------|--------|-------|
 | 1 | 4 | 1 |
 | 2 | 3 | 3 |
 | 3 | 2 | 5 |
 | 4 | 1 | 7 |
 | 5 | 0 | 9 |
 
-Notice patterns:
-- Spaces shrink by 1 each row, starting at `height - 1` and ending at 0. Formula: `height - i`.
-- Stars grow by 2 each row, starting at 1. So stars go 1, 3, 5, 7, 9. The k-th odd number is `2k - 1`. Formula: `2 * i - 1`.
+Spaces shrink (`height - i`) and stars grow by 2 (`2 * i - 1`). Each line is the spaces joined with the stars using `+`.
 
-Each line is `(spaces of ' ') + (stars of '*')`. Concatenating with `+` builds the line, then `print` outputs it.
-
-This problem teaches you that loop bodies can compute multiple things per round. The loop variable `i` is the row, and you derive other values from it.
-
-### Problem 5: Reverse a list manually
-
-**Approach 1: count down on the source.**
+### Problem 5: Multiplication grid (nested loops)
 
 ```dart
-List<int> reverseList(List<int> nums) {
-  List<int> result = [];
-  for (int i = nums.length - 1; i >= 0; i--) {
-    result.add(nums[i]);
+void main() {
+  for (int row = 1; row <= 3; row++) {
+    String line = '';
+    for (int col = 1; col <= 3; col++) {
+      line += '${row * col} ';
+    }
+    print(line);
   }
-  return result;
 }
 ```
 
-In plain words: start at the last index of `nums` (which is `length - 1`), and walk backwards down to 0. For each step, take that item and append it to a new list. By the time we reach 0, we have appended every item in reverse order.
+Output:
 
-Trace on `[1, 2, 3, 4]`:
-
-| i | nums[i] | result after |
-|---|---------|--------------|
-| 3 | 4 | [4] |
-| 2 | 3 | [4, 3] |
-| 1 | 2 | [4, 3, 2] |
-| 0 | 1 | [4, 3, 2, 1] |
-
-When `i` would become -1, the condition `i >= 0` fails and the loop ends. We return `[4, 3, 2, 1]`.
-
-**Approach 2: count up but insert at the front.**
-
-```dart
-List<int> reverseList(List<int> nums) {
-  List<int> result = [];
-  for (int n in nums) {
-    result.insert(0, n);
-  }
-  return result;
-}
+```
+1 2 3 
+2 4 6 
+3 6 9 
 ```
 
-Each time we read an item, we insert it at index 0 (the front). The previous items get pushed back. By the end, the order is reversed.
+How it works:
 
-Both work. Approach 1 is faster in practice because `insert(0, ...)` has to shift all existing items each time. Approach 1 just appends. For a beginner, either is fine. As you get more experienced, prefer the first.
+1. The **outer loop** picks the row (1, 2, 3).
+2. For each row, we start with an empty `line`.
+3. The **inner loop** runs fully (col 1, 2, 3), adding `row * col` and a space to `line` each time.
+4. After the inner loop finishes, we print the whole row at once.
+
+The inner loop runs completely for every single round of the outer loop, which is the heart of nested loops. (There is a trailing space at the end of each line, which is fine.)
 
 ---
 
