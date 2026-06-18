@@ -429,7 +429,7 @@ if (a > 0 && b > 0) {
 
 ## Assignment
 
-These problems go beyond the quiz. They are designed to make you think before you type. Try each one on paper or in your editor before reading the answer.
+Try each one in [dartpad.dev](https://dartpad.dev) before reading the answer. Everything here uses only `if`/`else`, variables, and what you learned in Level 1. (Functions and loops come later, so we do not need them yet.)
 
 ### Problem 1: Predict the output
 
@@ -454,71 +454,89 @@ void main() {
 }
 ```
 
-### Problem 2: Cinema ticket pricing
+### Problem 2: Cinema ticket price
 
-Write a function `ticketPrice(int age, bool isStudent, bool isWeekend)` that returns the price in naira based on these rules:
+In `main`, make these three boxes:
 
-- Base price is 2000.
-- If the customer is under 13, the price is 1000 (no other discount stacks).
-- If the customer is over 60, the price is 1500 (no other discount stacks).
-- Students get 25% off the base price.
-- On weekends, prices are 20% higher than the calculated price (applied last).
+```dart
+int age = 22;
+bool isStudent = true;
+bool isWeekend = true;
+```
 
-Test with these cases and verify your function:
+Work out the ticket price into a `double price` using these rules, then print it:
 
-| age | isStudent | isWeekend | expected |
-|-----|-----------|-----------|----------|
-| 10 | false | false | 1000 |
-| 65 | false | true | 1800 |
-| 22 | true | false | 1500 |
-| 22 | true | true | 1800 |
-| 30 | false | false | 2000 |
+- The base price is 2000.
+- If the customer is under 13, the price is 1000 (nothing else applies).
+- If the customer is over 60, the price is 1500 (nothing else applies).
+- Otherwise, students get 25% off the base price (so 1500), and everyone else pays 2000.
+- After all that, if it is the weekend, add 20% on top.
+
+With the values above (student, weekend), the answer should be 1800. After it works, try changing the three boxes to test other cases.
 
 ### Problem 3: Spot and fix the bug
 
-This function is supposed to return a letter grade. It has a bug. Find it, explain why it is wrong, then fix it.
+This is supposed to put the right letter grade in `result`, but it has a bug. Run it with `score = 95` and you will see the wrong answer. Find the bug, explain it, then fix it.
 
 ```dart
-String grade(int score) {
-  if (score >= 50) return 'F or above';
-  if (score >= 70) return 'C';
-  if (score >= 80) return 'B';
-  if (score >= 90) return 'A';
-  return 'F';
+void main() {
+  int score = 95;
+  String result;
+
+  if (score >= 50) {
+    result = 'F or above';
+  } else if (score >= 70) {
+    result = 'C';
+  } else if (score >= 80) {
+    result = 'B';
+  } else if (score >= 90) {
+    result = 'A';
+  } else {
+    result = 'F';
+  }
+
+  print(result);
 }
 ```
 
-### Problem 4: Login validator
+### Problem 4: Login check
 
-Write a function `String validateLogin(String username, String password)` that returns one of these messages:
+In `main`, make `String username = 'ada'` and `String password = 'secret'`. Put the right message in a `String message` box using these rules, then print it:
 
 - `'Username required'` if the username is empty.
 - `'Password required'` if the password is empty.
 - `'Password too short'` if the password has fewer than 8 characters.
-- `'Password must contain a number'` if the password has no digit.
-- `'Login successful'` if everything passes.
+- `'Login successful'` if everything is fine.
 
-Hint: check one rule at a time and return early.
+(Hint: `.isEmpty` and `.length` from the Strings lesson will help. Check one rule at a time with `else if`.)
 
 ### Problem 5: Flatten the nesting
 
-Rewrite this nested if into a flat one using `&&` and early returns. The behaviour should not change.
+This nested `if` works, but it is hard to read. Rewrite it as a single `if`/`else if`/`else` chain that puts the right text in a `String message` box. The result must be the same.
 
 ```dart
-String message(int age, bool hasLicense, bool hasInsurance) {
+void main() {
+  int age = 20;
+  bool hasLicense = true;
+  bool hasInsurance = false;
+
+  String message;
+
   if (age >= 18) {
     if (hasLicense) {
       if (hasInsurance) {
-        return 'You can drive';
+        message = 'You can drive';
       } else {
-        return 'Get insurance first';
+        message = 'Get insurance first';
       }
     } else {
-      return 'Get a license first';
+      message = 'Get a license first';
     }
   } else {
-    return 'Too young to drive';
+    message = 'Too young to drive';
   }
+
+  print(message);
 }
 ```
 
@@ -530,20 +548,22 @@ String message(int age, bool hasLicense, bool hasInsurance) {
 
 **Answer: `A`**
 
-Walkthrough, line by line:
+Step by step:
 
 1. `a` is 10, `b` is 5.
-2. The outer condition `a > b` is `10 > 5`, which is `true`. We enter the outer `if` block.
-3. Now the inner condition: `a - b > 3` is `10 - 5 > 3`, which is `5 > 3`, which is `true`.
-4. Because the inner condition is true, the inner `if` body runs. `print('A')` is called.
-5. After the inner block ends, the program exits the outer block too. Nothing else runs.
+2. The outer condition `a > b` is `10 > 5`, which is `true`. We go inside the outer `if`.
+3. The inner condition `a - b > 3` is `5 > 3`, which is `true`.
+4. So `print('A')` runs.
+5. The outer `else if` and `else` are skipped, because the outer `if` already matched. Only one branch of a chain ever runs.
 
-The `else if` and `else` of the outer chain are skipped because the outer `if` already matched. This is the rule we covered: only one branch in an if-else chain runs.
-
-### Problem 2: Cinema ticket pricing
+### Problem 2: Cinema ticket price
 
 ```dart
-double ticketPrice(int age, bool isStudent, bool isWeekend) {
+void main() {
+  int age = 22;
+  bool isStudent = true;
+  bool isWeekend = true;
+
   double price;
 
   if (age < 13) {
@@ -551,109 +571,113 @@ double ticketPrice(int age, bool isStudent, bool isWeekend) {
   } else if (age > 60) {
     price = 1500;
   } else if (isStudent) {
-    price = 2000 * 0.75;     // 25% off
+    price = 2000 * 0.75;   // 25% off  -> 1500
   } else {
     price = 2000;
   }
 
   if (isWeekend) {
-    price = price * 1.20;     // 20% surcharge
+    price = price * 1.20;  // add 20%
   }
 
-  return price;
+  print(price);   // 1800.0
 }
 ```
 
 How the logic was built:
 
-1. **Order of checks matters.** The rules say child and senior discounts do not stack with student. So we check age first. If the customer is a child or senior, we set the price and skip the student check entirely. The `else if` chain is the right tool because exactly one age bracket should match.
-2. **Student discount is only checked if the customer is in the working-age bracket.** That is what the final `else if` and `else` handle.
-3. **Weekend surcharge is always applied last.** It is a separate `if` statement, not part of the chain, because it can apply on top of any age bracket.
+1. **Age is checked first** with an `else if` chain, because a child or senior price replaces everything else. Only one age bracket can match.
+2. **The student discount** is in the chain too, so it only applies to normal-age customers.
+3. **The weekend surcharge** is a separate `if` afterwards, because it can be added on top of any price.
 
-Verifying with the test table:
-
-- age 10: child, price 1000, not weekend, final 1000. ok
-- age 65: senior, price 1500, weekend, final 1500 * 1.20 = 1800. ok
-- age 22 student, weekday: 2000 * 0.75 = 1500. ok
-- age 22 student, weekend: 1500 * 1.20 = 1800. ok
-- age 30, not student, weekday: 2000. ok
-
-The trick here is recognising that "no other discount stacks" means the conditions are mutually exclusive, which is exactly what `else if` is for.
+With age 22, student, weekend: the chain gives `2000 * 0.75 = 1500`, then the weekend `if` gives `1500 * 1.20 = 1800`. It prints `1800.0` (a double, so it shows the `.0`).
 
 ### Problem 3: Spot and fix the bug
 
-**The bug:** The conditions are checked in the wrong order. `score >= 50` matches everything from 50 upward, including 70, 80, and 90. So a score of 95 hits the first branch and returns `'F or above'`, never reaching the more specific checks.
+**The bug:** the conditions are in the wrong order. `score >= 50` is true for 95 too, so it matches first and sets `result` to `'F or above'`. The more exact checks below never get a chance.
 
-**Why it is wrong:** As we discussed in "Order Matters", when conditions overlap, you must check the strictest one first. `score >= 90` is stricter than `score >= 50`. The strictest condition has to be at the top.
-
-**Fixed version:**
+**The fix:** check the strictest condition first (highest score at the top):
 
 ```dart
-String grade(int score) {
-  if (score >= 90) return 'A';
-  if (score >= 80) return 'B';
-  if (score >= 70) return 'C';
-  if (score >= 50) return 'F or above';
-  return 'F';
-}
-```
+void main() {
+  int score = 95;
+  String result;
 
-Now a score of 95 matches the very first check and correctly returns `'A'`.
-
-### Problem 4: Login validator
-
-```dart
-String validateLogin(String username, String password) {
-  if (username.isEmpty) return 'Username required';
-  if (password.isEmpty) return 'Password required';
-  if (password.length < 8) return 'Password too short';
-
-  bool hasDigit = false;
-  for (int i = 0; i < password.length; i++) {
-    if ('0123456789'.contains(password[i])) {
-      hasDigit = true;
-      break;
-    }
+  if (score >= 90) {
+    result = 'A';
+  } else if (score >= 80) {
+    result = 'B';
+  } else if (score >= 70) {
+    result = 'C';
+  } else if (score >= 50) {
+    result = 'F or above';
+  } else {
+    result = 'F';
   }
-  if (!hasDigit) return 'Password must contain a number';
 
-  return 'Login successful';
+  print(result);   // A
 }
 ```
 
-How this was built:
+Now 95 matches the very first check and prints `A`. When ranges overlap, always put the strictest one on top.
 
-1. **Check the cheapest things first.** Empty checks are very cheap. Length is cheap. Scanning every character for a digit is the most expensive, so it goes last.
-2. **Return early.** As soon as a rule fails, return the matching message. This avoids deeply nested if-else.
-3. **The digit check** uses a small loop and a `break` (which we will officially cover in topic 5). For each character of the password, we ask "is this character one of the digit characters '0' to '9'?". If yes, set the flag and stop looking. If we never found one, the flag stays `false` and we return the error.
+### Problem 4: Login check
 
-You could also do the digit check more compactly with `password.contains(RegExp(r'[0-9]'))`, but that introduces regular expressions which are not in scope here. The explicit loop is fine and more readable for a beginner.
+```dart
+void main() {
+  String username = 'ada';
+  String password = 'secret';
+
+  String message;
+
+  if (username.isEmpty) {
+    message = 'Username required';
+  } else if (password.isEmpty) {
+    message = 'Password required';
+  } else if (password.length < 8) {
+    message = 'Password too short';
+  } else {
+    message = 'Login successful';
+  }
+
+  print(message);   // Password too short
+}
+```
+
+With `password = 'secret'` (6 letters), the first two checks pass, but `password.length < 8` is true, so it prints `Password too short`. Checking one rule at a time with `else if` makes sure only the first failing rule is reported.
 
 ### Problem 5: Flatten the nesting
 
 ```dart
-String message(int age, bool hasLicense, bool hasInsurance) {
-  if (age < 18) return 'Too young to drive';
-  if (!hasLicense) return 'Get a license first';
-  if (!hasInsurance) return 'Get insurance first';
-  return 'You can drive';
+void main() {
+  int age = 20;
+  bool hasLicense = true;
+  bool hasInsurance = false;
+
+  String message;
+
+  if (age < 18) {
+    message = 'Too young to drive';
+  } else if (!hasLicense) {
+    message = 'Get a license first';
+  } else if (!hasInsurance) {
+    message = 'Get insurance first';
+  } else {
+    message = 'You can drive';
+  }
+
+  print(message);   // Get insurance first
 }
 ```
 
-How the flattening was done:
+How the flattening works:
 
-1. **Start with the failure cases.** The nested version returns one of four results. Three of them are failures. List them first, in the order they would have been checked.
-2. **Use `return` to exit early.** Once we know the answer, we return. There is no reason to nest deeper.
-3. **The success case is the very last line.** If we get past every guard, we know everything passed.
+1. List the failure cases first, in order: too young, no license, no insurance.
+2. Each one uses `else if`, so only the first problem found is reported.
+3. The last `else` is the success case: if none of the problems happened, you can drive.
 
-Notice how the flat version reads top to bottom like a checklist:
-- "Too young? bail."
-- "No license? bail."
-- "No insurance? bail."
-- "All good? you can drive."
-
-This pattern is called the **early return** or **guard clause** pattern. It is one of the most useful tools to keep code readable. Use it whenever you find yourself nesting three or more `if` statements.
+This reads top to bottom like a checklist, which is much easier than the deeply nested version. With the given values (old enough, has a license, no insurance), it prints `Get insurance first`.
 
 ---
 
-**Next:** `02-SwitchStatements.md` to learn the cleaner way to handle many exact matches.
+**Next:** `02-SwitchStatements.md` to learn a tidy way to handle many exact matches.
