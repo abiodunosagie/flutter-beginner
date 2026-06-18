@@ -454,13 +454,17 @@ String label = switch (n) {
 
 ## Assignment
 
-### Problem 1: Convert if-chain to switch
+Try each in [dartpad.dev](https://dartpad.dev) before reading the answer. Everything uses `switch` with variables in `main`, no functions needed yet. (Enums, which pair beautifully with switch, come in Level 4.)
 
-Convert this if-chain into the **classic switch statement** form. Then convert it again into a **switch expression**.
+### Problem 1: Convert an if-chain to switch
+
+Here is an if-chain in `main`. Rewrite it two ways: first as a **classic switch statement**, then as a **switch expression**. Both should put the right text in `message` and print it.
 
 ```dart
-void describe(String role) {
+void main() {
+  String role = 'editor';
   String message;
+
   if (role == 'admin') {
     message = 'Full access';
   } else if (role == 'editor') {
@@ -470,13 +474,14 @@ void describe(String role) {
   } else {
     message = 'No access';
   }
+
   print(message);
 }
 ```
 
 ### Problem 2: Find the bug
 
-This switch is supposed to print a single line based on the day. It does not behave correctly. Find the bug, explain what happens, and fix it.
+This switch should print one line, but it does not. Find the bug, explain what happens, and fix it.
 
 ```dart
 void main() {
@@ -498,47 +503,46 @@ void main() {
 
 ### Problem 3: HTTP status grouper
 
-Write a function `String describeStatus(int code)` that takes an HTTP status code and returns one of these labels:
+In `main`, make `int code = 404`. Put the right label in `String label` using a **classic switch with grouped cases**, then print it. Use these groups:
 
-- `'Informational'` for 100, 101, 102, 103.
 - `'Success'` for 200, 201, 204.
 - `'Redirect'` for 301, 302, 304.
 - `'Client error'` for 400, 401, 403, 404.
-- `'Server error'` for 500, 502, 503, 504.
+- `'Server error'` for 500, 502, 503.
 - `'Unknown'` for anything else.
 
-Solve this twice: once with a classic switch using grouped cases, once with a switch expression.
+Then write it again as a **switch expression** using `||` to group values.
 
-### Problem 4: Traffic light advisor with enum
+### Problem 4: Menu command (switch expression)
 
-Define an enum `Light` with values `red`, `yellow`, `green`. Then write a function `String advise(Light light)` that returns:
+In `main`, make `String command = 'pause'`. Use a **switch expression** to set `String action` to:
 
-- `'Stop and wait'` for red.
-- `'Slow down and prepare to stop'` for yellow.
-- `'Go safely'` for green.
+- `'Playing'` for `'play'`.
+- `'Paused'` for `'pause'`.
+- `'Stopped'` for `'stop'`.
+- `'Unknown command'` for anything else.
 
-Use a switch expression. The function must compile **without** a `default` case. Explain why this is possible.
+Print `action`.
 
 ### Problem 5: Mini calculator with safe division
 
-Write a function `String calculate(double a, double b, String op)`. It supports `'+'`, `'-'`, `'*'`, `'/'`. The function returns:
+In `main`, make `double a = 10`, `double b = 0`, and `String op = '/'`. Use a **classic switch** to put the answer in `String result`, then print it:
 
-- The arithmetic result as a string, like `'15.0'`.
-- `'Cannot divide by zero'` if op is `/` and `b` is zero.
-- `'Unknown operator'` for any other op.
-
-Use a classic switch.
+- For `'+'`, `'-'`, `'*'`: the result, like `'12.0'`.
+- For `'/'`: the result, unless `b` is 0, then `'Cannot divide by zero'`.
+- For anything else: `'Unknown operator'`.
 
 ---
 
 ## Assignment Answers
 
-### Problem 1: Convert if-chain to switch
+### Problem 1: Convert an if-chain to switch
 
 **Classic switch:**
 
 ```dart
-void describe(String role) {
+void main() {
+  String role = 'editor';
   String message;
 
   switch (role) {
@@ -555,22 +559,23 @@ void describe(String role) {
       message = 'No access';
   }
 
-  print(message);
+  print(message);   // Can edit content
 }
 ```
 
-How the conversion was done:
+How the conversion works:
 
-1. The variable being compared in every branch is `role`. It goes inside `switch (role)`.
+1. The variable compared in every branch is `role`, so it goes in `switch (role)`.
 2. Each `if (role == 'X')` becomes `case 'X':`.
-3. The body of each `if` becomes the body of the matching `case`.
-4. Each case ends with `break;` so we do not fall through to the next case.
-5. The final `else` becomes `default:`.
+3. Each case ends with `break;` so it does not fall through.
+4. The final `else` becomes `default:`.
 
-**Switch expression form:**
+**Switch expression:**
 
 ```dart
-void describe(String role) {
+void main() {
+  String role = 'editor';
+
   String message = switch (role) {
     'admin'  => 'Full access',
     'editor' => 'Can edit content',
@@ -578,32 +583,24 @@ void describe(String role) {
     _        => 'No access',
   };
 
-  print(message);
+  print(message);   // Can edit content
 }
 ```
 
-How this is different:
-
-1. The whole switch is on the right side of `=`, because it now **returns a value**.
-2. There are no `case` keywords. Just the value, then `=>`, then the result.
-3. There are no `break` statements. The expression form has no fall-through.
-4. `_` replaces `default:`.
-5. Notice we removed the temporary `String message;` declaration plus assignment, replaced by `String message = switch (...)`. Cleaner.
-
-This second version is the more modern, more readable form when all you are doing is picking a value.
+This form **returns a value**, so the whole switch sits on the right of `=`. No `case`, no `break`, and `_` is the catch-all. Shorter and cleaner when you are just picking a value.
 
 ### Problem 2: Find the bug
 
-**The bug:** The cases for `'Mon'` and `'Tue'` are missing `break` statements.
+**The bug:** the `'Mon'` and `'Tue'` cases are missing `break`.
 
-**What actually happens when `day == 'Mon'`:**
+When `day` is `'Mon'`:
 
-1. The switch matches `case 'Mon':` and runs `print('Monday')`.
-2. There is no `break`, so execution **falls through** into `case 'Tue':` and runs `print('Tuesday')`.
-3. There is still no `break`, so execution falls through into `case 'Wed':` and runs `print('Wednesday')`.
-4. Finally `break` is hit and the switch exits.
+1. It matches `case 'Mon':` and prints `Monday`.
+2. No `break`, so it falls through into `case 'Tue':` and prints `Tuesday`.
+3. Still no `break`, so it falls through into `case 'Wed':` and prints `Wednesday`, then finally hits `break`.
 
-Output: three lines instead of one:
+So it wrongly prints three lines:
+
 ```
 Monday
 Tuesday
@@ -613,38 +610,37 @@ Wednesday
 **Fix:** add `break;` to every case.
 
 ```dart
-switch (day) {
-  case 'Mon':
-    print('Monday');
-    break;
-  case 'Tue':
-    print('Tuesday');
-    break;
-  case 'Wed':
-    print('Wednesday');
-    break;
-  default:
-    print('Unknown');
+void main() {
+  String day = 'Mon';
+
+  switch (day) {
+    case 'Mon':
+      print('Monday');
+      break;
+    case 'Tue':
+      print('Tuesday');
+      break;
+    case 'Wed':
+      print('Wednesday');
+      break;
+    default:
+      print('Unknown');
+  }
 }
 ```
 
-This is exactly the trap we drilled in the lesson. In the classic switch form, a missing `break` is almost always a bug, and it is always silent at compile time. The compiler does not warn you. You only find out by running the code.
+Now it prints just `Monday`. A missing `break` in a classic switch is almost always a bug, and the compiler does not warn you, so train your eye to check for it.
 
 ### Problem 3: HTTP status grouper
 
 **Classic switch with grouped cases:**
 
 ```dart
-String describeStatus(int code) {
+void main() {
+  int code = 404;
   String label;
 
   switch (code) {
-    case 100:
-    case 101:
-    case 102:
-    case 103:
-      label = 'Informational';
-      break;
     case 200:
     case 201:
     case 204:
@@ -664,93 +660,101 @@ String describeStatus(int code) {
     case 500:
     case 502:
     case 503:
-    case 504:
       label = 'Server error';
       break;
     default:
       label = 'Unknown';
   }
 
-  return label;
+  print(label);   // Client error
 }
 ```
 
-How the grouping works:
+Stacking `case` lines with no code between them makes them share one body. This is the one time fall-through is on purpose.
 
-When you stack multiple `case` lines on top of each other with no code between, they all fall through to the same body. This is the **only** time fall-through is intentional. The 4 informational codes all share one body, and so on.
-
-**Switch expression form:**
+**Switch expression:**
 
 ```dart
-String describeStatus(int code) {
-  return switch (code) {
-    100 || 101 || 102 || 103 => 'Informational',
-    200 || 201 || 204        => 'Success',
-    301 || 302 || 304        => 'Redirect',
+void main() {
+  int code = 404;
+
+  String label = switch (code) {
+    200 || 201 || 204 => 'Success',
+    301 || 302 || 304 => 'Redirect',
     400 || 401 || 403 || 404 => 'Client error',
-    500 || 502 || 503 || 504 => 'Server error',
-    _                        => 'Unknown',
+    500 || 502 || 503 => 'Server error',
+    _ => 'Unknown',
   };
+
+  print(label);   // Client error
 }
 ```
 
-In the expression form, you join multiple values with `||` (read as "or") on a single line. Much shorter than the stacked-case form, especially when the groups are large.
+In the expression form you join values with `||` on one line, which is much shorter than stacking cases.
 
-### Problem 4: Traffic light advisor with enum
+### Problem 4: Menu command (switch expression)
 
 ```dart
-enum Light { red, yellow, green }
+void main() {
+  String command = 'pause';
 
-String advise(Light light) {
-  return switch (light) {
-    Light.red    => 'Stop and wait',
-    Light.yellow => 'Slow down and prepare to stop',
-    Light.green  => 'Go safely',
+  String action = switch (command) {
+    'play'  => 'Playing',
+    'pause' => 'Paused',
+    'stop'  => 'Stopped',
+    _       => 'Unknown command',
   };
+
+  print(action);   // Paused
 }
 ```
 
-**Why no `default` is needed:**
+The switch expression checks `command` against each value and gives back the matching text. `_` catches anything not listed.
 
-An enum has a **fixed, finite** set of values. `Light` has exactly three: `red`, `yellow`, `green`. Our switch covers all three. Dart's compiler can see this. It knows there is no fourth case to worry about, so a `default` is unnecessary, and the code is **exhaustive**.
-
-If you ever add a new value to the enum (say `Light.flashing`), the compiler will complain that the switch is no longer exhaustive. That is a very useful safety net. It forces you to update every switch in your codebase whenever the enum grows.
-
-This is one of the strongest reasons to use enums plus switch in Flutter. The compiler becomes your assistant.
+> Sneak peek: in Level 4 you will meet **enums** (a fixed set of named values). When you switch over an enum and cover every value, Dart lets you skip the `_` catch-all entirely, because it knows you handled them all. That is a great safety feature to look forward to.
 
 ### Problem 5: Mini calculator with safe division
 
 ```dart
-String calculate(double a, double b, String op) {
+void main() {
+  double a = 10;
+  double b = 0;
+  String op = '/';
+
+  String result;
+
   switch (op) {
     case '+':
-      return '${a + b}';
+      result = '${a + b}';
+      break;
     case '-':
-      return '${a - b}';
+      result = '${a - b}';
+      break;
     case '*':
-      return '${a * b}';
+      result = '${a * b}';
+      break;
     case '/':
       if (b == 0) {
-        return 'Cannot divide by zero';
+        result = 'Cannot divide by zero';
+      } else {
+        result = '${a / b}';
       }
-      return '${a / b}';
+      break;
     default:
-      return 'Unknown operator';
+      result = 'Unknown operator';
   }
+
+  print(result);   // Cannot divide by zero
 }
 ```
 
-A few things to notice:
+Things to notice:
 
-1. **No `break` statements are needed.** Because every case ends with `return`, the function exits before fall-through can happen. `return` is even stronger than `break`: it leaves the entire function, not just the switch.
-2. **The division case has its own internal check.** Switch only matches the operator. The "is b zero?" check is a separate concern, so it is a regular `if` statement inside the case.
-3. **String interpolation `${...}`** wraps the arithmetic so the number is converted to a string for the return value.
+1. The switch only matches the **operator**. The "is b zero?" check is a separate `if` inside the `/` case.
+2. Each case ends with `break;` so they do not fall through.
+3. `${ ... }` turns each calculation into text for the `result` box.
 
-Quick sanity test:
-
-- `calculate(10, 2, '+')` returns `'12.0'`.
-- `calculate(10, 0, '/')` returns `'Cannot divide by zero'`.
-- `calculate(10, 2, '%')` returns `'Unknown operator'`.
+With `a = 10`, `b = 0`, `op = '/'`, it prints `Cannot divide by zero`. Change `b` to `2` and it would print `5.0`.
 
 ---
 
