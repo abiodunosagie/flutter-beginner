@@ -1,859 +1,412 @@
-# Null Safety: Understanding "Nothing" in Dart
+# Null Safety: Handling "Nothing"
 
-Null safety is one of Dart's most important features. Let's understand it step by step, like explaining to a 5-year-old!
+## The Big Idea In One Sentence
 
----
+> `null` means **"nothing is in the box,"** and Dart helps you avoid crashes by being careful with boxes that might be empty.
 
-## What is Null? (The Foundation)
-
-### Think of Variables as Boxes
-
-Imagine variables as boxes that hold things:
-
-```
-┌─────────────┐
-│   "Alex"    │  ← String name = 'Alex';
-└─────────────┘
-
-┌─────────────┐
-│     25      │  ← int age = 25;
-└─────────────┘
-```
-
-### Now, What is Null?
-
-`null` means **the box is empty** - there's nothing inside:
-
-```
-┌─────────────┐
-│    EMPTY    │  ← String? name = null;
-│  (nothing)  │
-└─────────────┘
-```
-
-**Real-world analogy:**
-- Your wallet has $50 → wallet = 50
-- Your wallet is empty → wallet = null (not 0, but EMPTY)
+This is the last lesson of Level 1. Take it slowly, it is a new idea.
 
 ---
 
-## The Big Problem (Before Null Safety)
+## A Picture To Hold In Your Head
 
-### Old Dart (Before Null Safety)
+Every box you have made so far had something inside it:
 
-In old Dart, ANY variable could be null without warning:
-
-```dart
-// Old Dart - DANGEROUS!
-String name = 'Alex';
-name = null;  // ✅ Allowed! But causes crashes later
-
-print(name.length);  // 💥 CRASH! Can't get length of null
+```
+┌──────────┐        ┌──────────┐
+│  'Ada'   │        │    25    │
+└──────────┘        └──────────┘
+   name                 age
 ```
 
-**The problem:**
+`null` is a special value that means **the box is empty**. There is nothing inside.
+
 ```
-Your code runs fine...
-Then suddenly: CRASH! 💥
-"Null pointer exception"
-
-You have to find the bug manually 😓
+┌──────────┐
+│  (empty) │   <-  null
+└──────────┘
 ```
 
-### New Dart (With Null Safety) - SAFE!
-
-Now Dart protects you at compile time (before running):
-
-```dart
-// New Dart - SAFE!
-String name = 'Alex';
-name = null;  // ❌ ERROR! Compiler stops you immediately
-
-// ✅ This is caught BEFORE your app runs!
-```
+Real life: your wallet with 50 naira inside is `50`. An empty wallet is `null` (not zero naira, just... empty).
 
 ---
 
-## The Two Types of Variables
+## null Is Not The Same As 0 Or ''
 
-Dart now has TWO types of every variable:
+This catches everyone, so read carefully:
 
-### 1. Non-Nullable (Cannot be null)
-
-**No question mark `?`** = "This box MUST have something"
-
-```dart
-// These CANNOT be null
-String name = 'Alex';         // Must have a value
-int age = 25;                 // Must have a value
-bool isStudent = true;        // Must have a value
-
-// ❌ These cause ERRORS:
-String name2;                 // Error: Must initialize!
-String name3 = null;          // Error: Can't be null!
-```
-
-**Visual:**
-```
-┌─────────────┐
-│   "Alex"    │  ← String name (MUST have value)
-└─────────────┘
-     ✅ OK
-
-┌─────────────┐
-│    null     │  ← String name = null
-└─────────────┘
-     ❌ ERROR!
-```
-
-### 2. Nullable (Can be null)
-
-**Question mark `?`** = "This box MIGHT be empty"
+- `0` is the number zero. The box has a number in it.
+- `''` is an empty string. The box has text in it (text with no letters).
+- `null` is **nothing at all**. The box is empty.
 
 ```dart
-// These CAN be null
-String? email;                // ✅ OK - starts as null
-String? phone = null;         // ✅ OK - explicitly null
-int? score;                   // ✅ OK - no value yet
-
-// Later, you can give them values
-email = 'alex@email.com';     // ✅ Now has value
-phone = '555-1234';           // ✅ Now has value
+int count = 0;       // a box with the number 0
+String text = '';    // a box with empty text
+int? nothing = null; // a box with nothing
 ```
 
-**Visual:**
-```
-┌─────────────┐
-│    null     │  ← String? email (can be empty)
-└─────────────┘
-     ✅ OK
-
-┌─────────────┐
-│"a@email.com"│  ← String? email = '...' (or has value)
-└─────────────┘
-     ✅ Also OK
-```
+All three are different.
 
 ---
 
-## Think of `?` as "Maybe"
+## Normal Boxes Cannot Be Empty
 
-The question mark means "maybe null, maybe not":
+By default, a box **must** have something. This is Dart keeping you safe:
 
 ```dart
-String? name;     // Maybe null
-int? age;         // Maybe null
-bool? isActive;   // Maybe null
+String name = 'Ada';   // GOOD: has a value
+String name2 = null;   // BAD: a normal String box cannot be empty
+String name3;          // BAD: you must put something in it
 ```
 
-**In your head, read it as:**
-- `String?` = "Maybe String, maybe null"
-- `int?` = "Maybe int, maybe null"
-- `bool?` = "Maybe bool, maybe null"
+So a normal `String` box always holds a real string. You never have to worry about it being empty.
 
 ---
 
-## Using Nullable Variables (The Safe Way)
+## The `?` Box: Allowed To Be Empty
 
-### Problem: Can't Use Nullable Variables Directly
+Sometimes you genuinely do not have a value yet (maybe the user has not typed their phone number). For that, add a `?` to the type. This makes a box that **is allowed to be empty**:
 
 ```dart
-String? email = getUserEmail();  // Might be null!
-
-// ❌ ERROR: Can't do this directly
-print(email.length);  // What if email is null? Crash!
-
-// Dart protects you: "You must check first!"
+String? phone;          // a maybe-empty box, starts as null
+String? email = null;   // also fine, clearly empty
+int? score;             // starts as null
 ```
 
-### Solution 1: Check if Null
+Read the `?` as the word **"maybe"**:
+
+- `String` means "a string, definitely."
+- `String?` means "maybe a string, maybe nothing."
+
+A `?` box that you do not fill starts out as `null`.
+
+---
+
+## The Problem With Maybe-Empty Boxes
+
+If a box might be empty, using it directly is risky. What is the length of nothing? There is no answer, so the program would crash.
+
+Dart protects you: it will **not let you** use a `?` box as if it is definitely full. You have to handle the "maybe empty" case. Here are the gentle tools for that.
+
+---
+
+## Tool 1: `??` Gives A Backup Value
+
+`??` means **"use the left value, but if it is null, use the right one instead."** It is a backup plan.
 
 ```dart
-String? email = getUserEmail();
-
-// ✅ Check first
-if (email != null) {
-  // Inside here, Dart KNOWS email is not null
-  print(email.length);  // ✅ Safe!
+void main() {
+  String? nickname;   // empty (null)
+  String shown = nickname ?? 'Guest';
+  print(shown);       // Guest
 }
 ```
 
-**What happens:**
-```
-Before check:  email is String? (maybe null)
-After check:   email is String (definitely not null)
-               ↑ Dart "promotes" it to non-nullable
-```
-
-### Solution 2: The Safe Call Operator `?.`
+`nickname` is null, so `??` uses the backup `'Guest'`. If `nickname` had a value, it would use that instead:
 
 ```dart
-String? email = getUserEmail();
-
-// ✅ Use ?. (safe call)
-print(email?.length);
-
-// What it means:
-// "If email is not null, get length"
-// "If email IS null, return null"
-```
-
-**Visual explanation:**
-```dart
-email?.length
-
-Step 1: Is email null?
-   ├─ No  → Get email.length (e.g., 15)
-   └─ Yes → Return null (instead of crashing)
-```
-
-**Examples:**
-```dart
-String? email1 = 'alex@email.com';
-print(email1?.length);  // 15 (email exists, so get length)
-
-String? email2 = null;
-print(email2?.length);  // null (email is null, so return null)
-```
-
-### Solution 3: Provide Default with `??`
-
-The `??` operator means "use this if null":
-
-```dart
-String? savedName = getName();  // Might be null
-
-// Use savedName, or 'Guest' if null
-String displayName = savedName ?? 'Guest';
-
-print(displayName);
-// If savedName = 'Alex' → prints 'Alex'
-// If savedName = null  → prints 'Guest'
-```
-
-**Think of it as a backup:**
-```
-┌─────────────┐
-│   "Alex"    │  ← savedName has value
-└─────────────┘
-       ↓
-Use "Alex" (no need for backup)
-
-
-┌─────────────┐
-│    null     │  ← savedName is null
-└─────────────┘
-       ↓
-Use "Guest" (backup plan!)
-```
-
-**More examples:**
-```dart
-int? userAge = null;
-int age = userAge ?? 18;  // Use 18 if null
-print(age);  // 18
-
-String? theme = null;
-String appTheme = theme ?? 'dark';  // Default to 'dark'
-print(appTheme);  // dark
-```
-
-### Solution 4: The Dangerous `!` (Force Unwrap)
-
-The `!` means "I PROMISE this is not null (crash if I'm wrong)"
-
-```dart
-String? email = getEmail();
-
-// ⚠️ DANGEROUS: Force unwrap with !
-print(email!.length);
-
-// What it means:
-// "Trust me, email is NOT null"
-// "If I'm wrong, CRASH the app!"
-```
-
-**When it's safe:**
-```dart
-String? email = 'alex@email.com';
-print(email!.length);  // ✅ OK - we know it's not null
-```
-
-**When it crashes:**
-```dart
-String? email = null;
-print(email!.length);  // 💥 CRASH! You said it's not null, but it is!
-```
-
-**Rule: Only use `!` when you're 100% sure it's not null!**
-
----
-
-## Combining the Operators
-
-You can combine `?.` and `??` for powerful patterns:
-
-```dart
-String? email = getEmail();
-
-// Get length if email exists, otherwise use 0
-int length = email?.length ?? 0;
-
-// How it works:
-// 1. email?.length → If email is null, this returns null
-// 2. ?? 0 → If result is null, use 0
-
-// Examples:
-// email = 'alex@email.com' → length = 15
-// email = null             → length = 0
-```
-
-**Another example:**
-```dart
-String? name = getUserName();
-
-// Get uppercase name, or 'GUEST' if null
-String displayName = name?.toUpperCase() ?? 'GUEST';
-
-// If name = 'alex' → 'ALEX'
-// If name = null   → 'GUEST'
-```
-
----
-
-## Real-World Examples
-
-### Example 1: User Profile
-
-```dart
-class User {
-  String name;        // ← Must have (required)
-  int age;            // ← Must have (required)
-  String? email;      // ← Optional (can be null)
-  String? phone;      // ← Optional (can be null)
-
-  User({
-    required this.name,
-    required this.age,
-    this.email,   // Optional
-    this.phone,   // Optional
-  });
-}
-
-// Creating users:
-var user1 = User(name: 'Alex', age: 25);  // ✅ OK (email/phone null)
-
-var user2 = User(
-  name: 'Sam',
-  age: 30,
-  email: 'sam@email.com',  // Providing email
-);
-
-// Using nullable fields safely:
-print(user1.email?.length ?? 0);  // 0 (email is null)
-print(user2.email?.length ?? 0);  // 14 (email exists)
-```
-
-### Example 2: Fetching Data
-
-```dart
-// Function might not find the user
-String? findUserById(int id) {
-  if (id == 1) {
-    return 'Alex';
-  }
-  return null;  // User not found
-}
-
-// Using it safely:
-String? user = findUserById(5);
-
-if (user != null) {
-  print('Found user: $user');
-} else {
-  print('User not found');
-}
-
-// Or with ??:
-String displayName = findUserById(5) ?? 'Unknown User';
-print(displayName);  // 'Unknown User'
-```
-
-### Example 3: Form Input
-
-```dart
-class LoginForm {
-  String? email;     // User might not fill this yet
-  String? password;  // User might not fill this yet
-
-  bool canSubmit() {
-    // Check both are filled
-    return email != null && password != null;
-  }
-
-  void submit() {
-    if (canSubmit()) {
-      // Safe to use ! here (we checked above)
-      login(email!, password!);
-    } else {
-      print('Please fill all fields');
-    }
-  }
+void main() {
+  String? nickname = 'Boss';
+  print(nickname ?? 'Guest');   // Boss  (not null, so the backup is ignored)
 }
 ```
 
 ---
 
-## Quick Reference
+## Tool 2: `?.` Peeks Safely
 
-### Operators Cheat Sheet
+Normally you use a dot to reach inside a value, like `name.length`. But if the box might be empty, a plain dot is risky. The **safe peek** `?.` handles it: if the box is empty, the whole thing just becomes null instead of crashing.
 
 ```dart
-// ?  = Make variable nullable
-String? name;  // Can be null
+void main() {
+  String? name = 'Ada';
+  print(name?.length);   // 3   (name is not empty, so we get the length)
 
-// ?.  = Safe call (won't crash if null)
-name?.length;  // Returns null if name is null
-
-// ??  = Provide default if null
-name ?? 'Guest';  // Use 'Guest' if name is null
-
-// ??= = Assign only if null
-name ??= 'Default';  // Only assign if name is currently null
-
-// !  = Force unwrap (dangerous!)
-name!.length;  // "I promise name is not null" (crashes if wrong)
+  String? empty;
+  print(empty?.length);  // null (empty is null, so the result is null, no crash)
+}
 ```
 
----
+`?.` means "if there is something here, peek inside; if not, give me null."
 
-## Common Patterns
-
-### Pattern 1: Optional Function Parameters
+You can pair it with `??` to provide a backup:
 
 ```dart
-void greet({String? name, int? age}) {
-  print('Hello ${name ?? "friend"}');
-  print('Age: ${age ?? "unknown"}');
-}
-
-greet();  // Hello friend, Age: unknown
-greet(name: 'Alex');  // Hello Alex, Age: unknown
-greet(name: 'Alex', age: 25);  // Hello Alex, Age: 25
-```
-
-### Pattern 2: Chaining Safe Calls
-
-```dart
-class Address {
-  String? city;
-}
-
-class User {
-  Address? address;
-}
-
-User? user = getUser();
-
-// Chain safe calls:
-String? city = user?.address?.city;
-
-// With default:
-String displayCity = user?.address?.city ?? 'Unknown';
-```
-
-### Pattern 3: Late Variables
-
-When you'll assign a value later (before using):
-
-```dart
-class MyWidget {
-  late String name;  // I'll set this before using it
-
-  void init() {
-    name = 'Alex';  // ✅ Set it here
-  }
-
-  void display() {
-    print(name);  // ✅ Safe (init was called first)
-  }
+void main() {
+  String? name;
+  print(name?.length ?? 0);   // 0  (name is null -> length is null -> use 0)
 }
 ```
 
 ---
 
-## Practice Problems
+## Tool 3: `??=` Fills The Box Only If It Is Empty
 
-### Problem 1: Fix the Error
+`??=` means **"put this value in, but only if the box is currently empty."**
 
 ```dart
-// ❌ This has an error:
-String name;
-print(name);
+void main() {
+  String? title;        // empty
 
-// ✅ Fix option 1: Give it a value
-String name = 'Alex';
-print(name);
+  title ??= 'Untitled'; // it was empty, so this fills it
+  print(title);         // Untitled
 
-// ✅ Fix option 2: Make it nullable
-String? name;
-print(name);  // null
+  title ??= 'Something'; // not empty now, so this does nothing
+  print(title);          // Untitled
+}
 ```
 
-### Problem 2: Safe Email Display
+The first `??=` fills the empty box. The second sees it is already full and leaves it alone.
+
+---
+
+## Tool 4: `!` Says "Trust Me, It Is Not Empty" (Careful!)
+
+The `!` sign tells Dart "I promise this box is not empty." It is risky: if you are wrong, the program crashes.
 
 ```dart
-String? email = getUserEmail();
-
-// Display email length, or 'No email' if null
-// Write your solution:
-
-// Solution:
-String message = email != null
-    ? 'Email length: ${email.length}'
-    : 'No email';
-
-// Or shorter:
-String message2 = 'Email length: ${email?.length ?? 0}';
+void main() {
+  String? name = 'Ada';
+  print(name!.length);   // 3  (we know it is not empty, so this is fine)
+}
 ```
 
-### Problem 3: User Greeting
+But if the box really is empty, `!` crashes the program. Only use `!` when you are 100 percent sure. When in doubt, prefer `??` or the safe peek `?.`.
+
+---
+
+## A Quick Note On Yellow Hints
+
+When you type these tiny practice lines into an editor or DartPad, you might see a small **yellow hint** saying a check "is not needed here." That happens because in these little examples Dart can already see the value and knows it is not empty.
+
+In real apps, the value usually comes from somewhere Dart cannot see ahead of time, like something the user types into a form. That is exactly when `??`, `?.`, and `!` become essential. So learn them now. They run perfectly, and you will rely on them very soon. A yellow hint is just a suggestion, not an error.
+
+---
+
+## A Peek Ahead (Level 2)
+
+There is one more way to handle a maybe-empty box: **check it first with `if`**.
 
 ```dart
-String? firstName = 'Alex';
-String? lastName = null;
+String? name = 'Ada';
 
-// Create a full name, or 'Guest' if both are null
-// Your solution:
+if (name != null) {
+  print(name.length);   // safe: we checked it is not null
+}
+```
 
-// Solution:
-String fullName = '${firstName ?? ''} ${lastName ?? ''}'.trim();
-fullName = fullName.isEmpty ? 'Guest' : fullName;
-print(fullName);  // Alex
+You will learn `if` properly in Level 2. For now, the tools `??`, `?.`, and `??=` are enough.
 
-// Or:
-String name = firstName ?? lastName ?? 'Guest';
+---
+
+## The Top Mistakes Beginners Make
+
+### Mistake 1: Thinking null is the same as 0 or ''
+
+```dart
+int? a = null;   // empty
+int b = 0;       // the number zero (not empty)
+```
+
+They are different. `null` is nothing; `0` is a real number.
+
+### Mistake 2: Trying to put null in a normal box
+
+```dart
+String name = null;    // BAD: normal boxes cannot be empty
+String? name = null;   // GOOD: the ? box can be empty
+```
+
+### Mistake 3: Using `!` when you are not sure
+
+```dart
+String? name;          // empty!
+print(name!.length);   // CRASH: you promised it was not empty, but it was
+print(name?.length ?? 0); // SAFE: gives 0 instead of crashing
+```
+
+### Mistake 4: Forgetting the `?` on the type
+
+```dart
+String phone;          // BAD if you want it to start empty
+String? phone;         // GOOD: now it is allowed to be empty (null)
 ```
 
 ---
 
-## Summary
+## One-Minute Recap
 
-### The Golden Rules
-
-1. **Non-nullable by default** - Variables can't be null unless you add `?`
-   ```dart
-   String name = 'Alex';  // Can't be null
-   String? email;         // Can be null
-   ```
-
-2. **Check before using** - Always check nullable variables
-   ```dart
-   if (email != null) {
-     print(email.length);  // ✅ Safe
-   }
-   ```
-
-3. **Use safe operators** - `?.` and `??` are your friends
-   ```dart
-   email?.length          // Safe call
-   email ?? 'default'     // Default value
-   ```
-
-4. **Avoid `!`** - Only use when 100% sure
-   ```dart
-   email!.length  // ⚠️ Only if you're certain!
-   ```
-
-### Benefits of Null Safety
-
-```
-Before null safety:
-  ✍️ Write code
-  ▶️ Run app
-  💥 CRASH! "Null pointer exception"
-  🐛 Find the bug
-  🔄 Fix and repeat
-
-With null safety:
-  ✍️ Write code
-  ⚠️ Compiler shows error immediately
-  ✅ Fix before running
-  ▶️ Run app - no null crashes!
-```
+- `null` means an empty box, nothing inside. It is not `0` and not `''`.
+- Normal boxes (no `?`) must always have a value.
+- A `?` box (like `String?`) is allowed to be empty, and starts as `null`.
+- `??` gives a backup value when something is null.
+- `?.` peeks safely: it gives null instead of crashing.
+- `??=` fills a box only if it is currently empty.
+- `!` says "trust me, not empty," and crashes if you are wrong. Use it rarely.
 
 ---
 
-## Memory Tips
+## Quick Quiz
 
-**Think of `?` as "Maybe Box":**
-- `String` = Box MUST have string
-- `String?` = Box MAYBE has string
+**Q1.** What does `null` mean?
 
-**Remember the operators:**
-- `?.` = "Safe peek in the box"
-- `??` = "Use this if box is empty"
-- `!` = "I promise box isn't empty (danger!)"
+<details>
+<summary>Answer</summary>
+Nothing is in the box. It is empty. (Different from `0` or `''`, which hold real values.)
+</details>
 
-**The ladder of safety:**
-```
-Safest:  if (x != null) ...
-  ↓
-Safe:    x?.method()
-  ↓
-OK:      x ?? default
-  ↓
-Risky:   x!.method()  ← Use only when certain!
-```
+**Q2.** Why does `String name = null;` fail, but `String? name = null;` work?
 
----
+<details>
+<summary>Answer</summary>
+A normal `String` box must always have a value. Adding `?` makes it a "maybe" box that is allowed to be empty (null).
+</details>
 
-## Common Questions
+**Q3.** What does `nickname ?? 'Guest'` give if `nickname` is null?
 
-**Q: When should I use `String` vs `String?`?**
+<details>
+<summary>Answer</summary>
+`'Guest'`. The `??` uses the backup value when the left side is null.
+</details>
 
-A: Ask yourself: "Could this ever be missing/unknown?"
-- User's name (required at signup) → `String`
-- User's nickname (optional) → `String?`
-- API response (might fail) → `String?`
+**Q4.** What does `name?.length` give if `name` is null?
 
-**Q: Is `null` the same as `0` or empty string `''`?**
-
-A: No!
-- `null` = No value at all (empty box)
-- `0` = The number zero (box contains 0)
-- `''` = Empty string (box contains empty text)
-
-**Q: Why do I need null safety? Old Dart worked fine!**
-
-A: Old Dart caused crashes at runtime. New Dart catches bugs at compile time (before running). Safer apps, happier users!
+<details>
+<summary>Answer</summary>
+`null`. The safe peek `?.` gives null instead of crashing.
+</details>
 
 ---
 
 ## Assignment
 
-### Problem 1: Spot what compiles and what does not
+Try each in [dartpad.dev](https://dartpad.dev) before checking the answers.
 
-For each declaration, predict whether the line is legal.
+### Problem 1: Legal or not?
 
-```dart
-String name = null;            // 1
-String? nickname = null;       // 2
-int age = null;                // 3
-int? grade;                    // 4
-double price;                  // 5
-String city = '';              // 6
-```
-
-### Problem 2: Add the right `?` and `!`
-
-This code does not compile. Add `?` (to types) and `!` (to expressions) where appropriate to make it work. Do not change the logic.
+For each line, say whether it is allowed or causes an error, and why.
 
 ```dart
-String getName(String input) {
-  if (input.isEmpty) return null;
-  return input.toUpperCase();
-}
-
-void main() {
-  String result = getName('ada');
-  print(result.length);
-}
+String a = null;        // 1
+String? b = null;       // 2
+int c = null;           // 3
+int? d;                 // 4
+String e = '';          // 5
 ```
 
-### Problem 3: Predict the output
+### Problem 2: Backup values
 
 ```dart
 void main() {
-  String? a = 'hello';
+  String? a = 'Ada';
   String? b;
-  String? c = null;
 
-  print(a ?? 'default');
-  print(b ?? 'default');
-  print(c ?? 'default');
-
-  print(a?.length);
-  print(b?.length);
-
-  b ??= 'set now';
-  print(b);
-
-  b ??= 'try again';
-  print(b);
+  print(a ?? 'Guest');
+  print(b ?? 'Guest');
 }
 ```
 
-### Problem 4: Safe integer parser
+What are the two lines it prints?
 
-Dart's `int.parse('123')` returns 123, but `int.parse('not a number')` **throws** an exception. There is also `int.tryParse(...)` that returns `int?` (null on failure).
-
-Write a function `int parseOrZero(String text)` that returns the parsed integer, or 0 if parsing fails. Use `??` and `tryParse`.
-
-Test on `'42'`, `'7'`, `''`, and `'hello'`. Expected: 42, 7, 0, 0.
-
-### Problem 5: Build a profile getter
-
-You have:
+### Problem 3: Safe peek
 
 ```dart
-class User {
-  String? name;
-  int? age;
+void main() {
+  String? name = 'Bola';
+  String? empty;
+
+  print(name?.length);
+  print(empty?.length);
+  print(empty?.length ?? 0);
 }
 ```
 
-(Classes come in Level 4. Just read this for now.)
+Predict all three lines.
 
-Write a function `String greetUser(User? user)` that returns:
+### Problem 4: Fill if empty
 
-- `'Hello, $name (age $age)'` if everything is non-null.
-- `'Hello, $name'` if user and name are non-null but age is null.
-- `'Hello, friend'` if user is non-null but name is null.
-- `'No user signed in'` if user itself is null.
+```dart
+void main() {
+  String? theme;
 
-You will need `?.`, `??`, and a couple of explicit null checks. Walk the cases in your answer.
+  theme ??= 'light';
+  print(theme);
+
+  theme ??= 'dark';
+  print(theme);
+}
+```
+
+What does it print, and why does the second `??=` not change anything?
+
+### Problem 5: Pick the type
+
+For each, write `String` or `String?` and one short reason:
+
+1. A user's full name, required when they sign up.
+2. A user's middle name, which many people do not have.
+3. A greeting message you always set yourself.
+4. A phone number the user has not typed yet.
 
 ---
 
 ## Assignment Answers
 
-### Problem 1: Spot what compiles and what does not
+### Problem 1: Legal or not?
 
 ```dart
-String name = null;            // 1. ERROR: String cannot be null
-String? nickname = null;       // 2. ok: String? can be null
-int age = null;                // 3. ERROR: int cannot be null
-int? grade;                    // 4. ok: nullable, defaults to null
-double price;                  // 5. ERROR: non-nullable cannot be uninitialised
-String city = '';              // 6. ok: empty string is not null
+String a = null;     // 1. ERROR: a normal String box cannot be empty
+String? b = null;    // 2. OK: the ? box is allowed to be empty
+int c = null;        // 3. ERROR: a normal int box cannot be empty
+int? d;              // 4. OK: a ? box, starts as null
+String e = '';       // 5. OK: empty text is a real value, not null
 ```
 
-The rules:
+Remember: empty text `''` is not the same as `null`. Line 5 has a real (if empty) string inside.
 
-- A type without `?` cannot be null. If you do not give it a value, the compiler refuses, unless you mark it `late`.
-- A type with `?` can be null, and defaults to null if not initialised.
-- An empty string `''` is **not** null. It is a real string with zero characters.
-
-### Problem 2: Add the right `?` and `!`
-
-```dart
-String? getName(String input) {
-  if (input.isEmpty) return null;
-  return input.toUpperCase();
-}
-
-void main() {
-  String? result = getName('ada');
-  print(result!.length);
-}
-```
-
-What was added and why:
-
-1. **Return type became `String?`.** The function can return null, so the type must say so.
-2. **`result` is `String?`** because it stores the function's return value, which is nullable.
-3. **`result!.length`** uses the bang `!` to assert "trust me, this is not null right now". We know it is not null because we passed `'ada'` (non-empty).
-
-A safer version without `!`:
-
-```dart
-String? result = getName('ada');
-if (result != null) {
-  print(result.length);
-}
-```
-
-After the null check, Dart "knows" `result` is not null inside the if, and the dot access is safe without `!`. This is called **flow analysis**.
-
-### Problem 3: Predict the output
+### Problem 2: Backup values
 
 ```
-hello
-default
-default
-5
+Ada
+Guest
+```
+
+`a` is `'Ada'` (not null), so `a ?? 'Guest'` gives `'Ada'`. `b` is null, so `b ?? 'Guest'` falls back to `'Guest'`.
+
+### Problem 3: Safe peek
+
+```
+4
 null
-set now
-set now
+0
 ```
 
-Trace each:
+- `name?.length`: `name` is `'Bola'` (4 letters), so we get `4`.
+- `empty?.length`: `empty` is null, so the safe peek gives `null`.
+- `empty?.length ?? 0`: the peek gives null, then `?? 0` falls back to `0`.
 
-1. `a ?? 'default'`: a is `'hello'`, not null. Result is `'hello'`.
-2. `b ?? 'default'`: b is null. Result is `'default'`.
-3. `c ?? 'default'`: c is null. Result is `'default'`.
-4. `a?.length`: a is `'hello'`. Length is 5. Result is 5.
-5. `b?.length`: b is null. The whole expression is null. Result is null.
-6. `b ??= 'set now'`: b is null, so it gets set to `'set now'`. Then we print b, which is `'set now'`.
-7. `b ??= 'try again'`: b is no longer null (we just set it). The assignment is skipped. b stays `'set now'`. Print again.
+### Problem 4: Fill if empty
 
-The lesson: `??=` only assigns when the variable is null. Once it has a value, repeated `??=` calls do nothing.
-
-### Problem 4: Safe integer parser
-
-```dart
-int parseOrZero(String text) {
-  return int.tryParse(text) ?? 0;
-}
-
-void main() {
-  print(parseOrZero('42'));      // 42
-  print(parseOrZero('7'));       // 7
-  print(parseOrZero(''));        // 0
-  print(parseOrZero('hello'));   // 0
-}
+```
+light
+light
 ```
 
-How the one-liner works:
+The first `theme ??= 'light'` fills the empty box, so it becomes `'light'`. The second `theme ??= 'dark'` sees that `theme` is already full, so it does nothing. `??=` only fills when the box is empty.
 
-- `int.tryParse(text)` returns the parsed int if the text is a valid number. Otherwise it returns null.
-- `?? 0` falls back to 0 when the left side is null.
+### Problem 5: Pick the type
 
-This is a perfect use of nullable types. The "I might fail" return type forces the caller to handle the null case. The `??` operator handles it cleanly in one expression.
+| Value | Type | Why |
+|-------|------|-----|
+| Full name (required) | `String` | it must always be there |
+| Middle name (often missing) | `String?` | many people have none, so it can be empty |
+| A greeting you always set | `String` | you always give it a value |
+| Phone not typed yet | `String?` | it can be empty until they type it |
 
-The contrast: `int.parse` would throw an exception, which would crash unless you wrap it in try/catch. `tryParse` is much friendlier.
-
-### Problem 5: Build a profile getter
-
-```dart
-class User {
-  String? name;
-  int? age;
-}
-
-String greetUser(User? user) {
-  if (user == null) return 'No user signed in';
-  if (user.name == null) return 'Hello, friend';
-  if (user.age == null) return 'Hello, ${user.name}';
-  return 'Hello, ${user.name} (age ${user.age})';
-}
-```
-
-How each case is reached:
-
-1. **First, check if `user` itself is null.** If so, no point looking inside. Return the global default.
-2. **Then check if `user.name` is null.** Inside this branch, we know user is non-null. We can read `user.name`. If it is null, return the friend version.
-3. **Then check if `user.age` is null.** At this point, user and name are both non-null. We can use `user.name` directly.
-4. **If we get here, everything is non-null.** Return the full version.
-
-Note how each check narrows the unknown. After the first early-return, Dart knows `user` is non-null. After the second, both `user` and `user.name` are non-null. This is the "guard clause" pattern from earlier, applied to nullables.
-
-A version using `??`:
-
-```dart
-String greetUser(User? user) {
-  if (user == null) return 'No user signed in';
-
-  String name = user.name ?? 'friend';
-
-  if (user.age == null) return 'Hello, $name';
-  return 'Hello, $name (age ${user.age})';
-}
-```
-
-This is shorter but slightly different. It always prints `'friend'` instead of just dropping the part. Whether that is better depends on the requirements. The first version follows the spec exactly.
+The question to ask: could this be missing or unknown? If yes, use `?`. If it is always there, use a normal type.
 
 ---
 
-**Practice these concepts and null safety will become second nature.**
+**You finished Level 1!** You now know variables, types, strings, numbers, booleans, operators, and null safety.
+
+**Next:** open the Level 1 `Examples` and `Exercises` folders to practice, then move on to `../../Level-02-Control-Flow/Theory/00-LearningPath.md` to learn how programs make decisions.
