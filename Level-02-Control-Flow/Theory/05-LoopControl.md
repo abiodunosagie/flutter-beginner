@@ -396,64 +396,46 @@ When `i` becomes 2, `continue` jumps back to the check without running `i++`. `i
 
 ## Assignment
 
+Try each in [dartpad.dev](https://dartpad.dev) before reading the answer. Everything uses loops in `main` over number ranges. (Functions and Lists come in Level 3, so we do not need them yet.)
+
 ### Problem 1: Predict the output
 
 What does each loop print?
 
 ```dart
-// A
-for (int i = 1; i <= 10; i++) {
-  if (i == 4) continue;
-  if (i == 7) break;
-  print(i);
-}
+void main() {
+  // A
+  for (int i = 1; i <= 10; i++) {
+    if (i == 4) continue;
+    if (i == 7) break;
+    print(i);
+  }
 
-// B
-for (int i = 1; i <= 5; i++) {
-  for (int j = 1; j <= 5; j++) {
-    if (j > i) break;
-    print('$i,$j');
+  // B
+  for (int i = 1; i <= 5; i++) {
+    for (int j = 1; j <= 5; j++) {
+      if (j > i) break;
+      print('$i,$j');
+    }
   }
 }
 ```
 
-### Problem 2: First prime above a threshold
+### Problem 2: Sum the even numbers with continue
 
-A prime number is a number greater than 1 that is divisible only by 1 and itself. Write a function `int firstPrimeAbove(int n)` that returns the first prime number strictly greater than `n`. For `firstPrimeAbove(10)` the answer is 11. For `firstPrimeAbove(20)` it is 23.
+In `main`, use a `for` loop over 1 to 20. Use `continue` to skip the odd numbers, and add the even ones into an `int total`. Print the total. (Hint: `.isOdd` from the Numbers lesson tells you if a number is odd.)
 
-You will use both `break` and `continue` here. Plan how before you start typing.
+### Problem 3: First prime above a number
 
-### Problem 3: Filter and sum
+In `main`, make `int n = 10`. Find the first prime number bigger than `n` and print it. (A prime is a number above 1 with no divisor other than 1 and itself.) Use a `while (true)` loop for the candidates, and inside it a `for` loop with `break` to test for a divisor. For `n = 10` the answer is 11.
 
-Given a list of integers, return the sum of every positive even number. Skip negatives, skip zero, skip odd numbers. Use `continue`. Do not use `where` or `map`.
+### Problem 4: Find a product in a grid (labeled break)
 
-Test on `[3, -2, 4, 0, 5, 6, -8, 7, 10]`. Expected sum: 4 + 6 + 10 = 20.
+In `main`, make `int target = 12`. Search a multiplication grid: `i` from 1 to 9, and `j` from 1 to 9. Find the **first** pair where `i * j == target`, then stop **both** loops using a label. Print the pair, like `Found at 2 x 6`.
 
-### Problem 4: Find target in a 2D grid
+### Problem 5: Collect five, skipping multiples of 3
 
-Given a 2D grid (a list of lists of ints) and a target value, return a record with the row and column where the target first appears, scanned row by row. If the target is not found, return -1, -1.
-
-```dart
-List<List<int>> grid = [
-  [1, 2, 3],
-  [4, 5, 6],
-  [7, 8, 9],
-];
-```
-
-Find 5 (expected: row 1, col 1). Find 9 (expected: row 2, col 2). Find 99 (expected: -1, -1).
-
-You will need to break out of both loops cleanly. Use a label, then write a second version that uses `return` instead.
-
-### Problem 5: Process valid orders only
-
-You are given a list of order amounts. Process each one by adding to a running total, but:
-
-- Skip any negative amount (invalid).
-- Skip any amount over 1,000,000 (suspicious, requires manual review).
-- Stop processing entirely once you reach 5 valid orders (you only have time for so many today).
-
-Return the total. Test on `[200, -50, 1500000, 300, 400, 500, -100, 600, 700]`. Expected: 200+300+400+500+600 = 2000 (stopped at 5 valid).
+In `main`, loop `i` from 1 upward. Skip every multiple of 3 with `continue`. Add the others into an `int total` and count them. Once you have collected 5 numbers, `break`. Print how many you collected and the total.
 
 ---
 
@@ -461,7 +443,7 @@ Return the total. Test on `[200, -50, 1500000, 300, 400, 500, -100, 600, 700]`. 
 
 ### Problem 1: Predict the output
 
-**Loop A output:**
+**Loop A:**
 
 ```
 1
@@ -471,21 +453,16 @@ Return the total. Test on `[200, -50, 1500000, 300, 400, 500, -100, 600, 700]`. 
 6
 ```
 
-Trace:
-
-| i | check `i == 4` | check `i == 7` | what runs |
-|---|----------------|----------------|-----------|
-| 1 | no | no | print(1) |
-| 2 | no | no | print(2) |
-| 3 | no | no | print(3) |
-| 4 | yes, continue | --- | skip print, go to 5 |
-| 5 | no | no | print(5) |
-| 6 | no | no | print(6) |
+| i | `i == 4`? | `i == 7`? | what runs |
+|---|-----------|-----------|-----------|
+| 1-3 | no | no | print |
+| 4 | yes, continue | --- | skip print |
+| 5, 6 | no | no | print |
 | 7 | no | yes, break | exit loop |
 
 8, 9, 10 never run because we broke out at 7.
 
-**Loop B output:**
+**Loop B:**
 
 ```
 1,1
@@ -505,178 +482,109 @@ Trace:
 5,5
 ```
 
-Why this triangle pattern: the inner loop has the condition `if (j > i) break;`. So in row `i = 1`, the inner loop runs for `j = 1` only (when `j` becomes 2, `2 > 1` triggers break). In row `i = 2`, it runs for `j = 1, 2`. And so on. The result is a lower-triangular pattern.
+The inner loop breaks as soon as `j > i`. So row 1 prints just `j = 1`, row 2 prints `j = 1, 2`, and so on. That makes a triangle. The `break` only stops the inner loop, so the outer loop keeps going.
 
-`break` only exits the inner loop. The outer loop keeps going for the next `i`.
-
-### Problem 2: First prime above a threshold
+### Problem 2: Sum the even numbers with continue
 
 ```dart
-bool isPrime(int n) {
-  if (n < 2) return false;
-  for (int d = 2; d * d <= n; d++) {
-    if (n % d == 0) return false;     // found a divisor, not prime
-  }
-  return true;
-}
+void main() {
+  int total = 0;
 
-int firstPrimeAbove(int n) {
+  for (int i = 1; i <= 20; i++) {
+    if (i.isOdd) continue;   // skip odd numbers
+    total += i;
+  }
+
+  print(total);   // 110
+}
+```
+
+When `i` is odd, `continue` skips the addition and moves on. Only the even numbers (2, 4, 6, ... 20) reach `total += i`. Their sum is 110.
+
+### Problem 3: First prime above a number
+
+```dart
+void main() {
+  int n = 10;
   int candidate = n + 1;
+
   while (true) {
-    if (isPrime(candidate)) return candidate;
+    bool isPrime = candidate > 1;
+
+    for (int d = 2; d * d <= candidate; d++) {
+      if (candidate % d == 0) {
+        isPrime = false;
+        break;             // found a divisor, stop checking
+      }
+    }
+
+    if (isPrime) break;    // candidate is prime, stop searching
     candidate++;
   }
+
+  print('First prime above $n is $candidate');   // 11
 }
 ```
 
-How the design works:
+How it works:
 
-1. **Helper function `isPrime`.** Walk divisors `d` starting at 2. If any `d` divides `n` evenly (`n % d == 0`), it is not prime. We can stop as soon as `d * d > n`, because any divisor larger than the square root would have a partner smaller than the square root, which we would have found already. The `return false` inside the loop is essentially a `break` with a result.
-2. **Main function `firstPrimeAbove`.** Start one above `n`. Loop forever (`while (true)`). Each round, check if the current candidate is prime. If yes, return. If no, increment and try again.
-3. **Why `while (true)` is safe here.** We have a guaranteed exit via `return`. There are infinitely many primes (proven mathematically), so the loop cannot run forever in practice.
+1. Start checking at `n + 1` (which is 11).
+2. For each candidate, assume it is prime, then look for a divisor with the inner `for` loop. If `candidate % d == 0`, it has a divisor, so it is not prime, and we `break` the inner loop early.
+3. If the candidate survived (still prime), we `break` the outer `while`. Otherwise we try the next number.
 
-Trace for `firstPrimeAbove(10)`:
-- candidate 11: isPrime(11)? Try d=2: 11%2=1 no. Try d=3: d*d=9 <= 11, 11%3=2 no. Try d=4: d*d=16 > 11, exit loop. Return true. We return 11.
+For `n = 10`, candidate 11 has no divisor (we test d = 2, 3; `3 * 3 = 9 <= 11`, none divide), so it is prime. Prints 11.
 
-Trace for `firstPrimeAbove(20)`:
-- 21: divisible by 3 (21 = 3 * 7), not prime, increment.
-- 22: divisible by 2, not prime, increment.
-- 23: try d=2 (no), d=3 (no), d=4 (16 < 23, 23%4=3 no), d=5 (25 > 23, exit). Prime. Return 23.
-
-### Problem 3: Filter and sum
+### Problem 4: Find a product in a grid (labeled break)
 
 ```dart
-int sumPositiveEvens(List<int> nums) {
-  int total = 0;
-
-  for (int n in nums) {
-    if (n <= 0) continue;        // skip negatives and zero
-    if (n.isOdd) continue;       // skip odd numbers
-    total += n;
-  }
-
-  return total;
-}
-```
-
-How the logic flows:
-
-For each number, we check the disqualifying conditions one at a time. If any of them apply, we `continue` and skip the addition. Only numbers that pass every check reach `total += n`.
-
-Trace on `[3, -2, 4, 0, 5, 6, -8, 7, 10]`:
-
-| n | check | action |
-|---|-------|--------|
-| 3 | odd | continue |
-| -2 | <= 0 | continue |
-| 4 | passes | total = 4 |
-| 0 | <= 0 | continue |
-| 5 | odd | continue |
-| 6 | passes | total = 10 |
-| -8 | <= 0 | continue |
-| 7 | odd | continue |
-| 10 | passes | total = 20 |
-
-Final total: 20. Correct.
-
-This pattern, "use `continue` to skip items that fail a filter", is one of the most common shapes in real code. As you get more advanced you will use `where` for the same job, but the explicit version makes the intent crystal clear.
-
-### Problem 4: Find target in a 2D grid
-
-**Version 1, with a label:**
-
-```dart
-({int row, int col}) findInGrid(List<List<int>> grid, int target) {
-  int foundRow = -1;
-  int foundCol = -1;
+void main() {
+  int target = 12;
+  int foundI = -1;
+  int foundJ = -1;
 
   search:
-  for (int i = 0; i < grid.length; i++) {
-    for (int j = 0; j < grid[i].length; j++) {
-      if (grid[i][j] == target) {
-        foundRow = i;
-        foundCol = j;
-        break search;
+  for (int i = 1; i <= 9; i++) {
+    for (int j = 1; j <= 9; j++) {
+      if (i * j == target) {
+        foundI = i;
+        foundJ = j;
+        break search;   // exits BOTH loops
       }
     }
   }
 
-  return (row: foundRow, col: foundCol);
+  print('Found at $foundI x $foundJ');   // Found at 2 x 6
 }
 ```
 
-How the label version works:
+The label `search:` names the outer loop. `break search;` jumps all the way out of both loops at once. Scanning row by row, the first pair that multiplies to 12 is `2 x 6` (row 1 only reaches 1 x 9 = 9, so 12 first appears at i = 2, j = 6). We save the values before breaking, then print them.
 
-1. **The label `search:`** is placed right before the outer loop. It does not change behaviour by itself. It just gives the loop a name we can refer to.
-2. **`break search;`** breaks the loop with the matching label. Since the outer loop has that label, we exit the outer loop, which automatically also exits the inner loop.
-3. **We capture the indexes** in outer variables before breaking, because after the break we cannot reach the values of `i` and `j` from inside the loops.
-4. **The return type `({int row, int col})`** is a Dart record, a quick way to bundle two values together. You will see this more in Level 4.
-
-**Version 2, with return:**
+### Problem 5: Collect five, skipping multiples of 3
 
 ```dart
-({int row, int col}) findInGrid(List<List<int>> grid, int target) {
-  for (int i = 0; i < grid.length; i++) {
-    for (int j = 0; j < grid[i].length; j++) {
-      if (grid[i][j] == target) {
-        return (row: i, col: j);     // exits the whole function
-      }
-    }
-  }
-  return (row: -1, col: -1);
-}
-```
-
-This is shorter and arguably cleaner. `return` does the same job as `break search` here, plus it sends the result back at the same time. We also do not need temporary variables. As we said in the lesson, "if you reach for a label, often a function with `return` is the better answer". This is the proof.
-
-### Problem 5: Process valid orders only
-
-```dart
-int processOrders(List<int> orders) {
+void main() {
   int total = 0;
-  int processed = 0;
+  int collected = 0;
 
-  for (int amount in orders) {
-    if (amount < 0) continue;            // skip invalid
-    if (amount > 1000000) continue;      // skip suspicious
+  for (int i = 1; i <= 100; i++) {
+    if (i % 3 == 0) continue;   // skip multiples of 3
 
-    total += amount;
-    processed++;
+    total += i;
+    collected++;
 
-    if (processed >= 5) break;           // done for the day
+    if (collected >= 5) break;  // stop once we have 5
   }
 
-  return total;
+  print('Collected $collected numbers, total $total');
 }
 ```
 
-How the rules map to the code:
-
-1. **Two `continue` statements** at the top of the body handle the two skip conditions. Order does not matter much here since both are disqualifying.
-2. **The valid-order work** (add to total, increment processed) only runs if neither `continue` fired.
-3. **The `break`** is at the bottom of the body. Once we have processed 5 valid orders, no point in looking at the rest of the list.
-
-Trace on `[200, -50, 1500000, 300, 400, 500, -100, 600, 700]`:
-
-| amount | check | action | total | processed |
-|--------|-------|--------|-------|-----------|
-| 200 | passes | add | 200 | 1 |
-| -50 | < 0 | continue | 200 | 1 |
-| 1500000 | > 1M | continue | 200 | 1 |
-| 300 | passes | add | 500 | 2 |
-| 400 | passes | add | 900 | 3 |
-| 500 | passes | add | 1400 | 4 |
-| -100 | < 0 | continue | 1400 | 4 |
-| 600 | passes | add | 2000 | 5, then break |
-
-Final total: 2000. Correct.
-
-Note that 700 was never visited. The loop ended at the break.
+The `continue` skips 3, 6, 9, and so on. The numbers we keep are 1, 2, 4, 5, 7. After the fifth one (7), `collected` reaches 5 and `break` stops the loop. Their sum is `1 + 2 + 4 + 5 + 7 = 19`, so it prints `Collected 5 numbers, total 19`. This shows `continue` (skip) and `break` (stop) working together in one loop.
 
 ---
 
 **Done with Level 2 theory!**
 
-Next, head to the `Examples/` folder to run the working code, then `Exercises.md` to practise on your own.
+Next, head to the `Examples/` folder to run the working code, then the `Exercises/` folder to practise on your own.
 
-When you are ready to move on, open `../Level-03-Functions-Collections/README.md`.
+When you are ready, open `../Level-03-Functions-Collections/Theory/00-LearningPath.md`.
