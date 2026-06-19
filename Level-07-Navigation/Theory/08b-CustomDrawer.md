@@ -1,5 +1,9 @@
 # Custom Drawer Design
 
+## The Big Idea In One Sentence
+
+> Flutter ships ready-made drawer pieces: `UserAccountsDrawerHeader` for the profile banner and your own small `DrawerItem` widget to keep menu rows tidy and highlight the selected one.
+
 Learn how to create beautiful, custom drawer menus!
 
 ---
@@ -150,11 +154,72 @@ Scaffold(
 
 ---
 
-## Continue Learning
+## Quick Quiz
 
-Now let's learn about advanced drawer patterns!
+**Q1.** Which built-in widget gives you a polished profile header (name, email, avatar)?
 
-**Continue to:** [Drawer Patterns →](08c-DrawerPatterns.md)
+<details>
+<summary>Answer</summary>
+`UserAccountsDrawerHeader`.
+</details>
+
+**Q2.** Why make your own `DrawerItem` widget instead of repeating `ListTile` code?
+
+<details>
+<summary>Answer</summary>
+To avoid repetition and keep the selected-item styling in one place, so every row looks and behaves the same.
+</details>
+
+**Q3.** What is the Material 3 version of the drawer called?
+
+<details>
+<summary>Answer</summary>
+`NavigationDrawer`, using `NavigationDrawerDestination` items.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Use the header
+
+Write a `UserAccountsDrawerHeader` showing the name "Ada Lovelace" and email "ada@math.com".
+
+### Problem 2: Reuse a widget
+
+You have a custom `DrawerItem(icon:, title:, onTap:)`. Write one for a "Home" row using `Icons.home`.
+
+### Problem 3: Why a custom widget?
+
+Name one benefit of a reusable `DrawerItem` over copy-pasting `ListTile`s.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Use the header
+
+```dart
+UserAccountsDrawerHeader(
+  accountName: Text('Ada Lovelace'),
+  accountEmail: Text('ada@math.com'),
+  currentAccountPicture: CircleAvatar(child: Text('AL')),
+),
+```
+
+### Problem 2: Reuse a widget
+
+```dart
+DrawerItem(
+  icon: Icons.home,
+  title: 'Home',
+  onTap: () => Navigator.pop(context),
+),
+```
+
+### Problem 3: Why a custom widget?
+
+Any one: less repeated code, one place to change the styling, and consistent selected-state highlighting across all rows.
 
 ---
 
