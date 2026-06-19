@@ -1,5 +1,9 @@
 # GoRouter Navigation
 
+## The Big Idea In One Sentence
+
+> A path can carry data: a **path parameter** (`/product/:id`) names the thing, **query parameters** (`?sort=new`) add options, and **extra** passes a whole object that does not fit in a URL.
+
 Master path parameters, query parameters, and navigation methods!
 
 ---
@@ -468,11 +472,69 @@ context.push('/product/123');
 
 ---
 
-## Continue Learning
+## Quick Quiz
 
-Great! You now know GoRouter basics. Next, let's learn about nested routes and advanced features!
+**Q1.** In the route `'/product/:id'`, what is `:id`?
 
-**Continue to:** [Nested Routes →](05a-NestedRoutes.md)
+<details>
+<summary>Answer</summary>
+A path parameter, a slot in the URL. You read it with `state.pathParameters['id']`.
+</details>
+
+**Q2.** Where would you put a sort option like `sort=newest`?
+
+<details>
+<summary>Answer</summary>
+In a query parameter: `/search?sort=newest`, read with `state.uri.queryParameters['sort']`.
+</details>
+
+**Q3.** You want to hand a full `Product` object to the next screen without putting it in the URL. What do you use?
+
+<details>
+<summary>Answer</summary>
+`extra:` (`context.push('/product/1', extra: product)`), read with `state.extra as Product`.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Read a path parameter
+
+Inside a `GoRoute` with path `'/user/:name'`, write the line that gets the name out of `state`.
+
+### Problem 2: Navigate with it
+
+Write the `context.push` that opens the user screen for the name `'ada'`.
+
+### Problem 3: Pick the parameter type
+
+For each, choose path parameter, query parameter, or extra:
+1. The id of the product being viewed.
+2. A page number for a long list.
+3. A full `Order` object you do not want shown in the URL.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Read a path parameter
+
+```dart
+final name = state.pathParameters['name']!;
+```
+
+### Problem 2: Navigate with it
+
+```dart
+context.push('/user/ada');
+```
+
+### Problem 3: Pick the parameter type
+
+1. **Path parameter** (`/product/:id`), it identifies the screen's main thing.
+2. **Query parameter** (`?page=2`), an optional extra.
+3. **Extra** (`extra: order`), a complex object kept out of the URL.
 
 ---
 
