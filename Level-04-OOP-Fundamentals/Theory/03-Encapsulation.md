@@ -1,50 +1,55 @@
-# Encapsulation: Hiding Implementation
+# Encapsulation: Protecting An Object's Data
 
-## What Is Encapsulation?
+## The Big Idea In One Sentence
 
-**Encapsulation** means bundling data and methods together AND controlling access to them.
+> Encapsulation means **hiding an object's data** and only letting the outside world change it through safe, controlled steps.
 
-Think of a TV:
-- You can use **buttons** (public interface)
-- You can't touch **internal circuits** (private implementation)
-
-```dart
-class TV {
-  int _channel = 1;       // Private (hidden)
-  int _volume = 50;       // Private (hidden)
-
-  void channelUp() {      // Public (accessible)
-    _channel++;
-  }
-
-  void volumeUp() {       // Public (accessible)
-    if (_volume < 100) _volume++;
-  }
-}
-```
+It is how you stop other code from putting your object into a silly state.
 
 ---
 
-## Why Encapsulation?
+## A Picture To Hold In Your Head
 
-### Without Encapsulation (Bad)
+Think of a **TV**.
+
+- You use the **buttons and remote** to change the channel and volume. That is the safe, public way.
+- You do **not** open the back and poke the wires. Those are hidden inside for a reason.
+
+Encapsulation is the same idea in code:
+
+- The **buttons** are the public methods and getters anyone can use.
+- The **wires** are the private data, hidden so nobody can mess it up.
+
+---
+
+## Why We Need It
+
+Here is a bank account with no protection:
 
 ```dart
 class BankAccount {
-  double balance = 0;  // Anyone can modify!
+  double balance = 0;
 }
 
 void main() {
   var account = BankAccount();
-  account.balance = -1000000;  // Uh oh! Invalid state!
+  account.balance = -1000000;   // uh oh, a negative balance!
 }
 ```
 
-### With Encapsulation (Good)
+Anyone can set the balance to anything, even a nonsense negative number. There is no rule stopping them. That is a bug waiting to happen.
+
+Encapsulation fixes this: hide the balance, and only allow changes through methods that check the rules.
+
+---
+
+## Making Data Private With `_`
+
+In Dart, you make something private by starting its name with an **underscore** `_`.
 
 ```dart
 class BankAccount {
-  double _balance = 0;  // Private
+  double _balance = 0;   // private: the underscore means "hands off"
 
   void deposit(double amount) {
     if (amount > 0) {
@@ -52,159 +57,38 @@ class BankAccount {
     }
   }
 
-  void withdraw(double amount) {
-    if (amount > 0 && amount <= _balance) {
-      _balance -= amount;
-    }
-  }
+  double get balance => _balance;   // a safe way to read it (more on this below)
+}
+```
 
-  double get balance => _balance;  // Read-only access
+Now the balance lives behind a `deposit` method that checks the amount is positive. The outside world cannot just slam a bad value into it.
+
+> **An honest note for DartPad.** Dart's `_` privacy works between files. If this class were in its own file (like in a real app), other files truly could not touch `_balance`. But when everything is in **one** DartPad file, Dart will still let you reach `_balance`. So while you are learning in a single file, treat anything with a `_` as off-limits even though Dart does not block you yet. The habit is what matters.
+
+---
+
+## Getters: A Safe Way To Read
+
+A **getter** lets the outside read a value, but not change it. You write `get` before a name, and use `=>` to give back the value.
+
+```dart
+class BankAccount {
+  double _balance = 100;
+
+  double get balance => _balance;   // read-only view of the balance
 }
 
 void main() {
   var account = BankAccount();
-  account.deposit(100);
-  // account._balance = -1000000;  // Error! Can't access private
-  // account.balance = -1000000;   // Error! No setter
+  print(account.balance);   // 100.0   (no parentheses, like a property)
 }
 ```
 
----
+Notice you read it as `account.balance`, with **no parentheses**. A getter looks like a property from the outside, but it is really a tiny function.
 
-## Private in Dart
+### Getters Can Compute Things
 
-In Dart, prefix with `_` to make something private:
-
-```dart
-class Example {
-  int publicField = 0;      // Anyone can access
-  int _privateField = 0;    // Only this file can access
-
-  void publicMethod() { }   // Anyone can call
-  void _privateMethod() { } // Only this file can call
-}
-```
-
-**Important:** Dart's private is file-level, not class-level!
-
-```dart
-// In same file - can access _private
-void main() {
-  var ex = Example();
-  ex._privateField = 10;  // Works in same file!
-}
-```
-
----
-
-## Getters and Setters
-
-Control how properties are read and written.
-
-### Getter (Read Access)
-
-```dart
-class Circle {
-  double _radius;
-
-  Circle(this._radius);
-
-  // Getter - computed property
-  double get radius => _radius;
-  double get diameter => _radius * 2;
-  double get area => 3.14159 * _radius * _radius;
-  double get circumference => 2 * 3.14159 * _radius;
-}
-
-void main() {
-  var c = Circle(5);
-
-  print(c.radius);        // 5.0
-  print(c.diameter);      // 10.0
-  print(c.area);          // 78.53975
-  print(c.circumference); // 31.4159
-}
-```
-
-### Setter (Write Access)
-
-```dart
-class Temperature {
-  double _celsius;
-
-  Temperature(this._celsius);
-
-  // Getter
-  double get celsius => _celsius;
-  double get fahrenheit => _celsius * 9 / 5 + 32;
-
-  // Setter with validation
-  set celsius(double value) {
-    if (value >= -273.15) {  // Absolute zero check
-      _celsius = value;
-    }
-  }
-
-  set fahrenheit(double value) {
-    celsius = (value - 32) * 5 / 9;  // Converts and validates
-  }
-}
-
-void main() {
-  var temp = Temperature(25);
-
-  print(temp.celsius);     // 25.0
-  print(temp.fahrenheit);  // 77.0
-
-  temp.fahrenheit = 100;
-  print(temp.celsius);     // 37.77...
-
-  temp.celsius = -500;     // Ignored! Below absolute zero
-  print(temp.celsius);     // Still 37.77...
-}
-```
-
----
-
-## Read-Only Properties
-
-Only getter, no setter:
-
-```dart
-class User {
-  final String _id;
-  String _name;
-  final DateTime _createdAt;
-
-  User(this._id, this._name) : _createdAt = DateTime.now();
-
-  // Read-only (no setter)
-  String get id => _id;
-  DateTime get createdAt => _createdAt;
-
-  // Read-write
-  String get name => _name;
-  set name(String value) {
-    if (value.isNotEmpty) _name = value;
-  }
-}
-
-void main() {
-  var user = User('123', 'Alice');
-
-  print(user.id);  // 123
-  // user.id = '456';  // Error! No setter
-
-  user.name = 'Bob';  // OK, has setter
-  print(user.name);   // Bob
-}
-```
-
----
-
-## Computed Properties
-
-Properties that calculate values on demand:
+A getter does not have to just hand back a stored value. It can **work something out** from the object's data.
 
 ```dart
 class Rectangle {
@@ -213,51 +97,250 @@ class Rectangle {
 
   Rectangle(this.width, this.height);
 
-  // Computed properties
   double get area => width * height;
   double get perimeter => 2 * (width + height);
-  double get diagonal => sqrt(width * width + height * height);
   bool get isSquare => width == height;
 }
 
-import 'dart:math';
+void main() {
+  var r = Rectangle(4, 3);
+  print(r.area);       // 12.0
+  print(r.perimeter);  // 14.0
+  print(r.isSquare);   // false
+}
+```
+
+`area` is not stored anywhere. It is calculated fresh each time you ask. This is great, because it can never go out of sync with `width` and `height`.
+
+---
+
+## Setters: A Safe Way To Change
+
+A **setter** lets the outside change a value, but it can **check the rules first**. You write `set` before a name and take one value.
+
+```dart
+class Person {
+  int _age = 0;
+
+  int get age => _age;
+
+  set age(int value) {
+    if (value >= 0 && value <= 150) {
+      _age = value;     // only accept sensible ages
+    }
+  }
+}
 
 void main() {
-  var rect = Rectangle(3, 4);
+  var p = Person();
 
-  print('Area: ${rect.area}');           // 12.0
-  print('Perimeter: ${rect.perimeter}'); // 14.0
-  print('Diagonal: ${rect.diagonal}');   // 5.0
-  print('Is square: ${rect.isSquare}');  // false
+  p.age = 25;       // looks like a normal assignment
+  print(p.age);     // 25
 
-  rect.width = 4;
-  print('Is square now: ${rect.isSquare}');  // true
+  p.age = -10;      // rejected by the setter's check
+  print(p.age);     // 25  (unchanged)
+}
+```
+
+From the outside, `p.age = 25` looks like a plain assignment. But behind the scenes the setter runs its check first. The bad value `-10` is quietly ignored, so the object stays valid.
+
+---
+
+## Read-Only: A Getter With No Setter
+
+If you want a value that can be **read but never changed from outside**, give it a getter and **no** setter.
+
+```dart
+class User {
+  final String _id;
+  String _name;
+
+  User(this._id, this._name);
+
+  String get id => _id;       // read-only: no setter
+
+  String get name => _name;   // read-write: has a setter below
+  set name(String value) {
+    if (value.isNotEmpty) _name = value;
+  }
+}
+
+void main() {
+  var u = User('A123', 'Ada');
+
+  print(u.id);     // A123
+  u.name = 'Bola'; // allowed, there is a setter
+  print(u.name);   // Bola
+}
+```
+
+`id` has only a getter, so once set it can never change. `name` has both, so it can be read and (carefully) changed.
+
+---
+
+## Why This Matters In Flutter
+
+Real apps are full of objects that must stay valid: a cart total that is never negative, an age that is always sensible, an id that never changes. Encapsulation is how you guarantee that. You hide the raw data and expose safe getters and setters. Every serious Flutter app is built this way.
+
+---
+
+## The Top Mistakes Beginners Make
+
+### Mistake 1: Calling a getter with parentheses
+
+```dart
+print(account.balance());   // BAD: a getter is not called with ()
+print(account.balance);     // GOOD
+```
+
+### Mistake 2: Leaving data public when it needs rules
+
+```dart
+double balance = 0;     // BAD: anyone can set a bad value
+double _balance = 0;    // GOOD: hide it, expose safe methods
+```
+
+### Mistake 3: Storing a computed value instead of using a getter
+
+```dart
+// BAD: area can get out of sync if width changes
+double area;
+// GOOD: compute it each time
+double get area => width * height;
+```
+
+### Mistake 4: Expecting `_` to block access in one DartPad file
+
+Within a single file, Dart still lets you reach `_name`. The protection kicks in across files in a real project. Treat `_` as "private" anyway.
+
+---
+
+## One-Minute Recap
+
+- Encapsulation = hide the data, control how it changes.
+- Make data private with a leading underscore: `_balance`.
+- A **getter** (`get`) gives safe read access, and can compute values.
+- A **setter** (`set`) gives controlled write access, and can check the rules.
+- A getter with no setter is **read-only**.
+- Read a getter with no parentheses: `account.balance`.
+
+---
+
+## Quick Quiz
+
+**Q1.** How do you make a field private in Dart?
+
+<details>
+<summary>Answer</summary>
+Start its name with an underscore, like `_balance`.
+</details>
+
+**Q2.** What does this print?
+
+```dart
+class Person {
+  int _age = 20;
+  int get age => _age;
+  set age(int value) {
+    if (value >= 0) _age = value;
+  }
+}
+
+void main() {
+  var p = Person();
+  p.age = -5;
+  print(p.age);
+}
+```
+
+<details>
+<summary>Answer</summary>
+`20`. The setter rejects negative values, so the age stays at its starting value of 20.
+</details>
+
+**Q3.** What is a read-only property?
+
+<details>
+<summary>Answer</summary>
+A property with a getter but no setter. You can read it from outside, but not change it.
+</details>
+
+**Q4.** Why is a computed getter (`get area => width * height`) better than a stored `area` field?
+
+<details>
+<summary>Answer</summary>
+It is calculated fresh each time, so it can never get out of sync. A stored `area` would be wrong the moment `width` or `height` changed.
+</details>
+
+---
+
+## Assignment
+
+Try each in [dartpad.dev](https://dartpad.dev) before checking the answers.
+
+### Problem 1: A safe counter
+
+Write a `Counter` class with a private `int _count` starting at 0. Give it a getter `count`, a method `increase()` that adds 1, and a method `decrease()` that subtracts 1 but **never** lets the count go below 0. Test it by decreasing below zero.
+
+### Problem 2: Computed getters
+
+Write a `Square` class with a `double side`. Add two computed getters: `area` (side times side) and `perimeter` (four times side). Build a square with side 5 and print both.
+
+### Problem 3: Predict the output
+
+```dart
+class Thermostat {
+  double _temp = 20;
+
+  double get temp => _temp;
+
+  set temp(double value) {
+    if (value >= 10 && value <= 30) {
+      _temp = value;
+    }
+  }
+}
+
+void main() {
+  var t = Thermostat();
+  t.temp = 25;
+  print(t.temp);
+  t.temp = 50;
+  print(t.temp);
+}
+```
+
+### Problem 4: Validated bank account
+
+Write a `BankAccount` class with a private `double _balance` (starts at 0), a read-only getter `balance`, a `deposit(amount)` method that only accepts positive amounts, and a `withdraw(amount)` method that only works if the amount is positive and not more than the balance. Test all the cases.
+
+### Problem 5: Spot the bugs
+
+This program has two mistakes. Find and fix them.
+
+```dart
+class Counter {
+  int _count = 0;
+
+  int get count() => _count;
+
+  void add() {
+    count = count + 1;
+  }
+}
+
+void main() {
+  var c = Counter();
+  c.add();
+  print(c.count);
 }
 ```
 
 ---
 
-## Encapsulation Patterns
+## Assignment Answers
 
-### Pattern 1: Validation
-
-```dart
-class Age {
-  int _years = 0;
-
-  int get years => _years;
-
-  set years(int value) {
-    if (value >= 0 && value <= 150) {
-      _years = value;
-    } else {
-      throw ArgumentError('Invalid age: $value');
-    }
-  }
-}
-```
-
-### Pattern 2: Logging
+### Problem 1: A safe counter
 
 ```dart
 class Counter {
@@ -265,229 +348,128 @@ class Counter {
 
   int get count => _count;
 
-  set count(int value) {
-    print('Counter changed: $_count -> $value');
-    _count = value;
-  }
-}
-```
-
-### Pattern 3: Lazy Loading
-
-```dart
-class ExpensiveData {
-  List<int>? _data;
-
-  List<int> get data {
-    // Only calculate once, on first access
-    _data ??= _loadExpensiveData();
-    return _data!;
+  void increase() {
+    _count = _count + 1;
   }
 
-  List<int> _loadExpensiveData() {
-    print('Loading expensive data...');
-    return List.generate(1000000, (i) => i);
-  }
-}
-```
-
-### Pattern 4: Derived/Computed Values
-
-```dart
-class Person {
-  String firstName;
-  String lastName;
-
-  Person(this.firstName, this.lastName);
-
-  // Computed from other properties
-  String get fullName => '$firstName $lastName';
-  String get initials => '${firstName[0]}${lastName[0]}';
-}
-```
-
----
-
-## Practical Example: Shopping Cart
-
-```dart
-class ShoppingCart {
-  final List<CartItem> _items = [];
-  double _discount = 0;
-
-  // Read-only access to items (copy to prevent modification)
-  List<CartItem> get items => List.unmodifiable(_items);
-
-  // Computed properties
-  double get subtotal =>
-      _items.fold(0, (sum, item) => sum + item.total);
-
-  double get discount => _discount;
-
-  double get total => subtotal * (1 - _discount);
-
-  int get itemCount => _items.length;
-
-  bool get isEmpty => _items.isEmpty;
-
-  // Controlled modification
-  void addItem(CartItem item) {
-    var existing = _items.where((i) => i.productId == item.productId);
-    if (existing.isNotEmpty) {
-      existing.first.quantity += item.quantity;
-    } else {
-      _items.add(item);
+  void decrease() {
+    if (_count > 0) {
+      _count = _count - 1;
     }
   }
-
-  void removeItem(String productId) {
-    _items.removeWhere((item) => item.productId == productId);
-  }
-
-  void applyDiscount(double percent) {
-    if (percent >= 0 && percent <= 0.5) {  // Max 50% discount
-      _discount = percent;
-    }
-  }
-
-  void clear() {
-    _items.clear();
-    _discount = 0;
-  }
-}
-
-class CartItem {
-  final String productId;
-  final String name;
-  final double price;
-  int quantity;
-
-  CartItem(this.productId, this.name, this.price, this.quantity);
-
-  double get total => price * quantity;
 }
 
 void main() {
-  var cart = ShoppingCart();
-
-  cart.addItem(CartItem('001', 'Apple', 1.50, 5));
-  cart.addItem(CartItem('002', 'Bread', 2.50, 2));
-  cart.addItem(CartItem('001', 'Apple', 1.50, 3));  // Adds to existing
-
-  print('Items: ${cart.itemCount}');
-  print('Subtotal: \$${cart.subtotal}');
-
-  cart.applyDiscount(0.1);  // 10% off
-  print('After discount: \$${cart.total}');
-
-  // Can't directly modify _items
-  // cart._items.clear();  // Error!
-  // cart.items.add(...);  // Error! Unmodifiable list
+  var c = Counter();
+  c.increase();
+  c.increase();
+  c.decrease();
+  c.decrease();
+  c.decrease();   // would go to -1, but blocked
+  print(c.count); // 0
 }
 ```
 
----
+`_count` is private, so the only way to change it is through `increase` and `decrease`. The check `if (_count > 0)` inside `decrease` stops it from ever going negative. After two increases and three decreases it lands at 0, not -1.
 
-## Best Practices
-
-### 1. Make Fields Private by Default
+### Problem 2: Computed getters
 
 ```dart
-// ✅ Good: Private with controlled access
-class User {
-  String _email;
+class Square {
+  double side;
 
-  String get email => _email;
-  set email(String value) {
-    if (_isValidEmail(value)) _email = value;
+  Square(this.side);
+
+  double get area => side * side;
+  double get perimeter => side * 4;
+}
+
+void main() {
+  var s = Square(5);
+  print(s.area);        // 25.0
+  print(s.perimeter);   // 20.0
+}
+```
+
+Neither `area` nor `perimeter` is stored. They are computed from `side` whenever you read them, so they are always correct.
+
+### Problem 3: Predict the output
+
+```
+25.0
+25.0
+```
+
+`t.temp = 25` is inside the allowed range (10 to 30), so it is accepted, and `temp` becomes 25. `t.temp = 50` is outside the range, so the setter ignores it, and `temp` stays 25.
+
+### Problem 4: Validated bank account
+
+```dart
+class BankAccount {
+  double _balance = 0;
+
+  double get balance => _balance;
+
+  void deposit(double amount) {
+    if (amount > 0) {
+      _balance = _balance + amount;
+    }
+  }
+
+  void withdraw(double amount) {
+    if (amount > 0 && amount <= _balance) {
+      _balance = _balance - amount;
+    }
   }
 }
 
-// ❌ Bad: Public, no validation
-class User {
-  String email;  // Anyone can set invalid email
+void main() {
+  var account = BankAccount();
+  account.deposit(100);
+  account.withdraw(30);
+  account.withdraw(1000);   // too much, ignored
+  account.deposit(-50);     // negative, ignored
+  print(account.balance);   // 70.0
 }
 ```
 
-### 2. Use Getters for Computed Values
+The balance is private, so the only way to change it is through `deposit` and `withdraw`, which both check the rules. The bad calls (withdrawing more than the balance, depositing a negative) are quietly ignored, so the balance ends at 70.
+
+### Problem 5: Spot the bugs
+
+The two mistakes:
+
+1. `int get count() => _count;` declares the getter with parentheses. A getter declaration has **no** `()`. It should be `int get count => _count;`.
+2. `count = count + 1;` tries to assign to `count`, but `count` is a getter with no setter, so you cannot assign to it. To change the value, use the private field directly: `_count = _count + 1;`.
+
+Fixed:
 
 ```dart
-// ✅ Good: Computed from actual data
-class Circle {
-  double radius;
-  double get area => 3.14159 * radius * radius;
-}
+class Counter {
+  int _count = 0;
 
-// ❌ Bad: Storing computed value (can get out of sync)
-class Circle {
-  double radius;
-  double area;  // What if radius changes?
-}
-```
+  int get count => _count;        // no parentheses
 
-### 3. Validate in Setters
-
-```dart
-class Score {
-  int _value = 0;
-
-  set value(int v) {
-    _value = v.clamp(0, 100);  // Always valid
+  void add() {
+    _count = _count + 1;          // change the private field, not the getter
   }
 }
+
+void main() {
+  var c = Counter();
+  c.add();
+  print(c.count);   // 1
+}
 ```
 
----
+Output:
 
-## Summary
+```
+1
+```
 
-| Concept | Purpose |
-|---------|---------|
-| Private (`_`) | Hide implementation details |
-| Getter | Control read access |
-| Setter | Control write access + validate |
-| Computed property | Calculate value from other fields |
-| Read-only | Getter without setter |
+The lesson: a getter is declared with no `()`, and a getter-only property cannot be assigned to. Change the private field behind it instead.
 
 ---
 
-## Quick Quiz
-
-**Q1:** How do you make something private in Dart?
-
-<details>
-<summary>Answer</summary>
-
-Prefix with underscore: `_privateField`, `_privateMethod()`
-
-</details>
-
-**Q2:** What's the difference between a getter and a regular method?
-
-<details>
-<summary>Answer</summary>
-
-Syntax: getter is accessed like a property (`obj.value`), method needs parentheses (`obj.getValue()`)
-
-Both can contain logic, but getters should be fast and have no side effects.
-
-</details>
-
-**Q3:** When should you use a setter vs a method?
-
-<details>
-<summary>Answer</summary>
-
-Use setter for single-value assignment with validation: `obj.age = 25`
-
-Use method for complex operations or multiple parameters: `obj.updateProfile(name, age, email)`
-
-</details>
-
----
-
-**Next:** Learn about inheritance - extending classes.
-
----
-
-**Continue to:** `04-Inheritance.md`
+**Next:** `04-Inheritance.md`, where one class can build on top of another.
