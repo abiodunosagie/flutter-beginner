@@ -1,6 +1,10 @@
 # Riverpod Advanced Patterns: Pro Techniques
 
-Now let's learn the advanced techniques that professionals use to build complex apps with Riverpod! Think of these as the secret recipes that master chefs use.
+## The Big Idea In One Sentence
+
+> A few pro tools round out Riverpod: providers can **depend on each other**, `ref.listen` runs **side effects** (like a snackbar) without rebuilding, `.select` rebuilds only on the part you care about, and `ref.invalidate`/`ref.refresh` force a reload.
+
+These are the finishing touches that make Riverpod apps clean and efficient. (Some examples touch async, which is Level 8; focus on the pattern.)
 
 ---
 
@@ -626,6 +630,77 @@ class TodoPage extends ConsumerWidget {
 5. **Testing** providers is super easy with `ProviderContainer`
 
 These patterns will help you build professional, scalable Flutter apps with Riverpod!
+
+---
+
+## Quick Quiz
+
+**Q1.** What is `ref.listen` for?
+
+<details>
+<summary>Answer</summary>
+Running a side effect when a provider changes (show a snackbar, navigate, log), without rebuilding the widget. Use it in `build`, but it does not return a value to display.
+</details>
+
+**Q2.** How is `.select` different from a plain `ref.watch`?
+
+<details>
+<summary>Answer</summary>
+`.select` rebuilds only when the specific part you pick changes, instead of on any change to the whole provider.
+</details>
+
+**Q3.** What is the difference between `ref.invalidate` and `ref.refresh`?
+
+<details>
+<summary>Answer</summary>
+`invalidate` marks the provider as stale so it rebuilds next time it is read; `refresh` invalidates **and** immediately gives you the new value.
+</details>
+
+---
+
+## Assignment
+
+These are about choosing the right tool (mostly conceptual).
+
+### Problem 1: Pick the tool
+
+Which Riverpod tool fits each job: provider dependency, `ref.listen`, `.select`, or `ref.refresh`?
+
+1. Show a snackbar when an error value appears.
+2. Rebuild a widget only when the user's **name** changes, not their whole profile.
+3. A "filtered list" that depends on both a "search text" provider and a "items" provider.
+4. A pull-to-refresh that reloads the data now.
+
+### Problem 2: ref.listen vs ref.watch
+
+You want to navigate to a new screen when `loggedInProvider` becomes true. Should you use `ref.watch` or `ref.listen`? Why?
+
+### Problem 3: Select for performance
+
+A `userProvider` holds name, age, and email. Write the line that rebuilds a widget only when `name` changes.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Pick the tool
+
+1. Snackbar on error -> `ref.listen` (a side effect, no rebuild needed).
+2. Rebuild only on name change -> `.select`.
+3. Filtered list depending on two providers -> a provider dependency (a new provider that watches both).
+4. Pull-to-refresh reload now -> `ref.refresh`.
+
+### Problem 2: ref.listen vs ref.watch
+
+Use `ref.listen`. Navigating is a **side effect**, not something you display. `ref.watch` is for building UI from a value; if you tried to navigate inside `build`, it would fire during a rebuild, which is wrong. `ref.listen` runs your callback only when the value actually changes, which is exactly when you want to navigate.
+
+### Problem 3: Select for performance
+
+```dart
+final name = ref.watch(userProvider.select((u) => u.name));
+```
+
+This rebuilds the widget only when `name` changes, ignoring changes to `age` or `email`.
 
 ---
 
