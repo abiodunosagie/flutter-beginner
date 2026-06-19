@@ -1,5 +1,9 @@
 # Dependency Injection: A Step-by-Step Guide
 
+## The Big Idea In One Sentence
+
+> Dependency injection just means: a class receives what it needs from outside (through its constructor) instead of building it inside, which makes the code easy to change and easy to test.
+
 This guide explains Dependency Injection (DI) from scratch - no assumptions, no jumping ahead.
 
 ---
@@ -586,7 +590,78 @@ Use abstract classes when you need to swap implementations:
 
 ---
 
+## Quick Quiz
+
+**Q1.** In one line, what is dependency injection?
+
+<details>
+<summary>Answer</summary>
+Receiving the things a class needs from outside (usually via the constructor) instead of creating them inside.
+</details>
+
+**Q2.** What does the service locator give you that creating objects inline does not?
+
+<details>
+<summary>Answer</summary>
+A single shared instance of each piece, wired together in one place, so you change a URL or swap a dependency once.
+</details>
+
+**Q3.** Why depend on the abstract `UserRepository` instead of the concrete `UserRepositoryImpl`?
+
+<details>
+<summary>Answer</summary>
+So you can inject a different implementation (a mock for tests, a local one for offline) without changing the controller.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Inject it
+
+Rewrite this to receive its repository instead of creating it:
+
+```dart
+class UsersController {
+  final repo = UserRepositoryImpl(apiClient: ApiClient(baseUrl: '...'));
+}
+```
+
+### Problem 2: One change, everywhere
+
+With a service locator, where do you change the API base URL so the whole app uses the new one?
+
+### Problem 3: Abstract or concrete?
+
+For a quick weekend app with no tests, is it OK to depend on the concrete `UserRepositoryImpl`?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Inject it
+
+```dart
+class UsersController {
+  final UserRepository repository;
+  UsersController({required this.repository});
+}
+```
+
+The repository (with its API client) is built elsewhere and passed in.
+
+### Problem 2: One change, everywhere
+
+In the service locator's `apiClient` getter (the single place the `baseUrl` is set). Everything that depends on it picks up the change.
+
+### Problem 3: Abstract or concrete?
+
+Yes. For a small app with no tests, depending on the concrete class is fine and simpler. Introduce the abstract interface when you need to test or swap data sources.
+
+---
+
 ## Navigation
 
-Previous: [Folder Structure Guide](09d-FolderStructureGuide.md)
+Previous: [Service Layer](09f-ServiceLayer.md)
 Back to: [Learning Path](00-LearningPath.md)
+Next: [Best Practices](09h-BestPractices.md)
