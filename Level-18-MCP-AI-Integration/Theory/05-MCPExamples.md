@@ -1,5 +1,9 @@
 # MCP Practical Examples
 
+## The Big Idea In One Sentence
+
+> Seeing MCP in action makes it click: each example exposes a tool the AI can call (read data, do a task), starting simple and building up, so you can picture using it in your own app.
+
 Let's build real examples that demonstrate MCP concepts in action. These examples progress from simple to complex.
 
 ---
@@ -1479,6 +1483,63 @@ AI: "In Abuja, it's 28 degrees and partly cloudy. And 100 divided by 4
 | Todo API | Node.js | REST API patterns in MCP |
 | Todo Server | Python | Python MCP server |
 | Flutter App | Dart | Full Flutter app with AI tools |
+
+---
+
+## Quick Quiz
+
+**Q1.** In these examples, what is the AI actually calling?
+
+<details>
+<summary>Answer</summary>
+Tools exposed by an MCP server, each tool does a real action or returns real data.
+</details>
+
+**Q2.** Why start with a simple example before a complex one?
+
+<details>
+<summary>Answer</summary>
+So you understand the basic request-tool-response flow before adding harder pieces on top.
+</details>
+
+**Q3.** What is the AI's job versus the tool's job?
+
+<details>
+<summary>Answer</summary>
+The AI decides which tool to call and with what input; the tool does the actual work and returns a result.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Design a tool
+
+You want the AI to tell users the weather. What tool would the MCP server expose, and what input would it take?
+
+### Problem 2: Whose job?
+
+For "What's the weather in Lagos?", what does the AI do and what does the tool do?
+
+### Problem 3: Next step
+
+After these examples, where do you practice what you learned?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Design a tool
+
+A `getWeather` tool that takes a city (and maybe a date) as input and returns the forecast.
+
+### Problem 2: Whose job?
+
+The AI understands the question and calls `getWeather(city: 'Lagos')`. The tool fetches and returns the actual weather data, which the AI then explains to the user.
+
+### Problem 3: Next step
+
+In the exercises: `Exercises/01-MCPExercises.md`.
 
 ---
 

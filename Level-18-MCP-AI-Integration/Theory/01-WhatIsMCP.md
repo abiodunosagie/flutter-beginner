@@ -1,5 +1,9 @@
 # What is MCP? (Model Context Protocol)
 
+## The Big Idea In One Sentence
+
+> MCP is a standard "plug" that lets an AI assistant safely use real tools (files, databases, services), turning a chatbot that only talks into one that can actually do things.
+
 MCP is a new way for AI assistants to connect with the outside world. Think of it as giving AI "hands" to interact with tools, databases, files, and services.
 
 ---
@@ -344,6 +348,63 @@ Before MCP, every AI system had its own way of connecting to tools. MCP provides
 | Server | Provides specific tools/capabilities |
 | Tools | Actions AI can perform |
 | Resources | Data AI can access |
+
+---
+
+## Quick Quiz
+
+**Q1.** What does MCP stand for, and what does it do in one line?
+
+<details>
+<summary>Answer</summary>
+Model Context Protocol: a standard way for AI assistants to connect to and use real tools and data.
+</details>
+
+**Q2.** What is the "hands for AI" analogy about?
+
+<details>
+<summary>Answer</summary>
+A plain AI can only talk. MCP gives it hands to take actions: read files, query databases, call services.
+</details>
+
+**Q3.** Why is a standard protocol better than each AI inventing its own way?
+
+<details>
+<summary>Answer</summary>
+Tools built once work with any MCP-compatible AI, instead of needing custom glue for every assistant.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Talk vs do
+
+Give one example of something a plain chatbot cannot do but an MCP-connected AI can.
+
+### Problem 2: The plug analogy
+
+In one sentence, why is MCP like a standard plug/port?
+
+### Problem 3: What does MCP stand for?
+
+Spell it out.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Talk vs do
+
+Examples: read your files, look up a record in your database, send an email, fetch live data, or run a tool, actions, not just text.
+
+### Problem 2: The plug analogy
+
+Any tool that follows the MCP standard works with any MCP-compatible AI, just like any device with a standard plug works in a standard socket.
+
+### Problem 3: What does MCP stand for?
+
+Model Context Protocol.
 
 ---
 

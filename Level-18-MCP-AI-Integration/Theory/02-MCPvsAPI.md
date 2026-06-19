@@ -1,5 +1,9 @@
 # MCP vs API: Understanding the Difference
 
+## The Big Idea In One Sentence
+
+> An API is built for programmers who read docs and write exact calls; MCP is built for AI assistants to discover and use tools on their own, often MCP wraps your existing APIs so an AI can use them.
+
 You've probably worked with APIs before. Now let's understand how MCP is different and when to use each.
 
 ---
@@ -462,6 +466,38 @@ Use MCP. The AI needs to understand context, choose relevant tools dynamically (
 <summary>Answer</summary>
 Yes! MCP servers commonly wrap existing APIs, providing a standardized interface for AI while using APIs for actual data fetching.
 </details>
+
+---
+
+## Assignment
+
+### Problem 1: Who is it for?
+
+Who is the main "user" of an API, and who is the main "user" of MCP?
+
+### Problem 2: Replace or wrap?
+
+Does MCP replace your existing APIs, or work with them?
+
+### Problem 3: Pick the case
+
+You want your AI assistant to look up orders in your system. Do you expose a plain API or an MCP server, and why?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Who is it for?
+
+An API is for programmers (who write exact calls from docs). MCP is for AI assistants (which discover and call tools on their own).
+
+### Problem 2: Replace or wrap?
+
+It works with them. MCP often wraps existing APIs so an AI can use them through the standard protocol.
+
+### Problem 3: Pick the case
+
+An MCP server (wrapping your order API), so the AI assistant can discover and call the "look up order" tool itself, with the right permissions.
 
 ---
 

@@ -1,5 +1,9 @@
 # MCP Architecture: How It Works
 
+## The Big Idea In One Sentence
+
+> MCP has a client (inside the AI app) talking to a server (which exposes tools, resources, and prompts), so the AI asks the server "what can you do?" and then calls those tools.
+
 Now let's dive into the technical details of how MCP is structured and how the pieces fit together.
 
 ---
@@ -633,6 +637,38 @@ JSON-RPC 2.0 - A simple remote procedure call protocol using JSON.
 <summary>Answer</summary>
 ~/Library/Application Support/Claude/claude_desktop_config.json
 </details>
+
+---
+
+## Assignment
+
+### Problem 1: Two sides
+
+Name the two main pieces of MCP and which side each lives on.
+
+### Problem 2: Discover then call
+
+In one line, how does the AI know what a server can do?
+
+### Problem 3: What a server offers
+
+Name one of the things an MCP server can expose to the AI.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Two sides
+
+The **client** (inside the AI application) and the **server** (which provides the tools/data). The client connects to the server.
+
+### Problem 2: Discover then call
+
+It asks the server to list its capabilities (tools/resources), then calls the ones it needs.
+
+### Problem 3: What a server offers
+
+Any of: tools (actions the AI can run), resources (data it can read), or prompts (reusable prompt templates).
 
 ---
 

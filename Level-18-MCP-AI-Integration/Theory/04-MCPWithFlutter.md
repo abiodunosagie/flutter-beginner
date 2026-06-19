@@ -1,5 +1,9 @@
 # MCP with Flutter: Building AI-Powered Apps
 
+## The Big Idea In One Sentence
+
+> A Flutter app can be an AI-powered client that talks to an MCP server (often through your own backend), so users chat and the AI uses real tools to answer and act.
+
 Now let's explore how you can integrate MCP concepts into Flutter applications.
 
 ---
@@ -869,6 +873,63 @@ class CachedResult {
 2. **AI APIs support tool use** - Similar concept, easier to implement
 3. **You can build MCP servers** - Expose your app to AI assistants
 4. **MCP is about standards** - Learn once, apply everywhere
+
+---
+
+## Quick Quiz
+
+**Q1.** In an AI-powered Flutter app, what role does the Flutter app usually play?
+
+<details>
+<summary>Answer</summary>
+The client/UI: the user chats, and the app sends requests to an AI/MCP layer (often via your backend).
+</details>
+
+**Q2.** Why route AI/MCP calls through your own backend instead of straight from the app?
+
+<details>
+<summary>Answer</summary>
+To keep API keys secret and control access, the device should not hold the secret keys (see Level 15 security).
+</details>
+
+**Q3.** What does MCP add on top of a normal AI chat in the app?
+
+<details>
+<summary>Answer</summary>
+The ability for the AI to use real tools/data (not just talk), so it can actually do things for the user.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: The role
+
+In an AI app, is the Flutter app the MCP client or the MCP server?
+
+### Problem 2: Keep keys safe
+
+Where should the secret AI/API key live, and why not in the app?
+
+### Problem 3: Why bother with MCP?
+
+Name one thing MCP lets your AI feature do that plain chat cannot.
+
+---
+
+## Assignment Answers
+
+### Problem 1: The role
+
+The client (the UI that the user talks to). The MCP server side exposes the tools/data.
+
+### Problem 2: Keep keys safe
+
+On your backend server, not in the app. Anything shipped in the app can be extracted, so secret keys must stay server-side.
+
+### Problem 3: Why bother with MCP?
+
+It lets the AI take real actions or fetch real data (look up an order, read a file, run a tool), instead of only generating text.
 
 ---
 
