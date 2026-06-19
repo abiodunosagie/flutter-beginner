@@ -602,12 +602,16 @@ The core is a small service that wraps `flutter_local_notifications`. Each remin
 ```dart
 // Needs: flutter_local_notifications, timezone
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/data/latest.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
 
 class ReminderService {
   final _plugin = FlutterLocalNotificationsPlugin();
 
   Future<void> init() async {
+    tzdata.initializeTimeZones(); // REQUIRED before using tz.local,
+                                  // otherwise tz.local is UTC and reminders
+                                  // fire at the wrong wall-clock time.
     const android = AndroidInitializationSettings('@mipmap/ic_launcher');
     const ios = DarwinInitializationSettings();
     await _plugin.initialize(
@@ -616,6 +620,7 @@ class ReminderService {
   }
 
   // 2 + 5: schedule a notification at a specific time
+  // (API matches flutter_local_notifications ^16.1.0, the version this level uses)
   Future<void> schedule(int id, String title, DateTime when) async {
     await _plugin.zonedSchedule(
       id,
@@ -627,6 +632,8 @@ class ReminderService {
         iOS: DarwinNotificationDetails(),
       ),
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
     );
   }
 

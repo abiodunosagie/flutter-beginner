@@ -491,7 +491,7 @@ Use the ABSOLUTE path from `pwd` (relative paths do not work in the config):
 
 After restarting Claude Desktop, the prompts should behave like this:
 - "What currencies do you support?" → Claude calls your `list_currencies` tool and reads back the list (USD, NGN, EUR, GBP...).
-- "Convert 100 USD to Naira" → Claude calls `convert` with `{from: 'USD', to: 'NGN', amount: 100}` and reports the result.
+- "Convert 100 USD to Naira" → Claude calls `convert_currency` with `{from: 'USD', to: 'NGN', amount: 100}` and reports the result.
 - "Convert 1000 NGN to GBP" → works the same with different args.
 - An unknown currency (e.g. "Convert 5 XYZ to USD") → your tool returns an error message and Claude relays it politely instead of crashing.
 

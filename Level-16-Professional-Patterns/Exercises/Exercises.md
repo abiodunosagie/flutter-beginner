@@ -522,8 +522,9 @@ class CompleteTodoWithNotificationUseCase {
 <details>
 <summary>✅ Solution</summary>
 
+`GetAllTodosUseCase` is already written for you in the exercise stub above; here you add the rest. Each use case = one action, and they all look the same:
+
 ```dart
-// Each use case = one action. They all look like this:
 class GetTodoUseCase implements UseCase<Todo, String> {
   final TodoRepository repository;
   GetTodoUseCase(this.repository);

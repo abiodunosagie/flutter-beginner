@@ -378,7 +378,7 @@ class _SwitcherDemoState extends State<SwitcherDemo> {
               ? const Text('✓ Success',
                   key: ValueKey('ok'),
                   style: TextStyle(color: Colors.green, fontSize: 28))
-              : const Text('X Error',
+              : const Text('✗ Error',
                   key: ValueKey('err'),
                   style: TextStyle(color: Colors.red, fontSize: 28)),
         ),
@@ -517,7 +517,7 @@ The same `Hero` tag on the grid image and the full-screen image makes it fly bet
 ```dart
 class GalleryScreen extends StatelessWidget {
   const GalleryScreen({super.key});
-  final List<String> titles = const ['One','Two','Three','Four','Five','Six'];
+  static const titles = ['One','Two','Three','Four','Five','Six'];
 
   @override
   Widget build(BuildContext context) {
