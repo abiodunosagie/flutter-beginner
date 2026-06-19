@@ -1,490 +1,393 @@
-# Constructors: Creating Objects
+# Constructors: Better Ways To Build Objects
 
-## What Is a Constructor?
+## The Big Idea In One Sentence
 
-A **constructor** is a special method that creates and initializes an object.
+> A **constructor** is the setup code that runs when you build an object, and Dart gives you a few handy ways to write it.
+
+You already met the basic constructor in the last lesson. Now you learn the upgrades that make building objects easier and clearer.
+
+---
+
+## Quick Recap: The Basic Constructor
+
+From the last lesson, the basic constructor has the same name as the class and uses the `this.` shortcut to fill in the properties:
 
 ```dart
 class Dog {
   String name;
   int age;
 
-  // Constructor
-  Dog(this.name, this.age);
+  Dog(this.name, this.age);   // the constructor
 }
 
 void main() {
-  var buddy = Dog('Buddy', 3);  // Constructor is called here
+  var rex = Dog('Rex', 4);    // the constructor runs here
+  print(rex.name);            // Rex
 }
 ```
 
-Think of it like:
-- The class is a **recipe**
-- The constructor is the **cooking process**
-- The object is the **finished dish**
+That is the foundation. Everything below builds on it.
 
 ---
 
-## Default Constructor
+## Upgrade 1: Default Values
 
-If you don't define a constructor, Dart provides a default one:
+Sometimes a value has a sensible default, and you want the caller to be able to skip it. Put the slot in **square brackets** `[ ]` and give it a default:
 
 ```dart
-class Point {
-  double x = 0;
-  double y = 0;
+class BankAccount {
+  String owner;
+  double balance;
+
+  BankAccount(this.owner, [this.balance = 0]);
 }
 
 void main() {
-  var p = Point();  // Uses default constructor
-  print('(${p.x}, ${p.y})');  // (0.0, 0.0)
+  var a = BankAccount('Ada');        // balance defaults to 0
+  var b = BankAccount('Bola', 500);  // balance set to 500
+
+  print(a.balance);   // 0.0
+  print(b.balance);   // 500.0
 }
 ```
+
+`owner` is required. `balance` is optional and starts at 0 if you do not pass one. (It shows as `0.0` because `balance` is a `double`.) This is the same optional-positional idea you saw with functions in Level 3.
 
 ---
 
-## Basic Constructor
+## Upgrade 2: Named Parameters (The Flutter Style)
 
-The most common type:
+When a class has several properties, passing them in order gets confusing. Was that `true` the active flag, or something else? **Named parameters** fix this by labelling each value.
 
-```dart
-class Person {
-  String name;
-  int age;
-
-  // Basic constructor
-  Person(String name, int age) {
-    this.name = name;
-    this.age = age;
-  }
-}
-```
-
-### Shorthand Syntax (Preferred)
-
-Dart has a cleaner shorthand:
-
-```dart
-class Person {
-  String name;
-  int age;
-
-  // Shorthand - automatically assigns this.name and this.age
-  Person(this.name, this.age);
-}
-
-void main() {
-  var alice = Person('Alice', 25);
-}
-```
-
----
-
-## Named Constructors
-
-Create multiple constructors with different names:
-
-```dart
-class Point {
-  double x;
-  double y;
-
-  // Default constructor
-  Point(this.x, this.y);
-
-  // Named constructor: at origin
-  Point.origin() : x = 0, y = 0;
-
-  // Named constructor: from another point
-  Point.fromPoint(Point other) : x = other.x, y = other.y;
-
-  // Named constructor: on x-axis
-  Point.onXAxis(double x) : x = x, y = 0;
-
-  // Named constructor: on y-axis
-  Point.onYAxis(double y) : x = 0, y = y;
-
-  @override
-  String toString() => '($x, $y)';
-}
-
-void main() {
-  var p1 = Point(3, 4);
-  var p2 = Point.origin();
-  var p3 = Point.onXAxis(5);
-  var p4 = Point.onYAxis(7);
-  var p5 = Point.fromPoint(p1);
-
-  print(p1);  // (3.0, 4.0)
-  print(p2);  // (0.0, 0.0)
-  print(p3);  // (5.0, 0.0)
-  print(p4);  // (0.0, 7.0)
-  print(p5);  // (3.0, 4.0)
-}
-```
-
----
-
-## Named Parameters in Constructors
-
-Make constructors more readable:
+Wrap the slots in **curly braces** `{ }`, and mark the must-have ones `required`:
 
 ```dart
 class User {
   String name;
   String email;
-  int? age;
   bool isActive;
 
   User({
     required this.name,
     required this.email,
-    this.age,
     this.isActive = true,
   });
 }
 
 void main() {
-  var user1 = User(
-    name: 'Alice',
-    email: 'alice@email.com',
-  );
+  var u1 = User(name: 'Ada', email: 'ada@mail.com');
+  var u2 = User(name: 'Bola', email: 'bola@mail.com', isActive: false);
 
-  var user2 = User(
-    name: 'Bob',
-    email: 'bob@email.com',
-    age: 30,
-    isActive: false,
-  );
-
-  print('${user1.name}: active=${user1.isActive}');  // Alice: active=true
-  print('${user2.name}: active=${user2.isActive}');  // Bob: active=false
+  print('${u1.name}: active ${u1.isActive}');   // Ada: active true
+  print('${u2.name}: active ${u2.isActive}');   // Bola: active false
 }
 ```
+
+Look at the call: `User(name: 'Ada', email: 'ada@mail.com')`. Every value is labelled, so it reads itself. `required` means the caller must supply it. `isActive` has a default, so it can be skipped.
+
+> This is the exact style Flutter uses for every widget. You will write constructors like this constantly, so get comfortable now. It is the same named-parameter idea from the Level 3 Parameters lesson, now used for building objects.
 
 ---
 
-## Initializer Lists
+## Upgrade 3: Named Constructors (More Than One Way To Build)
 
-Run code BEFORE the constructor body:
+Sometimes you want a few different ways to build the same kind of object. Dart lets you add **named constructors**: extra constructors with a label after a dot.
 
-```dart
-class Rectangle {
-  double width;
-  double height;
-  double area;
-  double perimeter;
-
-  // Initializer list: executes BEFORE constructor body
-  Rectangle(this.width, this.height)
-      : area = width * height,
-        perimeter = 2 * (width + height);
-}
-
-void main() {
-  var rect = Rectangle(5, 3);
-  print('Area: ${rect.area}');          // Area: 15.0
-  print('Perimeter: ${rect.perimeter}'); // Perimeter: 16.0
-}
-```
-
-### With Assertions
-
-Validate values in the initializer list:
-
-```dart
-class PositiveNumber {
-  int value;
-
-  PositiveNumber(this.value)
-      : assert(value > 0, 'Value must be positive');
-}
-
-void main() {
-  var num = PositiveNumber(5);   // OK
-  // var bad = PositiveNumber(-3);  // AssertionError!
-}
-```
-
----
-
-## Const Constructors
-
-Create compile-time constant objects:
-
-```dart
-class Point {
-  final double x;
-  final double y;
-
-  // Const constructor - all fields must be final
-  const Point(this.x, this.y);
-}
-
-void main() {
-  // Const objects are created at compile time
-  const p1 = Point(0, 0);
-  const p2 = Point(0, 0);
-
-  // Same memory location!
-  print(identical(p1, p2));  // true
-
-  // Non-const objects
-  var p3 = Point(0, 0);
-  var p4 = Point(0, 0);
-  print(identical(p3, p4));  // false (different objects)
-}
-```
-
-### Why Use Const?
-
-- Better performance (created once at compile time)
-- Required for Flutter's `const` widgets
-- Enables object comparison with `identical()`
-
----
-
-## Factory Constructors
-
-Control object creation - can return existing objects or different types:
-
-```dart
-class Logger {
-  static final Logger _instance = Logger._internal();
-
-  // Factory constructor
-  factory Logger() {
-    return _instance;  // Always return the same instance
-  }
-
-  // Private constructor
-  Logger._internal();
-
-  void log(String message) {
-    print('[LOG] $message');
-  }
-}
-
-void main() {
-  var logger1 = Logger();
-  var logger2 = Logger();
-
-  // Same object!
-  print(identical(logger1, logger2));  // true
-
-  logger1.log('Hello');
-  logger2.log('World');
-}
-```
-
-### Factory for Caching
-
-```dart
-class Color {
-  final int red;
-  final int green;
-  final int blue;
-
-  // Cache of created colors
-  static final Map<String, Color> _cache = {};
-
-  // Factory: return cached or create new
-  factory Color(int r, int g, int b) {
-    var key = '$r,$g,$b';
-    return _cache.putIfAbsent(key, () => Color._internal(r, g, b));
-  }
-
-  // Private constructor
-  Color._internal(this.red, this.green, this.blue);
-
-  // Named factory constructors
-  factory Color.red() => Color(255, 0, 0);
-  factory Color.green() => Color(0, 255, 0);
-  factory Color.blue() => Color(0, 0, 255);
-
-  @override
-  String toString() => 'Color($red, $green, $blue)';
-}
-
-void main() {
-  var c1 = Color(255, 0, 0);
-  var c2 = Color(255, 0, 0);
-  var c3 = Color.red();
-
-  // All same object (cached)!
-  print(identical(c1, c2));  // true
-  print(identical(c1, c3));  // true
-}
-```
-
----
-
-## Redirecting Constructors
-
-One constructor calls another:
+The cleanest way is to have the named constructor call the main one with `: this(...)`:
 
 ```dart
 class Point {
   double x;
   double y;
 
-  // Main constructor
-  Point(this.x, this.y);
+  Point(this.x, this.y);          // the main constructor
 
-  // Redirecting constructors
-  Point.origin() : this(0, 0);
-  Point.onXAxis(double x) : this(x, 0);
-  Point.onYAxis(double y) : this(0, y);
-}
-```
-
----
-
-## Constructor Comparison
-
-| Type | When to Use |
-|------|-------------|
-| Basic | Standard object creation |
-| Named | Multiple ways to create same class |
-| Const | Immutable, compile-time objects |
-| Factory | Custom creation logic, caching, singletons |
-| Redirecting | Convenience constructors |
-
----
-
-## Practical Example: Product Class
-
-```dart
-class Product {
-  final String id;
-  final String name;
-  final double price;
-  final String category;
-  final int stock;
-  final DateTime createdAt;
-
-  // Main constructor with named parameters
-  Product({
-    required this.id,
-    required this.name,
-    required this.price,
-    this.category = 'General',
-    this.stock = 0,
-    DateTime? createdAt,
-  }) : createdAt = createdAt ?? DateTime.now();
-
-  // Named constructor: from JSON
-  Product.fromJson(Map<String, dynamic> json)
-      : id = json['id'] as String,
-        name = json['name'] as String,
-        price = (json['price'] as num).toDouble(),
-        category = json['category'] as String? ?? 'General',
-        stock = json['stock'] as int? ?? 0,
-        createdAt = json['createdAt'] != null
-            ? DateTime.parse(json['createdAt'])
-            : DateTime.now();
-
-  // Named constructor: copy with modifications
-  Product.copyWith(
-    Product original, {
-    String? name,
-    double? price,
-    int? stock,
-  }) : id = original.id,
-       name = name ?? original.name,
-       price = price ?? original.price,
-       category = original.category,
-       stock = stock ?? original.stock,
-       createdAt = original.createdAt;
-
-  Map<String, dynamic> toJson() => {
-    'id': id,
-    'name': name,
-    'price': price,
-    'category': category,
-    'stock': stock,
-    'createdAt': createdAt.toIso8601String(),
-  };
-
-  @override
-  String toString() => 'Product($name, \$$price, stock: $stock)';
+  Point.origin() : this(0, 0);    // a shortcut for the centre
+  Point.square(double size) : this(size, size);
 }
 
 void main() {
-  // Using main constructor
-  var product1 = Product(
-    id: '001',
-    name: 'Laptop',
-    price: 999.99,
-    category: 'Electronics',
-    stock: 10,
-  );
-  print(product1);
+  var a = Point(3, 4);     // normal
+  var b = Point.origin();  // (0, 0)
+  var c = Point.square(5); // (5, 5)
 
-  // Using fromJson
-  var json = {'id': '002', 'name': 'Mouse', 'price': 29.99};
-  var product2 = Product.fromJson(json);
-  print(product2);
-
-  // Using copyWith
-  var product3 = Product.copyWith(product1, price: 899.99, stock: 8);
-  print(product3);
+  print('${b.x}, ${b.y}');   // 0.0, 0.0
+  print('${c.x}, ${c.y}');   // 5.0, 5.0
 }
 ```
 
+`Point.origin()` reads nicely at the call site, and `: this(0, 0)` means "build me by calling the main constructor with 0 and 0." No repeated setup code.
+
 ---
 
-## Summary
+## Upgrade 4: A const Constructor (For Values That Never Change)
 
-| Constructor Type | Syntax | Purpose |
-|-----------------|--------|---------|
-| Basic | `Class(params)` | Standard creation |
-| Named | `Class.name(params)` | Alternative creation |
-| Const | `const Class(params)` | Immutable objects |
-| Factory | `factory Class()` | Custom creation |
-| Redirecting | `Class.a() : this()` | Reuse other constructor |
+If an object's values will **never change** after it is built, you can make a `const` constructor. Two small rules: mark every property `final`, and put `const` before the constructor.
+
+```dart
+class Coordinate {
+  final double lat;
+  final double lng;
+
+  const Coordinate(this.lat, this.lng);
+}
+
+void main() {
+  const home = Coordinate(6.5, 3.3);
+  print('${home.lat}, ${home.lng}');   // 6.5, 3.3
+}
+```
+
+`final` (from Level 1) means the value is set once and locked. A `const` constructor builds a fixed, unchangeable object.
+
+> You do not need this every day yet, but Flutter loves `const` objects because they are fast. You will see `const` widgets everywhere in Level 5. For now, just know it exists and what the two rules are.
+
+---
+
+## The Top Mistakes Beginners Make
+
+### Mistake 1: Forgetting `required` on a named slot
+
+```dart
+class User {
+  String name;
+  User({this.name});   // ERROR: name is not nullable and has no default
+}
+```
+
+A named slot needs `required`, a default, or a `?`. Fix: `User({required this.name});`.
+
+### Mistake 2: Forgetting the labels when calling a named constructor
+
+```dart
+var u = User('Ada', 'ada@mail.com');          // ERROR: needs labels
+var u = User(name: 'Ada', email: 'ada@mail.com'); // GOOD
+```
+
+If the constructor uses `{ }`, you must label your values.
+
+### Mistake 3: Optional value with no default
+
+```dart
+class Box {
+  int size;
+  Box([this.size]);       // ERROR: needs a default or a ?
+}
+class Box {
+  int size;
+  Box([this.size = 0]);   // GOOD
+}
+```
+
+### Mistake 4: A const constructor with a non-final field
+
+```dart
+class C {
+  int x;              // not final
+  const C(this.x);    // ERROR: const needs all fields final
+}
+```
+
+For `const`, every property must be `final`.
+
+---
+
+## One-Minute Recap
+
+- A constructor is the setup that runs when you build an object.
+- **Default values:** `[this.balance = 0]` makes a slot optional with a fallback.
+- **Named parameters:** `{required this.name}` labels each value. This is the Flutter style.
+- **Named constructors:** `Point.origin() : this(0, 0);` gives extra ways to build, reusing the main constructor.
+- **const constructor:** for objects that never change. Mark fields `final` and add `const`.
 
 ---
 
 ## Quick Quiz
 
-**Q1:** What's the difference between a regular and const constructor?
+**Q1.** What does `[this.balance = 0]` do in a constructor?
 
 <details>
 <summary>Answer</summary>
-
-Const constructor creates compile-time constants. All fields must be final, and identical const objects share memory.
-
+It makes `balance` optional with a default of 0. If the caller does not pass a balance, it starts at 0.
 </details>
 
-**Q2:** When would you use a factory constructor?
+**Q2.** Why is this wrong: `User({this.name})` where `name` is a non-nullable `String`?
 
 <details>
 <summary>Answer</summary>
-
-- Implement singleton pattern (one instance)
-- Cache and reuse objects
-- Return different subclass types
-- Complex creation logic
-
+A named slot must be `required`, have a default, or be nullable (`?`). As written, Dart cannot guarantee `name` gets a value. Fix: `User({required this.name})`.
 </details>
 
-**Q3:** What's an initializer list used for?
+**Q3.** What does `Point.origin() : this(0, 0);` do?
 
 <details>
 <summary>Answer</summary>
+It is a named constructor that builds a Point by calling the main constructor with 0 and 0. A handy shortcut for the centre point.
+</details>
 
-Initialize fields before the constructor body runs. Used for:
-- Setting final fields that need computation
-- Assertions for validation
-- Calling super constructor
+**Q4.** What two rules must you follow for a `const` constructor?
 
+<details>
+<summary>Answer</summary>
+Every property must be `final`, and you write `const` before the constructor.
 </details>
 
 ---
 
-**Next:** Learn about encapsulation - hiding implementation details.
+## Assignment
+
+Try each in [dartpad.dev](https://dartpad.dev) before checking the answers.
+
+### Problem 1: A class with a default
+
+Write a `Profile` class with a `String name` and a `String role`. Make `role` optional with a default of `'member'`. In `main`, build one profile with just a name and one with a name and role `'admin'`. Print each role.
+
+### Problem 2: Named parameters
+
+Write a `Pizza` class using **named parameters**: a required `String size`, a required `String topping`, and an optional `bool extraCheese` that defaults to `false`. Build a pizza and print whether it has extra cheese.
+
+### Problem 3: Predict the output
+
+```dart
+class Box {
+  String label;
+  int count;
+
+  Box({required this.label, this.count = 1});
+}
+
+void main() {
+  var a = Box(label: 'Apples');
+  var b = Box(label: 'Pens', count: 12);
+
+  print('${a.label}: ${a.count}');
+  print('${b.label}: ${b.count}');
+}
+```
+
+### Problem 4: A named constructor
+
+Write a `Circle` class with a `double radius` and a main constructor. Add a named constructor `Circle.unit()` that builds a circle with radius 1, using `: this(...)`. Build one with `Circle.unit()` and print its radius.
+
+### Problem 5: Spot the bugs
+
+This program has two mistakes. Find and fix them.
+
+```dart
+class Student {
+  String name;
+  int grade;
+
+  Student({this.name, this.grade = 1});
+}
+
+void main() {
+  var s = Student('Ada', 5);
+  print('${s.name}: grade ${s.grade}');
+}
+```
 
 ---
 
-**Continue to:** `03-Encapsulation.md`
+## Assignment Answers
+
+### Problem 1: A class with a default
+
+```dart
+class Profile {
+  String name;
+  String role;
+
+  Profile(this.name, [this.role = 'member']);
+}
+
+void main() {
+  var a = Profile('Ada');
+  var b = Profile('Bola', 'admin');
+
+  print(a.role);   // member
+  print(b.role);   // admin
+}
+```
+
+`role` is in square brackets with a default, so it is optional. The first profile skips it and gets `'member'`; the second overrides it with `'admin'`.
+
+### Problem 2: Named parameters
+
+```dart
+class Pizza {
+  String size;
+  String topping;
+  bool extraCheese;
+
+  Pizza({
+    required this.size,
+    required this.topping,
+    this.extraCheese = false,
+  });
+}
+
+void main() {
+  var p = Pizza(size: 'large', topping: 'mushroom', extraCheese: true);
+  print('Extra cheese: ${p.extraCheese}');   // Extra cheese: true
+}
+```
+
+`size` and `topping` are `required`. `extraCheese` has a default of `false`, so it can be skipped. The labels make the call easy to read.
+
+### Problem 3: Predict the output
+
+```
+Apples: 1
+Pens: 12
+```
+
+`a` skips `count`, so it uses the default `1`. `b` passes `count: 12`. Both pass the required `label`.
+
+### Problem 4: A named constructor
+
+```dart
+class Circle {
+  double radius;
+
+  Circle(this.radius);
+
+  Circle.unit() : this(1);
+}
+
+void main() {
+  var c = Circle.unit();
+  print(c.radius);   // 1.0
+}
+```
+
+`Circle.unit()` calls the main constructor with `1` using `: this(1)`. So it builds a circle with radius 1 without repeating any setup. It prints `1.0` because `radius` is a `double`.
+
+### Problem 5: Spot the bugs
+
+The two mistakes:
+
+1. `Student({this.name, ...})` makes `name` a named slot, but `name` is non-nullable with no default. It must be `required`.
+2. `Student('Ada', 5)` calls it with positional values, but the constructor uses named slots, so the values need labels.
+
+Fixed:
+
+```dart
+class Student {
+  String name;
+  int grade;
+
+  Student({required this.name, this.grade = 1});
+}
+
+void main() {
+  var s = Student(name: 'Ada', grade: 5);
+  print('${s.name}: grade ${s.grade}');   // Ada: grade 5
+}
+```
+
+We added `required` to `name`, and used labels (`name:`, `grade:`) when building.
+
+---
+
+**Next:** `03-Encapsulation.md`, where you learn how to protect an object's data from being changed in the wrong way.
