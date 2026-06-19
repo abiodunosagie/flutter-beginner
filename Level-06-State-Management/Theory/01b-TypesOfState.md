@@ -1,6 +1,10 @@
-# Part 2: Two Types of State
+# Two Types of State
 
-Now you know what state is! But here's the thing: there are **TWO types** of state in Flutter. Let's learn when to use each one.
+## The Big Idea In One Sentence
+
+> Some state belongs to **one widget** (local state, use `setState`), and some state is shared by **many widgets** (app state, which needs the tools in this level).
+
+Now you know what state is. The next question is who needs it, because that decides how you manage it.
 
 ---
 
@@ -221,7 +225,82 @@ String newTodoText = "";
 
 ---
 
-**Next:** Learn why setState alone isn't enough for app state!
+## Quick Quiz
+
+**Q1.** What is the one question that decides local vs app state?
+
+<details>
+<summary>Answer</summary>
+"Does only one widget need this?" Yes means local state (`setState`); no means app state (a state-management tool).
+</details>
+
+**Q2.** Which tool do you use for local state?
+
+<details>
+<summary>Answer</summary>
+`setState`, the one you learned in Level 5.
+</details>
+
+**Q3.** Is "is the user logged in?" local or app state?
+
+<details>
+<summary>Answer</summary>
+App state. Many screens need to know it (the header, the profile page, protected pages), so it should be shared.
+</details>
+
+---
+
+## Assignment
+
+These are about deciding, no coding needed.
+
+### Problem 1: Local or app state?
+
+For each, say **local** or **app** state, and why in a few words:
+
+1. Whether a password field is showing its text.
+2. The list of items in a shopping cart.
+3. Whether a single FAQ panel is expanded.
+4. The app's dark/light theme.
+5. The current page of a photo carousel.
+
+### Problem 2: A chat app
+
+Name two pieces of **app state** (shared by many widgets) in a chat app, and one piece of **local state** (only one widget cares).
+
+### Problem 3: Pick the tool
+
+For each, say whether you would use `setState` or a state-management tool:
+
+1. A "show more" toggle on one card.
+2. The logged-in user, shown on five screens.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Local or app state?
+
+1. Password showing -> **local** (only that field cares).
+2. Cart items -> **app** (the cart icon, cart page, and checkout all need it).
+3. One FAQ panel expanded -> **local** (only that panel cares).
+4. Dark/light theme -> **app** (it affects the whole app).
+5. Carousel page -> **local** (only that carousel cares).
+
+The test is always: does more than one widget need it?
+
+### Problem 2: A chat app
+
+App state (shared): the list of messages, the current user, the unread count. Local state (one widget): the text being typed in the message box before it is sent. (Other reasonable answers are fine.)
+
+### Problem 3: Pick the tool
+
+1. A toggle on one card -> `setState` (local).
+2. The logged-in user on five screens -> a state-management tool (app state).
+
+---
+
+**Next:** `01c-TheProblem.md`, which shows why `setState` alone is not enough for app state.
 
 ---
 
