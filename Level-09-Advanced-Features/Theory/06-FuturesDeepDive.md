@@ -1,5 +1,9 @@
 # Futures Deep Dive: Understanding Async Operations
 
+## The Big Idea In One Sentence
+
+> A `Future` is a promise of a value that arrives later, `async` marks a function that can wait, and `await` pauses until the value is ready, so slow work does not freeze your app.
+
 ## The Simple Explanation
 
 Imagine you order pizza:
@@ -635,6 +639,54 @@ Because `build()` can be called many times (when widget rebuilds). If you put `f
 **Instead:** Store the Future in `initState()` and reuse it.
 
 </details>
+
+---
+
+## Assignment
+
+### Problem 1: Mark it async
+
+This function uses `await`, so it must be marked something and return something. Fix the signature:
+
+```dart
+Future<String> loadName() {
+  final name = await fetchName();
+  return name;
+}
+```
+
+### Problem 2: Wait for it
+
+Write a line that calls `await fetchUser()` and stores the result in `user`.
+
+### Problem 3: What is a Future?
+
+In one sentence, what does a `Future<int>` represent?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Mark it async
+
+```dart
+Future<String> loadName() async {
+  final name = await fetchName();
+  return name;
+}
+```
+
+It needs `async` to use `await` (the return type `Future<String>` was already correct).
+
+### Problem 2: Wait for it
+
+```dart
+final user = await fetchUser();
+```
+
+### Problem 3: What is a Future?
+
+A `Future<int>` is a promise that an `int` value will be available later (once the slow work finishes).
 
 ---
 

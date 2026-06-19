@@ -1,5 +1,9 @@
 # Streams Explained: Real-Time Data Flow
 
+## The Big Idea In One Sentence
+
+> If a `Future` is one value that arrives later, a `Stream` is many values that arrive over time, like a water hose, and you `listen` to it (or use a `StreamBuilder`) to react to each one.
+
 ## The Simple Explanation
 
 Remember Futures? A Future is like ordering **one pizza** - you wait, you get it, done!
@@ -701,6 +705,43 @@ void dispose() {
 ```
 
 </details>
+
+---
+
+## Assignment
+
+### Problem 1: Future or Stream?
+
+For each, pick Future or Stream:
+1. Downloading one user's profile.
+2. Live chat messages arriving one after another.
+3. A countdown timer ticking every second.
+
+### Problem 2: React to each value
+
+To rebuild your UI every time a stream emits a new value, which widget do you use?
+
+### Problem 3: One vs many
+
+In one line, what is the difference between a Future and a Stream?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Future or Stream?
+
+1. **Future** (one value, once).
+2. **Stream** (many values over time).
+3. **Stream** (a value every second).
+
+### Problem 2: React to each value
+
+`StreamBuilder` (or call `stream.listen(...)` in code).
+
+### Problem 3: One vs many
+
+A Future delivers a single value later; a Stream delivers many values over time.
 
 ---
 
