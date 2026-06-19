@@ -1,6 +1,10 @@
-# Part 2: Creating Your Data Class (ChangeNotifier)
+# Creating Your Data Class (ChangeNotifier)
 
-Let's create your first **data class** - the place where your state lives!
+## The Big Idea In One Sentence
+
+> A `ChangeNotifier` is a class that holds your shared data and **rings a bell** (`notifyListeners`) whenever the data changes, so widgets know to rebuild.
+
+This is step 1 of Provider: **create** the class that holds the state.
 
 ---
 
@@ -261,7 +265,148 @@ When creating a ChangeNotifier:
 
 ---
 
-**Next:** Learn how to provide your data to widgets!
+## Quick Quiz
+
+**Q1.** What does `notifyListeners()` do?
+
+<details>
+<summary>Answer</summary>
+It "rings the bell" to tell the widgets listening to this ChangeNotifier that the data changed, so they rebuild.
+</details>
+
+**Q2.** What happens if you change the data but forget `notifyListeners()`?
+
+<details>
+<summary>Answer</summary>
+The data changes in memory, but the widgets do not update, because they were never told. The screen keeps showing the old value.
+</details>
+
+**Q3.** Why make the data private (`_count`) with a getter?
+
+<details>
+<summary>Answer</summary>
+So the outside can read it but only change it through your methods (which call `notifyListeners`). This is the encapsulation idea from Level 4.
+</details>
+
+---
+
+## Assignment
+
+These are pure-Dart classes; you can check them in [dartpad.dev](https://dartpad.dev).
+
+### Problem 1: A counter notifier
+
+Write a `Counter` class that `extends ChangeNotifier` with a private `int _count = 0`, a getter `count`, an `increment()` method, and a `decrement()` method. Both methods must call `notifyListeners()`.
+
+### Problem 2: Spot the bug
+
+Why will widgets not update when `toggle()` is called?
+
+```dart
+class Switch1 extends ChangeNotifier {
+  bool _on = false;
+  bool get on => _on;
+
+  void toggle() {
+    _on = !_on;
+  }
+}
+```
+
+### Problem 3: A tally notifier
+
+Write a `Tally` class that `extends ChangeNotifier` holding a private `List<String> _items`, a getter `items`, a getter `count` (the list length), an `add(String item)` method, and a `clear()` method. Remember `notifyListeners()`.
+
+### Problem 4: Fix the over-notify
+
+Rewrite this so `notifyListeners` is called once, not once per item.
+
+```dart
+void addAll(List<String> newItems) {
+  for (var item in newItems) {
+    _items.add(item);
+    notifyListeners();
+  }
+}
+```
+
+---
+
+## Assignment Answers
+
+### Problem 1: A counter notifier
+
+```dart
+import 'package:flutter/foundation.dart';
+
+class Counter extends ChangeNotifier {
+  int _count = 0;
+  int get count => _count;
+
+  void increment() {
+    _count++;
+    notifyListeners();
+  }
+
+  void decrement() {
+    _count--;
+    notifyListeners();
+  }
+}
+```
+
+Each method changes the private data and then rings the bell with `notifyListeners()`.
+
+### Problem 2: Spot the bug
+
+`toggle()` changes `_on` but never calls `notifyListeners()`, so no widget is told about the change and nothing rebuilds. Fix:
+
+```dart
+void toggle() {
+  _on = !_on;
+  notifyListeners();
+}
+```
+
+### Problem 3: A tally notifier
+
+```dart
+import 'package:flutter/foundation.dart';
+
+class Tally extends ChangeNotifier {
+  final List<String> _items = [];
+
+  List<String> get items => _items;
+  int get count => _items.length;
+
+  void add(String item) {
+    _items.add(item);
+    notifyListeners();
+  }
+
+  void clear() {
+    _items.clear();
+    notifyListeners();
+  }
+}
+```
+
+The data is private; reading is through getters; changing is through methods that call `notifyListeners()`.
+
+### Problem 4: Fix the over-notify
+
+```dart
+void addAll(List<String> newItems) {
+  _items.addAll(newItems);
+  notifyListeners();
+}
+```
+
+Add everything first, then ring the bell once. Calling `notifyListeners()` inside the loop would rebuild the widgets many times for one logical change, which is wasteful.
+
+---
+
+**Next:** `02c-ProvidingState.md`, where you share this class with your whole app.
 
 ---
 
