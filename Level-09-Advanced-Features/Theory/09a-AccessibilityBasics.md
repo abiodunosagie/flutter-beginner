@@ -1,5 +1,9 @@
 # Accessibility Basics: Making Apps Everyone Can Use
 
+## The Big Idea In One Sentence
+
+> Accessibility means everyone can use your app, including people who cannot see the screen, and the `Semantics` widget gives elements spoken labels so a screen reader can describe them.
+
 ## The Simple Explanation
 
 Imagine you have a friend who can't see well, or can't hear, or has trouble using their hands:
@@ -768,6 +772,67 @@ Semantics(
 │                                                          │
 └─────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** What is a screen reader?
+
+<details>
+<summary>Answer</summary>
+A tool that reads the screen aloud so people who cannot see it can use the app. It announces labels, buttons, and text.
+</details>
+
+**Q2.** Which widget gives an element a spoken label for screen readers?
+
+<details>
+<summary>Answer</summary>
+The `Semantics` widget (e.g. `Semantics(label: 'Delete', child: ...)`).
+</details>
+
+**Q3.** An icon-only button shows a trash can but no text. Why is that an accessibility problem, and how do you fix it?
+
+<details>
+<summary>Answer</summary>
+A screen reader has no text to announce, so the user does not know what the button does. Fix it with a semantic label (or a tooltip/`Semantics` label like "Delete").
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Label an image
+
+An image shows a smiling dog. Write a `Semantics` wrapper (or `Image`'s `semanticLabel`) that describes it.
+
+### Problem 2: Why labels?
+
+In one sentence, why does an icon-only button need a label?
+
+### Problem 3: Who benefits?
+
+Name two groups of people who benefit from good accessibility.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Label an image
+
+```dart
+Image.asset('dog.png', semanticLabel: 'A smiling dog');
+// or
+Semantics(label: 'A smiling dog', child: Image.asset('dog.png'));
+```
+
+### Problem 2: Why labels?
+
+Because a screen reader has no visible text to read, so without a label it cannot tell the user what the button does.
+
+### Problem 3: Who benefits?
+
+Any two: people who are blind or low-vision (screen readers), people with motor difficulties, people in bright sunlight or with a cracked screen, or older users who need larger text.
 
 ---
 
