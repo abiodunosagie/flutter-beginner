@@ -1,5 +1,9 @@
 # GoRouter Setup
 
+## The Big Idea In One Sentence
+
+> GoRouter is like a GPS: you list every screen with a path once, then you just say where you want to go (`context.go('/settings')`) and it handles the rest.
+
 Learn the modern, declarative way to handle navigation in Flutter!
 
 ---
@@ -400,11 +404,72 @@ final router = GoRouter(
 
 ---
 
-## Continue Learning
+## Quick Quiz
 
-Now that you know how to set up GoRouter, let's learn about path parameters and advanced navigation!
+**Q1.** What three steps set up GoRouter?
 
-**Continue to:** [GoRouter Navigation →](04b-GoRouterNavigation.md)
+<details>
+<summary>Answer</summary>
+1. Add the `go_router` package. 2. Create a `GoRouter` with a list of `GoRoute`s. 3. Use `MaterialApp.router(routerConfig: router)`.
+</details>
+
+**Q2.** What is the difference between `context.push('/x')` and `context.go('/x')`?
+
+<details>
+<summary>Answer</summary>
+`push` adds the new screen on top (back returns to where you were). `go` replaces the stack (like teleporting).
+</details>
+
+**Q3.** For a list-to-detail drill-down, which do you use?
+
+<details>
+<summary>Answer</summary>
+`context.push(...)`, so the back button returns to the list.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Write a route
+
+Write a `GoRoute` for the path `'/about'` that shows `AboutScreen()`.
+
+### Problem 2: Wire the app
+
+Write the `MaterialApp.router(...)` line that uses a router named `router`.
+
+### Problem 3: go or push?
+
+For each, pick `go` or `push`:
+1. Tapping a product in a list to see its details.
+2. Logging out and returning to the login screen (no going back).
+
+---
+
+## Assignment Answers
+
+### Problem 1: Write a route
+
+```dart
+GoRoute(
+  path: '/about',
+  builder: (context, state) => AboutScreen(),
+),
+```
+
+### Problem 2: Wire the app
+
+```dart
+MaterialApp.router(
+  routerConfig: router,
+);
+```
+
+### Problem 3: go or push?
+
+1. **push** (you want the back button to return to the list).
+2. **go** (you replace the stack so the user cannot go back into the app after logout).
 
 ---
 
