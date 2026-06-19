@@ -1,5 +1,9 @@
 # Responsive Design: Apps That Fit Any Screen
 
+## The Big Idea In One Sentence
+
+> Responsive design means your layout measures the screen size (with `MediaQuery` or `LayoutBuilder`) and rearranges itself, so it looks right on a tiny phone and a wide tablet.
+
 ## The Simple Explanation
 
 Imagine you have a photo that you want to put in different frames:
@@ -741,6 +745,47 @@ Wrap(
 ---
 
 **Congratulations!** You've completed Level 9: Advanced Features!
+
+## Assignment
+
+### Problem 1: Get the width
+
+Write the expression that gets the current screen width.
+
+### Problem 2: Phone or tablet?
+
+Write an `if` that treats a width of 600 or more as "tablet" and shows a different layout. (Pseudocode is fine.)
+
+### Problem 3: MediaQuery vs LayoutBuilder
+
+In one line each: what does `MediaQuery` measure, and what does `LayoutBuilder` measure?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Get the width
+
+```dart
+final width = MediaQuery.of(context).size.width;
+```
+
+### Problem 2: Phone or tablet?
+
+```dart
+if (MediaQuery.of(context).size.width >= 600) {
+  // tablet layout
+} else {
+  // phone layout
+}
+```
+
+### Problem 3: MediaQuery vs LayoutBuilder
+
+- `MediaQuery` measures the whole screen (and things like padding/insets).
+- `LayoutBuilder` measures the space the parent gives this particular widget.
+
+---
 
 **Next Level:** Level 10 - Final Project
 
