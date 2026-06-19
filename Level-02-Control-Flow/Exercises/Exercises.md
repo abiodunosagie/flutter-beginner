@@ -856,6 +856,8 @@ Use nested for loops!
 <summary>✅ Solution</summary>
 
 ```dart
+import 'dart:io';  // needed for stdout.write
+
 void main() {
   int rows = 5;
 
