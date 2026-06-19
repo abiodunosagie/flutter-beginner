@@ -1,5 +1,9 @@
 # Error Handling Basics
 
+## The Big Idea In One Sentence
+
+> Network calls fail sometimes, so wrap them in `try/catch`, figure out WHICH kind of failure it was, and show the user a clear message plus what to do next.
+
 Learn how to gracefully handle errors when things go wrong with network requests!
 
 ---
@@ -546,6 +550,71 @@ class _UsersScreenState extends State<UsersScreen> {
 6. **UI States**: Loading, error, success
 
 ### Continue Learning
+
+---
+
+## Quick Quiz
+
+**Q1.** What Dart structure catches errors so the app does not crash?
+
+<details>
+<summary>Answer</summary>
+`try { ... } catch (e) { ... }` (with optional `on SomeException` clauses for specific types).
+</details>
+
+**Q2.** Why make custom exceptions like `UnauthorizedException` instead of plain `Exception`?
+
+<details>
+<summary>Answer</summary>
+So you can react differently to each kind: for example, send the user to login on `UnauthorizedException` but show "check your internet" on `NetworkException`.
+</details>
+
+**Q3.** What should the UI show when a request fails?
+
+<details>
+<summary>Answer</summary>
+A clear message about what happened and a way forward, like a "Try Again" button.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Wrap a call
+
+Wrap `await fetchUsers()` in a try/catch that prints a friendly message on any error.
+
+### Problem 2: React by type
+
+Given `on UnauthorizedException` and `on NetworkException`, which one should send the user to the login screen?
+
+### Problem 3: Map a code
+
+The server returns `404`. Which custom exception fits, and what message would you show?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Wrap a call
+
+```dart
+try {
+  final users = await fetchUsers();
+} catch (e) {
+  print('Could not load users. Please try again.');
+}
+```
+
+### Problem 2: React by type
+
+`UnauthorizedException` (a 401) means the user is not logged in, so send them to the login screen. `NetworkException` should show a "check your connection" message instead.
+
+### Problem 3: Map a code
+
+`NotFoundException`. Show something like "We could not find that item." (404 means the resource does not exist.)
+
+---
 
 Continue to: [06b-ErrorPatterns.md](./06b-ErrorPatterns.md) - Learn advanced error handling patterns, retry logic, and user-friendly error messages!
 
