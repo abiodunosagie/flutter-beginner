@@ -1,6 +1,6 @@
 # Level 6: State Management - Learning Path
 
-Welcome to Level 6! This level teaches you how to manage state across your Flutter app using Provider.
+Welcome to Level 6! This level teaches you how to manage state across your Flutter app using the three most popular tools: Provider, Riverpod, and BLoC.
 
 ---
 
