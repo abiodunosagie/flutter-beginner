@@ -1,5 +1,9 @@
 # Testing Basics: Making Sure It Works
 
+## The Big Idea In One Sentence
+
+> A test is code that checks your code: you give it an input, run your function, and `expect` a result, so the computer catches bugs for you instead of you clicking through the app every time.
+
 ## The Simple Explanation
 
 Imagine you're building a paper airplane. Would you throw it without checking if it's ready?
@@ -654,6 +658,67 @@ test('starts empty', () {
 │                                                          │
 └─────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** What does `expect(actual, expected)` do in a test?
+
+<details>
+<summary>Answer</summary>
+It checks that `actual` matches `expected`. If not, the test fails and tells you something broke.
+</details>
+
+**Q2.** Why write tests instead of just clicking through the app?
+
+<details>
+<summary>Answer</summary>
+Tests run instantly and automatically every time, catching bugs you would miss or get tired of checking by hand.
+</details>
+
+**Q3.** What is a "unit test" testing?
+
+<details>
+<summary>Answer</summary>
+One small piece (a unit) of logic in isolation, like a single function or method, without the UI.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Write a tiny test
+
+You have `int add(int a, int b) => a + b;`. Write a `test` that checks `add(2, 3)` equals `5`.
+
+### Problem 2: Read a failure
+
+A test says `Expected: 5, Actual: 6`. What does that tell you?
+
+### Problem 3: What to test first
+
+For a calculator app, name one piece of logic worth a unit test.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Write a tiny test
+
+```dart
+test('add returns the sum', () {
+  expect(add(2, 3), 5);
+});
+```
+
+### Problem 2: Read a failure
+
+Your code returned 6 when it should return 5, so there is a bug in the function (or the test's expectation is wrong). Either way, something does not match and needs fixing.
+
+### Problem 3: What to test first
+
+The math/logic: for example, that adding, subtracting, or computing a total returns the right number. (Pure logic is the easiest and most valuable to unit test.)
 
 ---
 
