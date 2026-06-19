@@ -1,6 +1,12 @@
 # Returning Data from Screens
 
+## The Big Idea In One Sentence
+
+> `Navigator.pop(context, value)` hands a value back, and the screen that pushed waits for it with `await Navigator.push(...)`.
+
 Learn how to send data back when navigating backwards!
+
+> **Async heads-up.** Getting a result back uses `await` (waiting for the second screen to close). You learn `Future`/`async`/`await` fully in Level 8. For now just read it as: "push the screen, wait, get the value the user picked."
 
 ---
 
@@ -597,11 +603,73 @@ if (selected != null) {
 
 ---
 
-## Continue Learning
+## Quick Quiz
 
-Excellent! You now know all three methods of passing data. Next, let's learn about GoRouter, the modern navigation solution!
+**Q1.** How does Screen B send a value back to Screen A?
 
-**Continue to:** [GoRouter Setup →](04a-GoRouterSetup.md)
+<details>
+<summary>Answer</summary>
+`Navigator.pop(context, value)` (the second argument is the value returned).
+</details>
+
+**Q2.** How does Screen A receive that value?
+
+<details>
+<summary>Answer</summary>
+By awaiting the push: `final result = await Navigator.push(...)`.
+</details>
+
+**Q3.** Why check `if (result != null)` before using the value?
+
+<details>
+<summary>Answer</summary>
+The user might press the system back button instead of choosing something, so no value is returned (it is null). Checking avoids using a missing value.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Return a value
+
+On a "Yes" button in a confirm screen, write the line that goes back and returns `true`.
+
+### Problem 2: Receive a value
+
+Write the `await Navigator.push<bool>(...)` call that opens `ConfirmScreen()` and stores the returned value in `confirmed`.
+
+### Problem 3: Handle the cancel case
+
+After getting `confirmed`, write the `if` that deletes only when the user said yes (and not when they backed out).
+
+---
+
+## Assignment Answers
+
+### Problem 1: Return a value
+
+```dart
+Navigator.pop(context, true);
+```
+
+### Problem 2: Receive a value
+
+```dart
+final confirmed = await Navigator.push<bool>(
+  context,
+  MaterialPageRoute(builder: (context) => ConfirmScreen()),
+);
+```
+
+### Problem 3: Handle the cancel case
+
+```dart
+if (confirmed == true) {
+  deleteItem();
+}
+```
+
+Using `== true` is safe: if the user backed out, `confirmed` is `null`, which is not equal to `true`, so nothing is deleted.
 
 ---
 
