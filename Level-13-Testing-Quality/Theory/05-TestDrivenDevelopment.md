@@ -1,5 +1,9 @@
 # Test-Driven Development (TDD)
 
+## The Big Idea In One Sentence
+
+> TDD flips the order: write a failing test first (Red), write just enough code to pass it (Green), then clean up (Refactor), repeating that small loop.
+
 ## The Simple Explanation
 
 TDD is like writing a recipe BEFORE you cook. You know exactly what the dish should taste like before you start!
@@ -433,5 +437,62 @@ LESS IDEAL FOR:
 - Widget Tests for UI
 - Integration Tests for flows
 - TDD for quality-first development
+
+## Quick Quiz
+
+**Q1.** What are the three steps of the TDD cycle?
+
+<details>
+<summary>Answer</summary>
+Red (write a failing test), Green (write minimal code to pass it), Refactor (clean up while tests stay green).
+</details>
+
+**Q2.** Why write the test before the code?
+
+<details>
+<summary>Answer</summary>
+It forces you to define exactly what "working" means first, and guarantees the feature is tested.
+</details>
+
+**Q3.** In the "Green" step, how much code should you write?
+
+<details>
+<summary>Answer</summary>
+Just enough to make the test pass, no more. You add complexity later only when a test demands it.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Order the cycle
+
+Put in order: Refactor, Green, Red.
+
+### Problem 2: First step
+
+You are adding a `total()` function with TDD. What do you write first?
+
+### Problem 3: Why refactor last?
+
+Why is it safe to clean up code in the Refactor step?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Order the cycle
+
+Red → Green → Refactor.
+
+### Problem 2: First step
+
+A failing test that says what `total()` should return for some input (for example `expect(total([1,2,3]), 6)`), before writing `total` itself.
+
+### Problem 3: Why refactor last?
+
+Because the passing test acts as a safety net: if your cleanup breaks behavior, the test fails immediately and tells you.
+
+---
 
 **Next Steps:** Practice! Write tests for your existing projects.

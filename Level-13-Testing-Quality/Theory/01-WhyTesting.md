@@ -1,5 +1,9 @@
 # Why Testing Matters
 
+## The Big Idea In One Sentence
+
+> Tests are an automatic safety net: they prove your app still works after every change, so you ship with confidence instead of fear that you broke something.
+
 ## The Simple Explanation
 
 Testing is like spell-checking your essay before turning it in. You could skip it, but you'll probably miss mistakes!
@@ -331,6 +335,63 @@ We'll cover this in detail in Theory/05-TestDrivenDevelopment.md
 │                                                          │
 └─────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** What is the main benefit of having tests?
+
+<details>
+<summary>Answer</summary>
+They automatically catch bugs when you change code, so you know quickly if something broke.
+</details>
+
+**Q2.** Why are tests faster than testing by hand?
+
+<details>
+<summary>Answer</summary>
+They run in seconds and check many cases at once, every time, without you clicking through the app.
+</details>
+
+**Q3.** Name the three common kinds of Flutter tests.
+
+<details>
+<summary>Answer</summary>
+Unit tests (logic), widget tests (UI pieces), and integration tests (whole flows).
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Why bother?
+
+In one sentence, why test a feature that already works?
+
+### Problem 2: Match the test type
+
+Which kind of test fits each? Logic of a function, a button rendering, a full login flow.
+
+### Problem 3: When tests pay off
+
+Name one moment when tests save you the most time.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Why bother?
+
+So that when you later change other code, you immediately know whether you accidentally broke this working feature.
+
+### Problem 2: Match the test type
+
+Function logic → unit test; button rendering → widget test; full login flow → integration test.
+
+### Problem 3: When tests pay off
+
+When refactoring or adding features later: the tests instantly tell you if you broke anything, instead of manually re-checking everything.
 
 ---
 

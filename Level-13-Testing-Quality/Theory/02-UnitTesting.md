@@ -1,5 +1,9 @@
 # Unit Testing
 
+## The Big Idea In One Sentence
+
+> A unit test checks one small piece of logic in isolation: call a function, `expect` a result, with no UI involved, grouped with `test()` (and `group()`).
+
 ## The Simple Explanation
 
 Unit testing is like checking if each ingredient is good before cooking. You test small pieces individually to make sure they work!
@@ -519,6 +523,69 @@ flutter test --coverage
 │                                                          │
 └─────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** What does a unit test test, and what does it NOT involve?
+
+<details>
+<summary>Answer</summary>
+It tests one piece of logic (a function/class). It does not involve the UI/widgets.
+</details>
+
+**Q2.** What do `test()` and `expect()` each do?
+
+<details>
+<summary>Answer</summary>
+`test('name', () { ... })` defines a single test; `expect(actual, expected)` checks the result inside it.
+</details>
+
+**Q3.** What is `group()` for?
+
+<details>
+<summary>Answer</summary>
+To bundle related tests under one name, keeping the output organized.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Write a unit test
+
+For `bool isEven(int n) => n % 2 == 0;`, write a test that checks `isEven(4)` is `true`.
+
+### Problem 2: Add a case
+
+Write a second `expect` (in the same test) checking `isEven(3)` is `false`.
+
+### Problem 3: Group them
+
+What would you wrap multiple `isEven` tests in to organize them?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Write a unit test
+
+```dart
+test('isEven returns true for even numbers', () {
+  expect(isEven(4), true);
+});
+```
+
+### Problem 2: Add a case
+
+```dart
+expect(isEven(3), false);
+```
+
+### Problem 3: Group them
+
+A `group('isEven', () { ... })` block containing the related tests.
 
 ---
 

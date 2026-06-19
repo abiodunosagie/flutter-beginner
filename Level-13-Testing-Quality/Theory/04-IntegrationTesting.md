@@ -1,5 +1,9 @@
 # Integration Testing
 
+## The Big Idea In One Sentence
+
+> An integration test drives the whole real app like a robot user, tapping through a complete flow (log in, add an item, see it appear), to prove the pieces work together.
+
 ## The Simple Explanation
 
 Integration testing is like test-driving a car. You don't just check if the engine works alone - you drive the whole car to make sure everything works together!
@@ -429,6 +433,63 @@ void main() {
 │                                                          │
 └─────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** How is an integration test different from a widget test?
+
+<details>
+<summary>Answer</summary>
+A widget test checks one widget in isolation; an integration test runs the whole app and tests a full user flow across screens.
+</details>
+
+**Q2.** What kind of bug do integration tests catch that unit/widget tests might miss?
+
+<details>
+<summary>Answer</summary>
+Bugs where pieces work alone but break together, like navigation between screens or data not flowing from login to home.
+</details>
+
+**Q3.** Why are integration tests slower?
+
+<details>
+<summary>Answer</summary>
+They run the real app end to end (often on a device/emulator), which takes much longer than testing a single function or widget.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Pick the test
+
+You want to verify "user logs in, lands on home, sees their name." Which test type?
+
+### Problem 2: Trade-off
+
+Name one downside of integration tests compared to unit tests.
+
+### Problem 3: The pyramid
+
+Should you have more unit tests or more integration tests? Why?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Pick the test
+
+An **integration test** (it spans multiple screens and the full flow).
+
+### Problem 2: Trade-off
+
+They are slower and more fragile (more moving parts) than fast, focused unit tests.
+
+### Problem 3: The pyramid
+
+More **unit tests**. They are fast and cheap, so you write many; integration tests are slower, so you write fewer for the most important flows. (This is the "testing pyramid.")
 
 ---
 

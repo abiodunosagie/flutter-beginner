@@ -1,5 +1,9 @@
 # Widget Testing
 
+## The Big Idea In One Sentence
+
+> A widget test renders a widget in a fake screen, then you `find` things on it, `tap` them with the `WidgetTester`, `pump` to rebuild, and check what appears.
+
 ## The Simple Explanation
 
 Widget testing is like checking if a button looks right AND works when pressed, without running the whole app!
@@ -511,6 +515,70 @@ testWidgets('matches golden file', (tester) async {
 │  findsNWidgets(n) - Found n times                       │
 │                                                          │
 └─────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Quick Quiz
+
+**Q1.** What does `tester.pumpWidget(...)` do?
+
+<details>
+<summary>Answer</summary>
+It builds and renders the given widget into the test environment so you can interact with it.
+</details>
+
+**Q2.** How do you find a widget showing the text "Login"?
+
+<details>
+<summary>Answer</summary>
+`find.text('Login')`.
+</details>
+
+**Q3.** After tapping a button, why call `await tester.pump()`?
+
+<details>
+<summary>Answer</summary>
+To rebuild the widget after the state change, so the test sees the updated UI.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Find by text
+
+Write the finder for a widget displaying the text "Submit".
+
+### Problem 2: Tap and rebuild
+
+Write the two lines to tap that "Submit" widget and then rebuild the UI.
+
+### Problem 3: Check the result
+
+After tapping, how would you assert that the text "Done" now appears exactly once?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Find by text
+
+```dart
+find.text('Submit');
+```
+
+### Problem 2: Tap and rebuild
+
+```dart
+await tester.tap(find.text('Submit'));
+await tester.pump();
+```
+
+### Problem 3: Check the result
+
+```dart
+expect(find.text('Done'), findsOneWidget);
 ```
 
 ---
