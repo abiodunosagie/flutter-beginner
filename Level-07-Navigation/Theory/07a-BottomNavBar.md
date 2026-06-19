@@ -1,5 +1,9 @@
 # BottomNavigationBar Widget
 
+## The Big Idea In One Sentence
+
+> A bottom nav bar is like TV channel buttons: you keep an index in state, the bar stays put, and `body: _screens[index]` swaps which screen shows.
+
 Learn how to create tab-based navigation with bottom navigation bars!
 
 ---
@@ -443,11 +447,68 @@ class ProfileTab extends StatelessWidget {
 
 ---
 
-## Continue Learning
+## Quick Quiz
 
-Now you know the basics! Next, let's learn how to preserve tab state!
+**Q1.** Which property tells the bar which tab is currently selected?
 
-**Continue to:** [Persistent Navigation →](07b-PersistentNav.md)
+<details>
+<summary>Answer</summary>
+`currentIndex`.
+</details>
+
+**Q2.** What goes inside `onTap` to switch tabs?
+
+<details>
+<summary>Answer</summary>
+`setState(() { _currentIndex = index; })`, which rebuilds with the new screen.
+</details>
+
+**Q3.** With 4 or more items, what `type` should you set so all labels stay visible?
+
+<details>
+<summary>Answer</summary>
+`BottomNavigationBarType.fixed`.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Show the right screen
+
+You have `final _screens = [HomeTab(), SearchTab(), ProfileTab()];` and `int _currentIndex = 0;`. What do you put in `Scaffold(body: ...)` to show the selected tab?
+
+### Problem 2: Handle the tap
+
+Write the `onTap` callback that updates the selected tab.
+
+### Problem 3: Spot the missing piece
+
+The bar shows but tapping does nothing. The code sets `_currentIndex = index;` directly inside `onTap`. What is missing?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Show the right screen
+
+```dart
+body: _screens[_currentIndex],
+```
+
+### Problem 2: Handle the tap
+
+```dart
+onTap: (index) {
+  setState(() {
+    _currentIndex = index;
+  });
+},
+```
+
+### Problem 3: Spot the missing piece
+
+It is missing `setState`. Setting `_currentIndex = index;` alone changes the value but does not rebuild the screen. Wrap it in `setState(() { ... })`.
 
 ---
 
