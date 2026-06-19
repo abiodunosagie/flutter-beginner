@@ -1,6 +1,10 @@
 # Using BLoC in Widgets: Connecting Kitchen to Dining Room
 
-Now that we've built our "kitchen" (the BLoC), let's connect it to the "dining room" (the UI) so customers can place orders and get their food!
+## The Big Idea In One Sentence
+
+> Provide a bloc with `BlocProvider`, show its state with `BlocBuilder`, and send events with `context.read<MyBloc>().add(SomeEvent())`.
+
+Now you connect the kitchen (the bloc) to the dining room (the UI).
 
 ---
 
@@ -738,6 +742,113 @@ class TodoPage extends StatelessWidget {
 | `context.watch<T>()` | Listen for changes | For displaying state |
 
 Now you know how to connect your BLoC to your UI! Next, we'll learn advanced async patterns.
+
+---
+
+## Quick Quiz
+
+**Q1.** Which widget makes a bloc available to the widgets below it?
+
+<details>
+<summary>Answer</summary>
+`BlocProvider` (with `create:`), wrapped around the part of the app that needs the bloc.
+</details>
+
+**Q2.** Which widget rebuilds to display the bloc's state?
+
+<details>
+<summary>Answer</summary>
+`BlocBuilder<MyBloc, MyState>`, whose `builder` gives you the current state.
+</details>
+
+**Q3.** How do you send an event to a bloc?
+
+<details>
+<summary>Answer</summary>
+`context.read<MyBloc>().add(SomeEvent())`, usually in a button's `onPressed`.
+</details>
+
+**Q4.** When would you use `BlocListener` instead of `BlocBuilder`?
+
+<details>
+<summary>Answer</summary>
+For side effects that are not part of the UI, like showing a snackbar or navigating. `BlocListener` runs a callback on state change without rebuilding.
+</details>
+
+---
+
+## Assignment
+
+Use [dartpad.dev](https://dartpad.dev) with `flutter_bloc`. Use the `CounterBloc` from the last lesson (events `Increment`/`Decrement`, state `int`, start 0).
+
+### Problem 1: Provide the bloc
+
+Write the `main()` that wraps the app in a `BlocProvider` creating a `CounterBloc`.
+
+### Problem 2: Display the count
+
+Inside the app, use a `BlocBuilder<CounterBloc, int>` to show the current count in a `Text`.
+
+### Problem 3: Send an event
+
+Add an `ElevatedButton` whose `onPressed` sends `Increment()` to the bloc.
+
+### Problem 4: Spot the bug
+
+Why does this fail to send the event?
+
+```dart
+ElevatedButton(
+  onPressed: () => context.read<CounterBloc>().Increment(),
+  child: const Text('+'),
+)
+```
+
+---
+
+## Assignment Answers
+
+### Problem 1: Provide the bloc
+
+```dart
+void main() {
+  runApp(
+    MaterialApp(
+      home: BlocProvider(
+        create: (_) => CounterBloc(),
+        child: const CounterPage(),
+      ),
+    ),
+  );
+}
+```
+
+`BlocProvider` creates the bloc and makes it available to `CounterPage` and everything inside it.
+
+### Problem 2: Display the count
+
+```dart
+BlocBuilder<CounterBloc, int>(
+  builder: (context, count) => Text('Count: $count'),
+)
+```
+
+`BlocBuilder` rebuilds the Text whenever the bloc emits a new state.
+
+### Problem 3: Send an event
+
+```dart
+ElevatedButton(
+  onPressed: () => context.read<CounterBloc>().add(Increment()),
+  child: const Text('+'),
+)
+```
+
+You send events with `.add(...)`, reading the bloc with `context.read`.
+
+### Problem 4: Spot the bug
+
+You do not call event methods on the bloc directly. You **add** an event object: `context.read<CounterBloc>().add(Increment())`. The bloc's `on<Increment>` handler then runs. There is no `Increment()` method on the bloc; `Increment` is an event you add.
 
 ---
 
