@@ -1,5 +1,9 @@
 # JSON Basics - Part 3: Nested JSON
 
+## The Big Idea In One Sentence
+
+> To reach data inside data, chain the keys and indexes like a path: `data['user']['address']['city']` walks down step by step.
+
 Master complex JSON structures with nested objects and lists!
 
 ---
@@ -454,6 +458,86 @@ void main() {
 ```
 
 Excellent work! You now understand JSON from basics to complex nested structures. You're ready to work with real APIs!
+
+---
+
+## Quick Quiz
+
+**Q1.** Given `data['user']['address']['city']`, in what order are the keys read?
+
+<details>
+<summary>Answer</summary>
+Left to right: first `user`, then `address` inside it, then `city` inside that.
+</details>
+
+**Q2.** How do you get the first item from a JSON array stored at `data['friends']`?
+
+<details>
+<summary>Answer</summary>
+`data['friends'][0]` (index 0 is the first item).
+</details>
+
+**Q3.** Why can deep chains like `data['a']['b']['c']` crash, and what is one safer approach?
+
+<details>
+<summary>Answer</summary>
+If any level is missing (null), reading the next key crashes. Safer: check with `containsKey`/null checks, or use a helper that returns null when a key is missing.
+</details>
+
+---
+
+## Assignment
+
+Use this JSON:
+
+```json
+{
+  "user": {
+    "name": "Ada",
+    "pets": [
+      {"name": "Rex", "type": "dog"},
+      {"name": "Milo", "type": "cat"}
+    ]
+  }
+}
+```
+
+### Problem 1: Read a nested value
+
+Write the expression for the user's name.
+
+### Problem 2: Read inside an array
+
+Write the expression for the second pet's type.
+
+### Problem 3: Loop the array
+
+Write a `for` loop that prints each pet's name (assume `data` is the decoded Map).
+
+---
+
+## Assignment Answers
+
+### Problem 1: Read a nested value
+
+```dart
+data['user']['name']; // Ada
+```
+
+### Problem 2: Read inside an array
+
+```dart
+data['user']['pets'][1]['type']; // cat
+```
+
+### Problem 3: Loop the array
+
+```dart
+List<dynamic> pets = data['user']['pets'];
+for (var pet in pets) {
+  print(pet['name']);
+}
+```
 
 ---
 
