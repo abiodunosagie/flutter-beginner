@@ -1,2 +1,5 @@
 .claude/
 
+
+# Local session doc, never commit
+SESSION_GUIDE.md
