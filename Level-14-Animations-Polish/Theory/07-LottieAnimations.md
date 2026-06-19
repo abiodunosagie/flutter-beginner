@@ -1,5 +1,9 @@
 # Lottie Animations: Designer-Quality Animations in Flutter
 
+## The Big Idea In One Sentence
+
+> Lottie plays designer-made animations (exported as small JSON files) in your app, so you get rich, complex motion that would be painful to hand-code.
+
 ## The Simple Explanation
 
 Imagine a designer draws a beautiful cartoon animation on their computer, and you can use it in your app - exactly as they designed it! That's what Lottie does - it brings designer-created animations to life in your Flutter app.
@@ -1051,6 +1055,38 @@ class _MyWidgetState extends State<MyWidget>
 ---
 
 ## Navigation
+
+## Assignment
+
+### Problem 1: What format?
+
+What kind of file does a Lottie animation come as?
+
+### Problem 2: Why Lottie?
+
+In one sentence, why use Lottie instead of coding a complex animation by hand?
+
+### Problem 3: Where from?
+
+Where do designers usually create or find Lottie animations?
+
+---
+
+## Assignment Answers
+
+### Problem 1: What format?
+
+A small JSON file (often exported from After Effects via the Bodymovin plugin).
+
+### Problem 2: Why Lottie?
+
+It plays rich, designer-quality motion that would be very hard and slow to recreate by hand, while staying lightweight.
+
+### Problem 3: Where from?
+
+Designers export them (e.g. from After Effects), or you grab free ones from sites like LottieFiles.
+
+---
 
 ⬅️ **Previous:** [Flutter Animate Package](06-FlutterAnimate.md)
 ⬆️ **Back to:** [Learning Path](00-LearningPath.md)

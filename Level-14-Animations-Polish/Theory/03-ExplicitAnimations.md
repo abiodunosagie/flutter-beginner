@@ -1,5 +1,9 @@
 # Explicit Animations
 
+## The Big Idea In One Sentence
+
+> Explicit animations give you full control with an `AnimationController` (you start, stop, reverse, repeat), which you must create in a State with a ticker and `dispose` when done.
+
 ## The Simple Explanation
 
 Explicit animations give you full control - like driving a car instead of being a passenger. You control when it starts, stops, loops, and exactly how it moves!
@@ -712,6 +716,63 @@ class _MultiControllerExampleState extends State<MultiControllerExample>
 │                                                              │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** When do you need explicit animations instead of implicit?
+
+<details>
+<summary>Answer</summary>
+When you need control: repeating, reversing, looping, or syncing multiple animations, things implicit widgets cannot do.
+</details>
+
+**Q2.** What object drives an explicit animation?
+
+<details>
+<summary>Answer</summary>
+An `AnimationController` (often with `SingleTickerProviderStateMixin` for its `vsync`).
+</details>
+
+**Q3.** Why must you call `controller.dispose()`?
+
+<details>
+<summary>Answer</summary>
+To free its ticker/resources and avoid memory leaks when the widget is removed.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Implicit or explicit?
+
+You want a loading icon that spins forever. Which kind of animation, and why?
+
+### Problem 2: The lifecycle
+
+Name the two State methods where you create and destroy an `AnimationController`.
+
+### Problem 3: Start it
+
+Which controller method makes it run once forward?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Implicit or explicit?
+
+**Explicit.** A forever-spinning icon needs to repeat/loop, which an `AnimationController` (`.repeat()`) handles but implicit widgets cannot.
+
+### Problem 2: The lifecycle
+
+Create it in `initState`, and dispose it in `dispose`.
+
+### Problem 3: Start it
+
+`controller.forward()`.
 
 ---
 

@@ -1,5 +1,9 @@
 # Animation Basics
 
+## The Big Idea In One Sentence
+
+> An animation is just a value changing smoothly over time (size, color, position), and Flutter redraws each in-between frame for you so motion looks natural instead of jumping.
+
 ## The Simple Explanation
 
 Animations are like flipbooks - many slightly different images shown quickly make things look like they're moving! Flutter handles all the "pages" for you.
@@ -429,6 +433,63 @@ void initState() {
 │                                                              │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** In simple terms, what is an animation?
+
+<details>
+<summary>Answer</summary>
+A value changing smoothly over time, with Flutter drawing all the in-between frames so it looks like motion.
+</details>
+
+**Q2.** What is a "duration" in an animation?
+
+<details>
+<summary>Answer</summary>
+How long the change takes from start to finish (e.g. 300 milliseconds).
+</details>
+
+**Q3.** What is a "curve" for?
+
+<details>
+<summary>Answer</summary>
+It controls the pacing, like easing in/out, so motion feels natural instead of perfectly linear/robotic.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Identify the change
+
+A box grows from 50px to 200px over 1 second. What value is animating, and what is the duration?
+
+### Problem 2: Why curves?
+
+In one sentence, why use an ease curve instead of linear motion?
+
+### Problem 3: Frames
+
+If an animation runs at 60fps for 1 second, roughly how many in-between frames are drawn?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Identify the change
+
+The width (size) is animating, from 50 to 200. The duration is 1 second.
+
+### Problem 2: Why curves?
+
+An ease curve makes motion start and stop gently, which feels more natural and polished than constant-speed (linear) motion.
+
+### Problem 3: Frames
+
+About 60 frames (one per frame at 60fps for one second).
 
 ---
 

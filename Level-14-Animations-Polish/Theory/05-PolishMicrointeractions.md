@@ -1,5 +1,9 @@
 # Polish & Micro-interactions
 
+## The Big Idea In One Sentence
+
+> Micro-interactions are tiny animated responses to user actions (a button that presses in, a heart that pops, a gentle bounce), and they are what make an app feel alive and high-quality.
+
 ## The Simple Explanation
 
 Micro-interactions are tiny details that make your app feel alive - like a button that slightly shrinks when tapped, or a satisfying vibration when completing a task. They're small, but they make a BIG difference!
@@ -824,6 +828,63 @@ ListView.builder(
 │                                                              │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** What is a micro-interaction?
+
+<details>
+<summary>Answer</summary>
+A small, quick animation that responds to a user action, like a button pressing in or a like button popping.
+</details>
+
+**Q2.** Why do micro-interactions matter even though they are tiny?
+
+<details>
+<summary>Answer</summary>
+They give instant feedback and make the app feel responsive, alive, and professional.
+</details>
+
+**Q3.** What is a risk of overusing animations?
+
+<details>
+<summary>Answer</summary>
+Too many or too slow animations feel distracting and make the app seem sluggish. Keep them quick and purposeful.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Add feedback
+
+A user taps "Like" but nothing visibly happens. What micro-interaction would help?
+
+### Problem 2: Keep it snappy
+
+Roughly how long should a button-press micro-interaction last?
+
+### Problem 3: Too much?
+
+Name one sign you have over-animated a screen.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Add feedback
+
+A quick pop/scale or color change on the heart icon (and maybe a subtle bounce), so the tap clearly registered.
+
+### Problem 2: Keep it snappy
+
+Short, around 100 to 300 milliseconds, so it feels instant, not sluggish.
+
+### Problem 3: Too much?
+
+Things move so much it is distracting, or the user has to wait on animations to do simple tasks (the app feels slow).
 
 ---
 

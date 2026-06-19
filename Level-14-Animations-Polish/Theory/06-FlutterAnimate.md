@@ -1,5 +1,9 @@
 # Flutter Animate Package: Easy Declarative Animations
 
+## The Big Idea In One Sentence
+
+> The `flutter_animate` package lets you add and chain animations by just tacking them onto a widget, like `Text('Hi').animate().fadeIn().slideX()`, no controllers needed.
+
 ## The Simple Explanation
 
 Imagine you have magic stickers that make things move! Instead of writing complicated code, you just stick them on your widgets and they automatically animate. That's what flutter_animate does!
@@ -797,6 +801,44 @@ ListView.builder(
 ---
 
 ## Navigation
+
+## Assignment
+
+### Problem 1: Fade in
+
+Using flutter_animate, write the expression to fade in a `Text('Hello')`.
+
+### Problem 2: Chain two
+
+How would you make that text fade in AND slide in?
+
+### Problem 3: Why use it?
+
+In one line, what does flutter_animate save you compared to an AnimationController?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Fade in
+
+```dart
+Text('Hello').animate().fadeIn();
+```
+
+### Problem 2: Chain two
+
+```dart
+Text('Hello').animate().fadeIn().slideX();
+```
+
+You chain effects with `.` and they run together/in sequence.
+
+### Problem 3: Why use it?
+
+It removes the boilerplate: no controller, no ticker, no dispose, just chain effects onto the widget.
+
+---
 
 ⬅️ **Previous:** [Polish & Microinteractions](05-PolishMicrointeractions.md)
 ⬆️ **Back to:** [Learning Path](00-LearningPath.md)

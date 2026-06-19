@@ -1,5 +1,9 @@
 # Implicit Animations
 
+## The Big Idea In One Sentence
+
+> Implicit animations are the easy kind: use a widget like `AnimatedContainer`, change a value with `setState`, and it smoothly animates to the new value all by itself.
+
 ## The Simple Explanation
 
 Implicit animations are like magic - you just change a value, and Flutter automatically animates the change! No controllers, no complexity.
@@ -766,6 +770,63 @@ class _AnimatedProfileCardState extends State<AnimatedProfileCard> {
 │                                                              │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** What makes an animation "implicit"?
+
+<details>
+<summary>Answer</summary>
+You just change a value (with `setState`) and the widget animates to it automatically. You do not manage the animation yourself.
+</details>
+
+**Q2.** Name one common implicit-animation widget.
+
+<details>
+<summary>Answer</summary>
+`AnimatedContainer` (also `AnimatedOpacity`, `AnimatedAlign`, `AnimatedPadding`, etc.).
+</details>
+
+**Q3.** What two properties do implicit widgets need to animate?
+
+<details>
+<summary>Answer</summary>
+A `duration` (how long) and the changing value(s); usually a `curve` too.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Pick the widget
+
+You want a box to smoothly change size and color when tapped, with the least code. Which widget?
+
+### Problem 2: Trigger it
+
+What do you do to make an `AnimatedContainer` animate to a new width?
+
+### Problem 3: Required property
+
+What must you always give an `AnimatedContainer` besides the values?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Pick the widget
+
+`AnimatedContainer` (it animates size, color, padding, etc. automatically).
+
+### Problem 2: Trigger it
+
+Change the width value inside `setState`; the `AnimatedContainer` animates from the old width to the new one.
+
+### Problem 3: Required property
+
+A `duration` (how long the animation should take).
 
 ---
 

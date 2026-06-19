@@ -1,5 +1,9 @@
 # Rive Animations: Interactive State-Driven Animations
 
+## The Big Idea In One Sentence
+
+> Rive is like Lottie but interactive: its animations have a state machine, so they can react to taps, input, and your app's state in real time (a button that morphs, a character that follows the cursor).
+
 ## The Simple Explanation
 
 Imagine a toy robot that responds when you touch it - eyes blink when you tap its head, arms wave when you press a button. That's what Rive does - it creates animations that react to YOUR actions in real-time!
@@ -935,6 +939,38 @@ You now know:
 ---
 
 ## Navigation
+
+## Assignment
+
+### Problem 1: Lottie vs Rive
+
+What is the key difference between Lottie and Rive?
+
+### Problem 2: State machine
+
+In one line, what does a Rive "state machine" let an animation do?
+
+### Problem 3: Pick the tool
+
+You want an animated button that reacts to hover, press, and success states. Lottie or Rive?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Lottie vs Rive
+
+Lottie plays a fixed animation; Rive animations are interactive and can respond to input and app state via a state machine.
+
+### Problem 2: State machine
+
+It lets the animation switch between states (idle, hover, pressed, success) based on inputs, instead of just playing start to finish.
+
+### Problem 3: Pick the tool
+
+**Rive**, because it can react to hover/press/success states interactively. Lottie would just play a set clip.
+
+---
 
 ⬅️ **Previous:** [Lottie Animations](07-LottieAnimations.md)
 ⬆️ **Back to:** [Learning Path](00-LearningPath.md)

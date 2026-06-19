@@ -1,5 +1,9 @@
 # Hero Animations
 
+## The Big Idea In One Sentence
+
+> A Hero animation makes one element fly smoothly between two screens: wrap the same widget in a `Hero` with the same `tag` on both screens, and Flutter animates it across the transition.
+
 ## The Simple Explanation
 
 Hero animations make an element "fly" from one screen to another. It's like a character teleporting between locations but we see the journey!
@@ -571,6 +575,63 @@ class ProductCard extends StatelessWidget {
 │                                                              │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** What must match for a Hero animation to work across two screens?
+
+<details>
+<summary>Answer</summary>
+The `tag` on the `Hero` widget must be the same on both screens.
+</details>
+
+**Q2.** What does a Hero animation look like to the user?
+
+<details>
+<summary>Answer</summary>
+The element (like a photo) smoothly flies and grows/shrinks from its spot on screen A to its spot on screen B.
+</details>
+
+**Q3.** A common bug: two Heroes on the same screen share a tag. What happens?
+
+<details>
+<summary>Answer</summary>
+Flutter throws an error, because tags must be unique on a given screen.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Wire a Hero
+
+A product image appears on a list screen and a details screen. What do you wrap it in, and what must be equal?
+
+### Problem 2: Unique tags
+
+For a list of 10 products, how do you keep each Hero tag unique?
+
+### Problem 3: When to use
+
+Name a good real-world use for a Hero animation.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Wire a Hero
+
+Wrap the image in a `Hero` on both screens, and make the `tag` the same on both (e.g. `Hero(tag: product.id, child: Image(...))`).
+
+### Problem 2: Unique tags
+
+Use something unique per item as the tag, like the product's id, so no two Heroes on a screen share a tag.
+
+### Problem 3: When to use
+
+Tapping a thumbnail in a list to open a full-screen detail, where the image flies into place. (Also profile avatars, gallery photos.)
 
 ---
 
