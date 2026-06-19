@@ -1,5 +1,9 @@
 # JSON Basics - Part 2: Parsing JSON
 
+## The Big Idea In One Sentence
+
+> `json.decode` turns a JSON string into Dart Maps/Lists you can use, and `json.encode` turns your Dart data back into a JSON string to send.
+
 Learn how to convert between JSON strings and Dart objects!
 
 ---
@@ -379,6 +383,70 @@ void main() {
 ```
 
 Great job! Now you know how to parse JSON. Next, you'll learn how to work with complex nested structures.
+
+---
+
+## Quick Quiz
+
+**Q1.** Which function turns a JSON string into a Dart Map?
+
+<details>
+<summary>Answer</summary>
+`json.decode(...)`.
+</details>
+
+**Q2.** Which function turns a Dart Map into a JSON string?
+
+<details>
+<summary>Answer</summary>
+`json.encode(...)`.
+</details>
+
+**Q3.** Why is `user['age'] ?? 0` safer than `user['age']`?
+
+<details>
+<summary>Answer</summary>
+If the `age` key is missing, `user['age']` is `null`. The `?? 0` supplies a default so your code does not crash using a null.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Decode it
+
+You have `String s = '{"city": "Lagos"}';`. Write the line that decodes it into a Map called `data`, then reads the city.
+
+### Problem 2: Encode it
+
+You have `Map<String, dynamic> m = {'ok': true};`. Write the line that turns it into a JSON string.
+
+### Problem 3: Stay safe
+
+A response is `{"name": "Sam"}` with no `age`. Write a line that reads `age` as an `int`, defaulting to `0` when missing.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Decode it
+
+```dart
+Map<String, dynamic> data = json.decode(s);
+print(data['city']); // Lagos
+```
+
+### Problem 2: Encode it
+
+```dart
+String out = json.encode(m); // {"ok":true}
+```
+
+### Problem 3: Stay safe
+
+```dart
+int age = data['age'] ?? 0;
+```
 
 ---
 
