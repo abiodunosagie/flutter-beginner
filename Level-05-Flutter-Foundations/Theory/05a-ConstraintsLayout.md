@@ -1,916 +1,264 @@
-# Level 05 PART 5a: Constraints and Layout Basics
+# How Layout Works: Constraints And Sizing
 
-## For a 5-Year-Old
+## The Big Idea In One Sentence
 
-Imagine you have a big toy box, and your parent says:
-- "Put your toys inside this box"
-- "The toys can't be bigger than the box"
-- "But they can be smaller if they want"
+> A parent widget tells its child the space it is allowed (the **constraints**), the child picks its **size** within that, and the parent then places it.
 
-That's how Flutter works! The parent widget (the box) tells the child widget (the toy) how big it can be. The child decides its actual size, and then the parent puts it in the right spot.
-
-```
-Parent: "You can be between 0 and 100 pixels wide"
-Child: "Okay! I'll be 50 pixels wide"
-Parent: "Great! I'll put you here" *places child*
-```
-
-It's like fitting puzzle pieces - the parent gives the rules, the child chooses its size (within those rules), and the parent arranges everything.
+This is the secret to understanding why widgets end up the size they do.
 
 ---
 
-## The Big Idea: Constraints Go Down, Sizes Go Up
+## For A 5-Year-Old
 
-Flutter's layout system follows one simple rule:
+Imagine a parent with a toy box says:
 
-```
-Constraints go DOWN ↓
-Sizes go UP ↑
-Parent sets position
-```
+- "Put your toy inside this box."
+- "It cannot be bigger than the box."
+- "But it can be smaller if it wants."
 
-Think of it like a conversation:
-1. **Parent to child:** "You can be THIS big" (sends constraints down)
-2. **Child to parent:** "I'll be THIS size" (sends size back up)
-3. **Parent:** "Okay, I'll put you HERE" (sets position)
-
-This happens for every widget in your app, creating a chain:
-
-```
-Screen (top)
-   ↓ constraints
-Widget 1
-   ↓ constraints
-Widget 2
-   ↓ constraints
-Widget 3
-   ↑ sizes go back up
-Widget 2
-   ↑ sizes go back up
-Widget 1
-   ↑ sizes go back up
-Screen (now knows everything's size)
-```
+That is Flutter layout. The parent widget gives the rules, the child chooses its size within them, and the parent places it.
 
 ---
 
-## What Are Constraints?
+## Constraints Go Down, Sizes Go Up
 
-A **constraint** is a set of rules about size. It has four numbers:
+Remember this one sentence and Flutter layout stops being mysterious:
 
-```dart
-BoxConstraints(
-  minWidth: 100,   // "At least 100 pixels wide"
-  maxWidth: 200,   // "At most 200 pixels wide"
-  minHeight: 50,   // "At least 50 pixels tall"
-  maxHeight: 100,  // "At most 100 pixels tall"
-)
+> **Constraints go down. Sizes go up. The parent sets the position.**
+
+1. **Constraints go down:** a parent gives each child a rule like "you can be up to 300 pixels wide."
+2. **Sizes go up:** the child picks a size that obeys the rule and reports "I am 150 wide."
+3. **Position is set by the parent:** the parent decides where to put the child.
+
+```
+Parent: "You may be up to 300 wide."   (constraint goes DOWN)
+Child:  "OK, I will be 150 wide."       (size goes UP)
+Parent: "I will place you here."        (parent positions)
 ```
 
-The child can choose any size within these limits:
-- Width: anywhere from 100 to 200
-- Height: anywhere from 50 to 100
+This conversation repeats all the way down the widget tree.
 
 ---
 
 ## Tight vs Loose Constraints
 
-### Tight Constraints: "You MUST be exactly this size"
+There are two kinds of rules a parent can give.
+
+### Tight: "You MUST be exactly this size"
+
+The child has no choice. `SizedBox(width: 100, height: 100)` forces its child to be exactly 100 by 100.
 
 ```dart
-BoxConstraints.tight(Size(100, 100))
-
-// Same as:
-BoxConstraints(
-  minWidth: 100,
-  maxWidth: 100,   // min = max = no choice!
-  minHeight: 100,
-  maxHeight: 100,
+SizedBox(
+  width: 100,
+  height: 100,
+  child: Container(color: Colors.blue),  // forced to be 100 x 100
 )
 ```
 
-When min equals max, the child has no choice. It must be exactly that size.
+### Loose: "You can be any size up to this"
 
-```
-Parent: "You MUST be 100x100"
-Child: "Okay, I'm 100x100"
-```
-
-### Loose Constraints: "You can be any size up to this"
+The child may be smaller. `Center` gives a loose rule: "be as big as you need, up to my space," then centers the child.
 
 ```dart
-BoxConstraints.loose(Size(100, 100))
-
-// Same as:
-BoxConstraints(
-  minWidth: 0,
-  maxWidth: 100,   // Can be anywhere from 0 to 100
-  minHeight: 0,
-  maxHeight: 100,
+Center(
+  child: Text('small'),   // only as big as the text, then centered
 )
 ```
 
-The child can choose its size, up to the maximum:
-
-```
-Parent: "You can be up to 100x100"
-Child: "I'll be 50x50"
-Parent: "That's fine!"
-```
+With a tight rule, the child is stretched to fit. With a loose rule, the child shrinks to its content.
 
 ---
 
-## Visualizing Constraints
+## A Common Surprise: "Why Is My Column So Tall?"
 
-```
-Parent Container (300x200)
-┌───────────────────────────────────────┐
-│                                       │
-│   Parent says:                        │
-│   "You can be 0-300 wide"             │
-│   "You can be 0-200 tall"             │
-│                                       │
-│      Child decides:                   │
-│      "I'll be 150 x 100"              │
-│      ┌───────────────────┐            │
-│      │                   │            │
-│      │   Child (150x100) │            │
-│      │                   │            │
-│      └───────────────────┘            │
-│                                       │
-└───────────────────────────────────────┘
-```
+A `Column` (and a `Row`) takes up **all** the space it is allowed on its main axis by default. So a Column in the middle of the screen grabs the whole height, even with only two small texts.
 
----
-
-## The Layout Process (Step by Step)
-
-Every widget goes through these exact steps:
-
-```
-Step 1: Receive constraints from parent
-        "You can be 0-400 wide, 0-800 tall"
-           │
-           ▼
-Step 2: Layout children (pass constraints to them)
-        "Hey kids, here are YOUR constraints..."
-           │
-           ▼
-Step 3: Children report back their sizes
-        "I'm 200 wide, 100 tall"
-           │
-           ▼
-Step 4: Determine own size (within constraints)
-        "I need to be 250 wide, 300 tall for all my kids"
-           │
-           ▼
-Step 5: Position children
-        "I'll put you at x=10, y=20"
-           │
-           ▼
-Step 6: Report size to parent
-        "I ended up being 250x300"
-```
-
-Example with real widgets:
+This is controlled by `mainAxisSize`:
 
 ```dart
-// Phone screen (parent): 400 wide, 800 tall
-MaterialApp
-  ├─ Scaffold
-  │   ├─ Column (wants to be 0-400 wide, 0-800 tall)
-  │   │   ├─ Text("Hello") → reports "I'm 100 wide, 20 tall"
-  │   │   ├─ SizedBox(height: 10) → reports "I'm 0 wide, 10 tall"
-  │   │   └─ Container(height: 50) → reports "I'm 400 wide, 50 tall"
-  │   │
-  │   │   Column calculates: "All my kids need 400 wide, 80 tall"
-  │   │   Column reports up: "I'll be 400 wide, 80 tall"
-  │   │
-  │   Scaffold reports: "I'll be 400 wide, 800 tall"
-  │
-  MaterialApp places everything
+// Default: max -> the Column takes ALL the available height
+Column(
+  children: const [Text('A'), Text('B')],
+)
+
+// min -> the Column takes ONLY as much height as its children need
+Column(
+  mainAxisSize: MainAxisSize.min,
+  children: const [Text('A'), Text('B')],
+)
 ```
+
+- `MainAxisSize.max` (the default): take all the space on the main axis.
+- `MainAxisSize.min`: take only as much as the children need.
+
+If a Column is grabbing the whole screen, set `mainAxisSize: MainAxisSize.min`. This is why you have seen that line in many earlier examples.
 
 ---
 
-## Row and Column: Main Axis vs Cross Axis
+## A Quick Recap Of Alignment
 
-This is THE most important concept for layouts!
+You learned these in `02c-LayoutBasics.md`, and they fit right here:
 
-### Column (Vertical)
-
-A Column arranges children **vertically** (top to bottom).
+- `mainAxisAlignment` spreads children along the main axis (for a Column, up and down).
+- `crossAxisAlignment` aligns them across the other axis (for a Column, left and right).
 
 ```dart
 Column(
-  mainAxisAlignment: ...,   // Controls VERTICAL spacing ↕
-  crossAxisAlignment: ...,  // Controls HORIZONTAL alignment ↔
-  children: [...],
-)
-```
-
-```
-       ↑
-       │ Main Axis (the direction children are laid out)
-       │ This is VERTICAL for Column
-       ↓
-
- ←───────────→ Cross Axis (perpendicular to main axis)
-               This is HORIZONTAL for Column
-
-┌─────────────────────┐
-│     ┌───────┐       │
-│     │ Child │       │  ← Each child is placed
-│     └───────┘       │    vertically
-│         ↓           │
-│     ┌───────┐       │
-│     │ Child │       │
-│     └───────┘       │
-│         ↓           │
-│     ┌───────┐       │
-│     │ Child │       │
-│     └───────┘       │
-└─────────────────────┘
-```
-
-**Remember:**
-- Main axis = the direction children flow (DOWN for Column)
-- Cross axis = perpendicular direction (ACROSS for Column)
-
-### Row (Horizontal)
-
-A Row arranges children **horizontally** (left to right).
-
-```dart
-Row(
-  mainAxisAlignment: ...,   // Controls HORIZONTAL spacing ↔
-  crossAxisAlignment: ...,  // Controls VERTICAL alignment ↕
-  children: [...],
-)
-```
-
-```
- ←────────────────────────────────→ Main Axis
- This is HORIZONTAL for Row
-
-       ↑
-       │ Cross Axis (perpendicular to main axis)
-       │ This is VERTICAL for Row
-       ↓
-
-┌─────────────────────────────────────────┐
-│  ┌───────┐ → ┌───────┐ → ┌───────┐     │
-│  │ Child │   │ Child │   │ Child │     │
-│  └───────┘   └───────┘   └───────┘     │
-└─────────────────────────────────────────┘
-   Each child is placed horizontally
-```
-
-**Remember:**
-- Main axis = the direction children flow (ACROSS for Row)
-- Cross axis = perpendicular direction (DOWN for Row)
-
----
-
-## MainAxisAlignment Options
-
-Controls how children are spaced along the **main axis** (the direction they flow).
-
-### start (default)
-
-Children stick to the beginning:
-
-```dart
-Row(
-  mainAxisAlignment: MainAxisAlignment.start,
-  children: [Box('A'), Box('B'), Box('C')],
-)
-```
-
-```
-┌──────────────────────────────┐
-│ [A][B][C]                    │
-│  ↑ starts here, rest is empty
-└──────────────────────────────┘
-```
-
-### end
-
-Children stick to the end:
-
-```dart
-Row(
-  mainAxisAlignment: MainAxisAlignment.end,
-  children: [Box('A'), Box('B'), Box('C')],
-)
-```
-
-```
-┌──────────────────────────────┐
-│                    [A][B][C] │
-│     empty space ↑   ends here
-└──────────────────────────────┘
-```
-
-### center
-
-Children are centered:
-
-```dart
-Row(
+  mainAxisSize: MainAxisSize.min,
   mainAxisAlignment: MainAxisAlignment.center,
-  children: [Box('A'), Box('B'), Box('C')],
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: const [Text('A'), Text('B')],
 )
 ```
 
-```
-┌──────────────────────────────┐
-│        [A][B][C]             │
-│  empty ↑  centered  ↑ empty
-└──────────────────────────────┘
-```
-
-### spaceBetween
-
-Even spacing BETWEEN children (no space at edges):
-
-```dart
-Row(
-  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  children: [Box('A'), Box('B'), Box('C')],
-)
-```
-
-```
-┌──────────────────────────────┐
-│ [A]        [B]        [C]    │
-│  ↑   equal   ↑   equal  ↑
-│  no space   space      no space
-│  at edge               at edge
-└──────────────────────────────┘
-```
-
-### spaceEvenly
-
-Equal spacing everywhere (including edges):
-
-```dart
-Row(
-  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  children: [Box('A'), Box('B'), Box('C')],
-)
-```
-
-```
-┌──────────────────────────────┐
-│    [A]      [B]      [C]     │
-│  ↑     ↑      ↑       ↑    ↑
-│  same  same  same   same  same
-│  spacing everywhere
-└──────────────────────────────┘
-```
-
-### spaceAround
-
-Each child gets equal space around it:
-
-```dart
-Row(
-  mainAxisAlignment: MainAxisAlignment.spaceAround,
-  children: [Box('A'), Box('B'), Box('C')],
-)
-```
-
-```
-┌──────────────────────────────┐
-│  [A]     [B]     [C]         │
-│ ↑ ↑    ↑  ↑    ↑  ↑
-│ x x    x  x    x  x
-│ Each child gets x space on each side
-│ Edges get x, between children get 2x
-└──────────────────────────────┘
-```
+The new idea in this lesson is the **constraints** behind all of it: a Column can only spread its children within the height its parent allowed.
 
 ---
 
-## CrossAxisAlignment Options
+## Why This Matters
 
-Controls how children are aligned **perpendicular** to the main axis.
+When a widget is too big, too small, or in the wrong place, the cause is almost always constraints:
 
-### In a Column (controls horizontal alignment)
+- A `Column` taking the whole screen? Its `mainAxisSize` is `max` (the default).
+- A box not the size you expected? Check whether its parent gave a tight or a loose rule.
 
-```dart
-// start: Align to the left
-Column(
-  crossAxisAlignment: CrossAxisAlignment.start,
-  children: [
-    Text('Short'),
-    Text('Longer text'),
-    Text('Very long text here'),
-  ],
-)
-```
-
-```
-┌────────────────────────┐
-│ Short                  │
-│ Longer text            │
-│ Very long text here    │
-│ ↑ all aligned to left
-└────────────────────────┘
-```
-
-```dart
-// center: Center horizontally
-Column(
-  crossAxisAlignment: CrossAxisAlignment.center,
-  children: [
-    Text('Short'),
-    Text('Longer text'),
-    Text('Very long text here'),
-  ],
-)
-```
-
-```
-┌────────────────────────┐
-│        Short           │
-│     Longer text        │
-│ Very long text here    │
-│      ↑ all centered
-└────────────────────────┘
-```
-
-```dart
-// end: Align to the right
-Column(
-  crossAxisAlignment: CrossAxisAlignment.end,
-  children: [
-    Text('Short'),
-    Text('Longer text'),
-    Text('Very long text here'),
-  ],
-)
-```
-
-```
-┌────────────────────────┐
-│                  Short │
-│            Longer text │
-│    Very long text here │
-│     all aligned right ↑
-└────────────────────────┘
-```
-
-```dart
-// stretch: Force children to fill width
-Column(
-  crossAxisAlignment: CrossAxisAlignment.stretch,
-  children: [
-    Container(color: Colors.red, child: Text('A')),
-    Container(color: Colors.green, child: Text('B')),
-    Container(color: Colors.blue, child: Text('C')),
-  ],
-)
-```
-
-```
-┌────────────────────────┐
-│ [      A             ] │
-│ [      B             ] │
-│ [      C             ] │
-│   ↑ all stretched to full width
-└────────────────────────┘
-```
-
-### In a Row (controls vertical alignment)
-
-```dart
-// start: Align to top
-Row(
-  crossAxisAlignment: CrossAxisAlignment.start,
-  children: [
-    Container(height: 50, child: Text('A')),
-    Container(height: 100, child: Text('B')),
-    Container(height: 75, child: Text('C')),
-  ],
-)
-```
-
-```
-┌────────────────────────┐
-│ [A] [B    ] [C  ]      │ ← All tops aligned
-│     [     ] [   ]      │
-│     [     ]            │
-│     [     ]            │
-└────────────────────────┘
-```
-
-```dart
-// center: Center vertically
-Row(
-  crossAxisAlignment: CrossAxisAlignment.center,
-  children: [
-    Container(height: 50, child: Text('A')),
-    Container(height: 100, child: Text('B')),
-    Container(height: 75, child: Text('C')),
-  ],
-)
-```
-
-```
-┌────────────────────────┐
-│     [B    ]            │
-│ [A] [     ] [C  ]      │ ← All centers aligned
-│     [     ] [   ]      │
-│     [     ]            │
-└────────────────────────┘
-```
+"Constraints down, sizes up" turns confusing layouts into something you can reason about.
 
 ---
 
-## MainAxisSize
+## The Top Mistakes Beginners Make
 
-Controls how much space the Row or Column takes along its **main axis**.
+### Mistake 1: Expecting a Column to shrink to its content
 
-### max (default): Take ALL available space
+By default it does not; it takes all the height. Use `mainAxisSize: MainAxisSize.min`.
+
+### Mistake 2: Thinking a child can be any size it likes
+
+A child must obey the parent's constraints. If the parent says "exactly 100 wide," the child is 100 wide.
+
+### Mistake 3: Confusing size with position
+
+Choosing a size and being placed are two separate steps. The child chooses its size; the parent chooses where it goes.
+
+---
+
+## One-Minute Recap
+
+- Layout rule: **constraints go down, sizes go up, the parent sets the position.**
+- **Tight** constraints force an exact size; **loose** constraints allow up to a maximum.
+- `Row`/`Column` take all their main-axis space by default (`MainAxisSize.max`). Use `MainAxisSize.min` to shrink to the children.
+- `mainAxisAlignment` and `crossAxisAlignment` (from 02c) position children within that space.
+
+---
+
+## Quick Quiz
+
+**Q1.** What does "constraints go down, sizes go up" mean?
+
+<details>
+<summary>Answer</summary>
+The parent passes down a rule for how big the child may be. The child picks a size that obeys the rule and passes it back up. The parent then positions the child.
+</details>
+
+**Q2.** What is the difference between tight and loose constraints?
+
+<details>
+<summary>Answer</summary>
+Tight means the child must be an exact size. Loose means the child may be any size up to a maximum.
+</details>
+
+**Q3.** Why does a Column often take the whole screen height?
+
+<details>
+<summary>Answer</summary>
+Because `mainAxisSize` defaults to `max`. Set `mainAxisSize: MainAxisSize.min` to shrink it to its children.
+</details>
+
+---
+
+## Assignment
+
+Paste into [dartpad.dev](https://dartpad.dev). Wrap widgets in `Scaffold(body: ...)` to see them.
+
+### Problem 1: Predict the size
+
+Which column takes the whole screen height, and which is only as tall as its two texts?
+
+```dart
+// A
+Column(children: const [Text('one'), Text('two')])
+
+// B
+Column(mainAxisSize: MainAxisSize.min, children: const [Text('one'), Text('two')])
+```
+
+### Problem 2: Tight or loose?
+
+For each, say whether the child gets a tight or a loose constraint:
+
+1. `SizedBox(width: 50, height: 50, child: ...)`
+2. `Center(child: ...)`
+
+### Problem 3: Fix the tall column
+
+This Column grabs the whole screen height. Make it only as tall as its children.
 
 ```dart
 Column(
-  mainAxisSize: MainAxisSize.max,
-  children: [
-    Text('Child 1'),
-    Text('Child 2'),
-    Text('Child 3'),
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: const [
+    Text('Title'),
+    Text('Subtitle'),
   ],
 )
 ```
 
-```
-┌───────────────┐
-│ Child 1       │
-│ Child 2       │
-│ Child 3       │
-│               │
-│               │  ← Column takes all
-│               │    available space
-│               │    even if children
-│               │    don't need it
-│               │
-└───────────────┘
-```
+### Problem 4: Force an exact size
 
-### min: Take ONLY needed space
+Make a `Container` that is forced to be exactly 120 wide and 60 tall and is coloured green.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Predict the size
+
+- **A** takes the whole screen height. With no `mainAxisSize`, a Column defaults to `MainAxisSize.max`.
+- **B** is only as tall as the two texts, because `mainAxisSize: MainAxisSize.min` shrinks it to its children.
+
+### Problem 2: Tight or loose?
+
+1. `SizedBox(width: 50, height: 50, ...)` gives a **tight** constraint: the child must be exactly 50 by 50.
+2. `Center(child: ...)` gives a **loose** constraint: the child may be any size up to the available space, then Center places it in the middle.
+
+### Problem 3: Fix the tall column
 
 ```dart
 Column(
   mainAxisSize: MainAxisSize.min,
-  children: [
-    Text('Child 1'),
-    Text('Child 2'),
-    Text('Child 3'),
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: const [
+    Text('Title'),
+    Text('Subtitle'),
   ],
 )
 ```
 
-```
-┌───────────────┐
-│ Child 1       │
-│ Child 2       │
-│ Child 3       │
-└───────────────┘
-↑ Column only as tall as needed
-  (wraps children tightly)
-```
+Adding `mainAxisSize: MainAxisSize.min` makes the Column shrink to just its two texts.
 
-**When to use each:**
-
-- `MainAxisSize.max`: When you want a background color to fill the whole space, or when using spaceBetween/spaceAround/spaceEvenly
-- `MainAxisSize.min`: When you want the Row/Column to be as small as possible (like in a dialog or popup)
-
----
-
-## Complete Examples
-
-### Example 1: Alignment Comparison
+### Problem 4: Force an exact size
 
 ```dart
-import 'package:flutter/material.dart';
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: Text('Alignment Demo')),
-        body: Column(
-          children: [
-            // Start alignment
-            Container(
-              color: Colors.blue[100],
-              height: 100,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  _buildBox('A', Colors.red),
-                  _buildBox('B', Colors.green),
-                  _buildBox('C', Colors.blue),
-                ],
-              ),
-            ),
-            SizedBox(height: 10),
-
-            // Center alignment
-            Container(
-              color: Colors.green[100],
-              height: 100,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _buildBox('A', Colors.red),
-                  _buildBox('B', Colors.green),
-                  _buildBox('C', Colors.blue),
-                ],
-              ),
-            ),
-            SizedBox(height: 10),
-
-            // Space Between
-            Container(
-              color: Colors.orange[100],
-              height: 100,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _buildBox('A', Colors.red),
-                  _buildBox('B', Colors.green),
-                  _buildBox('C', Colors.blue),
-                ],
-              ),
-            ),
-            SizedBox(height: 10),
-
-            // Space Evenly
-            Container(
-              color: Colors.purple[100],
-              height: 100,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildBox('A', Colors.red),
-                  _buildBox('B', Colors.green),
-                  _buildBox('C', Colors.blue),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBox(String label, Color color) {
-    return Container(
-      width: 60,
-      height: 60,
-      color: color,
-      child: Center(
-        child: Text(
-          label,
-          style: TextStyle(color: Colors.white, fontSize: 24),
-        ),
-      ),
-    );
-  }
-}
-```
-
-### Example 2: Cross Axis Alignment
-
-```dart
-import 'package:flutter/material.dart';
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: Text('Cross Axis Demo')),
-        body: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            // Start (top)
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Start'),
-                _buildBox('A', Colors.red, 50),
-                _buildBox('B', Colors.green, 80),
-                _buildBox('C', Colors.blue, 60),
-              ],
-            ),
-
-            // Center
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text('Center'),
-                _buildBox('A', Colors.red, 50),
-                _buildBox('B', Colors.green, 80),
-                _buildBox('C', Colors.blue, 60),
-              ],
-            ),
-
-            // End (bottom)
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text('End'),
-                _buildBox('A', Colors.red, 50),
-                _buildBox('B', Colors.green, 80),
-                _buildBox('C', Colors.blue, 60),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBox(String label, Color color, double width) {
-    return Container(
-      width: width,
-      height: 40,
-      margin: EdgeInsets.only(top: 8),
-      color: color,
-      child: Center(
-        child: Text(
-          label,
-          style: TextStyle(color: Colors.white),
-        ),
-      ),
-    );
-  }
-}
-```
-
-### Example 3: MainAxisSize Demo
-
-```dart
-import 'package:flutter/material.dart';
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: Text('MainAxisSize Demo')),
-        body: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              // max: Takes all available space
-              Container(
-                color: Colors.blue[100],
-                width: 150,
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('MainAxisSize.max'),
-                    SizedBox(height: 10),
-                    _buildBox('A', Colors.red),
-                    _buildBox('B', Colors.green),
-                    _buildBox('C', Colors.blue),
-                  ],
-                ),
-              ),
-
-              // min: Takes only needed space
-              Container(
-                color: Colors.orange[100],
-                width: 150,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text('MainAxisSize.min'),
-                    SizedBox(height: 10),
-                    _buildBox('A', Colors.red),
-                    _buildBox('B', Colors.green),
-                    _buildBox('C', Colors.blue),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBox(String label, Color color) {
-    return Container(
-      width: 50,
-      height: 50,
-      margin: EdgeInsets.all(4),
-      color: color,
-      child: Center(
-        child: Text(
-          label,
-          style: TextStyle(color: Colors.white),
-        ),
-      ),
-    );
-  }
-}
-```
-
----
-
-## Key Takeaways
-
-1. **Constraints go down, sizes go up**: This is the fundamental layout rule
-2. **Tight constraints** = no choice (min = max)
-3. **Loose constraints** = freedom to choose (min < max)
-4. **Main axis** = the direction children flow
-5. **Cross axis** = perpendicular to main axis
-6. **MainAxisAlignment** = spacing along main axis
-7. **CrossAxisAlignment** = alignment along cross axis
-8. **MainAxisSize** = how much space to take
-
-**The Mental Model:**
-
-Think of layout as a conversation:
-1. Parent: "Here are your size limits" (constraints down)
-2. Child: "I'll be this big" (size up)
-3. Parent: "I'll put you here" (position set)
-
-This happens recursively through the entire widget tree!
-
----
-
-## Quick Practice
-
-Try to predict what these will look like:
-
-```dart
-// Mystery 1
-Column(
-  mainAxisAlignment: MainAxisAlignment.end,
-  crossAxisAlignment: CrossAxisAlignment.start,
-  children: [
-    Text('A'),
-    Text('B'),
-  ],
+Container(
+  width: 120,
+  height: 60,
+  color: Colors.green,
 )
-// Children stick to bottom (main axis end) and left (cross axis start)
-
-// Mystery 2
-Row(
-  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  children: [
-    Container(width: 50, height: 50, color: Colors.red),
-    Container(width: 50, height: 100, color: Colors.blue),
-  ],
-)
-// Red box on left, blue box on right, space between them
-// Blue box is taller but they're both aligned to top by default
-
-// Mystery 3
-Column(
-  mainAxisSize: MainAxisSize.min,
-  crossAxisAlignment: CrossAxisAlignment.stretch,
-  children: [
-    Text('Hello'),
-    Text('World'),
-  ],
-)
-// Column only as tall as needed (min)
-// But children stretch to full width
 ```
 
----
-
-**Next:** Learn about Expanded, Flexible, and Container sizing
-
-**Continue to:** `05b-FlexibleExpanded.md`
+Giving the Container a `width` and `height` makes it exactly that size. (Behind the scenes, the Container passes a tight constraint to anything inside it.)
 
 ---
 
-**Navigation:**
-- Previous: `04c-StreamsConcurrency.md`
-- **Current: `05a-ConstraintsLayout.md`**
-- Next: `05b-FlexibleExpanded.md`
-- Overview: `../README.md`
+**Next:** `05b-FlexibleExpanded.md`, where you make widgets share space using Expanded and Flexible.
