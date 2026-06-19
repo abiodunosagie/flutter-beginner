@@ -254,7 +254,9 @@ class ApiService {
         );
 
       case 401:
-        throw UnauthorizedException(_extractMessage(body));
+        throw UnauthorizedException(
+          _extractMessage(body) ?? 'Please log in to continue.',
+        );
 
       case 403:
         throw ApiException(
@@ -263,7 +265,9 @@ class ApiService {
         );
 
       case 404:
-        throw NotFoundException(_extractMessage(body));
+        throw NotFoundException(
+          _extractMessage(body) ?? 'The requested item was not found.',
+        );
 
       case 422:
         throw ValidationException(

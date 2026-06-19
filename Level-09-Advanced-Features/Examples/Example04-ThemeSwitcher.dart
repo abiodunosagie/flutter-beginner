@@ -78,7 +78,7 @@ class _MyAppState extends State<MyApp> {
         ),
 
         // Card styling
-        cardTheme: CardTheme(
+        cardTheme: CardThemeData(
           elevation: 2,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -133,7 +133,7 @@ class _MyAppState extends State<MyApp> {
         ),
 
         // Card styling for dark
-        cardTheme: CardTheme(
+        cardTheme: CardThemeData(
           elevation: 4,
           color: Colors.grey[850],
           shape: RoundedRectangleBorder(

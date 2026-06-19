@@ -7,7 +7,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
+// Prefixed as `p` so the path package's top-level `context` getter
+// does not shadow the widget's BuildContext.
+import 'package:path/path.dart' as p;
 
 // ═══════════════════════════════════════════════════════════════
 // TODO MODEL
@@ -92,7 +94,7 @@ class DatabaseHelper {
   // Initialize the database
   Future<Database> _initDB(String fileName) async {
     final dbPath = await getDatabasesPath();
-    final path = join(dbPath, fileName);
+    final path = p.join(dbPath, fileName);
 
     return await openDatabase(
       path,
