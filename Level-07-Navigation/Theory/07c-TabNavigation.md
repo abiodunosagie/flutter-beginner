@@ -1,5 +1,9 @@
 # Tab Navigation with TabBar
 
+## The Big Idea In One Sentence
+
+> `TabBar` shows the tab buttons (usually at the top) and `TabBarView` shows their pages, and `DefaultTabController` wires them together so swiping and tapping just work.
+
 Learn about TabBar, TabBarView, and combining navigation patterns!
 
 ---
@@ -261,11 +265,77 @@ class ProfileScreen extends StatelessWidget {
 
 ---
 
-## Continue Learning
+## Quick Quiz
 
-Awesome! Now let's learn about drawer navigation!
+**Q1.** What do `TabBar` and `TabBarView` each show?
 
-**Continue to:** [Drawer Basics →](08a-DrawerBasics.md)
+<details>
+<summary>Answer</summary>
+`TabBar` shows the tab buttons; `TabBarView` shows the page for the selected tab.
+</details>
+
+**Q2.** What is the easiest way to connect them without writing a controller yourself?
+
+<details>
+<summary>Answer</summary>
+Wrap them in a `DefaultTabController(length: n, child: ...)`.
+</details>
+
+**Q3.** When you make your own `TabController`, why must the state class use `SingleTickerProviderStateMixin`?
+
+<details>
+<summary>Answer</summary>
+The controller needs a `vsync` (a ticker) to drive the tab animation; that mixin provides it.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Count the tabs
+
+You have 3 tabs. What number must `DefaultTabController(length: ...)` and the `tabs`/`children` lists all agree on?
+
+### Problem 2: Build the skeleton
+
+Write the minimal `DefaultTabController` + `Scaffold` with a `TabBar` of two tabs ('A', 'B') and a matching `TabBarView`.
+
+### Problem 3: Spot the crash
+
+An app sets `DefaultTabController(length: 2)` but the `TabBar` has 3 `Tab` widgets. What goes wrong?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Count the tabs
+
+All three must be **3**: the controller length, the number of `Tab`s, and the number of `TabBarView` children.
+
+### Problem 2: Build the skeleton
+
+```dart
+DefaultTabController(
+  length: 2,
+  child: Scaffold(
+    appBar: AppBar(
+      bottom: const TabBar(
+        tabs: [Tab(text: 'A'), Tab(text: 'B')],
+      ),
+    ),
+    body: const TabBarView(
+      children: [
+        Center(child: Text('A')),
+        Center(child: Text('B')),
+      ],
+    ),
+  ),
+)
+```
+
+### Problem 3: Spot the crash
+
+The counts do not match: `length` is 2 but there are 3 tabs. Flutter throws an error because the controller and the tabs/children must have the same count. Set `length: 3`.
 
 ---
 
