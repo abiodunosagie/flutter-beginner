@@ -1,5 +1,9 @@
 # Serialization: Converting Data Between Formats
 
+## The Big Idea In One Sentence
+
+> Serialize = object to text (to send); deserialize = text to object (to receive), and the trick for nested data is to call `fromJson`/`toJson` on the inner pieces too.
+
 Learn what serialization actually means and how to use it in Dart/Flutter!
 
 ---
@@ -459,7 +463,7 @@ Cons:
 - Larger generated code
 - Learning curve
 
-(Covered in Level 06 Riverpod Pro Patterns)
+(An advanced package you can explore later once manual models feel easy.)
 
 
 WHICH TO USE?
@@ -605,6 +609,70 @@ WHAT YOU LEARNED:
    - Manual: Full control, more work
    - json_serializable: Less work, build step required
    - Freezed: Everything included, most setup
+```
+
+---
+
+## Quick Quiz
+
+**Q1.** Define serialize and deserialize in one line each.
+
+<details>
+<summary>Answer</summary>
+Serialize = turn an object into text/JSON to send. Deserialize = turn received text/JSON back into an object.
+</details>
+
+**Q2.** A `User` has an `Address` field. How do you deserialize the nested address?
+
+<details>
+<summary>Answer</summary>
+Call `Address.fromJson(json['address'])` inside `User.fromJson`.
+</details>
+
+**Q3.** A `User` has a `List<Post> posts`. How do you serialize it in `toJson`?
+
+<details>
+<summary>Answer</summary>
+`'posts': posts.map((p) => p.toJson()).toList()`.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Match the direction
+
+For each, is it serialize or deserialize?
+1. `jsonEncode(user.toJson())`
+2. `User.fromJson(jsonDecode(body))`
+
+### Problem 2: Nested deserialize
+
+A `User` JSON has `"address": {"city": "Lagos"}`. Write the line inside `User.fromJson` that builds the `Address`.
+
+### Problem 3: List serialize
+
+Write the `toJson` entry that turns `List<Post> posts` into JSON.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Match the direction
+
+1. **Serialize** (object going out to text).
+2. **Deserialize** (text coming in to an object).
+
+### Problem 2: Nested deserialize
+
+```dart
+address: Address.fromJson(json['address']),
+```
+
+### Problem 3: List serialize
+
+```dart
+'posts': posts.map((post) => post.toJson()).toList(),
 ```
 
 ---
