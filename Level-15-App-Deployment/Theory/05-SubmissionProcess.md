@@ -1,5 +1,9 @@
 # Submission Process
 
+## The Big Idea In One Sentence
+
+> Submitting means uploading your signed build and listing to the store, then waiting for review: Google Play is usually fast, Apple's App Store review is stricter and slower.
+
 ## The Simple Explanation
 
 Submitting your app is like sending a college application. You fill out forms, attach your materials, and wait for a response. Let's walk through both Google Play and Apple App Store step by step.
@@ -576,6 +580,63 @@ BOTH PLATFORMS:
 │                                                              │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** After you upload your build and listing, what happens before users can download it?
+
+<details>
+<summary>Answer</summary>
+The store reviews it. It only goes live after approval.
+</details>
+
+**Q2.** Which store's review is generally stricter and slower?
+
+<details>
+<summary>Answer</summary>
+Apple's App Store review tends to be stricter and take longer than Google Play.
+</details>
+
+**Q3.** Your app gets rejected. Is that the end?
+
+<details>
+<summary>Answer</summary>
+No. The store explains why; you fix the issue and resubmit.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: The steps
+
+In order, what are the rough steps to get an app live?
+
+### Problem 2: Rejection
+
+Name one common reason an app gets rejected.
+
+### Problem 3: Patience
+
+Why might you wait longer for iOS than Android?
+
+---
+
+## Assignment Answers
+
+### Problem 1: The steps
+
+Build a signed release, create the store listing, upload the build, submit for review, fix anything the review flags, then it goes live.
+
+### Problem 2: Rejection
+
+Any of: crashes, missing privacy policy, requesting permissions it does not need, broken features, misleading description, or guideline violations.
+
+### Problem 3: Patience
+
+Apple reviews apps by hand more strictly, so App Store review usually takes longer than Google Play.
 
 ---
 

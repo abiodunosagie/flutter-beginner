@@ -1,5 +1,9 @@
 # App Security: Protecting Your App Like a Castle
 
+## The Big Idea In One Sentence
+
+> Security means protecting your users and secrets: use HTTPS, never hardcode keys or passwords in the app, store sensitive data securely, and trust nothing the user sends without checking it.
+
 ## The Simple Explanation
 
 Imagine your app is a castle with treasure inside. Hackers are like thieves trying to break in. Security is building walls, locks, guards, and secret passages to keep the treasure safe!
@@ -857,6 +861,38 @@ Obfuscation scrambles your code's variable and function names to make it harder 
 ---
 
 **Congratulations!** You now know how to protect your app like a pro!
+
+---
+
+## Assignment
+
+### Problem 1: Spot the leak
+
+A developer hardcodes their API key as a string in the app. Why is that unsafe?
+
+### Problem 2: HTTP or HTTPS?
+
+Which should all network requests use, and why?
+
+### Problem 3: Trust check
+
+A form sends a price to your server. Why should the server re-check it instead of trusting it?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Spot the leak
+
+Compiled apps can be inspected, so a hardcoded key can be extracted and abused. Keep secrets off the device (use a backend) or restrict the key.
+
+### Problem 2: HTTP or HTTPS?
+
+HTTPS. It encrypts data in transit so attackers cannot read or tamper with it. Plain HTTP is readable by anyone on the network.
+
+### Problem 3: Trust check
+
+The client can be modified, so a malicious user could send a fake low price. The server must validate/recompute anything that matters (never trust client input).
 
 ---
 

@@ -1,5 +1,9 @@
 # Practical API Key Security: A Step-by-Step Guide
 
+## The Big Idea In One Sentence
+
+> Anything shipped inside the app can be extracted, so the only truly safe place for a secret key is on your own backend, which talks to the third-party API on the app's behalf.
+
 ## The Problem You're Facing
 
 You're building an Uber-like app. You have:
@@ -753,6 +757,63 @@ SECURITY LEVEL:
 4. **USE** native platform methods for SDK keys (Google Maps)
 5. **ALWAYS** gitignore production secret files
 6. **RESTRICT** your API keys in their respective consoles
+
+---
+
+## Quick Quiz
+
+**Q1.** Why is a key bundled in the app (even in an env file compiled in) not truly secret?
+
+<details>
+<summary>Answer</summary>
+The app ships to users' devices and can be inspected/decompiled, so a determined attacker can pull the key out.
+</details>
+
+**Q2.** Where is the genuinely safe place to keep a secret API key?
+
+<details>
+<summary>Answer</summary>
+On your own backend server. The app calls your backend, and the backend uses the key to call the third-party API.
+</details>
+
+**Q3.** What can you do if a key MUST live on the client (e.g. a maps key)?
+
+<details>
+<summary>Answer</summary>
+Restrict it: lock it to your app's bundle id/package, limit which APIs and domains it can call, and set usage quotas.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Safe or not?
+
+A developer puts the secret payment key in the Flutter app and obfuscates it. Is it safe? Why or why not?
+
+### Problem 2: The proxy pattern
+
+Describe in one sentence how a backend keeps the key safe.
+
+### Problem 3: Client-only key
+
+You must use a maps key on the device. Name one way to limit the damage if it leaks.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Safe or not?
+
+No. Obfuscation only slows attackers; the key still ships on the device and can be extracted. Secret keys must stay server-side.
+
+### Problem 2: The proxy pattern
+
+The app calls your backend; your backend holds the key and forwards the request to the third-party API, so the key never reaches the device.
+
+### Problem 3: Client-only key
+
+Restrict it to your app's package/bundle id and to specific APIs, and set usage limits, so a leaked key cannot be freely abused.
 
 ---
 

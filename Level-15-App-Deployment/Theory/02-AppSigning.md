@@ -1,5 +1,9 @@
 # App Signing
 
+## The Big Idea In One Sentence
+
+> App signing is a secret digital signature (a keystore) that proves an update really came from you, and if you lose that key, you can never update your app again, so keep it safe.
+
 ## The Simple Explanation
 
 App signing is like putting your signature on a painting. It proves YOU made it, and nobody can pretend to be you. Every app must be signed before it goes to the store.
@@ -392,6 +396,63 @@ ENTERPRISE:
 │                                                              │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** What does app signing prove?
+
+<details>
+<summary>Answer</summary>
+That an app (and its updates) genuinely came from you, the same developer, so no one can fake an update.
+</details>
+
+**Q2.** What happens if you lose your Android keystore?
+
+<details>
+<summary>Answer</summary>
+You can no longer publish updates to that app with the same identity. It is critical to back it up safely.
+</details>
+
+**Q3.** Should the keystore/password be committed to your git repo?
+
+<details>
+<summary>Answer</summary>
+No, never. It is a secret. Keep it out of version control and store it securely.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Why sign?
+
+In one sentence, why do app stores require signed apps?
+
+### Problem 2: Protect the key
+
+Name one safe and one unsafe place to keep your keystore.
+
+### Problem 3: Lost key
+
+A developer lost their keystore and its password. What is the consequence?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Why sign?
+
+So they can verify each update really comes from the original developer, protecting users from fake or tampered updates.
+
+### Problem 2: Protect the key
+
+Safe: an encrypted backup / password manager / secure cloud vault. Unsafe: committed in the git repo or pasted in chat.
+
+### Problem 3: Lost key
+
+They cannot publish updates to that app under the same identity anymore. The app effectively cannot be updated.
 
 ---
 

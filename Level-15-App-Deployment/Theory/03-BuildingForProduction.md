@@ -1,5 +1,9 @@
 # Building for Production
 
+## The Big Idea In One Sentence
+
+> A production build is the optimized, signed version you upload to stores: `flutter build appbundle` for Android (Play Store) and `flutter build ipa` for iOS, not the debug build you test with.
+
 ## The Simple Explanation
 
 Building for production is like baking the final cake. You've tested the recipe (debug mode), now you're making the real thing with all the finishing touches.
@@ -418,6 +422,63 @@ iOS:
 │                                                              │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** Which command builds the Android bundle for the Play Store?
+
+<details>
+<summary>Answer</summary>
+`flutter build appbundle` (produces an `.aab`).
+</details>
+
+**Q2.** How is a release build different from a debug build?
+
+<details>
+<summary>Answer</summary>
+Release is optimized (smaller, faster), signed, and has debug tools/banners stripped. Debug is bigger and meant for development.
+</details>
+
+**Q3.** Why prefer an app bundle (`.aab`) over an `.apk` for the Play Store?
+
+<details>
+<summary>Answer</summary>
+The Play Store uses the bundle to deliver smaller, device-specific downloads to each user.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Pick the command
+
+You are publishing to the Google Play Store. Which build command?
+
+### Problem 2: Debug or release?
+
+You are about to upload to the store. Which build mode must it be?
+
+### Problem 3: iOS
+
+Which command produces an iOS build for the App Store?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Pick the command
+
+`flutter build appbundle`.
+
+### Problem 2: Debug or release?
+
+Release (the optimized, signed build). Stores reject debug builds.
+
+### Problem 3: iOS
+
+`flutter build ipa`.
 
 ---
 

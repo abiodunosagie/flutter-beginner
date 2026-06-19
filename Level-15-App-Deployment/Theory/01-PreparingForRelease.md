@@ -1,5 +1,9 @@
 # Preparing for Release
 
+## The Big Idea In One Sentence
+
+> Before publishing, you turn your "in-progress" app into a real product: set a proper app name, icon, version number, and remove debug leftovers, so it is ready for real users.
+
 ## The Simple Explanation
 
 Before sending your app to the store, you need to clean it up! It's like cleaning your room before guests arrive - hide the messy stuff, make everything look nice, and make sure nothing is broken.
@@ -493,6 +497,63 @@ FIX: Defer heavy operations, use lazy loading
 │                                                              │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** Name two things you should set before releasing an app.
+
+<details>
+<summary>Answer</summary>
+Any two: a real app name, a proper app icon, the version number, and removing debug code/test data.
+</details>
+
+**Q2.** What is a version number like `1.0.0+1` for?
+
+<details>
+<summary>Answer</summary>
+It identifies this build. The name (`1.0.0`) is shown to users; the `+1` build number increases each upload to the store.
+</details>
+
+**Q3.** Why remove debug prints and test data before release?
+
+<details>
+<summary>Answer</summary>
+They can leak information, clutter logs, and make the app look unfinished. Production should be clean.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Release checklist
+
+List three items you would check off before submitting version 1.0.
+
+### Problem 2: Bump the version
+
+You shipped `1.0.0+1` and fixed a bug. What might the next version be?
+
+### Problem 3: Debug leftovers
+
+Name one kind of debug leftover to remove before release.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Release checklist
+
+Examples: proper app name and icon set, version number set, debug prints/test data removed, app tested on a real device, permissions and store text ready.
+
+### Problem 2: Bump the version
+
+Something like `1.0.1+2` (patch version up, build number up). Any sensible bump with a higher build number is fine.
+
+### Problem 3: Debug leftovers
+
+Any of: `print` statements, test/sample data, a debug banner, hardcoded test accounts, or pointing at a dev server instead of production.
 
 ---
 

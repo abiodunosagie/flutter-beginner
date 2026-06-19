@@ -1,5 +1,9 @@
 # Store Listings
 
+## The Big Idea In One Sentence
+
+> A store listing is your app's shop window: the name, icon, screenshots, and description that convince people to download, so it deserves real care, not an afterthought.
+
 ## The Simple Explanation
 
 Your store listing is like a movie poster and trailer combined. It's the first thing users see, and it determines whether they download your app. Make it count!
@@ -498,6 +502,63 @@ CONTACT:
 │                                                              │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** Name three things in a store listing.
+
+<details>
+<summary>Answer</summary>
+Any three: app name, icon, screenshots, short and full description, category, and a feature graphic/preview.
+</details>
+
+**Q2.** Why do screenshots matter so much?
+
+<details>
+<summary>Answer</summary>
+They are the first thing users look at; good screenshots show value fast and drive downloads.
+</details>
+
+**Q3.** What should the first line of your description do?
+
+<details>
+<summary>Answer</summary>
+Clearly say what the app does and why someone wants it, since many users only read the first line.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Listing pieces
+
+List four parts of a store listing you must prepare.
+
+### Problem 2: First impression
+
+Which listing element usually has the biggest impact on downloads?
+
+### Problem 3: Write a hook
+
+Write a one-line opening description for a simple habit-tracker app.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Listing pieces
+
+App name, app icon, screenshots, and a description (plus category, and often a feature graphic).
+
+### Problem 2: First impression
+
+The screenshots (and icon) usually matter most, they are what users scan first.
+
+### Problem 3: Write a hook
+
+Something like: "Build better habits one day at a time, track your streaks and never miss a day."
 
 ---
 
