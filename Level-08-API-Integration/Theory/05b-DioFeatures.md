@@ -1,5 +1,9 @@
 # Dio Features: Interceptors
 
+## The Big Idea In One Sentence
+
+> An interceptor is a checkpoint that runs before every request and after every response, so you can add your auth token, log, or handle errors in ONE place instead of in every call.
+
 Master Dio's most powerful feature - Interceptors!
 
 ---
@@ -534,6 +538,71 @@ void main() async {
 6. **Built-in Logger**: Use Dio's `LogInterceptor` for quick logging
 
 ### Continue Learning
+
+---
+
+## Quick Quiz
+
+**Q1.** When does an interceptor's `onRequest` run?
+
+<details>
+<summary>Answer</summary>
+Just before the request is sent, so you can change it (for example, add a header).
+</details>
+
+**Q2.** What is the classic use for an interceptor?
+
+<details>
+<summary>Answer</summary>
+Automatically adding the auth token (`Authorization: Bearer ...`) to every request.
+</details>
+
+**Q3.** You must call something to let the request continue down the chain. What is it?
+
+<details>
+<summary>Answer</summary>
+`handler.next(...)` (e.g. `handler.next(options)` in `onRequest`).
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Add the token
+
+Inside `onRequest`, write the line that adds a bearer token (in `_token`) to the request headers.
+
+### Problem 2: Keep it moving
+
+After modifying `options`, what must you call so the request is actually sent?
+
+### Problem 3: Why bother?
+
+Give one reason an auth interceptor beats adding the header by hand in every request.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Add the token
+
+```dart
+options.headers['Authorization'] = 'Bearer $_token';
+```
+
+### Problem 2: Keep it moving
+
+```dart
+handler.next(options);
+```
+
+Without it, the request stalls at the interceptor.
+
+### Problem 3: Why bother?
+
+You set it once and every request gets the token automatically, so you cannot forget it on a call, and you change it in one place if the scheme changes.
+
+---
 
 Continue to: [05c-DioAdvanced.md](./05c-DioAdvanced.md) - Learn about request cancellation, file uploads, and more advanced Dio features!
 
