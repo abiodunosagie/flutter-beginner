@@ -1,640 +1,479 @@
 # Basic Display Widgets: Showing Content
 
-## Think of a Toybox
+## The Big Idea In One Sentence
 
-Imagine your toybox has different types of toys:
-- 📝 **Letters** = Text widget (shows words)
-- 🖼️ **Pictures** = Image widget (shows photos)
-- ⭐ **Stickers** = Icon widget (shows symbols)
-- 📦 **Boxes** = Container widget (holds and styles things)
-- 📏 **Spacers** = SizedBox widget (creates exact spacing)
+> These are the everyday widgets that put things on the screen: **Text** for words, **Icon** for symbols, **Image** for pictures, **Container** for boxes, and **SizedBox** for spacing.
 
-Let's learn how to use each one!
+These five are the LEGO bricks you will use in almost every screen.
 
 ---
 
-## Text: Displaying Words
+## Think Of A Toybox
 
-The `Text` widget shows words on the screen.
+Each widget is a different kind of toy:
 
-### Basic Text
+```
+Text       = letters (shows words)
+Icon       = stickers (shows symbols)
+Image      = photos (shows pictures)
+Container  = a box (holds and styles one thing)
+SizedBox   = a spacer (makes exact gaps)
+```
+
+Let us meet each one.
+
+---
+
+## Text: Showing Words
+
+The simplest widget. Put your words in quotes:
 
 ```dart
 Text('Hello, Flutter!')
 ```
 
-That's it! Just put your text in quotes.
+### Making Text Look Nice
 
-### Styled Text
-
-Make your text look fancy:
+To style text, add a `style` with a `TextStyle`:
 
 ```dart
 Text(
-  'Styled Text',
+  'Big and blue',
   style: TextStyle(
-    fontSize: 24,                    // How big
-    fontWeight: FontWeight.bold,     // How thick
-    color: Colors.blue,              // Color
-    fontStyle: FontStyle.italic,     // Slanted
-    decoration: TextDecoration.underline,  // Line under
-    letterSpacing: 2.0,              // Space between letters
+    fontSize: 24,                  // how big
+    fontWeight: FontWeight.bold,   // thickness
+    color: Colors.blue,            // colour
   ),
 )
 ```
 
-### Text Alignment
-
-Control how text lines up:
+### Lining Text Up
 
 ```dart
 Text(
-  'Centered Text',
-  textAlign: TextAlign.center,  // center, left, right, justify
+  'Centered',
+  textAlign: TextAlign.center,   // also: left, right
 )
 ```
 
-### Long Text Handling
-
-What happens when text is too long?
+### Long Text That Does Not Fit
 
 ```dart
 Text(
-  'This is a very very very long text that might not fit on one line',
-  maxLines: 2,                        // Maximum 2 lines
-  overflow: TextOverflow.ellipsis,    // Show ... at end
+  'This is a very long sentence that might not fit on one line',
+  maxLines: 1,
+  overflow: TextOverflow.ellipsis,   // shows ... at the end
 )
 ```
 
-**Overflow options:**
-- `TextOverflow.ellipsis` → Shows "..."
-- `TextOverflow.clip` → Cuts off text
-- `TextOverflow.fade` → Fades out
-
-### Multi-Style Text (RichText)
-
-Different styles in one text:
-
-```dart
-RichText(
-  text: TextSpan(
-    text: 'Hello ',
-    style: TextStyle(color: Colors.black, fontSize: 20),
-    children: [
-      TextSpan(
-        text: 'Beautiful ',
-        style: TextStyle(
-          color: Colors.blue,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      TextSpan(
-        text: 'World!',
-        style: TextStyle(
-          color: Colors.red,
-          fontStyle: FontStyle.italic,
-        ),
-      ),
-    ],
-  ),
-)
-```
-
-Result: "Hello **Beautiful** *World!*" (different colors and styles)
+`TextOverflow.ellipsis` adds `...` when the text is cut off, which looks much nicer than text spilling off the edge.
 
 ---
 
 ## Icon: Showing Symbols
 
-The `Icon` widget displays built-in symbols.
-
-### Basic Icon
+Flutter comes with thousands of ready-made symbols. Use the `Icon` widget with one of the `Icons.` names:
 
 ```dart
-Icon(Icons.favorite)  // Shows a heart ❤️
+Icon(Icons.favorite)   // a heart
 ```
 
-### Styled Icon
+### Styling An Icon
 
 ```dart
 Icon(
   Icons.star,
-  size: 48,           // How big (in pixels)
-  color: Colors.amber,  // Color
+  size: 48,              // how big
+  color: Colors.amber,   // colour
 )
 ```
 
-### Common Icons
-
-Flutter has thousands of built-in icons:
+### Some Common Icons
 
 ```dart
-// Popular icons
-Icons.home           // 🏠 House
-Icons.favorite       // ❤️ Heart
-Icons.star           // ⭐ Star
-Icons.settings       // ⚙️ Gear
-Icons.person         // 👤 Person
-Icons.email          // 📧 Mail
-Icons.phone          // 📱 Phone
-Icons.camera         // 📷 Camera
-Icons.search         // 🔍 Magnifying glass
-Icons.menu           // ≡ Three lines
-Icons.close          // ✕ X
-Icons.add            // + Plus
-Icons.delete         // 🗑️ Trash
-Icons.edit           // ✏️ Pencil
-Icons.check          // ✓ Checkmark
-Icons.arrow_back     // ← Left arrow
-Icons.arrow_forward  // → Right arrow
-Icons.thumb_up       // 👍 Thumbs up
-Icons.location_on    // 📍 Pin
-
-// Two versions of same icon
-Icons.favorite        // ❤️ Filled heart
-Icons.favorite_border // ♡ Outlined heart
+Icons.home       Icons.favorite   Icons.star
+Icons.settings   Icons.person     Icons.search
+Icons.add        Icons.delete     Icons.check
+Icons.arrow_back Icons.menu       Icons.close
 ```
 
-### Icons in Context
-
-```dart
-// Icon with text
-Row(
-  children: [
-    Icon(Icons.star, color: Colors.amber),
-    SizedBox(width: 5),
-    Text('4.5'),
-  ],
-)
-
-// Icon button (we'll learn more about this later)
-IconButton(
-  icon: Icon(Icons.favorite),
-  color: Colors.red,
-  onPressed: () {
-    print('Liked!');
-  },
-)
-```
+There are thousands more. In a real editor, type `Icons.` and a list pops up.
 
 ---
 
 ## Image: Showing Pictures
 
-The `Image` widget displays pictures from different sources.
+There are two main ways to show a picture.
 
-### From Assets (Local Files)
+### From The Internet
 
-First, add image to `pubspec.yaml`:
+The easiest for now, no setup needed:
+
+```dart
+Image.network('https://picsum.photos/200')
+```
+
+### From Your App's Files (Assets)
+
+First you list the image in `pubspec.yaml`:
 
 ```yaml
 flutter:
   assets:
     - assets/images/logo.png
-    - assets/images/
 ```
 
-Then use it:
+Then show it:
 
 ```dart
 Image.asset('assets/images/logo.png')
 ```
 
-### From Network (Internet)
-
-```dart
-Image.network('https://example.com/photo.jpg')
-```
-
-### With Size and Fit
-
-```dart
-Image.asset(
-  'assets/images/photo.jpg',
-  width: 200,
-  height: 200,
-  fit: BoxFit.cover,  // How to fit in the box
-)
-```
-
-### BoxFit Options
-
-How should the image fit in its box?
-
-```
-BoxFit.contain     BoxFit.cover       BoxFit.fill
-┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│ ┌─────────┐ │    │█████████████│    │█████████████│
-│ │         │ │    │█████████████│    │█████████████│
-│ │  Image  │ │    │████Image████│    │████Image████│
-│ │         │ │    │█████████████│    │█████████████│
-│ └─────────┘ │    │█████████████│    │█████████████│
-│  (margins)  │    │(may crop)   │    │(may stretch)│
-└─────────────┘    └─────────────┘    └─────────────┘
-```
-
-```dart
-// BoxFit.contain - Fits inside, may have empty space
-Image.asset('photo.jpg', fit: BoxFit.contain)
-
-// BoxFit.cover - Fills box, may crop edges
-Image.asset('photo.jpg', fit: BoxFit.cover)
-
-// BoxFit.fill - Stretches to fill
-Image.asset('photo.jpg', fit: BoxFit.fill)
-
-// BoxFit.none - No resizing
-Image.asset('photo.jpg', fit: BoxFit.none)
-
-// BoxFit.scaleDown - Only shrinks if too big
-Image.asset('photo.jpg', fit: BoxFit.scaleDown)
-```
-
-### Loading and Error Handling
+### Sizing And Fitting
 
 ```dart
 Image.network(
-  'https://example.com/image.jpg',
-  loadingBuilder: (context, child, progress) {
-    if (progress == null) return child;  // Loaded!
-    return Center(
-      child: CircularProgressIndicator(),  // Spinning loader
-    );
-  },
-  errorBuilder: (context, error, stackTrace) {
-    return Icon(
-      Icons.broken_image,  // Show if image fails
-      size: 100,
-      color: Colors.grey,
-    );
-  },
+  'https://picsum.photos/200',
+  width: 150,
+  height: 150,
+  fit: BoxFit.cover,   // how the picture fills the box
 )
 ```
 
-### CircleAvatar: Round Images
+`fit` decides how the picture fills its space. The two you will use most:
 
-For profile pictures:
+- `BoxFit.cover` fills the whole box, cropping the edges if needed.
+- `BoxFit.contain` shows the whole picture, leaving empty space if needed.
+
+### Round Pictures: CircleAvatar
+
+For profile pictures, `CircleAvatar` makes a circle:
 
 ```dart
-// With image
+// A circle with initials
 CircleAvatar(
-  radius: 40,  // Size
-  backgroundImage: NetworkImage('https://example.com/avatar.jpg'),
-)
-
-// With initials
-CircleAvatar(
-  radius: 40,
+  radius: 30,
   backgroundColor: Colors.blue,
-  child: Text(
-    'AB',
-    style: TextStyle(color: Colors.white, fontSize: 24),
-  ),
+  child: Text('AB', style: TextStyle(color: Colors.white)),
 )
 
-// With both (initials show while loading)
+// A circle with a picture
 CircleAvatar(
-  radius: 40,
-  backgroundImage: NetworkImage('https://example.com/avatar.jpg'),
-  child: Text('AB'),  // Shown while loading
+  radius: 30,
+  backgroundImage: NetworkImage('https://picsum.photos/100'),
 )
 ```
 
 ---
 
-## Container: The Swiss Army Knife
+## Container: A Box You Can Style
 
-`Container` is the most versatile widget. It can:
-- Set size
-- Add color/background
-- Add padding (space inside)
-- Add margin (space outside)
-- Add borders and shadows
-- Align its child
+`Container` is the handy box widget. It holds **one** child (it uses `child`) and can add size, colour, and spacing around it.
 
-### Basic Container
-
-```dart
-Container(
-  color: Colors.blue,
-  child: Text('In a blue box'),
-)
-```
-
-### Sized Container
+### A Simple Coloured Box
 
 ```dart
 Container(
   width: 200,
   height: 100,
-  color: Colors.red,
-  child: Center(child: Text('Fixed size')),
+  color: Colors.blue,
+  child: Center(child: Text('In a box')),
 )
 ```
 
-### Container with Padding and Margin
+### Padding And Margin
+
+Two kinds of space, and beginners mix them up:
+
+- **padding** is space **inside** the box, between the edge and the child.
+- **margin** is space **outside** the box, between the box and other widgets.
 
 ```dart
 Container(
-  margin: EdgeInsets.all(20),      // Space outside
-  padding: EdgeInsets.all(16),     // Space inside
+  margin: EdgeInsets.all(20),    // space outside the box
+  padding: EdgeInsets.all(16),   // space inside the box
   color: Colors.blue,
   child: Text('Padded text'),
 )
 ```
 
 ```
-        margin (outside)
-    ┌─────────────────────┐
-    │   Container         │
-    │ ┌─────────────────┐ │
-    │ │ padding (inside)│ │
-    │ │  ┌──────────┐   │ │
-    │ │  │  Child   │   │ │
-    │ │  └──────────┘   │ │
-    │ └─────────────────┘ │
-    └─────────────────────┘
+        margin (outside the box)
+   ┌───────────────────────────┐
+   │  Container                 │
+   │   padding (inside)         │
+   │      [ the child ]         │
+   └───────────────────────────┘
 ```
 
-### Decorated Container
+`EdgeInsets.all(16)` means 16 pixels on all four sides. You can also do `EdgeInsets.symmetric(horizontal: 20, vertical: 8)` for different amounts.
+
+### Rounded Corners And A Border
+
+For fancier boxes (rounded corners, borders), use a `decoration` instead of `color`. Important rule: when you use `decoration`, the colour goes **inside** the decoration, not on the Container directly.
 
 ```dart
 Container(
   width: 200,
   height: 100,
   decoration: BoxDecoration(
-    color: Colors.blue,                    // Background color
-    borderRadius: BorderRadius.circular(10),  // Rounded corners
-    border: Border.all(                    // Border
-      color: Colors.black,
-      width: 2,
-    ),
-    boxShadow: [                           // Shadow
-      BoxShadow(
-        color: Colors.grey.withOpacity(0.5),
-        blurRadius: 5,
-        offset: Offset(2, 2),  // Shadow position
-      ),
-    ],
+    color: Colors.blue,                       // colour goes here now
+    borderRadius: BorderRadius.circular(12),  // rounded corners
+    border: Border.all(color: Colors.black, width: 2),
   ),
-  child: Center(child: Text('Fancy box')),
+  child: Center(child: Text('Rounded box')),
 )
 ```
 
-### Container with Gradient
-
-```dart
-Container(
-  width: 200,
-  height: 100,
-  decoration: BoxDecoration(
-    gradient: LinearGradient(
-      colors: [Colors.blue, Colors.purple],
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-    ),
-    borderRadius: BorderRadius.circular(10),
-  ),
-  child: Center(
-    child: Text(
-      'Gradient!',
-      style: TextStyle(color: Colors.white, fontSize: 20),
-    ),
-  ),
-)
-```
-
-### Container Alignment
-
-```dart
-Container(
-  width: 200,
-  height: 200,
-  color: Colors.grey[300],
-  alignment: Alignment.bottomRight,  // Position child
-  child: Text('Bottom Right'),
-)
-```
-
-**Alignment options:**
-```dart
-Alignment.topLeft        Alignment.topCenter        Alignment.topRight
-Alignment.centerLeft     Alignment.center           Alignment.centerRight
-Alignment.bottomLeft     Alignment.bottomCenter     Alignment.bottomRight
-```
+> You cannot set both `color:` and `decoration:` on the same Container. Pick one. Use plain `color` for a simple box, and `decoration` when you want rounded corners, a border, or a shadow.
 
 ---
 
-## SizedBox: Exact Size and Spacing
+## SizedBox: Exact Size And Spacing
 
-`SizedBox` creates exact sizes or spacing.
-
-### Fixed Size
-
-```dart
-SizedBox(
-  width: 100,
-  height: 50,
-  child: ElevatedButton(
-    onPressed: () {},
-    child: Text('Fixed size button'),
-  ),
-)
-```
-
-### Spacing Between Widgets
-
-This is super common!
-
-```dart
-Column(
-  children: [
-    Text('First item'),
-    SizedBox(height: 20),  // 20 pixels of space
-    Text('Second item'),
-    SizedBox(height: 20),  // 20 pixels of space
-    Text('Third item'),
-  ],
-)
-```
-
-### Full Size
-
-```dart
-SizedBox.expand(
-  child: Container(
-    color: Colors.blue,
-    child: Center(child: Text('Fills available space')),
-  ),
-)
-```
-
-### Square Size
-
-```dart
-SizedBox.square(
-  dimension: 100,  // 100x100 box
-  child: Container(color: Colors.red),
-)
-```
-
----
-
-## Complete Example: Profile Card
-
-Let's combine everything we learned:
-
-```dart
-Container(
-  width: 300,
-  padding: EdgeInsets.all(20),
-  decoration: BoxDecoration(
-    color: Colors.white,
-    borderRadius: BorderRadius.circular(15),
-    boxShadow: [
-      BoxShadow(
-        color: Colors.grey.withOpacity(0.3),
-        blurRadius: 10,
-        offset: Offset(0, 5),
-      ),
-    ],
-  ),
-  child: Row(
-    children: [
-      // Profile picture
-      CircleAvatar(
-        radius: 30,
-        backgroundImage: NetworkImage('https://example.com/avatar.jpg'),
-      ),
-
-      SizedBox(width: 16),  // Spacing
-
-      // Name and bio
-      Expanded(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Alice Johnson',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 4),
-            Text(
-              'Flutter Developer',
-              style: TextStyle(
-                color: Colors.grey[600],
-                fontSize: 14,
-              ),
-            ),
-            SizedBox(height: 8),
-            Row(
-              children: [
-                Icon(Icons.location_on, size: 16, color: Colors.grey),
-                SizedBox(width: 4),
-                Text(
-                  'San Francisco, CA',
-                  style: TextStyle(fontSize: 12, color: Colors.grey),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    ],
-  ),
-)
-```
-
----
-
-## Summary: Key Takeaways
-
-| Widget | Purpose | Key Property |
-|--------|---------|--------------|
-| `Text` | Show words | `style: TextStyle(...)` |
-| `Icon` | Show symbols | `Icons.name` |
-| `Image` | Show pictures | `fit: BoxFit.cover` |
-| `Container` | Versatile box | `decoration: BoxDecoration(...)` |
-| `SizedBox` | Exact size/spacing | `width/height` |
-| `CircleAvatar` | Round images | `radius` |
-
----
-
-## Quick Quiz
-
-**Q1:** How do you make text bold and blue?
-
-<details>
-<summary>Answer</summary>
-
-```dart
-Text(
-  'Bold and Blue',
-  style: TextStyle(
-    fontWeight: FontWeight.bold,
-    color: Colors.blue,
-  ),
-)
-```
-
-</details>
-
-**Q2:** What's the difference between `Container` color and decoration?
-
-<details>
-<summary>Answer</summary>
-
-You can't use both at the same time!
-
-```dart
-// ✅ Simple: Use color
-Container(
-  color: Colors.blue,
-  child: Text('Hello'),
-)
-
-// ✅ Advanced: Use decoration (for borders, shadows, gradients)
-Container(
-  decoration: BoxDecoration(
-    color: Colors.blue,  // Color goes here when using decoration
-    borderRadius: BorderRadius.circular(10),
-  ),
-  child: Text('Hello'),
-)
-```
-
-</details>
-
-**Q3:** How do you add spacing between items in a Column?
-
-<details>
-<summary>Answer</summary>
-
-Use `SizedBox` with height:
+`SizedBox` is mostly used to make **gaps** between widgets. This is one of the most common things you will write.
 
 ```dart
 Column(
   children: [
     Text('First'),
-    SizedBox(height: 20),  // 20px gap
+    SizedBox(height: 20),   // a 20-pixel gap
     Text('Second'),
   ],
 )
 ```
 
+In a `Column` (vertical), use `height` for the gap. In a `Row` (horizontal), use `width`:
+
+```dart
+Row(
+  children: [
+    Icon(Icons.star),
+    SizedBox(width: 8),   // a sideways gap
+    Text('4.5'),
+  ],
+)
+```
+
+A `SizedBox` with no child is just empty space. Simple and very useful.
+
+---
+
+## A Bigger Example: A Simple Card
+
+Let us snap several of these together into a little profile card:
+
+```dart
+Container(
+  width: 250,
+  padding: const EdgeInsets.all(16),
+  decoration: BoxDecoration(
+    color: Colors.white,
+    borderRadius: BorderRadius.circular(12),
+    border: Border.all(color: Colors.grey),
+  ),
+  child: Column(
+    children: const [
+      CircleAvatar(
+        radius: 30,
+        backgroundColor: Colors.blue,
+        child: Text('AB', style: TextStyle(color: Colors.white)),
+      ),
+      SizedBox(height: 12),
+      Text(
+        'Ada Bello',
+        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      ),
+      SizedBox(height: 4),
+      Text('Flutter Learner', style: TextStyle(color: Colors.grey)),
+    ],
+  ),
+)
+```
+
+Read the tree: a `Container` (the card) holds a `Column`, which stacks a `CircleAvatar`, a gap, a bold name, a small gap, and a grey subtitle. Every piece is one of the widgets from this lesson.
+
+---
+
+## The Top Mistakes Beginners Make
+
+### Mistake 1: Using both `color` and `decoration`
+
+```dart
+Container(color: Colors.blue, decoration: BoxDecoration(...))   // BAD
+Container(decoration: BoxDecoration(color: Colors.blue, ...))   // GOOD
+```
+
+### Mistake 2: Mixing up padding and margin
+
+Padding is space **inside** the box; margin is space **outside**. If the child feels cramped against the edge, add padding.
+
+### Mistake 3: Wrong gap direction in SizedBox
+
+In a Column use `height` for the gap; in a Row use `width`. Using `width` inside a Column does nothing visible.
+
+### Mistake 4: Forgetting the `Icons.` prefix
+
+```dart
+Icon(favorite)         // BAD
+Icon(Icons.favorite)   // GOOD
+```
+
+---
+
+## One-Minute Recap
+
+- `Text('...')` shows words; style it with `style: TextStyle(...)`.
+- `Icon(Icons.name)` shows a symbol; set `size` and `color`.
+- `Image.network(...)` and `Image.asset(...)` show pictures; `fit: BoxFit.cover` is the common fit. `CircleAvatar` makes round pictures.
+- `Container` is a box that holds one `child`; it can set size, colour, padding (inside), and margin (outside). Use `decoration` for rounded corners and borders.
+- `SizedBox(height: ...)` makes vertical gaps; `SizedBox(width: ...)` makes horizontal gaps.
+
+---
+
+## Quick Quiz
+
+**Q1.** How do you make text bold and size 24?
+
+<details>
+<summary>Answer</summary>
+
+```dart
+Text('Hi', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24))
+```
+</details>
+
+**Q2.** What is the difference between padding and margin?
+
+<details>
+<summary>Answer</summary>
+Padding is space inside the box (between the edge and the child). Margin is space outside the box (between the box and other widgets).
+</details>
+
+**Q3.** How do you put a 16-pixel gap between two texts in a Column?
+
+<details>
+<summary>Answer</summary>
+Put a `SizedBox(height: 16)` between them.
+</details>
+
+**Q4.** What is wrong with `Container(color: Colors.blue, decoration: BoxDecoration(...))`?
+
+<details>
+<summary>Answer</summary>
+You cannot use `color` and `decoration` together. Move the colour inside the decoration: `decoration: BoxDecoration(color: Colors.blue, ...)`.
 </details>
 
 ---
 
-**Next:** Learn about layout widgets that organize your screen!
+## Assignment
+
+Paste full apps into [dartpad.dev](https://dartpad.dev) (Flutter mode) to see these. Wrap your widget in `Scaffold(body: Center(child: ...))` to view it centered.
+
+### Problem 1: Style some text
+
+Make a `Text` that says `'Welcome'`, is size 28, bold, and green.
+
+### Problem 2: A rating row
+
+Build a `Row` that shows a yellow star icon, an 8-pixel gap, and the text `'4.5'`.
+
+### Problem 3: A coloured box with padding
+
+Make a `Container` that is blue, has 20 pixels of padding inside, and holds the text `'Hello'`.
+
+### Problem 4: Rounded box
+
+Make a `Container` 150 wide and 80 tall, with a `decoration` that gives it an amber colour and rounded corners (radius 16), holding centered text `'Rounded'`.
+
+### Problem 5: Spot the bug
+
+```dart
+Container(
+  color: Colors.blue,
+  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+  child: Text('Box'),
+)
+```
 
 ---
 
-## Navigation
+## Assignment Answers
 
-⬅️ **Previous:** [Widget Introduction](02a-WidgetIntro.md)
-⬆️ **Back to:** [Learning Path](00-LearningPath.md)
-➡️ **Next:** [Layout Basics](02c-LayoutBasics.md)
+### Problem 1: Style some text
+
+```dart
+Text(
+  'Welcome',
+  style: TextStyle(
+    fontSize: 28,
+    fontWeight: FontWeight.bold,
+    color: Colors.green,
+  ),
+)
+```
+
+All three looks (size, weight, colour) go inside one `TextStyle`.
+
+### Problem 2: A rating row
+
+```dart
+Row(
+  mainAxisSize: MainAxisSize.min,
+  children: const [
+    Icon(Icons.star, color: Colors.amber),
+    SizedBox(width: 8),
+    Text('4.5'),
+  ],
+)
+```
+
+The `SizedBox(width: 8)` makes the sideways gap between the star and the number. (`mainAxisSize: MainAxisSize.min` just keeps the Row only as wide as its contents; you will learn more about Row sizing in the layout lessons.)
+
+### Problem 3: A coloured box with padding
+
+```dart
+Container(
+  color: Colors.blue,
+  padding: const EdgeInsets.all(20),
+  child: const Text('Hello'),
+)
+```
+
+`padding: EdgeInsets.all(20)` adds 20 pixels of space inside the box on every side, so the text is not jammed against the edge.
+
+### Problem 4: Rounded box
+
+```dart
+Container(
+  width: 150,
+  height: 80,
+  decoration: BoxDecoration(
+    color: Colors.amber,
+    borderRadius: BorderRadius.circular(16),
+  ),
+  child: const Center(child: Text('Rounded')),
+)
+```
+
+Because we want rounded corners, the colour moves into the `decoration`. `Center` puts the text in the middle of the box.
+
+### Problem 5: Spot the bug
+
+The Container sets both `color` and `decoration`, which is not allowed. Move the colour into the decoration:
+
+```dart
+Container(
+  decoration: BoxDecoration(
+    color: Colors.blue,
+    borderRadius: BorderRadius.circular(10),
+  ),
+  child: const Text('Box'),
+)
+```
+
+When you use `decoration`, the Container's own `color` must go away, and the colour lives inside the `BoxDecoration` instead.
+
+---
+
+**Next:** `02c-LayoutBasics.md`, where you arrange widgets with Row, Column, Center, Padding, and Scaffold.
