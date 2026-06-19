@@ -1,5 +1,9 @@
 # Widgets Deep Dive: Building Reusable UI Components
 
+## The Big Idea In One Sentence
+
+> A good widget is "dumb on purpose": it receives data as props, shows it, and forwards taps via callbacks, but it never fetches data, holds app state, or navigates.
+
 Widgets are the visual building blocks of your Flutter app. This doc explains how to create clean, reusable widgets that display data from your controllers.
 
 ---
@@ -1024,8 +1028,94 @@ Controller → Screen → Widget → Display
 
 ---
 
+## Quick Quiz
+
+**Q1.** How does a reusable widget get the data it shows?
+
+<details>
+<summary>Answer</summary>
+As constructor parameters (props) passed in by its parent. It does not fetch its own data.
+</details>
+
+**Q2.** How should a card handle a tap instead of navigating itself?
+
+<details>
+<summary>Answer</summary>
+Expose an `onTap` callback and call it. The parent screen decides what the tap does (e.g. navigate).
+</details>
+
+**Q3.** When is it OK for a widget to be Stateful?
+
+<details>
+<summary>Answer</summary>
+For LOCAL UI state only, like expanded/collapsed, a text field controller, or hover. App-wide state belongs in a controller.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Design the props
+
+Design a `ProductCard` widget's constructor: required `Product product`, optional `onTap` and `onAddToCart` callbacks.
+
+### Problem 2: Fix the layer break
+
+A `UserCard` calls `Navigator.push(...)` inside its own `onTap`. Rewrite it so the parent controls navigation.
+
+### Problem 3: Stateless or Stateful?
+
+For each, pick Stateless or Stateful:
+1. A card that just shows a user's name and email.
+2. An expandable panel that opens and closes when tapped.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Design the props
+
+```dart
+class ProductCard extends StatelessWidget {
+  final Product product;
+  final VoidCallback? onTap;
+  final VoidCallback? onAddToCart;
+
+  const ProductCard({
+    super.key,
+    required this.product,
+    this.onTap,
+    this.onAddToCart,
+  });
+  // ...
+}
+```
+
+### Problem 2: Fix the layer break
+
+```dart
+class UserCard extends StatelessWidget {
+  final User user;
+  final VoidCallback? onTap; // parent decides what happens
+  const UserCard({super.key, required this.user, this.onTap});
+
+  @override
+  Widget build(BuildContext context) =>
+      ListTile(title: Text(user.name), onTap: onTap);
+}
+```
+
+The screen passes `onTap: () => Navigator.push(...)`.
+
+### Problem 3: Stateless or Stateful?
+
+1. **Stateless** (just displays props).
+2. **Stateful** (it has local open/closed state).
+
+---
+
 ## Navigation
 
-Previous: [Controllers Deep Dive](09f-ControllersDeepDive.md)
+Previous: [Controllers Deep Dive](09d-ControllersDeepDive.md)
 Back to: [Learning Path](00-LearningPath.md)
-Next: [Service Layer](09b-ServiceLayer.md)
+Next: [Service Layer](09f-ServiceLayer.md)
