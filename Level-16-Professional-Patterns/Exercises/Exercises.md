@@ -64,6 +64,48 @@ lib/
 - [ ] Failure classes defined
 - [ ] UseCase base class created
 
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+// core/error/exceptions.dart
+class ServerException implements Exception {}
+class CacheException implements Exception {}
+class NetworkException implements Exception {}
+
+// core/error/failures.dart
+abstract class Failure {
+  final String message;
+  const Failure(this.message);
+}
+class ServerFailure extends Failure {
+  const ServerFailure([super.message = 'Server error occurred']);
+}
+class CacheFailure extends Failure {
+  const CacheFailure([super.message = 'Could not load cached data']);
+}
+class NetworkFailure extends Failure {
+  const NetworkFailure([super.message = 'No internet connection']);
+}
+
+// core/usecases/usecase.dart
+import 'package:dartz/dartz.dart';
+import '../error/failures.dart';
+
+abstract class UseCase<Type, Params> {
+  Future<Either<Failure, Type>> call(Params params);
+}
+
+// Use when a use case needs no input.
+class NoParams {
+  const NoParams();
+}
+```
+
+The folders are just empty directories you create; the real work is these small base classes. `Failure` (returned to the app) is separate from `Exception` (thrown deep in the data layer) on purpose: data sources throw exceptions, the repository catches them and returns the matching `Failure`.
+
+</details>
+
 ---
 
 ## Exercise 2: Entity and Model (Beginner)
@@ -146,6 +188,131 @@ void main() {
 }
 ```
 
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+// domain/entities/todo.dart
+enum Priority { low, medium, high }
+
+class Todo {
+  final String id;
+  final String title;
+  final String description;
+  final bool isCompleted;
+  final DateTime createdAt;
+  final DateTime? dueDate;
+  final Priority priority;
+
+  const Todo({
+    required this.id,
+    required this.title,
+    this.description = '',
+    this.isCompleted = false,
+    required this.createdAt,
+    this.dueDate,
+    this.priority = Priority.medium,
+  });
+
+  bool get isOverdue =>
+      dueDate != null && !isCompleted && dueDate!.isBefore(DateTime.now());
+
+  bool get isDueToday {
+    if (dueDate == null) return false;
+    final now = DateTime.now();
+    return dueDate!.year == now.year &&
+        dueDate!.month == now.month &&
+        dueDate!.day == now.day;
+  }
+
+  bool get isDueSoon =>
+      dueDate != null &&
+      !isCompleted &&
+      dueDate!.isAfter(DateTime.now()) &&
+      dueDate!.difference(DateTime.now()).inDays <= 3;
+
+  Todo copyWith({String? title, bool? isCompleted, Priority? priority}) {
+    return Todo(
+      id: id,
+      title: title ?? this.title,
+      description: description,
+      isCompleted: isCompleted ?? this.isCompleted,
+      createdAt: createdAt,
+      dueDate: dueDate,
+      priority: priority ?? this.priority,
+    );
+  }
+}
+
+// data/models/todo_model.dart
+class TodoModel {
+  final String id;
+  final String title;
+  final String description;
+  final bool isCompleted;
+  final String createdAt;
+  final String? dueDate;
+  final String priority;
+
+  const TodoModel({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.isCompleted,
+    required this.createdAt,
+    this.dueDate,
+    required this.priority,
+  });
+
+  factory TodoModel.fromJson(Map<String, dynamic> json) => TodoModel(
+        id: json['id'],
+        title: json['title'],
+        description: json['description'] ?? '',
+        isCompleted: json['is_completed'] ?? false,
+        createdAt: json['created_at'],
+        dueDate: json['due_date'],
+        priority: json['priority'] ?? 'medium',
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'title': title,
+        'description': description,
+        'is_completed': isCompleted,
+        'created_at': createdAt,
+        'due_date': dueDate,
+        'priority': priority,
+      };
+
+  Todo toEntity() => Todo(
+        id: id,
+        title: title,
+        description: description,
+        isCompleted: isCompleted,
+        createdAt: DateTime.parse(createdAt),
+        dueDate: dueDate != null ? DateTime.parse(dueDate!) : null,
+        priority: Priority.values.firstWhere(
+          (p) => p.name == priority,
+          orElse: () => Priority.medium,
+        ),
+      );
+
+  factory TodoModel.fromEntity(Todo todo) => TodoModel(
+        id: todo.id,
+        title: todo.title,
+        description: todo.description,
+        isCompleted: todo.isCompleted,
+        createdAt: todo.createdAt.toIso8601String(),
+        dueDate: todo.dueDate?.toIso8601String(),
+        priority: todo.priority.name,
+      );
+}
+```
+
+The Entity is the clean, in-app object with business logic (`isOverdue`); the Model handles the messy JSON (snake_case keys, dates as strings) and converts to/from the entity. Keeping them separate means a change in the API's JSON only touches the Model.
+
+</details>
+
 ---
 
 ## Exercise 3: Repository Interface and Implementation (Intermediate)
@@ -222,6 +389,64 @@ class TodoRepositoryImpl implements TodoRepository {
 }
 ```
 
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+// domain/repositories/todo_repository.dart
+abstract class TodoRepository {
+  Future<Either<Failure, List<Todo>>> getAllTodos();
+  Future<Either<Failure, Todo>> getTodo(String id);
+  Future<Either<Failure, Todo>> addTodo(Todo todo);
+  Future<Either<Failure, Todo>> updateTodo(Todo todo);
+  Future<Either<Failure, void>> deleteTodo(String id);
+  Future<Either<Failure, Todo>> toggleComplete(String id);
+  Future<Either<Failure, List<Todo>>> getTodosByPriority(Priority priority);
+  Future<Either<Failure, List<Todo>>> getOverdueTodos();
+}
+
+// data/repositories/todo_repository_impl.dart
+class TodoRepositoryImpl implements TodoRepository {
+  final TodoRemoteDataSource remoteDataSource;
+  final TodoLocalDataSource localDataSource;
+  final NetworkInfo networkInfo;
+
+  TodoRepositoryImpl({
+    required this.remoteDataSource,
+    required this.localDataSource,
+    required this.networkInfo,
+  });
+
+  @override
+  Future<Either<Failure, List<Todo>>> getAllTodos() async {
+    if (await networkInfo.isConnected) {
+      try {
+        final remoteTodos = await remoteDataSource.getAllTodos();
+        await localDataSource.cacheTodos(remoteTodos);          // keep cache fresh
+        return Right(remoteTodos.map((m) => m.toEntity()).toList());
+      } on ServerException {
+        return const Left(ServerFailure());
+      }
+    } else {
+      try {
+        final cached = await localDataSource.getCachedTodos();   // offline fallback
+        return Right(cached.map((m) => m.toEntity()).toList());
+      } on CacheException {
+        return const Left(CacheFailure());
+      }
+    }
+  }
+
+  // Other methods follow the same shape: check connection,
+  // call the data source, convert Model -> Entity, and map any
+  // exception to the matching Failure with Left(...).
+}
+```
+
+The key idea: the repository returns `Either<Failure, T>` (never throws to the caller), tries the network first, falls back to the cache when offline, and converts data-layer exceptions into domain-layer failures.
+
+</details>
+
 ---
 
 ## Exercise 4: Use Cases (Intermediate)
@@ -293,6 +518,78 @@ class CompleteTodoWithNotificationUseCase {
   }
 }
 ```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+// Each use case = one action. They all look like this:
+class GetTodoUseCase implements UseCase<Todo, String> {
+  final TodoRepository repository;
+  GetTodoUseCase(this.repository);
+  @override
+  Future<Either<Failure, Todo>> call(String id) => repository.getTodo(id);
+}
+
+class AddTodoUseCase implements UseCase<Todo, AddTodoParams> {
+  final TodoRepository repository;
+  AddTodoUseCase(this.repository);
+  @override
+  Future<Either<Failure, Todo>> call(AddTodoParams params) {
+    final todo = Todo(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      title: params.title,
+      description: params.description,
+      createdAt: DateTime.now(),
+      dueDate: params.dueDate,
+      priority: params.priority,
+    );
+    return repository.addTodo(todo);
+  }
+}
+
+class ToggleCompleteUseCase implements UseCase<Todo, String> {
+  final TodoRepository repository;
+  ToggleCompleteUseCase(this.repository);
+  @override
+  Future<Either<Failure, Todo>> call(String id) =>
+      repository.toggleComplete(id);
+}
+
+class DeleteTodoUseCase implements UseCase<void, String> {
+  final TodoRepository repository;
+  DeleteTodoUseCase(this.repository);
+  @override
+  Future<Either<Failure, void>> call(String id) => repository.deleteTodo(id);
+}
+
+// Complex use case: combine two operations.
+class CompleteTodoWithNotificationUseCase {
+  final TodoRepository todoRepository;
+  final NotificationService notificationService;
+  CompleteTodoWithNotificationUseCase({
+    required this.todoRepository,
+    required this.notificationService,
+  });
+
+  Future<Either<Failure, Todo>> call(String todoId) async {
+    final result = await todoRepository.toggleComplete(todoId);
+    return result.fold(
+      (failure) => Left(failure),
+      (todo) async {
+        if (todo.isCompleted) {
+          await notificationService.cancelReminder(todoId);
+        }
+        return Right(todo);
+      },
+    );
+  }
+}
+```
+
+Each use case has one job and just forwards to the repository. The "complex" one shows how to chain steps: it only cancels the reminder if the toggle succeeded (using `fold`).
+
+</details>
 
 ---
 
@@ -373,6 +670,59 @@ class TodosScreen extends StatelessWidget {
 }
 ```
 
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+// injection_container.dart
+import 'package:get_it/get_it.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
+final sl = GetIt.instance;
+
+Future<void> init() async {
+  //! External (created once, shared)
+  final prefs = await SharedPreferences.getInstance();
+  sl.registerLazySingleton<SharedPreferences>(() => prefs);
+  sl.registerLazySingleton<http.Client>(() => http.Client());
+
+  //! Core
+  sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
+
+  //! Data sources
+  sl.registerLazySingleton<TodoRemoteDataSource>(
+      () => TodoRemoteDataSourceImpl(client: sl()));
+  sl.registerLazySingleton<TodoLocalDataSource>(
+      () => TodoLocalDataSourceImpl(prefs: sl()));
+
+  //! Repository (depends on the data sources + network info above)
+  sl.registerLazySingleton<TodoRepository>(() => TodoRepositoryImpl(
+        remoteDataSource: sl(),
+        localDataSource: sl(),
+        networkInfo: sl(),
+      ));
+
+  //! Use cases
+  sl.registerLazySingleton(() => GetAllTodosUseCase(sl()));
+  sl.registerLazySingleton(() => AddTodoUseCase(sl()));
+  sl.registerLazySingleton(() => ToggleCompleteUseCase(sl()));
+  sl.registerLazySingleton(() => DeleteTodoUseCase(sl()));
+
+  //! Controller (factory: a fresh one each time the screen opens)
+  sl.registerFactory(() => TodoController(
+        getAllTodosUseCase: sl(),
+        addTodoUseCase: sl(),
+        toggleCompleteUseCase: sl(),
+        deleteTodoUseCase: sl(),
+      ));
+}
+```
+
+`sl()` automatically supplies whatever type the constructor needs (GetIt resolves it). Use **singleton** for things you want one shared copy of (clients, repository), and **factory** for controllers so each screen gets a fresh one.
+
+</details>
+
 ---
 
 ## Exercise 6: Controller with State Management (Intermediate)
@@ -448,6 +798,72 @@ class TodoController extends ChangeNotifier {
   }
 }
 ```
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+Future<void> loadTodos() async {
+  _emit(_state.copyWith(status: TodosStatus.loading));
+  final result = await getAllTodosUseCase(const NoParams());
+  result.fold(
+    (failure) => _emit(_state.copyWith(
+      status: TodosStatus.error,
+      errorMessage: failure.message,
+    )),
+    (todos) => _emit(_state.copyWith(
+      status: TodosStatus.success,
+      todos: todos,
+    )),
+  );
+}
+
+Future<void> addTodo(AddTodoParams params) async {
+  final result = await addTodoUseCase(params);
+  result.fold(
+    (failure) => _emit(_state.copyWith(
+      status: TodosStatus.error,
+      errorMessage: failure.message,
+    )),
+    (todo) => _emit(_state.copyWith(
+      status: TodosStatus.success,
+      todos: [..._state.todos, todo],
+    )),
+  );
+}
+
+Future<void> toggleComplete(String id) async {
+  final result = await toggleCompleteUseCase(id);
+  result.fold(
+    (failure) => _emit(_state.copyWith(
+      status: TodosStatus.error,
+      errorMessage: failure.message,
+    )),
+    (updated) => _emit(_state.copyWith(
+      todos: _state.todos
+          .map((t) => t.id == updated.id ? updated : t)
+          .toList(),
+    )),
+  );
+}
+
+Future<void> deleteTodo(String id) async {
+  final result = await deleteTodoUseCase(id);
+  result.fold(
+    (failure) => _emit(_state.copyWith(
+      status: TodosStatus.error,
+      errorMessage: failure.message,
+    )),
+    (_) => _emit(_state.copyWith(
+      todos: _state.todos.where((t) => t.id != id).toList(),
+    )),
+  );
+}
+```
+
+Every action follows the same pattern: call the use case, then `fold` the `Either` into either an error state or an updated success state, and `_emit` it so the UI rebuilds. The widget in Part C just reads `controller.state.status` and shows loading/error/success.
+
+</details>
 
 ### Part C: Use in Widget
 
@@ -582,6 +998,47 @@ class ErrorView extends StatelessWidget {
 }
 ```
 
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+class ErrorView extends StatelessWidget {
+  final String message;
+  final VoidCallback? onRetry;
+
+  const ErrorView({super.key, required this.message, this.onRetry});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.error_outline, size: 64, color: Colors.red),
+            const SizedBox(height: 16),
+            Text(message, textAlign: TextAlign.center),
+            if (onRetry != null) ...[
+              const SizedBox(height: 24),
+              ElevatedButton.icon(
+                onPressed: onRetry,
+                icon: const Icon(Icons.refresh),
+                label: const Text('Try Again'),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
+The `sealed class Failure` plus specific subclasses (Part A) let the controller react differently per failure type (Part C uses `result.fold` and checks `if (failure is ValidationFailure)` etc.). Note: the Part C snippet references extra `TodosState` fields like `validationErrors`/`pendingSync`; in a real build you would add those to your state class, or simplify to a single `errorMessage`. The reusable `ErrorView`/`ErrorSnackBar` keep all error UI in one place.
+
+</details>
+
 ### Part C: Handle Errors in Controller
 
 ```dart
@@ -677,6 +1134,85 @@ lib/
 8. Create ProfileController
 9. Build UI screens
 10. Add error handling
+
+<details>
+<summary>✅ Solution (representative)</summary>
+
+This feature follows the EXACT same shape as the Todo feature you built in Exercises 2-6, just with `User` instead of `Todo`. Here are the key pieces; the rest mirror the Todo solutions.
+
+```dart
+// domain/entities/user.dart
+class User {
+  final String id;
+  final String name;
+  final String email;
+  final String? avatarUrl;
+
+  const User({
+    required this.id,
+    required this.name,
+    required this.email,
+    this.avatarUrl,
+  });
+
+  // Business-rule validation lives on the entity.
+  bool get hasValidEmail => email.contains('@') && email.contains('.');
+  bool get hasName => name.trim().isNotEmpty;
+
+  User copyWith({String? name, String? email, String? avatarUrl}) => User(
+        id: id,
+        name: name ?? this.name,
+        email: email ?? this.email,
+        avatarUrl: avatarUrl ?? this.avatarUrl,
+      );
+}
+
+// domain/repositories/profile_repository.dart
+abstract class ProfileRepository {
+  Future<Either<Failure, User>> getProfile();
+  Future<Either<Failure, User>> updateProfile(User user);
+  Future<Either<Failure, void>> changePassword(String oldPw, String newPw);
+}
+
+// domain/usecases/get_profile.dart
+class GetProfileUseCase implements UseCase<User, NoParams> {
+  final ProfileRepository repository;
+  GetProfileUseCase(this.repository);
+  @override
+  Future<Either<Failure, User>> call(NoParams params) =>
+      repository.getProfile();
+}
+
+// presentation/controllers/profile_controller.dart (skeleton)
+class ProfileController extends ChangeNotifier {
+  final GetProfileUseCase getProfile;
+  final UpdateProfileUseCase updateProfile;
+  ProfileController({required this.getProfile, required this.updateProfile});
+
+  ProfileState _state = const ProfileState();
+  ProfileState get state => _state;
+
+  Future<void> load() async {
+    _emit(_state.copyWith(status: Status.loading));
+    final result = await getProfile(const NoParams());
+    result.fold(
+      (f) => _emit(_state.copyWith(status: Status.error, errorMessage: f.message)),
+      (user) => _emit(_state.copyWith(status: Status.success, user: user)),
+    );
+  }
+
+  void _emit(ProfileState s) { _state = s; notifyListeners(); }
+}
+```
+
+- `UserModel` (data layer): add `fromJson`/`toJson`/`toEntity`/`fromEntity`, exactly like `TodoModel`.
+- Repository impl: try remote, cache to local, fall back to cache when offline, map exceptions to failures, same as `TodoRepositoryImpl`.
+- DI: register the data sources, repository, use cases, and controller in `injection_container.dart`, same as Exercise 5.
+- UI: `profile_page` reads `controller.state.status` and shows loading / error (`ErrorView`) / the profile; `edit_profile_page` uses a `Form` with validators that reuse `user.hasValidEmail`.
+
+The whole point of Clean Architecture: once you know the Todo feature, every new feature (Profile, Settings, etc.) is the same predictable set of files.
+
+</details>
 
 ---
 
