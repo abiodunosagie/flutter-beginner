@@ -1,6 +1,12 @@
 # Platform-Specific Deep Links
 
+## The Big Idea In One Sentence
+
+> Real `https://` links can open your app directly (no "open with?" popup), but only after you prove you own the website by hosting a small verification file.
+
 Learn about Universal Links (iOS) and App Links (Android) for production apps!
+
+> **Heads-up.** This is a setup/configuration lesson (Xcode, manifests, server files), not new Dart code. Read it to understand the idea; you only do this once per real app, and you can come back when you publish one.
 
 ---
 
@@ -352,11 +358,60 @@ adb shell pm get-app-links com.example.myapp
 
 ---
 
-## Continue Learning
+## Quick Quiz
 
-Excellent! You now understand deep linking completely. Next, let's learn about bottom navigation!
+**Q1.** What is the big advantage of an `https://` app link over a `myapp://` custom scheme?
 
-**Continue to:** [BottomNavigationBar →](07a-BottomNavBar.md)
+<details>
+<summary>Answer</summary>
+It opens the app directly with no "Open with..." dialog, and falls back to the website if the app is not installed.
+</details>
+
+**Q2.** What proves to the phone that your app is allowed to open your website's links?
+
+<details>
+<summary>Answer</summary>
+A verification file hosted on your domain: `apple-app-site-association` for iOS, `assetlinks.json` for Android, both in the `/.well-known/` folder.
+</details>
+
+**Q3.** Both platforms require the domain to use what?
+
+<details>
+<summary>Answer</summary>
+HTTPS.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Pick the link type
+
+You want a shared link to open the app with no popup, and open the website if the app is not installed. Custom scheme or app link?
+
+### Problem 2: Where does the file go?
+
+For Android app links, what is the file called and where on your server must it live?
+
+### Problem 3: One requirement both share
+
+Name one requirement iOS Universal Links and Android App Links both have.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Pick the link type
+
+An **app link / Universal Link** (`https://`). Custom schemes show a popup and do not fall back to a website.
+
+### Problem 2: Where does the file go?
+
+`assetlinks.json`, hosted at `https://yourdomain.com/.well-known/assetlinks.json`.
+
+### Problem 3: One requirement both share
+
+Any of: an HTTPS domain, a verification file in `/.well-known/`, or correct package/bundle IDs.
 
 ---
 
