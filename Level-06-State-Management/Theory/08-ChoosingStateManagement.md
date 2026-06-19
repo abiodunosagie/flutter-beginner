@@ -1,5 +1,11 @@
 # Choosing State Management: Which One to Use?
 
+## The Big Idea In One Sentence
+
+> **Provider** for learning and small apps, **Riverpod** for lots of data and async, **BLoC** for big apps with complex logic, and there is no single "best", only the best fit.
+
+All three solve the same problem (sharing state). You pick based on how big and how complex your app is.
+
 Now that you've learned Provider, Riverpod, and BLoC, let's figure out which one is right for your project!
 
 ---
@@ -514,6 +520,45 @@ class CounterBloc extends Bloc<CounterEvent, int> {
 **Riverpod** - Its AsyncValue elegantly handles loading/error/data states. FutureProvider and StreamProvider make API calls and real-time data simple. It scales well and has excellent testing support.
 
 </details>
+
+---
+
+## Assignment
+
+### Problem 1: Pick for the project
+
+For each app, name the tool you would start with and one reason:
+1. Your first weekend Flutter app: a tip calculator.
+2. A weather app that loads from an API and shows loading/error/data.
+3. A large team building an airline booking app with many complex flows.
+
+### Problem 2: True or false
+
+"There is one best state management tool, and everyone should always use it."
+
+### Problem 3: Same problem, different tools
+
+What is the one job that Provider, Riverpod, and BLoC all do?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Pick for the project
+
+1. **Provider.** Simple app, simplest tool, least code.
+2. **Riverpod.** Its AsyncValue handles loading/error/data cleanly for API calls.
+3. **BLoC.** Complex flows on a big team benefit from clear, traceable, event-driven state.
+
+(These are sensible defaults, not the only right answers. Any tool can build any app.)
+
+### Problem 2: True or false
+
+**False.** There is no single best tool. You choose the best fit for the app's size and complexity, and for what your team knows.
+
+### Problem 3: Same problem, different tools
+
+They all **share state across widgets** so the UI updates when the data changes, without passing values down by hand through every widget.
 
 ---
 
