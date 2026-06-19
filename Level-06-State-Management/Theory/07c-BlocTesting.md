@@ -1,5 +1,11 @@
 # Repository Pattern and Testing BLoC
 
+## The Big Idea In One Sentence
+
+> A **repository** is the one place that fetches your data, so the bloc only handles logic, and that split makes both easy to **test**.
+
+Two ideas in this lesson: keep data-fetching in a repository (the warehouse), and write small tests that prove your bloc emits the right states.
+
 Let's learn how to separate data fetching from business logic using the Repository pattern, and how to test your BLoCs easily! Think of repositories as the warehouse that stores ingredients, separate from the kitchen.
 
 ---
@@ -720,6 +726,80 @@ class TodoPage extends StatelessWidget {
 5. Keep BLoCs **focused** on business logic only
 
 You now know professional BLoC patterns used in production apps!
+
+---
+
+## Quick Quiz
+
+**Q1.** What job does a repository do?
+
+<details>
+<summary>Answer</summary>
+It fetches and stores data (from the internet, a database, files), so the bloc does not have to.
+</details>
+
+**Q2.** Why does using a repository make a bloc easier to test?
+
+<details>
+<summary>Answer</summary>
+You can swap in a fake (mock) repository that returns whatever data you want, so you can test success and error cases without a real network.
+</details>
+
+**Q3.** Which package helps you write short bloc tests?
+
+<details>
+<summary>Answer</summary>
+`bloc_test`, with its `blocTest(...)` helper.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Whose job is it?
+
+Sort each job into "Repository" or "BLoC":
+1. Calling the internet to download a user.
+2. Deciding to emit Loading then Loaded.
+3. Reading rows from a database.
+
+### Problem 2: Read a test
+
+What does this test check?
+
+```dart
+blocTest<CounterBloc, int>(
+  'emits [1] when Increment is added',
+  build: () => CounterBloc(),
+  act: (bloc) => bloc.add(Increment()),
+  expect: () => [1],
+);
+```
+
+### Problem 3: Why mock?
+
+A friend says: "Why fake the repository in a test? Just call the real internet." Give one good reason mocking is better for a test.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Whose job is it?
+
+1. **Repository** (it fetches data).
+2. **BLoC** (it decides which states to emit).
+3. **Repository** (it reads the data source).
+
+### Problem 2: Read a test
+
+It builds a fresh `CounterBloc`, adds one `Increment` event, and checks that the bloc emits exactly the state `1`. In plain words: "when I add Increment once, the count becomes 1."
+
+### Problem 3: Why mock?
+
+Any one of these is correct:
+- Tests run fast and offline (no waiting on a real network).
+- You can force an error on purpose to test the error path.
+- Results are predictable, so the test does not break when real data changes.
 
 ---
 
