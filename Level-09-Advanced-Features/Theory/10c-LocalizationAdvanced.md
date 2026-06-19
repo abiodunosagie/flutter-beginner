@@ -1,5 +1,9 @@
 # Advanced Localization in Flutter
 
+## The Big Idea In One Sentence
+
+> Real-world languages need more than swapped words: some read right-to-left, dates and numbers look different per country, and "1 item / 2 items" needs plural rules, and Flutter has tools for all of it.
+
 ## Think of It Like This (5-Year-Old Explanation)
 
 Imagine you're learning to write from different friends around the world:
@@ -1431,12 +1435,63 @@ Advanced localization handles complex scenarios:
 
 Your app can now handle any language in the world, with proper formatting and layout!
 
-## What's Next?
+## Quick Quiz
 
-You've mastered internationalization! Next, we'll explore testing with Mockito to write better tests for your app.
+**Q1.** What does RTL mean, and name one language that uses it?
+
+<details>
+<summary>Answer</summary>
+Right-to-left text direction. Arabic and Hebrew are RTL languages.
+</details>
+
+**Q2.** Why not just write `'$price'` for money in every country?
+
+<details>
+<summary>Answer</summary>
+Number and currency formatting differ by locale (decimal points vs commas, currency symbols and position). Use a locale-aware formatter (like `intl`'s `NumberFormat`).
+</details>
+
+**Q3.** Why do plurals need special handling?
+
+<details>
+<summary>Answer</summary>
+Different languages have different plural rules ("1 item" vs "2 items", and some languages have several plural forms). You define them per language rather than gluing an "s" on.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: RTL check
+
+If your app supports Arabic, what about the layout must you make sure works?
+
+### Problem 2: Format a date
+
+In one line, why should you format dates with a locale-aware tool instead of building the string yourself?
+
+### Problem 3: Plurals
+
+Write, in words, the two cases you would define for showing a count of messages in English.
+
+---
+
+## Assignment Answers
+
+### Problem 1: RTL check
+
+The layout must flip to right-to-left: text aligns right, and rows/icons mirror. Use direction-aware widgets and test in an RTL locale.
+
+### Problem 2: Format a date
+
+Because date order and names differ by country (MM/DD vs DD/MM, translated month names). A locale-aware formatter (like `intl`'s `DateFormat`) gets it right automatically.
+
+### Problem 3: Plurals
+
+One case for exactly one ("1 message") and one case for other counts ("{count} messages").
 
 ---
 
 **Previous:** [10b-MultiLanguage.md](./10b-MultiLanguage.md)
-**Next:** [13a-MockitoBasics.md](../../Level-13-Testing/Theory/13a-MockitoBasics.md)
+**Next:** Level 10 - Final Project ([00-LearningPath.md](../../Level-10-Final-Project/Theory/00-LearningPath.md))
 **Related:** [09a-AccessibilityBasics.md](./09a-AccessibilityBasics.md)
