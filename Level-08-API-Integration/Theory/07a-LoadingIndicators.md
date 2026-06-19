@@ -1,5 +1,9 @@
 # Loading Indicators
 
+## The Big Idea In One Sentence
+
+> Async data has three states (loading, success, error), and showing a spinner during loading tells the user "it is working" instead of leaving them staring at a frozen screen.
+
 Learn how to show loading indicators and provide visual feedback to users!
 
 ---
@@ -573,6 +577,65 @@ class SubmitButtonExample extends StatelessWidget {
 ```
 
 ---
+
+## Quick Quiz
+
+**Q1.** What are the three states of async data?
+
+<details>
+<summary>Answer</summary>
+Loading, success (data), and error.
+</details>
+
+**Q2.** Which indicator fits an API call of unknown length, and which fits a file upload with a known percentage?
+
+<details>
+<summary>Answer</summary>
+`CircularProgressIndicator` (spinner) for unknown length; `LinearProgressIndicator(value: ...)` for known progress.
+</details>
+
+**Q3.** Why disable a Submit button while its request is loading?
+
+<details>
+<summary>Answer</summary>
+To stop the user from tapping it again and sending the same request multiple times.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Show a spinner
+
+Write the widget that centers a circular spinner on the screen.
+
+### Problem 2: Pick the indicator
+
+You are downloading a file and know it is 40% done. Which indicator and value do you show?
+
+### Problem 3: Guard the button
+
+In a loading button, what do you set `onPressed` to while `_isLoading` is true, and why?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Show a spinner
+
+```dart
+const Center(child: CircularProgressIndicator());
+```
+
+### Problem 2: Pick the indicator
+
+```dart
+LinearProgressIndicator(value: 0.4); // 40%
+```
+
+### Problem 3: Guard the button
+
+Set `onPressed: null` while loading. A null `onPressed` disables the button, so the user cannot fire the request again.
 
 ---
 
