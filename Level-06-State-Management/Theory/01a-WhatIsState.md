@@ -1,6 +1,10 @@
-# Part 1: What Is State?
+# What Is State?
 
-Welcome! Before we learn fancy tools like Provider or BLoC, let's understand ONE simple idea: **What is state?**
+## The Big Idea In One Sentence
+
+> State is simply **data in your app that can change**, like a counter, a toggle, or the items in a cart.
+
+Welcome to Level 6. Before we learn tools like Provider or Bloc, let's nail one simple idea: what is state? You already used it with `setState` in Level 5.
 
 ---
 
@@ -142,21 +146,113 @@ See how `counter` changes when you press the button? That's state!
 
 ---
 
-## Try It Yourself!
+## One-Minute Recap
 
-Can you identify which of these is state?
-
-```dart
-final String title = "My App";        // State? ❌ (never changes)
-int score = 0;                        // State? ✅ (can increase/decrease)
-bool isLoggedIn = false;              // State? ✅ (can be true/false)
-final double pi = 3.14159;            // State? ❌ (never changes)
-List<String> todoItems = [];          // State? ✅ (can add/remove items)
-```
+- State is data that can change while the app runs (a counter, a toggle, a cart).
+- Things that never change (an app name, a fixed colour) are not state, just constants.
+- When state changes, you call `setState` so Flutter rebuilds the screen with the new data.
 
 ---
 
-**Next:** Learn about the two types of state!
+## Quick Quiz
+
+**Q1.** In one sentence, what is state?
+
+<details>
+<summary>Answer</summary>
+Data in your app that can change while it is running.
+</details>
+
+**Q2.** Is the app's name (which never changes) state?
+
+<details>
+<summary>Answer</summary>
+No. If it never changes, it is just a constant, not state.
+</details>
+
+**Q3.** When state changes, what do you call so the screen updates?
+
+<details>
+<summary>Answer</summary>
+`setState` (from Level 5). It tells Flutter to rebuild.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: State or not?
+
+For each, say whether it is **state** (can change) or **not state** (never changes):
+
+1. `int score = 0;`
+2. `final String appName = 'My App';`
+3. `bool isDark = false;`
+4. `final double pi = 3.14159;`
+5. `List<String> todos = [];`
+
+### Problem 2: List the state
+
+Think about a music player app. List three pieces of **state** it would have (things that change while you use it).
+
+### Problem 3: Build a counter (recap)
+
+Using `setState` from Level 5, build a `StatefulWidget` with an `int count` and a button that adds 1 and shows the count. (This is state in action.)
+
+---
+
+## Assignment Answers
+
+### Problem 1: State or not?
+
+1. `score` -> **state** (it goes up and down).
+2. `appName` -> **not state** (it is `final` and never changes).
+3. `isDark` -> **state** (it can flip true/false).
+4. `pi` -> **not state** (a fixed constant).
+5. `todos` -> **state** (you add and remove items).
+
+The test: ask "does this change while the app runs?" If yes, it is state.
+
+### Problem 2: List the state
+
+A music player's state could include: the current song, whether it is playing or paused, the volume, the current position in the song, and whether it is on shuffle. All of these change as you use the app. (Any three are fine.)
+
+### Problem 3: Build a counter (recap)
+
+```dart
+import 'package:flutter/material.dart';
+
+class Counter extends StatefulWidget {
+  const Counter({super.key});
+
+  @override
+  State<Counter> createState() => _CounterState();
+}
+
+class _CounterState extends State<Counter> {
+  int count = 0;   // this is state
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text('Count: $count'),
+        ElevatedButton(
+          onPressed: () => setState(() => count++),
+          child: const Text('Add 1'),
+        ),
+      ],
+    );
+  }
+}
+```
+
+`count` is state. Tapping the button changes it inside `setState`, and the screen rebuilds with the new number. This is exactly the kind of changing data the rest of Level 6 helps you manage across a whole app.
+
+---
+
+**Next:** `01b-TypesOfState.md`, the two kinds of state.
 
 ---
 
