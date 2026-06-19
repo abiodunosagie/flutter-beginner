@@ -1,6 +1,12 @@
 # Model Basics
 
+## The Big Idea In One Sentence
+
+> A model is a Dart class for your data with a `fromJson` (build the object from a Map) and a `toJson` (turn it back into a Map), so you get safe `user.name` instead of risky `user['name']`.
+
 Learn how to create type-safe Dart classes from JSON data!
+
+> **You already know this.** You learned classes and constructors in Level 4, and JSON in this level (03a-03c). A model just combines them. `fromJson` is a factory constructor that reads the Map you got from `json.decode`.
 
 ---
 
@@ -541,6 +547,89 @@ class UsersListScreen extends StatelessWidget {
 ```
 
 ---
+
+## Quick Quiz
+
+**Q1.** What does `fromJson` do?
+
+<details>
+<summary>Answer</summary>
+It builds a Dart object from a `Map<String, dynamic>` (the result of `json.decode`).
+</details>
+
+**Q2.** What does `toJson` do?
+
+<details>
+<summary>Answer</summary>
+It turns the object back into a `Map` so you can `json.encode` and send it to the server.
+</details>
+
+**Q3.** Why is `user.name` safer than `user['name']`?
+
+<details>
+<summary>Answer</summary>
+`user.name` is type-checked at compile time and autocompletes. A typo like `user.nme` fails to compile, while `user['nme']` silently returns null.
+</details>
+
+---
+
+## Assignment
+
+A JSON looks like `{"id": 3, "title": "Pen", "price": 1.5}`.
+
+### Problem 1: Write the class
+
+Write a `Product` class with `int id`, `String title`, `double price`, a constructor, and `fromJson`.
+
+### Problem 2: Parse a list
+
+Given `List<dynamic> jsonList`, write the one line that turns it into a `List<Product>`.
+
+### Problem 3: Send it back
+
+Write the `toJson` for `Product`.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Write the class
+
+```dart
+class Product {
+  final int id;
+  final String title;
+  final double price;
+
+  Product({required this.id, required this.title, required this.price});
+
+  factory Product.fromJson(Map<String, dynamic> json) {
+    return Product(
+      id: json['id'],
+      title: json['title'],
+      price: (json['price'] as num).toDouble(),
+    );
+  }
+}
+```
+
+(`(json['price'] as num).toDouble()` safely handles a price that arrives as `1` or `1.5`.)
+
+### Problem 2: Parse a list
+
+```dart
+final products = jsonList.map((j) => Product.fromJson(j)).toList();
+```
+
+### Problem 3: Send it back
+
+```dart
+Map<String, dynamic> toJson() => {
+  'id': id,
+  'title': title,
+  'price': price,
+};
+```
 
 ---
 
