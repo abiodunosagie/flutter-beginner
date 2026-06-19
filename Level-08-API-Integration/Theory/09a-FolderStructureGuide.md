@@ -1,5 +1,9 @@
 # Folder Structure Guide: What Goes Where?
 
+## The Big Idea In One Sentence
+
+> Give every kind of code its own folder/layer (models, services, repositories, controllers, screens, widgets), and let each layer only talk to the one directly below it.
+
 This guide explains exactly what files go in each folder and WHY.
 
 ---
@@ -673,7 +677,70 @@ screens/widgets ──► controllers ──► repositories ──► services/
 
 ---
 
+## Quick Quiz
+
+**Q1.** Which folder holds the code that actually makes HTTP requests?
+
+<details>
+<summary>Answer</summary>
+`services/` (the API client).
+</details>
+
+**Q2.** Where does JSON get turned into `User` objects?
+
+<details>
+<summary>Answer</summary>
+In `repositories/`. The repository calls the service for raw data and converts it to model objects.
+</details>
+
+**Q3.** What is the golden rule of the layers?
+
+<details>
+<summary>Answer</summary>
+Each layer only talks to the layer directly below it: UI → controllers → repositories → services.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Place the code
+
+Which folder does each belong in?
+1. `class User { ... fromJson ... }`
+2. A `Card` widget that shows one user.
+3. Code that tracks `isLoading` and calls `notifyListeners()`.
+
+### Problem 2: Spot the violation
+
+A `UsersScreen` (in `screens/`) calls `http.get(...)` directly. Which rule does this break, and what should it call instead?
+
+### Problem 3: Add a feature
+
+To add a "Posts" feature, name the six files (one per layer) you would create.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Place the code
+
+1. `models/` (pure data class).
+2. `widgets/` (reusable UI piece).
+3. `controllers/` (state management).
+
+### Problem 2: Spot the violation
+
+It breaks the layering rule: a screen should not make HTTP calls. It should call a **controller**, which uses a repository, which uses the service.
+
+### Problem 3: Add a feature
+
+`models/post.dart`, `repositories/post_repository.dart`, `controllers/posts_controller.dart`, `screens/posts_screen.dart`, `widgets/post_card.dart`, and reuse/update the existing `services/api_client.dart` (plus wiring in `injection.dart`).
+
+---
+
 ## Navigation
 
-Previous: [Best Practices](09c-BestPractices.md)
+Previous: [Code Generation](08c-CodeGeneration.md)
 Back to: [Learning Path](00-LearningPath.md)
+Next: [Api Client Deep Dive](09b-ApiClientDeepDive.md)
