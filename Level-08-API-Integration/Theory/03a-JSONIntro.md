@@ -1,5 +1,9 @@
 # JSON Basics - Part 1: Understanding JSON
 
+## The Big Idea In One Sentence
+
+> JSON is text that any program can read, and it looks almost exactly like Dart Maps and Lists, which is why it is the language apps and servers use to swap data.
+
 Learn what JSON is and why it's the universal language of APIs!
 
 ---
@@ -263,6 +267,76 @@ List<Map<String, dynamic>> users = [
 ```
 
 Now you understand what JSON is! In the next part, you'll learn how to convert between JSON strings and Dart objects.
+
+---
+
+## Quick Quiz
+
+**Q1.** A JSON `{ }` object looks most like which Dart type?
+
+<details>
+<summary>Answer</summary>
+A `Map<String, dynamic>` (keys and values).
+</details>
+
+**Q2.** A JSON `[ ]` array looks most like which Dart type?
+
+<details>
+<summary>Answer</summary>
+A `List`.
+</details>
+
+**Q3.** What quote type must JSON keys and string values use?
+
+<details>
+<summary>Answer</summary>
+Double quotes (`"`). Single quotes are not valid JSON.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Object or array?
+
+Is each one a JSON object or array?
+1. `{"id": 1, "name": "Ada"}`
+2. `["red", "green", "blue"]`
+
+### Problem 2: Fix the JSON
+
+This JSON is invalid. Rewrite it correctly:
+
+```
+{name: 'John', "age": 25,}
+```
+
+### Problem 3: Translate to Dart
+
+Write the Dart Map that matches this JSON: `{"city": "Lagos", "rainy": true}`.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Object or array?
+
+1. **Object** (curly braces with key/value pairs).
+2. **Array** (square brackets with a list of items).
+
+### Problem 2: Fix the JSON
+
+```json
+{"name": "John", "age": 25}
+```
+
+Fixes: key `name` needs double quotes, the string `'John'` must use double quotes, and the trailing comma after `25` is removed.
+
+### Problem 3: Translate to Dart
+
+```dart
+Map<String, dynamic> data = {'city': 'Lagos', 'rainy': true};
+```
 
 ---
 
