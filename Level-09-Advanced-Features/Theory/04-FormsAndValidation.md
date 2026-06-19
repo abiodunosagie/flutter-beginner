@@ -1,5 +1,9 @@
 # Forms and Validation: Making Smart Input Fields
 
+## The Big Idea In One Sentence
+
+> Wrap your inputs in a `Form` with a `GlobalKey`, give each `TextFormField` a `validator`, and `formKey.currentState!.validate()` checks them all at once and shows error messages.
+
 ## The Simple Explanation
 
 Imagine you're filling out a form to join a club. The form asks:
@@ -750,6 +754,49 @@ It's like a remote control for the form. We use it to:
 Without it, we couldn't control the form!
 
 </details>
+
+---
+
+## Assignment
+
+### Problem 1: Write a validator
+
+Write a `validator` for a name field that returns an error message when the text is empty, and `null` otherwise.
+
+### Problem 2: Check the whole form
+
+You tapped Submit. Write the line that runs all validators and tells you if the form is valid.
+
+### Problem 3: What does null mean?
+
+In a `validator`, what does returning `null` tell Flutter?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Write a validator
+
+```dart
+validator: (value) {
+  if (value == null || value.isEmpty) {
+    return 'Name is required';
+  }
+  return null;
+},
+```
+
+### Problem 2: Check the whole form
+
+```dart
+if (_formKey.currentState!.validate()) {
+  // all fields passed, do the submit
+}
+```
+
+### Problem 3: What does null mean?
+
+Returning `null` means "this field is valid, no error." Returning a String means "show this error message."
 
 ---
 
