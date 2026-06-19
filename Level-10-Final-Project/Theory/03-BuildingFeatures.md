@@ -1,5 +1,9 @@
 # Building Features: Step by Step
 
+## The Big Idea In One Sentence
+
+> Build one feature at a time from the bottom up (model → data → logic → UI), get it fully working, then move to the next, instead of half-building everything at once.
+
 ## The Simple Explanation
 
 Building an app is like building with LEGO blocks:
@@ -795,6 +799,67 @@ class ItemDetailScreen extends StatelessWidget {
 │                                                          │
 └─────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** Why build one feature fully before starting the next?
+
+<details>
+<summary>Answer</summary>
+So you always have something working, you can test as you go, and you do not end up with many half-finished pieces that all break together.
+</details>
+
+**Q2.** In what order do the layers of a feature usually come together?
+
+<details>
+<summary>Answer</summary>
+Bottom up: model, then data access (repository/service), then logic/state (controller), then the UI.
+</details>
+
+**Q3.** What should you do right after a feature works?
+
+<details>
+<summary>Answer</summary>
+Test it (and commit it) before moving on, so you lock in working code.
+</details>
+
+---
+
+## Assignment
+
+You are adding a "favorites" feature to a recipe app.
+
+### Problem 1: Order the steps
+
+Put these in build order: build the favorites screen, add an `isFavorite` field to the `Recipe` model, write the save/load in the repository.
+
+### Problem 2: One at a time
+
+Why not build favorites, search, and sharing all at the same time?
+
+### Problem 3: Done means what?
+
+Name two things that make a feature truly "done", not just "looks done".
+
+---
+
+## Assignment Answers
+
+### Problem 1: Order the steps
+
+1. Add `isFavorite` to the `Recipe` model.
+2. Write save/load in the repository.
+3. Build the favorites screen (UI) last, on top of the working data.
+
+### Problem 2: One at a time
+
+Building them together means nothing fully works and bugs tangle across features. One at a time keeps the app always runnable and bugs isolated.
+
+### Problem 3: Done means what?
+
+Any two: it works for the happy path AND error cases, it is tested, the code is committed, and the UI handles loading/empty/error states.
 
 ---
 
