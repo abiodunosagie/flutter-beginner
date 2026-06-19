@@ -1,5 +1,9 @@
 # Drawer Navigation Basics
 
+## The Big Idea In One Sentence
+
+> A `Drawer` is a hidden side menu: add it to `Scaffold(drawer: ...)` and Flutter gives you the hamburger button and swipe-to-open for free.
+
 Create side menu navigation for your apps!
 
 ---
@@ -219,11 +223,74 @@ class HomeScreen extends StatelessWidget {
 
 ---
 
-## Continue Learning
+## Quick Quiz
 
-Now let's learn about custom drawer designs!
+**Q1.** What do you add to a `Scaffold` to get a side menu?
 
-**Continue to:** [Custom Drawer →](08b-CustomDrawer.md)
+<details>
+<summary>Answer</summary>
+The `drawer:` property: `Scaffold(drawer: Drawer(child: ...))`.
+</details>
+
+**Q2.** Where does the hamburger menu button come from?
+
+<details>
+<summary>Answer</summary>
+Flutter adds it automatically to the AppBar when the Scaffold has a drawer.
+</details>
+
+**Q3.** After tapping a menu item, why call `Navigator.pop(context)` first?
+
+<details>
+<summary>Answer</summary>
+To close the drawer before (or while) navigating, so it does not stay open over the new screen.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Add a drawer
+
+Write the `Scaffold` property that adds a `Drawer` containing a `ListView`.
+
+### Problem 2: A tappable item
+
+Write a `ListTile` for "Settings" with a settings icon that closes the drawer when tapped.
+
+### Problem 3: Find the missing step
+
+A menu item navigates to a new screen but the drawer stays open on top of it. What line did the developer forget in `onTap`?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Add a drawer
+
+```dart
+drawer: Drawer(
+  child: ListView(
+    children: [ /* menu items */ ],
+  ),
+),
+```
+
+### Problem 2: A tappable item
+
+```dart
+ListTile(
+  leading: Icon(Icons.settings),
+  title: Text('Settings'),
+  onTap: () {
+    Navigator.pop(context); // close the drawer
+  },
+),
+```
+
+### Problem 3: Find the missing step
+
+They forgot `Navigator.pop(context);` to close the drawer before navigating. Without it, the drawer remains open over the new screen.
 
 ---
 
