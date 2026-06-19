@@ -82,7 +82,7 @@ After each theory file, practice with the matching PART exercises!
 ### PART 6: Advanced Animation Packages (NEW!)
 
 #### Step 6a: Flutter Animate Package
-📖 **[14x-FlutterAnimate.md](14x-FlutterAnimate.md)**
+📖 **[06-FlutterAnimate.md](06-FlutterAnimate.md)**
 - What is flutter_animate?
 - Declarative animation syntax
 - Built-in effects (fade, scale, slide, etc.)
@@ -96,7 +96,7 @@ After each theory file, practice with the matching PART exercises!
 ---
 
 #### Step 6b: Lottie Animations
-📖 **[14y-LottieAnimations.md](14y-LottieAnimations.md)**
+📖 **[07-LottieAnimations.md](07-LottieAnimations.md)**
 - What is Lottie?
 - JSON-based animations
 - lottie package setup
@@ -111,7 +111,7 @@ After each theory file, practice with the matching PART exercises!
 ---
 
 #### Step 6c: Rive Animations
-📖 **[14z-RiveAnimations.md](14z-RiveAnimations.md)**
+📖 **[08-RiveAnimations.md](08-RiveAnimations.md)**
 - What is Rive?
 - Interactive vector animations
 - rive package setup
@@ -198,4 +198,4 @@ Once you've finished all theory and exercises:
 
 **Ready to start?**
 
-👉 Begin with [01-ImplicitAnimations.md](01-ImplicitAnimations.md)
+👉 Begin with [01-AnimationBasics.md](01-AnimationBasics.md)
