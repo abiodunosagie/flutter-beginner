@@ -1,5 +1,9 @@
 # FutureBuilder
 
+## The Big Idea In One Sentence
+
+> `FutureBuilder` watches a `Future` and rebuilds your UI automatically for you: spinner while waiting, error widget if it fails, data widget when it arrives.
+
 Learn how to build UI from asynchronous data using FutureBuilder!
 
 ---
@@ -526,6 +530,75 @@ class BadExample extends StatelessWidget {
 ```
 
 ---
+
+## Quick Quiz
+
+**Q1.** Which `connectionState` means the future is still running?
+
+<details>
+<summary>Answer</summary>
+`ConnectionState.waiting`. Show a loading indicator then.
+</details>
+
+**Q2.** After the future is done, which two snapshot properties tell you success vs failure?
+
+<details>
+<summary>Answer</summary>
+`snapshot.hasData` (success, use `snapshot.data`) and `snapshot.hasError` (failure, use `snapshot.error`).
+</details>
+
+**Q3.** Why is creating the future inside `build` a bug?
+
+<details>
+<summary>Answer</summary>
+Every rebuild makes a brand new future, so it re-fetches endlessly and the UI stays stuck loading. Create it once in `initState`.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: The skeleton
+
+Write the `FutureBuilder<List<dynamic>>` wrapper that shows a spinner while waiting, an error text on error, and otherwise builds a `ListView`. (Just the three checks, pseudocode body is fine.)
+
+### Problem 2: Where to create the future?
+
+In a StatefulWidget, which method should create the future once, and into what variable?
+
+### Problem 3: Add retry
+
+After an error, how do you make the future run again (what call re-triggers it)?
+
+---
+
+## Assignment Answers
+
+### Problem 1: The skeleton
+
+```dart
+FutureBuilder<List<dynamic>>(
+  future: _future,
+  builder: (context, snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    if (snapshot.hasError) {
+      return Center(child: Text('Error: ${snapshot.error}'));
+    }
+    final items = snapshot.data!;
+    return ListView(/* build from items */);
+  },
+)
+```
+
+### Problem 2: Where to create the future?
+
+In `initState`, store it in a field like `late Future<...> _future;` (`_future = _fetch();`). Then pass `_future` to the builder.
+
+### Problem 3: Add retry
+
+Call `setState(() { _future = _fetch(); })`. Assigning a new future and rebuilding makes `FutureBuilder` run it again.
 
 ---
 
