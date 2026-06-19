@@ -1,5 +1,9 @@
 # Deep Linking Basics
 
+## The Big Idea In One Sentence
+
+> A deep link is a URL that opens one exact screen inside your app, and with GoRouter your routes ARE your deep links, so they mostly work for free.
+
 Learn how to open specific screens directly from URLs!
 
 ---
@@ -413,11 +417,68 @@ http://localhost:8080/#/product/123
 
 ---
 
-## Continue Learning
+## Quick Quiz
 
-Now that you know deep link basics, let's set up Universal Links and App Links for production apps!
+**Q1.** What is a deep link, in one line?
 
-**Continue to:** [Platform Links →](06b-PlatformLinks.md)
+<details>
+<summary>Answer</summary>
+A URL that opens a specific screen inside your app, not just the home screen.
+</details>
+
+**Q2.** Why does GoRouter make deep linking easy?
+
+<details>
+<summary>Answer</summary>
+Your routes are already paths, so a link like `myapp://product/123` matches the `/product/:id` route automatically.
+</details>
+
+**Q3.** Name one real-world place a deep link is used.
+
+<details>
+<summary>Answer</summary>
+Any of: tapping a notification to open a chat, an email link opening order details, a QR code opening a product page, or a shared link opening the same screen for a friend.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Match the link
+
+Given the route `'/user/:username'`, which screen and value does the deep link `myapp://user/ada` open?
+
+### Problem 2: Add a route for a link
+
+You want `myapp://order/55` to open an order screen. Write the `GoRoute` (with the id parameter).
+
+### Problem 3: Handle a bad link
+
+A link points to `myapp://nowhere`, which matches no route. Which GoRouter option catches it and shows a friendly page?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Match the link
+
+It opens `UserScreen` (or `UserProfileScreen`) with `username` equal to `'ada'`.
+
+### Problem 2: Add a route for a link
+
+```dart
+GoRoute(
+  path: '/order/:id',
+  builder: (context, state) {
+    final id = state.pathParameters['id']!;
+    return OrderScreen(id: id);
+  },
+),
+```
+
+### Problem 3: Handle a bad link
+
+The `errorBuilder` on `GoRouter`. It runs for any path that matches no route, so you can show a "Page Not Found" screen with a button back home.
 
 ---
 
