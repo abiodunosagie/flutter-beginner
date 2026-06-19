@@ -1,5 +1,9 @@
 # Service Layer
 
+## The Big Idea In One Sentence
+
+> This lesson wires all the layers together: a controller pulls data from the repository and a service locator hands each layer its dependencies, so the whole chain (UI → controller → repository → API client) just works.
+
 Learn how to manage state and integrate your repository with the UI using controllers and dependency injection!
 
 ---
@@ -623,10 +627,70 @@ void main() {
 
 ---
 
+## Quick Quiz
+
+**Q1.** In the full flow, who does the controller ask for data, and who does the repository ask?
+
+<details>
+<summary>Answer</summary>
+The controller asks the repository; the repository asks the API client. Each layer only talks to the one below it.
+</details>
+
+**Q2.** What does a service locator (DI container) do?
+
+<details>
+<summary>Answer</summary>
+It creates each layer once and injects its dependencies (API client into repository, repository into controller), so you do not build them by hand everywhere.
+</details>
+
+**Q3.** Why does injecting the repository into the controller make testing easy?
+
+<details>
+<summary>Answer</summary>
+You can inject a mock repository in tests, so the controller runs with fake data and no real network.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Trace the flow
+
+The user taps "Load". List the four layers the call passes through, in order, to fetch users.
+
+### Problem 2: Wire it up
+
+Using the service locator pattern, write the getter for `userRepository` that injects the `apiClient`.
+
+### Problem 3: Why inject?
+
+A controller does `final repo = UserRepositoryImpl(apiClient: ApiClient(...));` inside itself. Why is injecting the repository from outside better?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Trace the flow
+
+Widget/Screen → Controller → Repository → API Client (which calls the server). The data then flows back up the same chain.
+
+### Problem 2: Wire it up
+
+```dart
+UserRepository get userRepository {
+  _userRepository ??= UserRepositoryImpl(apiClient: apiClient);
+  return _userRepository!;
+}
+```
+
+### Problem 3: Why inject?
+
+If the controller builds its own repository, you can never swap it (for tests or a different data source). Injecting it lets you pass a mock in tests and a real one in the app, with the same controller code.
+
 ---
 
 ## Navigation
 
-⬅️ **Previous:** [Repository Pattern](09a-RepositoryPattern.md)
+⬅️ **Previous:** [Widgets Deep Dive](09e-WidgetsDeepDive.md)
 ⬆️ **Back to:** [Learning Path](00-LearningPath.md)
-➡️ **Next:** [Best Practices](09c-BestPractices.md)
+➡️ **Next:** [Dependency Injection](09g-DependencyInjection.md)
