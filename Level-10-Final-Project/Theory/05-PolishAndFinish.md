@@ -1,5 +1,9 @@
 # Polish and Finish: Making Your App Shine
 
+## The Big Idea In One Sentence
+
+> Polish is the last 10% that makes an app feel professional: loading and empty states, smooth feedback, a consistent look, a real app icon, and no rough edges.
+
 ## The Simple Explanation
 
 Think about wrapping a present:
@@ -791,3 +795,60 @@ FINAL CHECKS
 6. Polish it with this guide!
 
 Good luck! 🎉
+
+---
+
+## Quick Quiz
+
+**Q1.** Name two "polish" touches that make an app feel finished.
+
+<details>
+<summary>Answer</summary>
+Any two: loading spinners, friendly empty states, error messages with retry, smooth transitions, consistent colors/spacing, a real app icon and name.
+</details>
+
+**Q2.** Why does an empty list need a designed "empty state" instead of a blank screen?
+
+<details>
+<summary>Answer</summary>
+A blank screen looks broken. An empty state explains there is nothing yet and often offers an action ("Add your first item").
+</details>
+
+**Q3.** Polish is sometimes called "the last 10%." Why does it matter so much?
+
+<details>
+<summary>Answer</summary>
+It is what users actually notice and judge. A working-but-rough app feels unfinished; small touches make it feel trustworthy and professional.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Find the rough edges
+
+Your app shows a blank white screen while data loads. What polish fixes this?
+
+### Problem 2: Empty state
+
+A notes app has zero notes. Describe what the screen should show.
+
+### Problem 3: Consistency
+
+Name one thing you would make consistent across all screens.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Find the rough edges
+
+Show a loading indicator (spinner or skeleton) while data loads, so the user knows the app is working, not frozen.
+
+### Problem 2: Empty state
+
+A friendly message and icon like "No notes yet" plus an "Add note" button, instead of a blank screen.
+
+### Problem 3: Consistency
+
+Any one: colors/theme, spacing/padding, button styles, font sizes, or icon style, applied the same way on every screen.
