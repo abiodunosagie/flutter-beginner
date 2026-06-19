@@ -974,4 +974,4 @@ It lets the animation switch between states (idle, hover, pressed, success) base
 
 ⬅️ **Previous:** [Lottie Animations](07-LottieAnimations.md)
 ⬆️ **Back to:** [Learning Path](00-LearningPath.md)
-➡️ **Next Level:** [Level 15 - Deployment & Publishing](../../Level-15-Deployment-Publishing/Theory/00-LearningPath.md)
+➡️ **Next Level:** [Level 15 - App Deployment](../../Level-15-App-Deployment/Theory/00-LearningPath.md)
