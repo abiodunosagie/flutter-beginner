@@ -462,6 +462,46 @@ double get savings {
 
 Try writing all tests on your own!
 
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+import 'package:flutter_test/flutter_test.dart';
+
+void main() {
+  group('Product discount', () {
+    test('hasDiscount is true with a 20% discount', () {
+      final p = Product(price: 100, discountPercent: 20);
+      expect(p.hasDiscount, true);
+    });
+
+    test('hasDiscount is false with null discount', () {
+      final p = Product(price: 100);
+      expect(p.hasDiscount, false);
+    });
+
+    test('finalPrice applies a 20% discount on \$100', () {
+      final p = Product(price: 100, discountPercent: 20);
+      expect(p.finalPrice, 80);
+    });
+
+    test('finalPrice equals price when there is no discount', () {
+      final p = Product(price: 100);
+      expect(p.finalPrice, 100);
+    });
+
+    test('savings is the difference when discounted', () {
+      final p = Product(price: 100, discountPercent: 20);
+      expect(p.savings, 20);
+    });
+  });
+}
+```
+
+Each test creates a `Product`, calls one getter, and checks the result with `expect`. Testing the no-discount path (tests 2 and 4) matters as much as the discount path: that is where the `null` check in `hasDiscount`/`finalPrice` is verified.
+
+</details>
+
 ---
 
 ## PART 3: Testing Async Functions
@@ -633,6 +673,65 @@ test('logout clears currentUser', () async {
 5. User is logged in after successful register
 
 Try writing all tests on your own!
+
+<details>
+<summary>✅ Solution</summary>
+
+A small self-contained `AuthService` and its tests. Note the `async`/`await` and `throwsA` for the error cases:
+
+```dart
+import 'package:flutter_test/flutter_test.dart';
+
+class AuthService {
+  final _users = <String>{};
+  bool isLoggedIn = false;
+
+  Future<void> register(String email, String password) async {
+    await Future.delayed(const Duration(milliseconds: 10)); // pretend network
+    if (!email.contains('@')) throw ArgumentError('Invalid email');
+    if (password.length < 8) throw ArgumentError('Password too short');
+    if (_users.contains(email)) throw StateError('User already exists');
+    _users.add(email);
+    isLoggedIn = true;
+  }
+}
+
+void main() {
+  late AuthService auth;
+  setUp(() => auth = AuthService());
+
+  test('registers with valid email and password', () async {
+    await auth.register('a@b.com', 'password123');
+    expect(auth.isLoggedIn, true);
+  });
+
+  test('throws for invalid email', () {
+    expect(() => auth.register('bad-email', 'password123'),
+        throwsA(isA<ArgumentError>()));
+  });
+
+  test('throws for short password', () {
+    expect(() => auth.register('a@b.com', 'short'),
+        throwsA(isA<ArgumentError>()));
+  });
+
+  test('throws for existing user', () async {
+    await auth.register('a@b.com', 'password123');
+    expect(() => auth.register('a@b.com', 'password123'),
+        throwsA(isA<StateError>()));
+  });
+
+  test('user is logged in after successful register', () async {
+    expect(auth.isLoggedIn, false);
+    await auth.register('a@b.com', 'password123');
+    expect(auth.isLoggedIn, true);
+  });
+}
+```
+
+Key async-testing points: make the test function `async` and `await` the call for the happy path, but for the error cases pass the call as a closure to `expect(() => ..., throwsA(...))` so the test framework catches the thrown error.
+
+</details>
 
 ---
 
@@ -893,6 +992,49 @@ class _RatingWidgetState extends State<RatingWidget> {
 4. Calls onRatingChanged callback with correct value
 
 Try writing all tests on your own!
+
+<details>
+<summary>✅ Solution</summary>
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+void main() {
+  testWidgets('displays 5 stars initially', (tester) async {
+    await tester.pumpWidget(const MaterialApp(home: RatingWidget()));
+    expect(find.byType(IconButton), findsNWidgets(5));
+  });
+
+  testWidgets('all stars are empty initially', (tester) async {
+    await tester.pumpWidget(const MaterialApp(home: RatingWidget()));
+    expect(find.byIcon(Icons.star_border), findsNWidgets(5));
+    expect(find.byIcon(Icons.star), findsNothing);
+  });
+
+  testWidgets('tapping star 3 fills stars 1, 2, 3', (tester) async {
+    await tester.pumpWidget(const MaterialApp(home: RatingWidget()));
+    await tester.tap(find.byKey(const Key('star_3')));
+    await tester.pump(); // rebuild after setState
+    expect(find.byIcon(Icons.star), findsNWidgets(3));
+    expect(find.byIcon(Icons.star_border), findsNWidgets(2));
+  });
+
+  testWidgets('calls onRatingChanged with the tapped value', (tester) async {
+    int? reported;
+    await tester.pumpWidget(MaterialApp(
+      home: RatingWidget(onRatingChanged: (v) => reported = v),
+    ));
+    await tester.tap(find.byKey(const Key('star_4')));
+    await tester.pump();
+    expect(reported, 4);
+  });
+}
+```
+
+The widget exposes `Key('star_N')` on each star, which makes it easy to tap an exact star. After a tap you must call `tester.pump()` so the `setState` rebuild happens before you check the icons. The callback test captures the reported value in a local variable.
+
+</details>
 
 ---
 

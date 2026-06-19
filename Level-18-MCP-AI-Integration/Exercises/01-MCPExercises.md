@@ -134,6 +134,32 @@ The AI discovers available tools, decides which to use, and calls them with appr
 - [ ] Claude can create files
 - [ ] Claude can read files
 
+<details>
+<summary>✅ Solution</summary>
+
+A complete, working config (macOS path shown). Use a REAL folder you create first, e.g. `~/Documents/mcp-test`:
+
+```json
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/yourname/Documents/mcp-test"
+      ]
+    }
+  }
+}
+```
+
+After saving and fully restarting Claude Desktop, you should see a tools/plug indicator showing the server connected. Then "Create a file called hello.txt with 'Hello MCP!'" actually writes the file into that folder, and "Read hello.txt" returns its contents.
+
+Common gotchas: the JSON must be valid (no trailing commas), the folder path must already exist, and you must FULLY quit and reopen Claude Desktop (not just close the window) for it to reload the config. The server can only touch the folder you listed, which is the safety boundary.
+
+</details>
+
 ---
 
 ## Exercise 3: Build Your First MCP Server
@@ -446,6 +472,32 @@ echo '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"convert_cu
 - [ ] Claude lists currencies correctly
 - [ ] Claude converts USD to NGN correctly
 - [ ] Claude handles invalid currencies gracefully
+
+<details>
+<summary>✅ Solution</summary>
+
+Use the ABSOLUTE path from `pwd` (relative paths do not work in the config):
+
+```json
+{
+  "mcpServers": {
+    "currency": {
+      "command": "node",
+      "args": ["/Users/yourname/projects/currency-server/index.js"]
+    }
+  }
+}
+```
+
+After restarting Claude Desktop, the prompts should behave like this:
+- "What currencies do you support?" → Claude calls your `list_currencies` tool and reads back the list (USD, NGN, EUR, GBP...).
+- "Convert 100 USD to Naira" → Claude calls `convert` with `{from: 'USD', to: 'NGN', amount: 100}` and reports the result.
+- "Convert 1000 NGN to GBP" → works the same with different args.
+- An unknown currency (e.g. "Convert 5 XYZ to USD") → your tool returns an error message and Claude relays it politely instead of crashing.
+
+If Claude does not see the tool: check the path is absolute and correct, run `node /full/path/index.js` once in a terminal to confirm the server starts without errors, then fully restart Claude Desktop.
+
+</details>
 
 ---
 
@@ -1154,6 +1206,49 @@ Input:
 Returns:
   - List of products with name, price, description, availability
 ```
+
+<details>
+<summary>✅ Example Solution (Study Helper)</summary>
+
+A complete design for scenario C, four tools fully specified:
+
+```
+Tool: create_flashcard
+Description: Save a new flashcard for later study
+Input:
+  - front (string, required): the question or prompt
+  - back (string, required): the answer
+  - topic (string, optional): subject to group it under
+Returns:
+  - The created flashcard's id and a success message
+
+Tool: quiz_on_topic
+Description: Start a quiz from saved flashcards in a topic
+Input:
+  - topic (string, required): which topic to quiz on
+  - count (number, optional): how many cards (default 10)
+Returns:
+  - A list of questions (fronts) to ask, without the answers
+
+Tool: log_study_time
+Description: Record a study session
+Input:
+  - topic (string, required): what was studied
+  - minutes (number, required): how long
+Returns:
+  - Confirmation and the new total minutes for that topic
+
+Tool: get_study_stats
+Description: Get study statistics
+Input:
+  - topic (string, optional): limit to one topic, or all if omitted
+Returns:
+  - Total minutes, number of sessions, and number of flashcards per topic
+```
+
+What makes this a good design: each tool does ONE clear thing, every input has a name + type + whether it is required, and the "Returns" line says exactly what the AI gets back so it can phrase a helpful reply. That is the same shape real MCP tool definitions take.
+
+</details>
 
 ---
 

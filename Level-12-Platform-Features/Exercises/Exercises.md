@@ -371,6 +371,101 @@ class _LocationScreenState extends State<LocationScreen> {
 
 Try building this on your own!
 
+<details>
+<summary>✅ Reference Solution</summary>
+
+```dart
+// Needs: geolocator, sqflite, path in pubspec.yaml
+import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
+
+class CheckInScreen extends StatefulWidget {
+  const CheckInScreen({super.key});
+  @override
+  State<CheckInScreen> createState() => _CheckInScreenState();
+}
+
+class _CheckInScreenState extends State<CheckInScreen> {
+  Database? _db;
+  List<Map<String, dynamic>> _checkIns = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _openDb();
+  }
+
+  Future<void> _openDb() async {
+    _db = await openDatabase(
+      join(await getDatabasesPath(), 'checkins.db'),
+      version: 1,
+      onCreate: (db, v) => db.execute(
+        'CREATE TABLE checkins(id INTEGER PRIMARY KEY, lat REAL, lng REAL, time TEXT)',
+      ),
+    );
+    await _load();
+  }
+
+  Future<void> _load() async {
+    final rows = await _db!.query('checkins', orderBy: 'id DESC');
+    setState(() => _checkIns = rows);
+  }
+
+  Future<void> _checkIn() async {
+    // 1. Permission, handled gracefully
+    var perm = await Geolocator.checkPermission();
+    if (perm == LocationPermission.denied) {
+      perm = await Geolocator.requestPermission();
+    }
+    if (perm == LocationPermission.denied ||
+        perm == LocationPermission.deniedForever) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Location permission denied')),
+        );
+      }
+      return;
+    }
+
+    // 2. Get position and save it with a timestamp
+    final pos = await Geolocator.getCurrentPosition();
+    await _db!.insert('checkins', {
+      'lat': pos.latitude,
+      'lng': pos.longitude,
+      'time': DateTime.now().toIso8601String(),
+    });
+    await _load();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Check-Ins')),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _checkIn,
+        child: const Icon(Icons.add_location),
+      ),
+      body: ListView.builder(
+        itemCount: _checkIns.length,
+        itemBuilder: (_, i) {
+          final c = _checkIns[i];
+          return ListTile(
+            title: Text('${c['lat']}, ${c['lng']}'),
+            subtitle: Text(c['time']),
+          );
+        },
+      ),
+    );
+  }
+}
+```
+
+This combines Level 9 (SQLite) with Level 12 (location + permission). The permission denial is handled before reading the position, so the app never crashes when the user says no.
+
+</details>
+
 ---
 
 ## PART 3: Local Notifications
@@ -499,6 +594,56 @@ Future<void> scheduleNotification(
 
 Try building this on your own!
 
+<details>
+<summary>✅ Reference Solution</summary>
+
+The core is a small service that wraps `flutter_local_notifications`. Each reminder uses a unique integer id so you can cancel it later.
+
+```dart
+// Needs: flutter_local_notifications, timezone
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/timezone.dart' as tz;
+
+class ReminderService {
+  final _plugin = FlutterLocalNotificationsPlugin();
+
+  Future<void> init() async {
+    const android = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const ios = DarwinInitializationSettings();
+    await _plugin.initialize(
+      const InitializationSettings(android: android, iOS: ios),
+    );
+  }
+
+  // 2 + 5: schedule a notification at a specific time
+  Future<void> schedule(int id, String title, DateTime when) async {
+    await _plugin.zonedSchedule(
+      id,
+      title,
+      'Reminder',
+      tz.TZDateTime.from(when, tz.local),
+      const NotificationDetails(
+        android: AndroidNotificationDetails('reminders', 'Reminders'),
+        iOS: DarwinNotificationDetails(),
+      ),
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+    );
+  }
+
+  // 4: cancel when the reminder is deleted
+  Future<void> cancel(int id) => _plugin.cancel(id);
+}
+```
+
+Then the UI keeps a `List<Reminder>` (title + time + id), and:
+- "Add" appends to the list and calls `service.schedule(id, title, time)`.
+- The `ListView` shows each reminder's title and time.
+- "Delete" removes it from the list and calls `service.cancel(id)`.
+
+The trick for requirement 4 is giving every reminder a stable id (e.g. `DateTime.now().millisecondsSinceEpoch.remainder(100000)`) so scheduling and cancelling refer to the same notification.
+
+</details>
+
 ---
 
 ## PART 4: URL Launcher
@@ -587,6 +732,77 @@ Future<void> sendEmail(String email, String subject, String body) async {
 5. Handle errors gracefully
 
 Try building this on your own!
+
+<details>
+<summary>✅ Reference Solution</summary>
+
+```dart
+// Needs: url_launcher
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+class ContactCard extends StatelessWidget {
+  final String name;
+  final String phone;
+  final String email;
+
+  const ContactCard({
+    super.key,
+    required this.name,
+    required this.phone,
+    required this.email,
+  });
+
+  // 5: one helper that handles errors for every action
+  Future<void> _open(BuildContext context, Uri uri) async {
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Could not open ${uri.scheme}')),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            Text(name, style: const TextStyle(fontSize: 22)),
+            Text(phone),
+            Text(email),
+            const SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.call),
+                  onPressed: () => _open(context, Uri.parse('tel:$phone')),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.sms),
+                  onPressed: () => _open(context, Uri.parse('sms:$phone')),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.email),
+                  onPressed: () => _open(context, Uri.parse('mailto:$email')),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
+The three buttons differ only in the URL scheme: `tel:` for the dialer, `sms:` for messages, `mailto:` for email. The shared `_open` helper checks `canLaunchUrl` first so a missing app shows a friendly message instead of throwing.
+
+</details>
 
 ---
 

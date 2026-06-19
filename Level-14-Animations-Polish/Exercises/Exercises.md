@@ -347,6 +347,56 @@ AnimatedSwitcher(
 
 Try building this on your own!
 
+<details>
+<summary>✅ Reference Solution</summary>
+
+`AnimatedSwitcher` animates the swap automatically when the `child`'s `key` changes:
+
+```dart
+class SwitcherDemo extends StatefulWidget {
+  const SwitcherDemo({super.key});
+  @override
+  State<SwitcherDemo> createState() => _SwitcherDemoState();
+}
+
+class _SwitcherDemoState extends State<SwitcherDemo> {
+  bool _ok = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        AnimatedSwitcher(
+          duration: const Duration(milliseconds: 400),
+          transitionBuilder: (child, animation) => SlideTransition(
+            position: Tween(begin: const Offset(0, 0.3), end: Offset.zero)
+                .animate(animation),
+            child: FadeTransition(opacity: animation, child: child),
+          ),
+          child: _ok
+              ? const Text('✓ Success',
+                  key: ValueKey('ok'),
+                  style: TextStyle(color: Colors.green, fontSize: 28))
+              : const Text('X Error',
+                  key: ValueKey('err'),
+                  style: TextStyle(color: Colors.red, fontSize: 28)),
+        ),
+        const SizedBox(height: 24),
+        ElevatedButton(
+          onPressed: () => setState(() => _ok = !_ok),
+          child: const Text('Toggle'),
+        ),
+      ],
+    );
+  }
+}
+```
+
+The two `Text` widgets must have **different keys** (`ValueKey('ok')` vs `ValueKey('err')`), otherwise `AnimatedSwitcher` thinks it is the same widget and skips the animation. The `transitionBuilder` combines a slide and a fade.
+
+</details>
+
 ---
 
 ## PART 3: Hero Animations
@@ -458,6 +508,78 @@ child: Hero(
 5. Tap anywhere to go back
 
 Try building this on your own!
+
+<details>
+<summary>✅ Reference Solution</summary>
+
+The same `Hero` tag on the grid image and the full-screen image makes it fly between screens:
+
+```dart
+class GalleryScreen extends StatelessWidget {
+  const GalleryScreen({super.key});
+  final List<String> titles = const ['One','Two','Three','Four','Five','Six'];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Gallery')),
+      body: GridView.count(
+        crossAxisCount: 3,                         // 3 columns -> 3x2 for 6 items
+        children: List.generate(6, (i) {
+          return GestureDetector(
+            onTap: () => Navigator.push(context, MaterialPageRoute(
+              builder: (_) => FullScreen(index: i, title: titles[i]),
+            )),
+            child: Hero(
+              tag: 'photo_$i',                      // unique tag per item
+              child: Container(
+                margin: const EdgeInsets.all(4),
+                color: Colors.primaries[i % Colors.primaries.length],
+                child: Center(child: Text(titles[i])),
+              ),
+            ),
+          );
+        }),
+      ),
+    );
+  }
+}
+
+class FullScreen extends StatelessWidget {
+  final int index;
+  final String title;
+  const FullScreen({super.key, required this.index, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: GestureDetector(
+        onTap: () => Navigator.pop(context),        // tap anywhere to go back
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Hero(
+                tag: 'photo_$index',                // SAME tag = animates
+                child: Container(
+                  width: 250, height: 250,
+                  color: Colors.primaries[index % Colors.primaries.length],
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(title, style: const TextStyle(fontSize: 24)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+I used colored containers in place of real images so it runs without assets; swap in `Image.asset(...)` inside each `Hero`. The critical part is the matching `tag: 'photo_$i'` on both screens.
+
+</details>
 
 ---
 
@@ -658,6 +780,69 @@ void initState() {
 5. Use AnimatedContainer for width/borderRadius
 
 Try building this on your own!
+
+<details>
+<summary>✅ Reference Solution</summary>
+
+```dart
+enum BtnState { normal, loading, success }
+
+class LoadingButton extends StatefulWidget {
+  const LoadingButton({super.key});
+  @override
+  State<LoadingButton> createState() => _LoadingButtonState();
+}
+
+class _LoadingButtonState extends State<LoadingButton> {
+  BtnState _state = BtnState.normal;
+
+  Future<void> _submit() async {
+    setState(() => _state = BtnState.loading);
+    await Future.delayed(const Duration(seconds: 2)); // pretend work
+    setState(() => _state = BtnState.success);
+    await Future.delayed(const Duration(seconds: 1)); // show check
+    if (mounted) setState(() => _state = BtnState.normal); // reset
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isNormal = _state == BtnState.normal;
+    return Center(
+      child: GestureDetector(
+        onTap: isNormal ? _submit : null,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 400),
+          width: isNormal ? 300 : 60,                 // full width -> circle
+          height: 60,
+          decoration: BoxDecoration(
+            color: _state == BtnState.success ? Colors.green : Colors.blue,
+            borderRadius: BorderRadius.circular(isNormal ? 8 : 30),
+          ),
+          child: Center(child: _child()),
+        ),
+      ),
+    );
+  }
+
+  Widget _child() {
+    switch (_state) {
+      case BtnState.normal:
+        return const Text('Submit', style: TextStyle(color: Colors.white));
+      case BtnState.loading:
+        return const SizedBox(
+          width: 24, height: 24,
+          child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+        );
+      case BtnState.success:
+        return const Icon(Icons.check, color: Colors.white);
+    }
+  }
+}
+```
+
+`AnimatedContainer` smoothly animates the `width` (300 to 60) and `borderRadius` (8 to 30) whenever `setState` changes the state, turning the bar into a circle. An `enum` tracks the three states cleanly.
+
+</details>
 
 ---
 
