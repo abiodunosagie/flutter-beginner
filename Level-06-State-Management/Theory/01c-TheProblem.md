@@ -1,6 +1,10 @@
-# Part 3: The Problem with setState
+# The Problem with setState
 
-You know how to use `setState` for local state. But what happens when you try to share state between MANY widgets using `setState`? Let's find out!
+## The Big Idea In One Sentence
+
+> When many widgets need the same data, `setState` forces you to **pass it down through every widget in between**, which gets messy fast. This problem is what state management solves.
+
+You know `setState` for local state. Now see why it is not enough for app state.
 
 ---
 
@@ -327,7 +331,78 @@ What if widgets could:
 
 ---
 
-**Next:** Learn how state management solves all these problems!
+## One-Minute Recap
+
+- Sharing state with `setState` means passing it down through widgets that do not use it. This is called **prop drilling**.
+- It makes code messy (every widget needs extra parameters), causes too many rebuilds, and is hard to test and share.
+- State management tools let widgets reach shared data directly, without all the passing.
+
+---
+
+## Quick Quiz
+
+**Q1.** What is "prop drilling"?
+
+<details>
+<summary>Answer</summary>
+Passing data down through widgets that do not use it themselves, just so a deep widget can reach it.
+</details>
+
+**Q2.** Why is passing state from the top with `setState` slow?
+
+<details>
+<summary>Answer</summary>
+Changing the state at the top rebuilds the whole tree, including widgets that do not even show that data.
+</details>
+
+**Q3.** What do state management tools let widgets do instead?
+
+<details>
+<summary>Answer</summary>
+Reach the shared data directly, without passing it through every widget in between.
+</details>
+
+---
+
+## Assignment
+
+These are about understanding the problem, no coding needed.
+
+### Problem 1: Name the problem
+
+A counter lives at the top of the app. To reach a button five widgets deep, the value is passed through all five, even though only the button uses it. What is this problem called?
+
+### Problem 2: List the pains
+
+List three reasons prop drilling is bad.
+
+### Problem 3: Spot it
+
+In your own words, why is it hard to share a shopping cart between a "Cart" screen and a "Checkout" screen using only `setState`?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Name the problem
+
+It is called **prop drilling** (or "passing props down"): the value is drilled down through widgets that do not need it, just to reach the one that does.
+
+### Problem 2: List the pains
+
+Any three of:
+- Every widget in the chain needs extra parameters (messy code).
+- Changing the value rebuilds the whole tree, including widgets that do not use it (wasteful).
+- It is hard to test, because you must build the whole tree to test one deep widget.
+- It is hard to share data between distant widgets or separate screens.
+
+### Problem 3: Spot it
+
+With only `setState`, the cart data would have to live in a widget that is a parent of **both** screens, probably near the very top of the app. Then you would pass the cart down to the Cart screen and the Checkout screen, and pass callbacks back up to change it. That is a lot of passing through unrelated widgets, and it gets tangled quickly. A state management tool lets both screens reach the same cart directly, which is far cleaner.
+
+---
+
+**Next:** `01d-TheSolution.md`, which shows how state management fixes all of this.
 
 ---
 
