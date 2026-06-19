@@ -1,6 +1,12 @@
 # AsyncValue: Handling Loading, Error, and Data
 
-When you order pizza, three things can happen: you wait (loading), something goes wrong (error), or you get your pizza (data). AsyncValue helps you handle all three situations easily!
+## The Big Idea In One Sentence
+
+> Data that takes time to arrive (like from the internet) has three possible states, **loading**, **error**, and **data**, and `AsyncValue` lets you handle all three with one neat `.when(...)`.
+
+When you order pizza, three things can happen: you wait (loading), something goes wrong (error), or you get your pizza (data). AsyncValue handles all three.
+
+> **A quick heads-up about "async".** This lesson uses `Future` and `async` (data that arrives later, like from a server). You learn those properly in Level 8. For now, all you need: a **Future** is a value that is not ready yet but will arrive after a wait, and a **FutureProvider** is a Riverpod provider that holds such a value. Do not worry about the details of `async`/`await` yet; focus on the three states (loading, error, data).
 
 ---
 
@@ -460,6 +466,90 @@ AsyncValue is like a package delivery system:
 - **Data**: Package delivered (show the contents)
 
 Use `.when()` to handle all three states cleanly, and your users will always know what's happening with their data!
+
+---
+
+## Quick Quiz
+
+**Q1.** What are the three states an `AsyncValue` can be in?
+
+<details>
+<summary>Answer</summary>
+Loading (waiting), error (it failed), and data (it arrived).
+</details>
+
+**Q2.** What does `.when(...)` do?
+
+<details>
+<summary>Answer</summary>
+It lets you give one widget for each state: `loading:`, `error:`, and `data:`. Riverpod shows the right one.
+</details>
+
+**Q3.** What kind of provider gives you an `AsyncValue`?
+
+<details>
+<summary>Answer</summary>
+A `FutureProvider` (one-time async data) or a `StreamProvider` (continuous async data).
+</details>
+
+---
+
+## Assignment
+
+Use [dartpad.dev](https://dartpad.dev) with `flutter_riverpod` and a `ProviderScope`.
+
+### Problem 1: Name the states
+
+A widget shows data loaded from the internet. List the three things it might need to show, and what you would display for each.
+
+### Problem 2: Handle all three with .when
+
+Given `final greetingProvider = FutureProvider<String>((ref) async => 'Hello');`, write a `ConsumerWidget` that watches it and uses `.when` to show a spinner while loading, the text when it arrives, and an error message if it fails.
+
+### Problem 3: Spot the bug
+
+Why might this crash, and how does `.when` avoid the problem?
+
+```dart
+final userAsync = ref.watch(userProvider);
+return Text(userAsync.value!.name);   // assuming the data is ready
+```
+
+---
+
+## Assignment Answers
+
+### Problem 1: Name the states
+
+- **Loading**: show a spinner (`CircularProgressIndicator`).
+- **Error**: show an error message (and maybe a retry button).
+- **Data**: show the actual content.
+
+Handling all three means the user always sees something sensible.
+
+### Problem 2: Handle all three with .when
+
+```dart
+class Greeting extends ConsumerWidget {
+  const Greeting({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final greetingAsync = ref.watch(greetingProvider);
+    return greetingAsync.when(
+      loading: () => const CircularProgressIndicator(),
+      error: (error, stack) => Text('Error: $error'),
+      data: (greeting) => Text(greeting),
+    );
+  }
+}
+```
+
+`.when` picks the right widget for whichever state the provider is in.
+
+### Problem 3: Spot the bug
+
+`userAsync.value` is null while loading or on error, so `userAsync.value!.name` would crash with a null error before the data arrives. `.when` avoids this: the `data:` branch only runs when the data actually exists, so you never touch a null value. Always prefer `.when` over forcing `.value!`.
 
 ---
 
