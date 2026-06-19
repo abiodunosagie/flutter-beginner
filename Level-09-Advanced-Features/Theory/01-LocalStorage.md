@@ -1,5 +1,9 @@
 # Local Storage: Saving Data That Lasts
 
+## The Big Idea In One Sentence
+
+> Local storage is your app's notebook on the phone: it keeps data safe even after the app closes, and you pick the right "box" (SharedPreferences, SQLite, or Hive) for what you are saving.
+
 ## The Simple Explanation
 
 Imagine you have a magic notebook. When you write something in it and close it, the words **disappear**. That's frustrating, right?
@@ -375,6 +379,46 @@ The data **disappears**! It's gone forever because it was only stored in memory 
 "Persist" means the data **stays around** or **survives**. When data persists, it's still there even after the app closes and reopens.
 
 </details>
+
+---
+
+## Assignment
+
+### Problem 1: Pick the box
+
+Choose SharedPreferences, SQLite, or Hive for each:
+1. Whether the user finished the tutorial (true/false).
+2. A list of 1000 chat messages you need to search by date.
+3. The user's chosen theme color.
+
+### Problem 2: Save and load
+
+Using the simple `storage.save(key, value)` / `storage.load(key)` idea, write the two lines to save a high score of 42 under the key `"highScore"`, then load it back.
+
+### Problem 3: Explain it
+
+A friend says "Why not just keep the todo list in a normal variable?" In one or two sentences, explain why that loses the data.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Pick the box
+
+1. **SharedPreferences** (one simple true/false).
+2. **SQLite** (many items, needs searching by date).
+3. **SharedPreferences** (one small setting).
+
+### Problem 2: Save and load
+
+```dart
+await storage.save('highScore', 42);
+final score = await storage.load('highScore'); // 42
+```
+
+### Problem 3: Explain it
+
+A normal variable lives in memory (RAM), which is wiped when the app closes. The data is not written to the phone, so it disappears. Local storage writes it to the device so it survives restarts.
 
 ---
 
