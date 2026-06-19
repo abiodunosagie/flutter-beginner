@@ -1,5 +1,9 @@
 # Accessibility Testing: Making Sure It Actually Works
 
+## The Big Idea In One Sentence
+
+> The only way to know your app is accessible is to test it the way real users do: turn on the screen reader (TalkBack on Android, VoiceOver on iOS) and check it against the WCAG guidelines.
+
 ## The Simple Explanation
 
 Imagine you made a toy for your friend, but you never tried it to see if it works:
@@ -884,6 +888,63 @@ void main() {
 │                                                          │
 └─────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** What is the screen reader called on Android, and on iOS?
+
+<details>
+<summary>Answer</summary>
+TalkBack on Android, VoiceOver on iOS.
+</details>
+
+**Q2.** What does WCAG stand for, roughly, and what is it?
+
+<details>
+<summary>Answer</summary>
+Web Content Accessibility Guidelines: the official checklist for making content usable by everyone (perceivable, operable, understandable, robust).
+</details>
+
+**Q3.** Why test with a real screen reader instead of just reading your code?
+
+<details>
+<summary>Answer</summary>
+Because you experience what a blind user experiences: you hear whether labels make sense, whether the order is logical, and whether anything is unreachable.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Pick the tool
+
+You only have an iPhone to test on. Which screen reader do you turn on?
+
+### Problem 2: First check
+
+Name one thing you would listen for while swiping through your login screen with a screen reader on.
+
+### Problem 3: What is WCAG for?
+
+In one sentence, what is the point of the WCAG guidelines?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Pick the tool
+
+VoiceOver (the iOS screen reader).
+
+### Problem 2: First check
+
+Any of: does each field announce a clear label, does the button say what it does, is the reading order logical, are images described, is anything skipped or unreachable.
+
+### Problem 3: What is WCAG for?
+
+To give a shared, checkable standard for making apps and content usable by people of all abilities.
 
 ---
 
