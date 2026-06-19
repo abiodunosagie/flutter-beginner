@@ -1,6 +1,10 @@
 # Creating a BLoC: Building Your Kitchen
 
-Now let's learn how to actually build a BLoC! We'll create the "kitchen" that processes events and produces states.
+## The Big Idea In One Sentence
+
+> To build a bloc you define the **states** (what to show), the **events** (what can happen), then a `Bloc` class that uses `on<Event>((event, emit) => emit(newState))` to turn events into states.
+
+Now you build the "kitchen" that processes events and produces states.
 
 ---
 
@@ -583,6 +587,101 @@ To create a BLoC:
    - Use `emit()` to send new states
 
 Next, we'll learn how to use the BLoC in our widgets!
+
+---
+
+## Quick Quiz
+
+**Q1.** What three things do you define to create a bloc?
+
+<details>
+<summary>Answer</summary>
+The states (what to show), the events (what can happen), and the `Bloc` class that handles events.
+</details>
+
+**Q2.** What does `emit` do?
+
+<details>
+<summary>Answer</summary>
+It sends out a new state. The UI then rebuilds to show it. You call `emit(newState)` inside an event handler.
+</details>
+
+**Q3.** How do you register a handler for an event?
+
+<details>
+<summary>Answer</summary>
+With `on<EventType>((event, emit) { ... })` inside the bloc's constructor.
+</details>
+
+---
+
+## Assignment
+
+Use [dartpad.dev](https://dartpad.dev) with `flutter_bloc`.
+
+### Problem 1: A counter bloc
+
+Write a `CounterBloc extends Bloc<CounterEvent, int>` starting at 0, with events `Increment` and `Decrement`, each handled with `on<...>` and `emit`.
+
+### Problem 2: Add a reset
+
+Add a `Reset` event to your counter bloc that emits 0.
+
+### Problem 3: Spot the bug
+
+Why does the count never change?
+
+```dart
+class CounterBloc extends Bloc<CounterEvent, int> {
+  CounterBloc() : super(0) {
+    on<Increment>((event, emit) {
+      state + 1;   // ???
+    });
+  }
+}
+```
+
+---
+
+## Assignment Answers
+
+### Problem 1: A counter bloc
+
+```dart
+abstract class CounterEvent {}
+class Increment extends CounterEvent {}
+class Decrement extends CounterEvent {}
+
+class CounterBloc extends Bloc<CounterEvent, int> {
+  CounterBloc() : super(0) {
+    on<Increment>((event, emit) => emit(state + 1));
+    on<Decrement>((event, emit) => emit(state - 1));
+  }
+}
+```
+
+The initial state is `0` (passed to `super`). Each handler emits a new state based on the current `state`.
+
+### Problem 2: Add a reset
+
+```dart
+class Reset extends CounterEvent {}
+
+// inside the bloc constructor:
+on<Reset>((event, emit) => emit(0));
+```
+
+The `Reset` handler simply emits `0`.
+
+### Problem 3: Spot the bug
+
+`state + 1` calculates a new value but never emits it, so no new state is sent and the UI never updates. You must `emit` the result:
+
+```dart
+on<Increment>((event, emit) => emit(state + 1));
+```
+
+Computing a value is not enough; `emit` is what actually sends the new state out.
 
 ---
 
