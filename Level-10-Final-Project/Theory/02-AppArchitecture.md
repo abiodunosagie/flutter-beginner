@@ -1,5 +1,9 @@
 # App Architecture: Organizing Your Code
 
+## The Big Idea In One Sentence
+
+> Architecture is how you split your code into clear layers and folders (data, logic, UI), so a big app stays easy to navigate and change.
+
 ## The Simple Explanation
 
 Imagine your bedroom:
@@ -578,6 +582,65 @@ void load_tasks() { }        ❌
 │                                                          │
 └─────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** Why split a big app into layers and folders instead of one giant file?
+
+<details>
+<summary>Answer</summary>
+So you can find and change things easily, reuse code, and avoid one file becoming an unmanageable mess.
+</details>
+
+**Q2.** Which layer talks to the network/database, and which builds the UI?
+
+<details>
+<summary>Answer</summary>
+The data layer (services/repositories) talks to the network/database; the UI layer (screens/widgets) builds what the user sees. Logic/state sits in between.
+</details>
+
+**Q3.** Where would a `Product` model class live?
+
+<details>
+<summary>Answer</summary>
+In a `models/` folder (the data layer), since it just describes data.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Place the files
+
+Which folder for each? `product_card.dart`, `product.dart`, `product_repository.dart`.
+
+### Problem 2: Why layers help
+
+In one sentence, how does layering make a bug easier to fix?
+
+### Problem 3: Group by feature
+
+Name one benefit of grouping code by feature (e.g. `features/cart/`) in a large app.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Place the files
+
+- `product_card.dart` → `widgets/` (UI)
+- `product.dart` → `models/` (data)
+- `product_repository.dart` → `repositories/` (data access)
+
+### Problem 2: Why layers help
+
+A bug usually lives in one layer (UI, logic, or data), so you know where to look instead of searching the whole app.
+
+### Problem 3: Group by feature
+
+Everything for one feature lives together, so you can build, change, or remove that feature without hunting across many shared folders.
 
 ---
 
