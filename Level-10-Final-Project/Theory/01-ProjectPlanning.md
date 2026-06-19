@@ -1,5 +1,9 @@
 # Project Planning: Before You Write Code
 
+## The Big Idea In One Sentence
+
+> Plan before you code: decide what the app does, list its features, sketch the screens, and plan the data, so building becomes following a recipe instead of guessing.
+
 ## The Simple Explanation
 
 Imagine you want to bake a cake. Would you just throw random ingredients together and hope for the best?
@@ -457,6 +461,71 @@ Copy this template for your project:
 │                                                          │
 └─────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** Why plan before writing code?
+
+<details>
+<summary>Answer</summary>
+So you build the right thing in the right order, instead of guessing, rewriting, and getting stuck. Planning saves time later.
+</details>
+
+**Q2.** What does "MVP" (must-have features) help you avoid?
+
+<details>
+<summary>Answer</summary>
+Doing too much at once. You build the core that makes the app useful first, and add nice-to-haves later.
+</details>
+
+**Q3.** Why sketch screens and plan data models before coding?
+
+<details>
+<summary>Answer</summary>
+So you know what screens you need and what each one shows/stores, which makes the code structure obvious.
+</details>
+
+---
+
+## Assignment
+
+Plan a simple "Habit Tracker" app.
+
+### Problem 1: Must-have features
+
+List 3 must-have features for a basic habit tracker.
+
+### Problem 2: A data model
+
+Sketch a `Habit` model: list 3 fields it should have.
+
+### Problem 3: Screens
+
+Name 2 screens this app needs.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Must-have features
+
+Examples: add a habit, mark a habit done for today, see your list of habits (and maybe a streak count).
+
+### Problem 2: A data model
+
+```dart
+class Habit {
+  final String id;
+  final String name;
+  final bool doneToday; // (or a list of completed dates)
+}
+```
+
+### Problem 3: Screens
+
+Examples: a Home/list screen showing all habits, and an Add Habit screen. (A details/stats screen would be a nice-to-have.)
 
 ---
 
