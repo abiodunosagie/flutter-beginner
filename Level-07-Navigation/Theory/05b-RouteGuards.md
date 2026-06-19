@@ -1,5 +1,9 @@
 # Route Guards and Authentication
 
+## The Big Idea In One Sentence
+
+> A `redirect` is a bouncer: before any screen opens, it checks a rule (like "are you logged in?") and either sends you somewhere else (return a path) or lets you through (return `null`).
+
 Learn how to protect routes and handle authentication with redirects!
 
 ---
@@ -442,11 +446,66 @@ final router = GoRouter(
 
 ---
 
-## Continue Learning
+## Quick Quiz
 
-Excellent! Now you know how to protect routes. Next, let's learn about query parameters and transitions!
+**Q1.** In a `redirect`, what does returning `null` mean?
 
-**Continue to:** [Query Parameters →](05c-QueryParams.md)
+<details>
+<summary>Answer</summary>
+"No redirect, let the user through to the screen they asked for."
+</details>
+
+**Q2.** What does returning a path string (like `'/login'`) do?
+
+<details>
+<summary>Answer</summary>
+It sends the user to that path instead of the one they asked for.
+</details>
+
+**Q3.** Why set `refreshListenable: authState`?
+
+<details>
+<summary>Answer</summary>
+So the router re-runs its redirect when the auth state changes (login/logout), instantly sending the user to the right screen.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Write the rule
+
+Write a global `redirect` that sends a user to `/login` when they are not logged in (use a `bool isLoggedIn`), and lets them through otherwise. Allow the `/login` page itself.
+
+### Problem 2: Let them through
+
+In a redirect, what exactly do you return when the user is allowed to stay?
+
+### Problem 3: Find the trap
+
+A student writes a redirect that always returns `/login`. What goes wrong, even for the login page?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Write the rule
+
+```dart
+redirect: (context, state) {
+  final loggingIn = state.uri.path == '/login';
+  if (!isLoggedIn && !loggingIn) return '/login';
+  return null;
+},
+```
+
+### Problem 2: Let them through
+
+Return `null`. That tells GoRouter not to redirect.
+
+### Problem 3: Find the trap
+
+Always returning `/login` causes an infinite redirect loop: the login page itself gets redirected to the login page, again and again. You must allow the login path through (return `null` when already on `/login`).
 
 ---
 
