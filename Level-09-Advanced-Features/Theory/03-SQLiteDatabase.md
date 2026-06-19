@@ -1,5 +1,9 @@
 # SQLite Database: Your App's Filing Cabinet
 
+## The Big Idea In One Sentence
+
+> SQLite is a real database living on the phone: data sits in tables (rows and columns), and you do four things to it, Create, Read, Update, Delete (CRUD).
+
 ## The Simple Explanation
 
 Remember SharedPreferences is like a sticky note? Well, SQLite is like a **filing cabinet**!
@@ -737,6 +741,47 @@ Use SQLite when you have:
 Use SharedPreferences for simple things like settings (dark mode: true/false).
 
 </details>
+
+---
+
+## Assignment
+
+### Problem 1: Name the CRUD
+
+For each action on a todo table, name the CRUD operation:
+1. Save a brand new todo.
+2. Mark a todo as done.
+3. Remove a todo.
+4. Show all todos.
+
+### Problem 2: Table or sticky note?
+
+You need to store 300 contacts and search them by name. SQLite or SharedPreferences? Why?
+
+### Problem 3: Vocabulary
+
+Match the database word to the everyday word: table, row, column.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Name the CRUD
+
+1. **Create** (insert).
+2. **Update**.
+3. **Delete**.
+4. **Read** (query).
+
+### Problem 2: Table or sticky note?
+
+**SQLite.** It is built for many records and lets you search/filter (e.g. by name). SharedPreferences is only for a few simple values.
+
+### Problem 3: Vocabulary
+
+- table = a sheet/spreadsheet (one kind of thing, like "todos")
+- row = one record (one todo)
+- column = one field (like "title" or "isDone")
 
 ---
 
