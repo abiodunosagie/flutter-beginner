@@ -1,5 +1,9 @@
 # Theming and Styling: Making Your App Beautiful
 
+## The Big Idea In One Sentence
+
+> Set your colors and fonts once in `MaterialApp`'s `theme`, and every widget uses them automatically, so you change the whole app's look in one place (and add a dark theme too).
+
 ## The Simple Explanation
 
 Imagine you're decorating your room. You could:
@@ -771,6 +775,42 @@ It takes ONE color (the seed color) and automatically generates a complete color
 So you only pick one color, and Flutter creates all the matching colors!
 
 </details>
+
+---
+
+## Assignment
+
+### Problem 1: Where does the theme go?
+
+Which `MaterialApp` property holds your app's colors and fonts?
+
+### Problem 2: Read the theme
+
+Inside a widget, how do you read the current theme's primary color? (Write the expression.)
+
+### Problem 3: Light and dark
+
+Name the two `MaterialApp` properties that let you provide a light theme and a dark theme, plus the one that chooses between them.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Where does the theme go?
+
+The `theme:` property: `MaterialApp(theme: ThemeData(...))`.
+
+### Problem 2: Read the theme
+
+```dart
+Theme.of(context).colorScheme.primary
+```
+
+(Older code uses `Theme.of(context).primaryColor`.)
+
+### Problem 3: Light and dark
+
+`theme:` (light), `darkTheme:` (dark), and `themeMode:` (chooses light, dark, or system).
 
 ---
 
