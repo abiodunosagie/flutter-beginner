@@ -1,6 +1,12 @@
 # Provider Modifiers: .family and .autoDispose
 
-Imagine you have a toy library. Sometimes you need different versions of the same toy (like toy cars in different colors). Sometimes you want to return toys when you're done so they don't clutter your room. That's what .family and .autoDispose do for providers!
+## The Big Idea In One Sentence
+
+> Two add-ons make providers more flexible: `.family` lets a provider take a **parameter** (a different value for each input), and `.autoDispose` **cleans up** a provider when nothing is using it.
+
+Imagine a toy library: sometimes you need the same toy in different colours (`.family`), and sometimes you want toys to put themselves away when you are done (`.autoDispose`).
+
+> Some examples here use `Future`/`async` (data that arrives later). As in the last lesson, you learn async fully in Level 8. Focus on what `.family` and `.autoDispose` do; the async parts work the same way once you know Futures.
 
 ---
 
@@ -486,10 +492,94 @@ final counterProvider = NotifierProvider<Counter, int>(Counter.new);
 class UserData extends AsyncNotifier<User> {
   @override
   Future<User> build() async => fetchUser();
-  Future<void> refresh() async => state = AsyncValue.guard(fetchUser);
+  Future<void> refresh() async {
+    state = await AsyncValue.guard(() => fetchUser());
+  }
 }
 final userProvider = AsyncNotifierProvider<UserData, User>(UserData.new);
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** What does `.family` add to a provider?
+
+<details>
+<summary>Answer</summary>
+A parameter, so the same provider can give a different value for each input, like `productProvider(id)`.
+</details>
+
+**Q2.** What does `.autoDispose` do?
+
+<details>
+<summary>Answer</summary>
+It cleans up the provider's state automatically when no widget is using it anymore, so it does not waste memory.
+</details>
+
+**Q3.** When is `.autoDispose` especially useful?
+
+<details>
+<summary>Answer</summary>
+For data tied to one screen (search results, a details page), so it is thrown away when you leave the screen instead of lingering.
+</details>
+
+---
+
+## Assignment
+
+Use [dartpad.dev](https://dartpad.dev) with `flutter_riverpod`. These focus on the non-async forms.
+
+### Problem 1: A family provider
+
+Write a `Provider.family<String, String>` called `greetingProvider` that takes a name and returns `'Hello, <name>'`. Show how you would watch it for the name `'Ada'`.
+
+### Problem 2: autoDispose
+
+Take this provider and make it auto-dispose:
+
+```dart
+final searchProvider = StateProvider<String>((ref) => '');
+```
+
+### Problem 3: When to use each
+
+For each, say whether you would reach for `.family`, `.autoDispose`, or both:
+
+1. A product details provider that needs a product id.
+2. Temporary search results that should be cleared when you leave the search screen.
+3. A details provider that needs an id AND should be cleared when the details screen closes.
+
+---
+
+## Assignment Answers
+
+### Problem 1: A family provider
+
+```dart
+final greetingProvider = Provider.family<String, String>((ref, name) {
+  return 'Hello, $name';
+});
+
+// Watch it for a specific name:
+final greeting = ref.watch(greetingProvider('Ada'));   // 'Hello, Ada'
+```
+
+`.family` lets you pass the name in. Each name gets its own value.
+
+### Problem 2: autoDispose
+
+```dart
+final searchProvider = StateProvider.autoDispose<String>((ref) => '');
+```
+
+Adding `.autoDispose` means the search text is thrown away when nothing is watching it anymore.
+
+### Problem 3: When to use each
+
+1. Product details needing an id -> `.family` (it needs a parameter).
+2. Temporary search results cleared on leaving -> `.autoDispose` (clean up when unused).
+3. Details needing an id AND cleared on close -> **both**: `.autoDispose.family`.
 
 ---
 
