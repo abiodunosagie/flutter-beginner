@@ -1,5 +1,9 @@
 # The http Package - Part 2: POST, PUT, DELETE
 
+## The Big Idea In One Sentence
+
+> To send data you `json.encode` your Map into the `body`, add a `Content-Type: application/json` header, and call `http.post`/`put`/`patch`/`delete`.
+
 Learn how to create, update, and delete data using HTTP methods!
 
 ---
@@ -271,6 +275,69 @@ void main() async {
 ```
 
 Perfect! Now you can perform all CRUD operations. Next, learn about headers and authentication!
+
+---
+
+## Quick Quiz
+
+**Q1.** When sending data with POST, what two things do you add besides the URL?
+
+<details>
+<summary>Answer</summary>
+A `headers` map with `'Content-Type': 'application/json'`, and a `body` set to `json.encode(yourData)`.
+</details>
+
+**Q2.** What status code says a POST successfully created something?
+
+<details>
+<summary>Answer</summary>
+`201` (Created).
+</details>
+
+**Q3.** Which method removes a resource and usually needs no body?
+
+<details>
+<summary>Answer</summary>
+`http.delete`.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Send a POST
+
+Write an `http.post` to `url` that sends `{'name': 'Sam'}` as JSON with the right header.
+
+### Problem 2: Pick the check
+
+After a POST to create a user, which status code do you check for success?
+
+### Problem 3: Encode vs decode
+
+In a POST, do you `json.encode` or `json.decode` the data you put in the `body`? Why?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Send a POST
+
+```dart
+final response = await http.post(
+  url,
+  headers: {'Content-Type': 'application/json'},
+  body: json.encode({'name': 'Sam'}),
+);
+```
+
+### Problem 2: Pick the check
+
+`201` (Created). (A successful GET/PUT/PATCH is usually `200`; a created resource is `201`.)
+
+### Problem 3: Encode vs decode
+
+You `json.encode` it. The body must be a JSON string going out to the server, so you encode your Dart Map into JSON. (You `json.decode` the response coming back.)
 
 ---
 
