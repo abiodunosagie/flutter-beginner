@@ -1,5 +1,9 @@
 # Dio Package Introduction
 
+## The Big Idea In One Sentence
+
+> Dio is a fancier `http`: it auto-decodes JSON (`response.data` is already a Map), remembers your base URL, and adds pro features, so each call is shorter.
+
 Learn about Dio - the powerful HTTP client for advanced API needs!
 
 ---
@@ -344,6 +348,70 @@ Future<void> deleteUser(int id) async {
 6. **DioException**: Better error handling than http
 
 ### Continue Learning
+
+---
+
+## Quick Quiz
+
+**Q1.** With Dio, what is `response.data` already (compared to http's `response.body`)?
+
+<details>
+<summary>Answer</summary>
+Already parsed (a Map or List). With http, `response.body` is a String you must `json.decode` yourself.
+</details>
+
+**Q2.** What does setting `baseUrl` save you from repeating?
+
+<details>
+<summary>Answer</summary>
+The start of every URL. You then call `dio.get('/users')` and Dio prepends the base URL.
+</details>
+
+**Q3.** What error type does Dio throw that you catch?
+
+<details>
+<summary>Answer</summary>
+`DioException`.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Make an instance
+
+Create a Dio instance with `baseUrl` set to `https://api.example.com`.
+
+### Problem 2: GET and read
+
+Using that `dio`, write a GET to `/users` and read the parsed list (no `json.decode`).
+
+### Problem 3: http or Dio?
+
+For a tiny learning app with one GET request, which would you pick and why?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Make an instance
+
+```dart
+final dio = Dio(BaseOptions(baseUrl: 'https://api.example.com'));
+```
+
+### Problem 2: GET and read
+
+```dart
+final response = await dio.get('/users');
+List<dynamic> users = response.data; // already parsed
+```
+
+### Problem 3: http or Dio?
+
+**http** is fine: one simple request, fewer dependencies, less to learn. Reach for Dio when the app grows and you need interceptors, auth tokens everywhere, retries, or progress.
+
+---
 
 Continue to: [05b-DioFeatures.md](./05b-DioFeatures.md) - Learn about Interceptors and advanced Dio features!
 
