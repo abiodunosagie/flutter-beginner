@@ -326,91 +326,55 @@ class Child extends Parent {
 
 ---
 
-## Practical Example: UI Components
+## Practical Example: Account Types
+
+A general `Account`, with a `SavingsAccount` that builds on it and adds its own behaviour.
 
 ```dart
-class Widget {
-  double width;
-  double height;
-  String backgroundColor;
+class Account {
+  String owner;
+  double balance;
 
-  Widget({
-    this.width = 100,
-    this.height = 100,
-    this.backgroundColor = 'white',
-  });
+  Account(this.owner, this.balance);
 
-  void render() {
-    print('Rendering ${width}x$height widget');
+  void describe() {
+    print('$owner has $balance');
   }
 }
 
-class Button extends Widget {
-  String text;
-  String textColor;
-  void Function()? onPressed;
+class SavingsAccount extends Account {
+  double interestRate;
 
-  Button({
-    required this.text,
-    this.textColor = 'black',
-    this.onPressed,
-    super.width,
-    super.height,
-    super.backgroundColor,
-  });
+  // Call the parent constructor with super, then set our own field
+  SavingsAccount(String owner, double balance, this.interestRate)
+      : super(owner, balance);
 
-  @override
-  void render() {
-    super.render();
-    print('  Button: "$text"');
+  void addInterest() {
+    balance = balance + balance * interestRate;
   }
 
-  void click() {
-    print('Button clicked!');
-    onPressed?.call();
-  }
-}
-
-class TextField extends Widget {
-  String placeholder;
-  String value;
-  bool isPassword;
-
-  TextField({
-    this.placeholder = '',
-    this.value = '',
-    this.isPassword = false,
-    super.width = 200,
-    super.height = 40,
-  });
-
   @override
-  void render() {
-    super.render();
-    var displayValue = isPassword ? '*' * value.length : value;
-    print('  TextField: "$displayValue"');
+  void describe() {
+    super.describe();                       // reuse the parent's line
+    print('  (savings, rate $interestRate)');
   }
 }
 
 void main() {
-  var loginButton = Button(
-    text: 'Login',
-    backgroundColor: 'blue',
-    onPressed: () => print('Logging in...'),
-  );
+  var savings = SavingsAccount('Ada', 1000, 0.1);
 
-  var passwordField = TextField(
-    placeholder: 'Enter password',
-    value: 'secret',
-    isPassword: true,
-  );
+  savings.describe();
+  // Ada has 1000.0
+  //   (savings, rate 0.1)
 
-  loginButton.render();
-  passwordField.render();
-
-  loginButton.click();
+  savings.addInterest();
+  savings.describe();
+  // Ada has 1100.0
+  //   (savings, rate 0.1)
 }
 ```
+
+`SavingsAccount` inherits `owner`, `balance`, and `describe` from `Account`. It adds `interestRate` and `addInterest`, and overrides `describe` to add an extra line while still calling the parent's version with `super.describe()`.
 
 ---
 
@@ -551,8 +515,201 @@ Also when you need multiple behaviors that can't be combined via single inherita
 
 ---
 
-**Next:** Learn about polymorphism - many forms.
+## Assignment
+
+Try each in [dartpad.dev](https://dartpad.dev) before checking the answers.
+
+### Problem 1: Animal and Dog
+
+Write an `Animal` class with a `String name` and a method `eat()` that prints `<name> is eating`. Then write a `Dog` class that `extends Animal`, calls the parent constructor with `super`, and adds a method `bark()` that prints `<name> says Woof!`. Build a dog and call both `eat()` and `bark()`.
+
+### Problem 2: Predict the output
+
+```dart
+class Vehicle {
+  String brand;
+  Vehicle(this.brand);
+
+  void start() {
+    print('$brand is starting');
+  }
+}
+
+class Car extends Vehicle {
+  Car(String brand) : super(brand);
+
+  @override
+  void start() {
+    super.start();
+    print('$brand goes vroom');
+  }
+}
+
+void main() {
+  var c = Car('Toyota');
+  c.start();
+}
+```
+
+### Problem 3: Override a method
+
+Write a `Shape` class with a method `double area()` that returns 0. Then write a `Square` class that `extends Shape`, has a `double side`, and overrides `area()` to return `side * side`. Build a square with side 4 and print its area.
+
+### Problem 4: Add interest (super constructor)
+
+Write an `Account` class with a `String owner` and `double balance`, and a method `show()` that prints `<owner>: <balance>`. Then write a `SavingsAccount` that extends it, adds a `double rate`, calls the parent constructor with `super`, and has a method `addInterest()` that adds `balance * rate` to the balance. Build a savings account for `'Ada'` with balance 1000 and rate 0.1, add interest once, and call `show()`.
+
+### Problem 5: Spot the bugs
+
+This program has two mistakes. Find and fix them.
+
+```dart
+class Bird {
+  String name;
+  Bird(this.name);
+
+  void describe() {
+    print('$name is a bird');
+  }
+}
+
+class Parrot extends Bird {
+  Parrot(String name);
+
+  void describe() {
+    print('$name can talk');
+  }
+}
+
+void main() {
+  var p = Parrot('Polly');
+  p.describe();
+}
+```
 
 ---
 
-**Continue to:** `05-Polymorphism.md`
+## Assignment Answers
+
+### Problem 1: Animal and Dog
+
+```dart
+class Animal {
+  String name;
+  Animal(this.name);
+
+  void eat() {
+    print('$name is eating');
+  }
+}
+
+class Dog extends Animal {
+  Dog(String name) : super(name);
+
+  void bark() {
+    print('$name says Woof!');
+  }
+}
+
+void main() {
+  var d = Dog('Rex');
+  d.eat();    // Rex is eating
+  d.bark();   // Rex says Woof!
+}
+```
+
+`Dog extends Animal`, so it inherits `name` and `eat()`. The `: super(name)` passes the name up to the `Animal` constructor. `bark()` is the dog's own extra method.
+
+### Problem 2: Predict the output
+
+```
+Toyota is starting
+Toyota goes vroom
+```
+
+`Car` overrides `start()`. Inside, `super.start()` runs the parent's version first (printing the "starting" line), then the car adds its own "vroom" line.
+
+### Problem 3: Override a method
+
+```dart
+class Shape {
+  double area() {
+    return 0;
+  }
+}
+
+class Square extends Shape {
+  double side;
+  Square(this.side);
+
+  @override
+  double area() {
+    return side * side;
+  }
+}
+
+void main() {
+  var s = Square(4);
+  print(s.area());   // 16.0
+}
+```
+
+`Square` replaces the parent's `area()` with its own using `@override`. For side 4, `4 * 4 = 16`. (It shows `16.0` because `area` returns a `double`.)
+
+### Problem 4: Add interest (super constructor)
+
+```dart
+class Account {
+  String owner;
+  double balance;
+  Account(this.owner, this.balance);
+
+  void show() {
+    print('$owner: $balance');
+  }
+}
+
+class SavingsAccount extends Account {
+  double rate;
+  SavingsAccount(String owner, double balance, this.rate)
+      : super(owner, balance);
+
+  void addInterest() {
+    balance = balance + balance * rate;
+  }
+}
+
+void main() {
+  var s = SavingsAccount('Ada', 1000, 0.1);
+  s.addInterest();
+  s.show();   // Ada: 1100.0
+}
+```
+
+`SavingsAccount` inherits `owner`, `balance`, and `show()`. It calls the parent constructor with `super(owner, balance)`, then adds its own `rate` and `addInterest()`. Adding 10% to 1000 gives 1100.
+
+### Problem 5: Spot the bugs
+
+The two mistakes:
+
+1. `Parrot(String name);` does not pass the name up to the parent. `Bird` needs a name, so the constructor must call `: super(name)`.
+2. `describe()` in `Parrot` overrides the parent's method but is missing the `@override` annotation. (It still works, but `@override` is expected and catches mistakes.)
+
+Fixed:
+
+```dart
+class Parrot extends Bird {
+  Parrot(String name) : super(name);
+
+  @override
+  void describe() {
+    print('$name can talk');
+  }
+}
+```
+
+Now the name reaches the `Bird` constructor, and `@override` makes the intention clear. Output: `Polly can talk`.
+
+---
+
+**Next:** `05-Polymorphism.md`, where one type can take many forms.
