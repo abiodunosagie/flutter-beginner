@@ -1,6 +1,10 @@
-# Part 1: What is Provider?
+# What is Provider?
 
-Now that you understand state, let's learn the **easiest** way to manage it: Provider!
+## The Big Idea In One Sentence
+
+> Provider is a tool that puts your shared data in one place and lets any widget grab it directly, in three steps: **create, provide, consume**.
+
+It is the easiest state-management tool, and the one the Flutter team recommends for learning.
 
 ---
 
@@ -148,7 +152,93 @@ In the next lessons:
 
 ---
 
-**Next:** Learn how to create a ChangeNotifier class!
+## One-Minute Recap
+
+- Provider puts shared data in one place that any widget can reach (the cookie box on the table).
+- It removes prop drilling and only rebuilds widgets that use the data.
+- Three steps: **create** a data class, **provide** it above your app, **consume** it in widgets.
+- Add it with `flutter pub add provider` and import `package:provider/provider.dart`.
+
+---
+
+## Quick Quiz
+
+**Q1.** In one line, what does Provider do?
+
+<details>
+<summary>Answer</summary>
+It keeps shared data in one place so any widget can read it directly, without passing it down.
+</details>
+
+**Q2.** What are the three steps of using Provider?
+
+<details>
+<summary>Answer</summary>
+Create (a data class), provide (share it above the app), consume (use it in widgets).
+</details>
+
+**Q3.** How do you add the provider package to a project?
+
+<details>
+<summary>Answer</summary>
+Run `flutter pub add provider` (or add `provider:` under dependencies in `pubspec.yaml` and run `flutter pub get`), then import `package:provider/provider.dart`.
+</details>
+
+---
+
+## Assignment
+
+Conceptual and setup, no widget code yet (that starts in the next lesson).
+
+### Problem 1: Explain the box
+
+In your own words, how is Provider like a box of cookies on the table?
+
+### Problem 2: The three steps
+
+Write the three steps of using Provider in order, with one word each.
+
+### Problem 3: Add the package
+
+Write the command you run to add Provider, and the line you put at the top of your Dart file to use it.
+
+### Problem 4: Why Provider first?
+
+Give two reasons Provider is a good first state-management tool.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Explain the box
+
+Without Provider, data is passed person to person (widget to widget), even to people who do not want it. With Provider, the data sits in one box on the table, and anyone can reach in and take it directly. No passing.
+
+### Problem 2: The three steps
+
+1. Create
+2. Provide
+3. Consume
+
+### Problem 3: Add the package
+
+```bash
+flutter pub add provider
+```
+
+And at the top of your Dart file:
+
+```dart
+import 'package:provider/provider.dart';
+```
+
+### Problem 4: Why Provider first?
+
+Any two of: it is the simplest tool (just three steps); it is recommended by the Flutter team; it removes prop drilling; it only rebuilds the widgets that use the data; and understanding it makes Riverpod and Bloc easier later.
+
+---
+
+**Next:** `02b-ChangeNotifier.md`, where you create the data class that holds your state.
 
 ---
 
