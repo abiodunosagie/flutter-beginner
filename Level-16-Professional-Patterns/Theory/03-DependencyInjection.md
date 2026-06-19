@@ -1,5 +1,9 @@
 # Dependency Injection
 
+## The Big Idea In One Sentence
+
+> Dependency injection means a class receives what it needs from outside instead of creating it itself, and pro apps often use a tool (like get_it) to wire everything in one place.
+
 ## The Simple Explanation
 
 Dependency Injection (DI) is like a restaurant that doesn't grow its own vegetables. Instead of the kitchen producing everything, ingredients are delivered by suppliers. The kitchen just says "I need tomatoes" and tomatoes appear!
@@ -574,6 +578,68 @@ await getIt.reset();  // Calls all dispose functions
 │                                                              │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** What is dependency injection in one line? (You saw this in Level 8 too.)
+
+<details>
+<summary>Answer</summary>
+Giving a class what it needs from outside (usually via the constructor) instead of building it inside.
+</details>
+
+**Q2.** What does a DI tool like `get_it` do for you?
+
+<details>
+<summary>Answer</summary>
+It registers and provides your services/repositories from one central place, so you do not hand-wire them everywhere.
+</details>
+
+**Q3.** How does DI help testing?
+
+<details>
+<summary>Answer</summary>
+You can inject a mock/fake in tests instead of the real dependency, so tests run fast and predictably.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Inject it
+
+Rewrite so the class receives its dependency: `class Service { final repo = Repo(); }`.
+
+### Problem 2: Why a container?
+
+Name one benefit of registering dependencies in a DI container (like get_it).
+
+### Problem 3: Test swap
+
+In a test, what do you inject instead of the real repository?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Inject it
+
+```dart
+class Service {
+  final Repo repo;
+  Service(this.repo);
+}
+```
+
+### Problem 2: Why a container?
+
+You configure everything in one place, get shared single instances easily, and change wiring without editing every class that uses it.
+
+### Problem 3: Test swap
+
+A mock/fake repository, so the test runs without real I/O and with predictable data.
 
 ---
 

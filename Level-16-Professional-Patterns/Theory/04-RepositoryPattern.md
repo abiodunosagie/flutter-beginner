@@ -1,5 +1,9 @@
 # Repository Pattern
 
+## The Big Idea In One Sentence
+
+> A repository is the single doorway to your data: the rest of the app asks it for things and never knows whether they come from an API, a cache, or a database, which you also met in Level 8.
+
 ## The Simple Explanation
 
 The Repository Pattern is like a librarian. When you need a book, you ask the librarian - not the publisher, not the warehouse, not the printing press. The librarian handles all that complexity for you. You just say "I need this book" and get it!
@@ -638,6 +642,63 @@ void main() {
 │                                                              │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** What does a repository hide from the rest of the app?
+
+<details>
+<summary>Answer</summary>
+Where the data comes from (API, cache, local DB). Callers just ask for data and get model objects.
+</details>
+
+**Q2.** Why define it as an interface (abstract class)?
+
+<details>
+<summary>Answer</summary>
+So you can swap implementations, a real one in production and a mock/fake in tests, behind the same contract.
+</details>
+
+**Q3.** How does the repository pattern support caching or offline mode?
+
+<details>
+<summary>Answer</summary>
+The repository can decide internally to return cached/local data or fetch fresh from the network, without callers changing.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: The doorway
+
+A controller needs the list of articles. Should it call the API directly or the repository? Why?
+
+### Problem 2: Add caching
+
+You want to cache articles for 5 minutes. Which layer changes, and do callers change?
+
+### Problem 3: Interface benefit
+
+Name one thing an abstract `ArticleRepository` lets you do.
+
+---
+
+## Assignment Answers
+
+### Problem 1: The doorway
+
+The repository. The controller should not know about HTTP/URLs; it just asks the repository, which handles the data source.
+
+### Problem 2: Add caching
+
+Only the repository implementation changes (it checks the cache first). Callers do not change, they still call the same method.
+
+### Problem 3: Interface benefit
+
+Swap in a mock for tests, or provide multiple implementations (API, cached, local) without touching the code that uses it.
 
 ---
 

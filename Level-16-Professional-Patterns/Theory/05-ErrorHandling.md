@@ -1,5 +1,9 @@
 # Error Handling Strategies
 
+## The Big Idea In One Sentence
+
+> Pro error handling makes failure part of the design: use typed results (like `Result`/`Either` of success-or-failure) so callers must handle errors, instead of letting exceptions surprise you at runtime.
+
 ## The Simple Explanation
 
 Error handling is like having a plan B (and C and D) for when things go wrong. Your app will encounter errors - the question is whether it crashes or handles them gracefully!
@@ -674,6 +678,63 @@ class ProductsScreen extends StatelessWidget {
 │                                                              │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** What is the advantage of returning a `Result` (success or failure) instead of throwing?
+
+<details>
+<summary>Answer</summary>
+The caller is forced to handle both cases, so errors cannot be silently ignored, and the function's possible failures are visible in its type.
+</details>
+
+**Q2.** What does `Either<Failure, Data>` represent?
+
+<details>
+<summary>Answer</summary>
+A value that is EITHER a failure (left) OR the data (right), one or the other, never both.
+</details>
+
+**Q3.** Where should you turn errors into user-friendly messages?
+
+<details>
+<summary>Answer</summary>
+At the UI layer (or a presentation mapper), so the rest of the app deals with typed failures and only the UI shows wording.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Throw vs Result
+
+In one sentence, why can a thrown exception be riskier than a returned `Result`?
+
+### Problem 2: Read Either
+
+`Either<Failure, User>` comes back as the "left" value. What did you get, success or failure?
+
+### Problem 3: Where to message
+
+A network call fails deep in the data layer. Which layer should turn it into "Check your connection"?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Throw vs Result
+
+A thrown exception can be forgotten (uncaught) and crash at runtime, while a `Result` makes the caller handle the failure case explicitly.
+
+### Problem 2: Read Either
+
+A **failure** (by convention, "left" is the failure side; "right" is the success value).
+
+### Problem 3: Where to message
+
+The UI/presentation layer maps the typed failure to a friendly message. The data layer just reports the failure type.
 
 ---
 

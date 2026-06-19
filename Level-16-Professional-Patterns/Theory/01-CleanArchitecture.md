@@ -1,5 +1,9 @@
 # Clean Architecture
 
+## The Big Idea In One Sentence
+
+> Clean Architecture splits your app into rings (UI, business logic, data) where the rules only point inward, so your core logic does not depend on Flutter, the database, or any API and is easy to test and change.
+
 ## The Simple Explanation
 
 Clean Architecture is like organizing a restaurant. The dining room (UI) doesn't cook food. The kitchen (business logic) doesn't serve customers. The pantry (data) just stores ingredients. Each area has one job!
@@ -562,6 +566,63 @@ add layers as complexity grows.
 │                                                              │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** In Clean Architecture, which way do dependencies point?
+
+<details>
+<summary>Answer</summary>
+Inward: outer layers (UI, data) depend on the inner core (business logic), never the other way around.
+</details>
+
+**Q2.** Why should core business logic not import Flutter or your database package?
+
+<details>
+<summary>Answer</summary>
+So the rules stay independent and testable, and you can swap the UI or data source without rewriting the logic.
+</details>
+
+**Q3.** What is the main payoff of this extra structure?
+
+<details>
+<summary>Answer</summary>
+Easier testing and change: each layer is isolated, so you can replace or test one without breaking the others.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Which layer?
+
+Sort into UI, business logic, or data: a widget, a "calculate discount" rule, an API client.
+
+### Problem 2: Dependency direction
+
+Can the business logic layer import the UI layer? Why or why not?
+
+### Problem 3: When worth it?
+
+Is Clean Architecture worth it for a tiny weekend app? Briefly say why or why not.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Which layer?
+
+Widget → UI; "calculate discount" rule → business logic; API client → data.
+
+### Problem 2: Dependency direction
+
+No. Dependencies point inward, so the inner business logic must not depend on the outer UI. The UI depends on the logic, not the reverse.
+
+### Problem 3: When worth it?
+
+For a tiny app it is usually overkill, the extra layers add boilerplate. It pays off in larger, long-lived apps with a team, where testability and change matter.
 
 ---
 

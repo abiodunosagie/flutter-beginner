@@ -1,5 +1,9 @@
 # State Management Deep Dive
 
+## The Big Idea In One Sentence
+
+> At a professional level, good state management is about clear rules: keep state in one predictable place, make changes flow one direction, and keep UI separate from logic, no matter which tool (Provider, Riverpod, Bloc) you use.
+
 ## The Simple Explanation
 
 State management is like keeping track of everyone's order in a restaurant. As orders come in, get prepared, and are served, you need a system to track what's happening. The bigger the restaurant, the better the system needs to be!
@@ -561,6 +565,63 @@ class TodoNotifier extends StateNotifier<TodoState> {
 │                                                              │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** What does "single source of truth" mean for state?
+
+<details>
+<summary>Answer</summary>
+Each piece of state lives in exactly one place, so the UI always reads the same value and there are no conflicting copies.
+</details>
+
+**Q2.** Why keep UI separate from state logic?
+
+<details>
+<summary>Answer</summary>
+So you can test the logic without the UI, reuse it, and change one without breaking the other.
+</details>
+
+**Q3.** Does the choice of tool (Provider/Riverpod/Bloc) change these principles?
+
+<details>
+<summary>Answer</summary>
+No. The principles (single source of truth, one-way data flow, separated logic) apply to all of them.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Spot the smell
+
+Two screens each keep their own copy of the logged-in user. What principle does this break?
+
+### Problem 2: One direction
+
+In one line, why is one-way data flow easier to reason about?
+
+### Problem 3: Tool-agnostic
+
+Name one principle that stays the same whether you use Bloc or Riverpod.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Spot the smell
+
+It breaks "single source of truth", two copies can disagree. The user should live in one shared place both screens read.
+
+### Problem 2: One direction
+
+You always know where changes come from (events flow one way to update state, state flows to the UI), so bugs are easier to trace.
+
+### Problem 3: Tool-agnostic
+
+Any of: single source of truth, separate UI from logic, one-way data flow, or make state changes explicit/predictable.
 
 ---
 
