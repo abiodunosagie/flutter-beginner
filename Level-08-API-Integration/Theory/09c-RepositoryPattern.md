@@ -1,5 +1,9 @@
 # Repository Pattern Deep Dive
 
+## The Big Idea In One Sentence
+
+> A repository is a "give me the data" middleman: your app asks it for users, and it hides whether they come from the API, a cache, or fake test data, so you can swap the source without touching your screens.
+
 The Repository Pattern is one specific piece of architecture. This doc explains ONLY the repository - what it is, why it exists, and how to build one properly.
 
 ---
@@ -644,8 +648,65 @@ KEY RULES:
 
 ---
 
+## Quick Quiz
+
+**Q1.** What does a repository return, and what does it hide?
+
+<details>
+<summary>Answer</summary>
+It returns model objects (like `List<User>`) and hides where the data came from (API, cache, local DB, or fakes).
+</details>
+
+**Q2.** Why define the repository as an abstract class (interface)?
+
+<details>
+<summary>Answer</summary>
+So you can swap implementations: a real `ApiUserRepository` in the app and a `MockUserRepository` in tests, both fitting the same interface.
+</details>
+
+**Q3.** Should a repository contain business rules like "give a discount over $100"?
+
+<details>
+<summary>Answer</summary>
+No. That is business logic and belongs in a service/controller. The repository only gets and saves data.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Return type
+
+A `UserRepository.getUsers()` should return which type: `List<dynamic>` (raw JSON) or `List<User>` (objects)?
+
+### Problem 2: Pick the implementation
+
+You are writing a test and do not want real network calls. Which repository implementation do you use?
+
+### Problem 3: Spot the wrong layer
+
+A repository method returns a `Card` widget. Why is that wrong, and what should it return?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Return type
+
+`List<User>` (objects). Converting JSON to objects is exactly the repository's job.
+
+### Problem 2: Pick the implementation
+
+A `MockUserRepository` that returns fake data. It implements the same interface, so the code under test does not know the difference, and tests run fast and offline.
+
+### Problem 3: Spot the wrong layer
+
+A repository must not build UI. It should return data (a `User` or `List<User>`); the widget layer turns that into a `Card`.
+
+---
+
 ## Navigation
 
-Previous: [Code Generation](08c-CodeGeneration.md)
+Previous: [Api Client Deep Dive](09b-ApiClientDeepDive.md)
 Back to: [Learning Path](00-LearningPath.md)
-Next: [Service Layer](09b-ServiceLayer.md)
+Next: [Controllers Deep Dive](09d-ControllersDeepDive.md)
