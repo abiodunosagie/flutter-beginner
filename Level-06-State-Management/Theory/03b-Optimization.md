@@ -1,6 +1,10 @@
-# Part 2: Optimization and Best Practices
+# Optimization and Best Practices
 
-Learn how to make your Provider apps super fast and avoid common mistakes!
+## The Big Idea In One Sentence
+
+> To avoid wasteful rebuilds, watch only the exact piece of data a widget needs (`context.select`), and use `Consumer` with a `child` to keep the parts that do not change from rebuilding.
+
+`watch` is simple but rebuilds on any change. These tools make Provider apps fast.
 
 ---
 
@@ -398,7 +402,86 @@ class TodoProvider extends ChangeNotifier {
 
 ---
 
-**Next:** Learn Riverpod - Provider's more powerful cousin!
+## Quick Quiz
+
+**Q1.** Why can `context.watch<UserProvider>()` cause extra rebuilds?
+
+<details>
+<summary>Answer</summary>
+It rebuilds the widget whenever **any** field of the provider changes, even fields the widget does not use.
+</details>
+
+**Q2.** How do you rebuild only when one field changes?
+
+<details>
+<summary>Answer</summary>
+Use `context.select`, e.g. `context.select<UserProvider, String>((u) => u.name)`. It rebuilds only when `name` changes.
+</details>
+
+**Q3.** What is the `child` of a `Consumer` for?
+
+<details>
+<summary>Answer</summary>
+It is a widget built once and passed in, so it does not rebuild when the watched data changes. Use it for expensive parts that do not depend on the state.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Watch one field
+
+A `UserProvider` has `name`, `age`, and `email`. Write the line that reads **only** `name` so a widget rebuilds just when the name changes.
+
+### Problem 2: Spot the inefficiency
+
+Why might this rebuild more than it needs to, and how would you fix it?
+
+```dart
+final user = context.watch<UserProvider>();
+return Text(user.name);
+```
+
+### Problem 3: Consumer with a static child
+
+Explain, in your own words, how `Consumer`'s `child` parameter saves work.
+
+### Problem 4: Best practice
+
+Why should a provider return `List.unmodifiable(_items)` from its getter instead of `_items` directly?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Watch one field
+
+```dart
+final name = context.select<UserProvider, String>((u) => u.name);
+```
+
+This rebuilds the widget only when `name` changes, ignoring changes to `age` or `email`.
+
+### Problem 2: Spot the inefficiency
+
+`context.watch<UserProvider>()` makes the widget rebuild whenever **any** field of `UserProvider` changes, but the widget only shows `name`. So changing `age` or `email` rebuilds it for nothing. Fix it with `select`:
+
+```dart
+final name = context.select<UserProvider, String>((u) => u.name);
+return Text(name);
+```
+
+### Problem 3: Consumer with a static child
+
+`Consumer` rebuilds its `builder` when the watched data changes. Anything you pass as `child` is built once, outside the builder, and handed in. So an expensive widget that does not depend on the state goes in `child` and is not rebuilt every time, saving work.
+
+### Problem 4: Best practice
+
+If the getter returns `_items` directly, outside code could call `.add` or `.remove` on it, changing the provider's data without going through a method and without `notifyListeners`. That breaks the rules and the UI would not update. `List.unmodifiable(_items)` hands back a read-only view, so the only way to change the list is through the provider's own methods.
+
+---
+
+**Next:** `04a-RiverpodIntro.md`, Provider's safer, more powerful cousin.
 
 ---
 
