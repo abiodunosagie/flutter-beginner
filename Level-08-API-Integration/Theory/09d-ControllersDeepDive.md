@@ -1,5 +1,9 @@
 # Controllers Deep Dive
 
+## The Big Idea In One Sentence
+
+> A controller holds a feature's state (the list, isLoading, error) and the actions that change it, calling `notifyListeners()` so the UI rebuilds, which keeps your widgets small and your logic testable.
+
 Learn what controllers are, why we need them, and how to build them properly.
 
 ---
@@ -873,8 +877,84 @@ KEY RULES:
 
 ---
 
+## Quick Quiz
+
+**Q1.** What does a controller call so the UI rebuilds after state changes?
+
+<details>
+<summary>Answer</summary>
+`notifyListeners()` (it extends `ChangeNotifier`).
+</details>
+
+**Q2.** Why keep state in private fields (`_users`) with public getters?
+
+<details>
+<summary>Answer</summary>
+So nothing outside can change the state without going through a method that also calls `notifyListeners()`. Outsiders can read, not secretly mutate.
+</details>
+
+**Q3.** How does a controller fetch data without making HTTP calls itself?
+
+<details>
+<summary>Answer</summary>
+It calls a repository (e.g. `repository.getUsers()`). The repository handles the network and parsing.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: The load action
+
+Write a `loadUsers()` that sets loading true + notifies, fetches from `repository`, stores the result, then sets loading false + notifies (use try/finally).
+
+### Problem 2: Find the bug
+
+```dart
+void addUser(User user) {
+  _users.add(user);
+}
+```
+The list grows but the screen never updates. What is missing?
+
+### Problem 3: Why testable?
+
+Why is a controller easier to test than the same logic stuffed inside a widget?
+
+---
+
+## Assignment Answers
+
+### Problem 1: The load action
+
+```dart
+Future<void> loadUsers() async {
+  _isLoading = true;
+  _error = null;
+  notifyListeners();
+  try {
+    _users = await repository.getUsers();
+  } catch (e) {
+    _error = e.toString();
+  } finally {
+    _isLoading = false;
+    notifyListeners();
+  }
+}
+```
+
+### Problem 2: Find the bug
+
+It is missing `notifyListeners();` after `_users.add(user)`. Without it, the UI never hears about the change.
+
+### Problem 3: Why testable?
+
+A controller is plain Dart with a fake repository, so you can call its methods and check its state in a unit test, with no widgets, no `pumpWidget`, and no real network.
+
+---
+
 ## Navigation
 
-Previous: [Dependency Injection](09e-DependencyInjection.md)
+Previous: [Repository Pattern](09c-RepositoryPattern.md)
 Back to: [Learning Path](00-LearningPath.md)
-Next: [Widgets Deep Dive](09g-WidgetsDeepDive.md)
+Next: [Widgets Deep Dive](09e-WidgetsDeepDive.md)
