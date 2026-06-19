@@ -1,6 +1,12 @@
 # The http Package - Part 1: Setup and GET Requests
 
+## The Big Idea In One Sentence
+
+> The `http` package is your messenger: `await http.get(url)` sends a request and hands you back a response with a `statusCode` and a `body` string you then decode.
+
 Learn how to make real API calls in Flutter with the http package!
+
+> **About `async`/`await`/`Future`.** A network call takes time, so its functions are marked `async` and you `await` the result. `Future<void>` means "this finishes later." Read `await http.get(url)` as "send the request and wait right here for the response." Loading and error handling get their own dedicated lessons (07a-07c) in this level.
 
 ---
 
@@ -357,6 +363,76 @@ class _UsersScreenState extends State<UsersScreen> {
 ```
 
 Great! Now you can fetch data from APIs. Next, you'll learn how to send data using POST and other HTTP methods.
+
+---
+
+## Quick Quiz
+
+**Q1.** What does `await http.get(url)` give you back?
+
+<details>
+<summary>Answer</summary>
+A `Response` object with a `statusCode`, `headers`, and a `body` (the data as a String).
+</details>
+
+**Q2.** The response `body` is a String. What must you do before using it as data?
+
+<details>
+<summary>Answer</summary>
+Decode it with `json.decode(response.body)` to get a Map or List.
+</details>
+
+**Q3.** Why import `http` with `as http`?
+
+<details>
+<summary>Answer</summary>
+The prefix avoids name clashes, so you call `http.get(...)` clearly instead of a bare `get(...)` that might collide with other code.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: The three steps
+
+Write the three lines to: build a `Uri` for `https://api.example.com/users`, GET it, and (on 200) decode the body into a list.
+
+### Problem 2: Check before using
+
+Why should you check `response.statusCode == 200` before decoding the body?
+
+### Problem 3: Build a URL with params
+
+Use `Uri.https` to build `https://api.example.com/posts?userId=1&_limit=5`.
+
+---
+
+## Assignment Answers
+
+### Problem 1: The three steps
+
+```dart
+final url = Uri.parse('https://api.example.com/users');
+final response = await http.get(url);
+if (response.statusCode == 200) {
+  final List<dynamic> users = json.decode(response.body);
+}
+```
+
+### Problem 2: Check before using
+
+If the request failed (404, 500, etc.), the body is not the data you expected, so decoding it may fail or give garbage. Checking `200` first means you only parse a successful response.
+
+### Problem 3: Build a URL with params
+
+```dart
+final url = Uri.https('api.example.com', '/posts', {
+  'userId': '1',
+  '_limit': '5',
+});
+```
+
+(Query values are Strings: `'1'`, not `1`.)
 
 ---
 
