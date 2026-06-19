@@ -1,5 +1,11 @@
 # BLoC Advanced Patterns: Pro Techniques
 
+## The Big Idea In One Sentence
+
+> **Cubit** is a lighter BLoC: you call **methods** directly instead of adding events, which is perfect for simple state.
+
+Everything else here (blocs talking to blocs, event transformers) is a peek at pro techniques. The one piece to really learn now is Cubit.
+
 Let's learn advanced patterns that professionals use to build complex apps with BLoC. These are like secret cooking techniques that master chefs use!
 
 ---
@@ -452,6 +458,85 @@ Complex workflow with many steps?
 ```
 
 Next, we'll learn about the Repository pattern and testing!
+
+---
+
+## Quick Quiz
+
+**Q1.** What is the main difference between a Cubit and a Bloc?
+
+<details>
+<summary>Answer</summary>
+A Cubit has no events. You call methods directly (`cubit.increment()`), while a Bloc reacts to events (`bloc.add(Increment())`).
+</details>
+
+**Q2.** For a simple on/off toggle, which should you reach for?
+
+<details>
+<summary>Answer</summary>
+Cubit. It is less code and perfect for simple state.
+</details>
+
+**Q3.** How does a Cubit change its state?
+
+<details>
+<summary>Answer</summary>
+It calls `emit(newState)` inside a method.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Spot the difference
+
+One of these uses a Cubit and one uses a Bloc. Which is which, and how can you tell?
+
+```dart
+// A
+context.read<CounterCubit>().increment();
+
+// B
+context.read<CounterBloc>().add(Increment());
+```
+
+### Problem 2: Write a Cubit
+
+Write a `ToggleCubit` that extends `Cubit<bool>`, starts at `false`, and has one method `toggle()` that flips the value.
+
+### Problem 3: Choose the tool
+
+For each case, pick Cubit or Bloc:
+1. A like/unlike heart button.
+2. A search box that waits until the user stops typing before searching.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Spot the difference
+
+- **A** uses a **Cubit**. You can tell because it calls a method directly (`.increment()`).
+- **B** uses a **Bloc**. You can tell because it adds an event (`.add(Increment())`).
+
+### Problem 2: Write a Cubit
+
+```dart
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+class ToggleCubit extends Cubit<bool> {
+  ToggleCubit() : super(false);
+
+  void toggle() => emit(!state);
+}
+```
+
+`!state` flips the current value: `false` becomes `true`, `true` becomes `false`.
+
+### Problem 3: Choose the tool
+
+1. **Cubit.** A like button is simple on/off state, one method.
+2. **Bloc.** Waiting until the user stops typing (debouncing) needs an event transformer, which is a Bloc feature.
 
 ---
 
