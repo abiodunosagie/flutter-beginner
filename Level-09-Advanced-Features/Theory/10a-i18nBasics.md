@@ -1,5 +1,9 @@
 # Internationalization Basics: Speaking Many Languages
 
+## The Big Idea In One Sentence
+
+> Internationalization (i18n) means never hardcoding text in your widgets, instead you look each phrase up by a key, so the app can show the right language for each user.
+
 ## The Simple Explanation
 
 Imagine you have a toy store, and children from different countries visit:
@@ -733,6 +737,63 @@ Now you know the basics! Next, we'll learn:
 - **Language Switching** - Let users change language in-app
 - **ARB File Best Practices** - Organizing translations
 - **Parameterized Translations** - Dynamic text with variables
+
+---
+
+## Quick Quiz
+
+**Q1.** What does "i18n" stand for, and why the number 18?
+
+<details>
+<summary>Answer</summary>
+Internationalization. There are 18 letters between the "i" and the "n", so people shorten it to i18n.
+</details>
+
+**Q2.** Why is hardcoding `Text('Hello')` a problem for a multi-language app?
+
+<details>
+<summary>Answer</summary>
+It always shows English. To support other languages you must look the text up by a key so it can change per language.
+</details>
+
+**Q3.** Instead of writing the words directly, what do you reference in your widgets?
+
+<details>
+<summary>Answer</summary>
+A key/label that maps to the translated string for the current language (e.g. `AppLocalizations.of(context).hello`).
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Spot the hardcoded text
+
+Why will `Text('Welcome')` not adapt to a French user?
+
+### Problem 2: The fix idea
+
+In one line, what should replace the hardcoded string so it can be translated?
+
+### Problem 3: What is a locale?
+
+In simple words, what does a "locale" like `en` or `fr` tell the app?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Spot the hardcoded text
+
+The word "Welcome" is baked into the widget, so it always shows that exact English text regardless of the user's language.
+
+### Problem 2: The fix idea
+
+A lookup by key, like `Text(AppLocalizations.of(context).welcome)`, which returns the right translation for the current language.
+
+### Problem 3: What is a locale?
+
+A locale tells the app which language (and region) to use, like `en` for English or `fr` for French, so it can pick the matching translations.
 
 ---
 
