@@ -1,419 +1,421 @@
-# Classes and Objects: The Foundation of OOP
+# Classes and Objects: Making Your Own Kind Of Thing
 
-> New to this? Read it top to bottom, slowly. Every code block shows you exactly what it prints. Type the examples into [dartpad.dev](https://dartpad.dev) and run them yourself. That is how this clicks.
+## The Big Idea In One Sentence
 
----
+> A **class** is a blueprint, and an **object** is a real thing you build from that blueprint.
 
-## 1. The problem we are trying to solve
-
-Imagine you are building an app and you need to keep track of a person: their name, their age, and their email.
-
-With what you already know, you might do this:
-
-```dart
-void main() {
-  String name = 'Alice';
-  int age = 25;
-  String email = 'alice@email.com';
-
-  print('Hi, I am $name, $age years old.');
-}
-```
-
-That works for one person. But what happens when you have three people?
-
-```dart
-void main() {
-  String name1 = 'Alice';
-  int age1 = 25;
-  String email1 = 'alice@email.com';
-
-  String name2 = 'Bob';
-  int age2 = 30;
-  String email2 = 'bob@email.com';
-
-  String name3 = 'Charlie';
-  int age3 = 40;
-  String email3 = 'charlie@email.com';
-
-  // ...this gets messy fast
-}
-```
-
-This is a mess. The name, age, and email of one person are not grouped together in any way. They are just loose variables with numbers stuck on the end. Now imagine 100 people.
-
-**Object-Oriented Programming (OOP) fixes this.** It lets you bundle related data (name, age, email) together into one neat package, and attach the actions that go with it (introduce yourself, have a birthday). That package is called an **object**, and the recipe for making one is called a **class**.
+That is the whole idea. The rest of this lesson just shows you how to write one.
 
 ---
 
-## 2. The big idea: blueprint vs. building
+## A Picture To Hold In Your Head
 
-This is the single most important idea in this whole topic. Read it twice.
+Think of a **cookie cutter**.
 
-- A **class** is a **blueprint**. It is a plan. A blueprint for a house is not a house. You cannot live in it. It just describes what a house *will have* (rooms, doors, windows) and what you *can do* in it.
-- An **object** is the actual **house** built from that blueprint. You can have one blueprint and build 100 houses from it. Each house is real, separate, and can have its own paint color.
+- The cookie cutter is the **shape**. It is not a cookie. You cannot eat it. It just decides what every cookie will look like.
+- The **cookies** are the real things you stamp out with it. You can make 1 cookie or 100. Each cookie is separate, and you can decorate each one differently.
 
 ```
-   ONE BLUEPRINT (class)              MANY HOUSES (objects)
-   ┌───────────────────┐             🏠  🏠  🏠  🏠  🏠
-   │   House plan       │   build →   each one is real,
-   │   - has rooms      │             each one is separate
-   │   - has a door     │
-   └───────────────────┘
+   ONE COOKIE CUTTER (class)        MANY COOKIES (objects)
+        ┌─────────┐                  🍪  🍪  🍪  🍪
+        │  shape  │   stamp out →    each one is real,
+        └─────────┘                  each one is separate
 ```
 
-Other words you will hear:
+In code:
 
-- An object is also called an **instance**. "Create an instance of Person" means "build one Person object". Same thing.
-- The data inside an object (name, age) is called its **properties** (or **fields**).
-- The actions an object can do (introduce, have a birthday) are called its **methods**.
+- A **class** is the cookie cutter: the plan.
+- An **object** is a cookie: a real thing made from the plan.
 
-Keep that picture in your head: **class = the plan, object = the real thing built from the plan.**
+You can make many objects from one class, just like many cookies from one cutter.
 
 ---
 
-## 3. Writing your first class
+## Why We Need This
 
-Let us turn that messy "person" code into a class. We will build it one piece at a time so nothing is mysterious.
-
-### Step 1: the empty blueprint
-
-You start a class with the keyword `class` and a name. By convention, class names start with a **Capital Letter**.
+Say you want to keep track of a dog: its name and its age. With what you know, you might write:
 
 ```dart
-class Person {
-  // nothing here yet
+String dogName = 'Rex';
+int dogAge = 4;
+```
+
+That is fine for one dog. But for three dogs you get `dogName1`, `dogAge1`, `dogName2`, `dogAge2`... a mess. The name and age of one dog are not joined together in any way.
+
+A **class** fixes this. It bundles the data (name, age) and the actions (bark) into one neat package called a **Dog**. Then each dog you make is one tidy object.
+
+---
+
+## Step 1: Write The Blueprint (The Class)
+
+You start a class with the word `class` and a name. Class names start with a **Capital Letter**.
+
+```dart
+class Dog {
+  String name;
+  int age;
 }
 ```
 
-That is a valid (but empty) blueprint.
+The two lines inside are the **properties**: the data every dog will have. This says "every Dog has a name and an age."
 
-### Step 2: add the properties (the data)
+> This blueprint is not finished yet, so do not run it on its own. We add the missing piece (the constructor) in the next step, and then it works.
 
-Properties are just variables that live inside the class. They describe what every Person *has*.
+---
+
+## Step 2: Add The Constructor (How To Build One)
+
+When you build a real dog, you need to give it an actual name and age. The piece of code that sets this up is called the **constructor**.
+
+A constructor has the **same name as the class**, and no return type:
 
 ```dart
-class Person {
+class Dog {
   String name;
   int age;
-  String email;
+
+  Dog(this.name, this.age);
 }
 ```
 
-Now the blueprint says: "Every person has a name, an age, and an email."
+**What is that `this.` in the parentheses?**
 
-> Heads up: this snippet on its own is **not finished yet**, so do not paste it into DartPad and expect it to run. Dart will complain that `name`, `age`, and `email` have no values. That is fine. We give them values with the constructor in the very next step, and from Step 3 onward every block runs.
+`this` means "this dog I am building right now." So `this.name` means "this dog's name property."
 
-### Step 3: add the constructor (the setup instructions)
+Writing `this.name` in the constructor's parentheses is Dart's shortcut for: *"take the value passed in for name and store it in this dog's name property."* It does the same for `age`. So in one short line, the constructor fills in both properties whenever you build a dog.
 
-When you build a real Person, you need to give it an actual name, age, and email. The piece of code that does this setup is called the **constructor**.
+This `this.` form is what every Dart developer uses. Now you know what it means.
 
-A constructor looks like a function, but it has the **exact same name as the class**, and it has no return type. Here it is:
+---
 
-```dart
-class Person {
-  String name;
-  int age;
-  String email;
+## Step 3: Add Methods (The Actions)
 
-  // This is the constructor. It runs when you build a Person.
-  Person(this.name, this.age, this.email);
-}
-```
-
-**What is that `this.` doing in the parentheses?**
-
-`this` means **"this particular object I am building right now"**. So `this.name` means *"this object's name property"*.
-
-Writing `this.name` in the constructor's parentheses is Dart's built-in shortcut for: *"take the value passed in for name and store it in this object's name property."* It does that for `age` and `email` too. So with one short line, the constructor fills in all three properties whenever you build a Person.
-
-This `this.` form is what every Dart developer uses. You will see it everywhere, and now you know exactly what it means.
-
-### Step 4: add methods (the actions)
-
-Methods are functions that live inside the class. They describe what a Person can *do*. They can use the object's own properties directly by name.
+Methods are functions that live inside the class. They are the things a dog can **do**. They can use the dog's own properties directly by name.
 
 ```dart
-class Person {
+class Dog {
   String name;
   int age;
-  String email;
 
-  Person(this.name, this.age, this.email);
+  Dog(this.name, this.age);
 
-  // A method: introduce this person.
-  void introduce() {
-    print('Hi, I am $name, $age years old.');
+  void bark() {
+    print('$name says Woof!');
   }
 
-  // A method that changes a property.
   void haveBirthday() {
-    age = age + 1;   // shorthand for this you will also see: age += 1
-    print('Happy birthday! Now $age years old.');
+    age = age + 1;
+    print('$name is now $age');
   }
 }
 ```
 
-That is a complete, useful class. Properties, a constructor, and methods. That is all a class is.
-
-### A closer look at `this`
-
-You just saw `this.` used as a shortcut in the constructor. Here is the deeper idea, because you will meet `this` again.
-
-Sometimes a method has a parameter with the **same name** as a property. When that happens, plain `name` means the parameter, and `this.name` means the object's property. `this` is how you tell the two apart:
-
-```dart
-class Person {
-  String name;
-  int age;
-  String email;
-
-  Person(this.name, this.age, this.email);
-
-  // The parameter is also called 'name', so we use 'this' to be clear:
-  void rename(String name) {
-    this.name = name;   // this.name = the object's property, name = the new value
-  }
-}
-
-void main() {
-  var p = Person('Alice', 25, 'alice@email.com');
-  print(p.name);   // Alice
-  p.rename('Alicia');
-  print(p.name);   // Alicia
-}
-```
-
-If the names were different (say the parameter was `newName`), you would not need `this` at all. You only reach for `this` when two things share a name and you must point at the right one.
+That is a complete, useful class. Properties (data), a constructor (setup), and methods (actions). That is all a class is.
 
 ---
 
-## 4. Building and using objects
+## Step 4: Build Objects And Use Them
 
-The blueprint does nothing on its own. To use it, you **build an object** from it. You build one by writing the class name and passing in the values the constructor asked for.
+The blueprint does nothing on its own. To use it, you **build an object** by writing the class name and passing in the values the constructor asked for.
 
 ```dart
 void main() {
-  // Build two Person objects from the one Person blueprint.
-  var alice = Person('Alice', 25, 'alice@email.com');
-  var bob = Person('Bob', 30, 'bob@email.com');
+  Dog rex = Dog('Rex', 4);
+  Dog bella = Dog('Bella', 2);
 
   // Read a property with a dot:
-  print(alice.name);   // Alice
-  print(bob.age);      // 30
+  print(rex.name);    // Rex
+  print(bella.age);   // 2
 
   // Call a method with a dot and parentheses:
-  alice.introduce();   // Hi, I am Alice, 25 years old.
-  bob.haveBirthday();  // Happy birthday! Now 31 years old.
+  rex.bark();          // Rex says Woof!
+  bella.haveBirthday(); // Bella is now 3
 }
 ```
 
-**The dot `.` is how you reach inside an object.** `alice.name` means "the name belonging to alice". `alice.introduce()` means "tell alice to run her introduce method".
+The **dot** `.` is how you reach inside an object. `rex.name` means "Rex's name." `rex.bark()` means "tell Rex to bark."
 
-### Let us trace exactly what happens
-
-When Dart runs `var alice = Person('Alice', 25, 'alice@email.com');`:
-
-1. Dart starts building a new, empty Person object.
-2. The constructor runs. It stores `'Alice'` in `name`, `25` in `age`, `'alice@email.com'` in `email`.
-3. The finished object is handed back and stored in the variable `alice`.
-
-Then `alice.introduce()`:
-
-1. Dart finds the object `alice` points to.
-2. It runs that object's `introduce` method.
-3. Inside the method, `name` is `'Alice'` and `age` is `25`, so it prints `Hi, I am Alice, 25 years old.`
+You can also use `var` to save typing: `var rex = Dog('Rex', 4);` does the same thing.
 
 ---
 
-## 5. Each object is its own separate thing
+## Each Object Is Its Own Thing
 
-This trips up a lot of beginners, so let us make it crystal clear. When you build two objects from the same class, they are **completely independent**. Changing one does not touch the other.
+When you build two objects from the same class, they are **separate**. Changing one does not touch the other.
+
+```dart
+void main() {
+  Dog rex = Dog('Rex', 4);
+  Dog bella = Dog('Bella', 2);
+
+  rex.haveBirthday();   // Rex is now 5
+
+  print(rex.age);    // 5
+  print(bella.age);  // 2  <-- Bella is not affected
+}
+```
+
+Rex and Bella came from the same cookie cutter, but each keeps its own age. Giving Rex a birthday does nothing to Bella.
+
+---
+
+## Why This Matters In Flutter
+
+In Flutter, almost everything is an object built from a class: a button, a screen, a piece of text. When you make your own data (a Product, a User, a Message), you write a class for it, exactly like the `Dog` class above. Master this now and the rest of Flutter feels familiar.
+
+---
+
+## The Top Mistakes Beginners Make
+
+### Mistake 1: Lowercase class name
+
+```dart
+class dog { }    // works, but bad style
+class Dog { }    // GOOD: class names start with a capital
+```
+
+### Mistake 2: Forgetting the values when building
+
+```dart
+Dog rex = Dog();          // BAD: the constructor needs a name and age
+Dog rex = Dog('Rex', 4);  // GOOD
+```
+
+### Mistake 3: Quotes around the property name
+
+```dart
+print('rex.name');   // BAD: shows the text "rex.name"
+print(rex.name);     // GOOD: shows the value, Rex
+```
+
+### Mistake 4: Forgetting the parentheses on a method
+
+```dart
+rex.bark;     // does nothing
+rex.bark();   // GOOD: actually barks
+```
+
+---
+
+## One-Minute Recap
+
+- A **class** is a blueprint (the cookie cutter). An **object** is a real thing built from it (a cookie).
+- **Properties** are the data inside (like `name`, `age`).
+- The **constructor** (same name as the class) sets up a new object. `this.name` stores the value you pass in.
+- **Methods** are the actions (like `bark()`).
+- Build an object with `ClassName(...)`, and reach inside it with a dot: `rex.name`, `rex.bark()`.
+- Each object keeps its own data. They are separate.
+
+---
+
+## Quick Quiz
+
+**Q1.** What is the difference between a class and an object?
+
+<details>
+<summary>Answer</summary>
+A class is the blueprint (the cookie cutter). An object is a real thing built from it (a cookie). One class can make many objects.
+</details>
+
+**Q2.** In `Dog(this.name, this.age);`, what does `this.name` do?
+
+<details>
+<summary>Answer</summary>
+It stores the value passed in into this object's `name` property. `this` means "this object." The constructor fills it in for you when you build the object.
+</details>
+
+**Q3.** You build `var a = Dog('A', 1);` and `var b = Dog('B', 2);`, then call `a.haveBirthday();`. What is `b.age`?
+
+<details>
+<summary>Answer</summary>
+`2`. Each object keeps its own data, so giving `a` a birthday does not change `b`.
+</details>
+
+**Q4.** How do you tell the dog `rex` to bark?
+
+<details>
+<summary>Answer</summary>
+`rex.bark();` Use the dot to reach the method, and the parentheses to run it.
+</details>
+
+---
+
+## Assignment
+
+Try each in [dartpad.dev](https://dartpad.dev) before checking the answers.
+
+### Problem 1: Make a Cat class
+
+Write a `Cat` class with two properties: a `String name` and a `String color`. Give it a constructor and a method `void meow()` that prints `<name> says Meow!`. Then in `main`, build a cat named `'Milo'` that is `'gray'` and make it meow.
+
+### Problem 2: Predict the output
 
 ```dart
 class Counter {
-  int count = 0;   // every counter starts at 0
+  int count;
+  Counter(this.count);
 
-  void increment() {
+  void increase() {
     count = count + 1;
   }
 }
 
 void main() {
-  var counterA = Counter();   // first counter
-  var counterB = Counter();   // second, totally separate counter
+  Counter a = Counter(0);
+  Counter b = Counter(10);
 
-  counterA.increment();
-  counterA.increment();
-  counterA.increment();
+  a.increase();
+  a.increase();
+  b.increase();
 
-  counterB.increment();
-
-  print(counterA.count);  // 3
-  print(counterB.count);  // 1  <-- not affected by counterA
+  print(a.count);
+  print(b.count);
 }
 ```
 
-`counterA` and `counterB` were built from the same blueprint, but each one keeps its own `count`. Bumping `counterA` three times has zero effect on `counterB`.
+### Problem 3: A Book with a method that uses its data
 
-> Notice `Counter()` has empty parentheses. This class did not write a constructor, so Dart gives it a free empty one. And `count` has `= 0` right in the blueprint, so every new counter starts at 0 automatically.
+Write a `Book` class with a `String title`, a `String author`, and an `int pages`. Add a method `void describe()` that prints `<title> by <author>, <pages> pages`. Build a book and call `describe()`.
 
----
+### Problem 4: Spot the bugs
 
-## 6. One gotcha: two names, same object
-
-Here is the one situation where objects are *not* independent, and it is important.
-
-When you write `var b = a;` and `a` is an object, you do **not** get a copy. Both names now point to the **same single object**. Change it through one name and you see the change through the other.
+This program has two mistakes. Find and fix them.
 
 ```dart
+class Robot {
+  String name;
+  Robot(this.name);
+
+  void beep() {
+    print('$name goes beep');
+  }
+}
+
 void main() {
-  var first = Person('Charlie', 40, 'charlie@email.com');
-  var second = first;     // NOT a copy. Same object, second name.
-
-  second.age = 99;        // change it through 'second'
-
-  print(first.age);   // 99  <-- changed too, because it is the same object
-  print(second.age);  // 99
+  Robot r = Robot();
+  print('r.name');
+  r.beep();
 }
 ```
 
-Picture it like this. The object lives somewhere in memory, and both variables are arrows pointing at it:
+### Problem 5: Build a BankAccount
 
-```
-  first  ─────┐
-              ├──────► [ Person: name="Charlie", age=99 ]
-  second ─────┘
-```
-
-Compare this to Section 5: there, `Counter()` was called twice, so **two** objects were built. Here, `Person(...)` was called **once**, so there is only **one** object and two names for it. The rule: a new object is only born when you actually call the constructor with `ClassName(...)`.
+Write a `BankAccount` class with a `String owner` and a `double balance`. Add a method `void deposit(double amount)` that adds the amount to the balance and prints the new balance. Build an account for `'Ada'` starting at `100`, deposit `50`, and see the new balance.
 
 ---
 
-## 7. A full, realistic example: a bank account
+## Assignment Answers
 
-Let us put it all together with something that feels real. Read the comments, then read the output.
+### Problem 1: Make a Cat class
+
+```dart
+class Cat {
+  String name;
+  String color;
+
+  Cat(this.name, this.color);
+
+  void meow() {
+    print('$name says Meow!');
+  }
+}
+
+void main() {
+  Cat milo = Cat('Milo', 'gray');
+  milo.meow();   // Milo says Meow!
+}
+```
+
+The class has two properties, a constructor that fills them in with `this.`, and one method that uses `name`. Building the object with `Cat('Milo', 'gray')` runs the constructor.
+
+### Problem 2: Predict the output
+
+```
+2
+11
+```
+
+`a` starts at 0 and is increased twice, so it becomes 2. `b` starts at 10 and is increased once, so it becomes 11. They are separate objects, so increasing `a` does not change `b`.
+
+### Problem 3: A Book with a method that uses its data
+
+```dart
+class Book {
+  String title;
+  String author;
+  int pages;
+
+  Book(this.title, this.author, this.pages);
+
+  void describe() {
+    print('$title by $author, $pages pages');
+  }
+}
+
+void main() {
+  Book hobbit = Book('The Hobbit', 'Tolkien', 310);
+  hobbit.describe();   // The Hobbit by Tolkien, 310 pages
+}
+```
+
+The method `describe()` uses all three properties by name. No need to pass them in again, the method already lives inside the object that owns them.
+
+### Problem 4: Spot the bugs
+
+The two mistakes:
+
+1. `Robot r = Robot();` does not pass a name, but the constructor needs one.
+2. `print('r.name')` has quotes, so it shows the text `r.name` instead of the value.
+
+Fixed:
+
+```dart
+class Robot {
+  String name;
+  Robot(this.name);
+
+  void beep() {
+    print('$name goes beep');
+  }
+}
+
+void main() {
+  Robot r = Robot('Wall-E');   // pass a name
+  print(r.name);               // no quotes, shows the value
+  r.beep();
+}
+```
+
+Output:
+
+```
+Wall-E
+Wall-E goes beep
+```
+
+### Problem 5: Build a BankAccount
 
 ```dart
 class BankAccount {
   String owner;
   double balance;
 
-  // The owner is required. The balance is optional and starts at 0
-  // if you do not pass one. (The square brackets mean "optional".)
-  BankAccount(this.owner, [this.balance = 0]);
+  BankAccount(this.owner, this.balance);
 
   void deposit(double amount) {
-    if (amount > 0) {
-      balance = balance + amount;
-      print('$owner deposited $amount. Balance is now $balance');
-    } else {
-      print('Deposit must be positive.');
-    }
-  }
-
-  void withdraw(double amount) {
-    if (amount > 0 && amount <= balance) {
-      balance = balance - amount;
-      print('$owner withdrew $amount. Balance is now $balance');
-    } else {
-      print('Cannot withdraw $amount. Balance is only $balance');
-    }
+    balance = balance + amount;
+    print('$owner now has $balance');
   }
 }
 
 void main() {
-  var account = BankAccount('Alice', 100);
-
-  account.deposit(50);    // Alice deposited 50.0. Balance is now 150.0
-  account.withdraw(30);   // Alice withdrew 30.0. Balance is now 120.0
-  account.withdraw(500);  // Cannot withdraw 500.0. Balance is only 120.0
+  BankAccount account = BankAccount('Ada', 100);
+  account.deposit(50);   // Ada now has 150.0
 }
 ```
 
-Everything here is something you have already met:
-
-- **Properties**: `owner` and `balance` hold the account's data.
-- **Constructor**: `BankAccount(this.owner, [this.balance = 0])` sets it up. The `[... = 0]` part makes `balance` optional with a default of 0.
-- **Methods**: `deposit` and `withdraw` are the actions, and they use `if` to protect the account from bad input.
-
-> One small thing you may notice: we pass `100` and `50` (whole numbers), but the output shows `100.0` and `50.0`. That is because `balance` is a `double` (a decimal number), and Dart always prints doubles with a `.0` on the end. Nothing is wrong.
+The `deposit` method changes the object's own `balance` and prints it. It shows `150.0` because `balance` is a `double`.
 
 ---
 
-## 8. Recap
-
-| Word | Plain meaning |
-|------|---------------|
-| Class | The blueprint. The plan for making objects. |
-| Object | A real thing built from the blueprint. |
-| Instance | Another word for object. |
-| Property (field) | A variable that lives inside an object. Its data. |
-| Method | A function that lives inside an object. Its actions. |
-| Constructor | The special setup code that runs when you build an object. Same name as the class. |
-| `this` | "This particular object." Used to tell a property apart from a parameter with the same name. |
-| `.` (dot) | How you reach a property or method inside an object: `alice.name`, `alice.introduce()`. |
-
-The whole thing in one breath: **a class is a blueprint with properties (data) and methods (actions); you build objects from it with `ClassName(...)`; each object keeps its own data; you reach inside an object with a dot.**
-
----
-
-## 9. Check yourself
-
-Try to answer before opening each box.
-
-**Q1.** What is the difference between a class and an object?
-
-<details>
-<summary>Answer</summary>
-
-A class is the blueprint (the plan). An object is a real thing built from that blueprint. One class can make many objects. Think: one house plan, many actual houses.
-
-</details>
-
-**Q2.** In `Person(this.name, this.age);`, what does `this.name` do?
-
-<details>
-<summary>Answer</summary>
-
-It takes the value passed into the constructor and stores it in this object's `name` property. `this.name` means "this object's name", so the constructor fills it in for you automatically when you build the object.
-
-</details>
-
-**Q3.** You build two objects: `var a = Counter();` and `var b = Counter();`. You call `a.increment()` five times. What is `b.count`?
-
-<details>
-<summary>Answer</summary>
-
-`0`. They are separate objects, so changing `a` does not touch `b`. `b` was never incremented.
-
-</details>
-
-**Q4.** What about this: `var a = Counter(); var b = a; a.increment();` What is `b.count`?
-
-<details>
-<summary>Answer</summary>
-
-`1`. Here `b = a` did NOT build a new object. `a` and `b` are two names for the same single object, so incrementing through `a` shows up through `b` too. (Compare with Q3, where the constructor was called twice.)
-
-</details>
-
-**Q5.** How do you call a method named `bark` on an object stored in a variable called `dog`?
-
-<details>
-<summary>Answer</summary>
-
-`dog.bark();` Use the dot to reach the method, and the parentheses to actually run it.
-
-</details>
-
----
-
-## 10. Now practice
-
-1. Open the matching example file and run it: `../Examples/Example01-BasicClasses.dart`. It rebuilds these exact ideas as one runnable program with output.
-2. Then do **Exercise 1** in `../Exercises/Exercises.md`. It is gentle and walks you through your first class step by step.
-
-When both of those feel comfortable, move on.
-
-**Next:** `02-Constructors.md` shows you more powerful ways to build objects.
+**Next:** `02-Constructors.md`, where you learn more powerful ways to build objects.
