@@ -1,5 +1,9 @@
 # API Client Deep Dive: The Network Layer
 
+## The Big Idea In One Sentence
+
+> The API client is the one class that actually talks to the internet: it sends requests, adds headers, and returns raw JSON, but it never turns that JSON into your model objects (the repository does that).
+
 The API Client is the lowest layer in your architecture. It handles raw HTTP communication with servers. This doc explains what goes in the services/ folder and how to build a proper API client.
 
 ---
@@ -824,8 +828,70 @@ TESTING:
 
 ---
 
+## Quick Quiz
+
+**Q1.** What does the API client return: raw JSON or model objects?
+
+<details>
+<summary>Answer</summary>
+Raw JSON (Maps/Lists). Turning that into model objects is the repository's job.
+</details>
+
+**Q2.** Why pass `baseUrl` in instead of hardcoding the full URL in each method?
+
+<details>
+<summary>Answer</summary>
+So the server address lives in one place. You can switch dev/production servers by changing one value, and each call only needs the endpoint.
+</details>
+
+**Q3.** Where does the API client turn a `404` into a typed `NotFoundException`?
+
+<details>
+<summary>Answer</summary>
+In its response handler (e.g. `_handleResponse`), which maps status codes to exceptions.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Whose job?
+
+Sort into "API client" or "repository":
+1. Adding the `Authorization` header.
+2. Calling `User.fromJson` on the result.
+3. Mapping a 500 status to `ServerException`.
+
+### Problem 2: Spot the mistake
+
+An API client method does `(jsonDecode(body) as List).map(User.fromJson).toList()`. Why is that the wrong layer?
+
+### Problem 3: One base URL
+
+You must support two servers (main API and auth API). How does the `baseUrl` design make this easy?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Whose job?
+
+1. **API client** (headers are network concerns).
+2. **Repository** (it converts JSON to models).
+3. **API client** (it maps HTTP status to exceptions).
+
+### Problem 2: Spot the mistake
+
+Parsing into `User` couples the generic network layer to a specific model. The API client should return raw JSON; the `UserRepository` should call `User.fromJson`.
+
+### Problem 3: One base URL
+
+Each `ApiClient` takes its own `baseUrl`, so you create one client per server (`mainApi`, `authApi`) and the repositories use whichever they need. No hardcoded URLs scattered around.
+
+---
+
 ## Navigation
 
-Previous: [Repository Pattern](09a-RepositoryPattern.md)
+Previous: [Folder Structure Guide](09a-FolderStructureGuide.md)
 Back to: [Learning Path](00-LearningPath.md)
-Next: [Controllers Deep Dive](09f-ControllersDeepDive.md)
+Next: [Repository Pattern](09c-RepositoryPattern.md)
