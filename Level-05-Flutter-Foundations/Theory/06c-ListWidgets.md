@@ -1,156 +1,100 @@
-# Level 05 PART 6c: List Widgets - Scrollable Lists and Grids
+# List Widgets: Showing Scrollable Lists
 
-## For a 5-Year-Old
+## The Big Idea In One Sentence
 
-Imagine you have a toy chest with LOTS of toys:
-- You can't see all toys at once (too many!)
-- So you scroll through them (like scrolling on a phone)
-- Sometimes toys are in a line (like a list)
-- Sometimes toys are in a grid (like squares on a checkerboard)
+> `ListView` shows a scrollable column of items, `ListView.builder` does it efficiently for long or data-driven lists, and `ListTile` is the ready-made row for each item.
 
-Flutter's list widgets work the same way! They help you show MANY items that users can scroll through. Let's learn all about them!
+Most apps are lists: chats, contacts, products, settings. This is how you build them.
 
 ---
 
-## List Widget Types Overview
+## For A 5-Year-Old
 
-| Widget | What It Shows | Best For |
-|--------|---------------|----------|
-| **ListView** | Vertical scrolling list | Any scrollable content |
-| **ListView.builder** | Lazy-loaded list | Long lists (100+ items) |
-| **ListView.separated** | List with dividers | Lists with separators |
-| **ListTile** | Standard list item | Contacts, settings, menus |
-| **GridView** | Grid of items | Photos, products, icons |
-| **GridView.builder** | Lazy-loaded grid | Large grids |
-| **ReorderableListView** | Drag-to-reorder list | Todo lists, playlists |
-| **SliverAppBar** | Collapsing header | Fancy scrolling effects |
+A `Column` shows a few things stacked up, but it cannot scroll. A `ListView` is like a Column that **scrolls** when there are too many things to fit. Perfect for long lists.
 
 ---
 
-## ListView - Basic Scrollable List
+## ListView: A Scrolling Column
 
-**Best for:** Simple lists with few items
-
-### Basic ListView
+The simplest form takes a list of `children`, just like a Column, but it scrolls:
 
 ```dart
 ListView(
-  children: [
-    ListTile(
-      leading: Icon(Icons.home),
-      title: Text('Home'),
-    ),
-    ListTile(
-      leading: Icon(Icons.search),
-      title: Text('Search'),
-    ),
-    ListTile(
-      leading: Icon(Icons.person),
-      title: Text('Profile'),
-    ),
+  children: const [
+    ListTile(title: Text('First')),
+    ListTile(title: Text('Second')),
+    ListTile(title: Text('Third')),
   ],
 )
 ```
 
-### ListView with Padding
-
-```dart
-ListView(
-  padding: EdgeInsets.all(16),
-  children: [
-    Card(
-      child: ListTile(
-        title: Text('Item 1'),
-      ),
-    ),
-    SizedBox(height: 8),
-    Card(
-      child: ListTile(
-        title: Text('Item 2'),
-      ),
-    ),
-    SizedBox(height: 8),
-    Card(
-      child: ListTile(
-        title: Text('Item 3'),
-      ),
-    ),
-  ],
-)
-```
+Use plain `ListView` when you have a small, fixed number of items.
 
 ---
 
-## ListView.builder - Efficient Long Lists
+## ListTile: The Standard Row
 
-**Best for:** Lists with 100+ items (or unknown number)
+`ListTile` is a ready-made row, perfect for list items. It has handy slots:
 
-### Basic ListView.builder
+```dart
+ListTile(
+  leading: const Icon(Icons.person),   // at the start
+  title: const Text('Ada Bello'),      // the main text
+  subtitle: const Text('Online'),      // smaller text under the title
+  trailing: const Icon(Icons.chevron_right),  // at the end
+  onTap: () {
+    print('Tapped Ada');
+  },
+)
+```
+
+- `leading`: a widget at the left (often an icon or avatar).
+- `title`: the main line.
+- `subtitle`: a smaller second line.
+- `trailing`: a widget at the right (often an arrow or icon).
+- `onTap`: runs when the row is tapped.
+
+You will use `ListTile` constantly inside lists.
+
+---
+
+## ListView.builder: For Long Or Data-Driven Lists
+
+When you have many items, or a list that comes from data, use `ListView.builder`. Instead of writing every child by hand, you tell it **how many** items and **how to build one**.
 
 ```dart
 ListView.builder(
   itemCount: 100,
   itemBuilder: (context, index) {
-    return ListTile(
-      leading: CircleAvatar(
-        child: Text('${index + 1}'),
-      ),
-      title: Text('Item ${index + 1}'),
-      subtitle: Text('This is item number ${index + 1}'),
-      trailing: Icon(Icons.chevron_right),
-    );
+    return ListTile(title: Text('Item ${index + 1}'));
   },
 )
 ```
 
-### Why Use .builder?
+- `itemCount` is how many rows there are.
+- `itemBuilder` is a function Flutter calls for each row, giving you the `index` (0, 1, 2, ...). You return the widget for that row.
 
-```dart
-// BAD - Creates ALL widgets at once (slow for many items)
-ListView(
-  children: List.generate(1000, (index) {
-    return ListTile(title: Text('Item $index'));
-  }),
-)
+Why `.builder`? It only builds the rows that are **on screen**, so it stays fast even with thousands of items. Plain `ListView` builds them all at once.
 
-// GOOD - Creates widgets only when visible (fast!)
-ListView.builder(
-  itemCount: 1000,
-  itemBuilder: (context, index) {
-    return ListTile(title: Text('Item $index'));
-  },
-)
-```
+### Building From A List Of Data
 
-**Performance Tip:** `ListView.builder` only builds widgets that are visible on screen!
-
-### ListView.builder with Data
+The real use: turn a `List` (from Level 3) into rows.
 
 ```dart
 class ContactsList extends StatelessWidget {
-  final List<Map<String, String>> contacts = [
-    {'name': 'Alice Johnson', 'phone': '555-1234'},
-    {'name': 'Bob Smith', 'phone': '555-5678'},
-    {'name': 'Charlie Brown', 'phone': '555-9012'},
-    {'name': 'Diana Prince', 'phone': '555-3456'},
-  ];
+  const ContactsList({super.key});
+
+  final List<String> names = const ['Ada', 'Bola', 'Chidi', 'Dapo'];
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: contacts.length,
+      itemCount: names.length,
       itemBuilder: (context, index) {
-        final contact = contacts[index];
+        final name = names[index];
         return ListTile(
-          leading: CircleAvatar(
-            child: Text(contact['name']![0]), // First letter
-          ),
-          title: Text(contact['name']!),
-          subtitle: Text(contact['phone']!),
-          trailing: Icon(Icons.call),
-          onTap: () {
-            print('Call ${contact['name']}');
-          },
+          leading: CircleAvatar(child: Text(name[0])),  // first letter
+          title: Text(name),
         );
       },
     );
@@ -158,791 +102,251 @@ class ContactsList extends StatelessWidget {
 }
 ```
 
+`itemCount` is `names.length`, and for each `index` we read `names[index]` and make a row for it. Add a name to the list and a new row appears automatically.
+
 ---
 
-## ListView.separated - List with Dividers
+## ListView.separated: Lines Between Items
 
-**Best for:** Lists that need visual separators
-
-### Basic ListView.separated
+If you want a divider line between rows, `ListView.separated` adds one between each item:
 
 ```dart
 ListView.separated(
-  itemCount: 20,
-  separatorBuilder: (context, index) {
-    return Divider(); // Line between items
-  },
-  itemBuilder: (context, index) {
-    return ListTile(
-      title: Text('Item ${index + 1}'),
-    );
-  },
+  itemCount: 5,
+  itemBuilder: (context, index) => ListTile(title: Text('Row $index')),
+  separatorBuilder: (context, index) => const Divider(),
 )
 ```
 
-### Custom Separators
-
-```dart
-ListView.separated(
-  itemCount: 10,
-  separatorBuilder: (context, index) {
-    // Different separator every 3 items
-    if ((index + 1) % 3 == 0) {
-      return Divider(
-        thickness: 3,
-        color: Colors.blue,
-      );
-    }
-    return SizedBox(height: 8); // Small gap
-  },
-  itemBuilder: (context, index) {
-    return Card(
-      child: ListTile(
-        title: Text('Item ${index + 1}'),
-      ),
-    );
-  },
-)
-```
+It is like `ListView.builder` with an extra `separatorBuilder` for the thing between rows.
 
 ---
 
-## ListTile - Standard List Item
+## GridView: A Grid Instead Of A List
 
-**Best for:** Consistent list item layout
-
-### All ListTile Options
-
-```dart
-ListTile(
-  // Leading icon/avatar (left side)
-  leading: CircleAvatar(
-    backgroundImage: NetworkImage('https://example.com/avatar.jpg'),
-  ),
-
-  // Main title
-  title: Text(
-    'John Doe',
-    style: TextStyle(fontWeight: FontWeight.bold),
-  ),
-
-  // Subtitle (smaller text below title)
-  subtitle: Text('Software Developer'),
-
-  // Trailing icon/widget (right side)
-  trailing: Icon(Icons.chevron_right),
-
-  // Make it tappable
-  onTap: () {
-    print('Tapped John Doe');
-  },
-
-  // Long press
-  onLongPress: () {
-    print('Long pressed');
-  },
-
-  // Dense layout (less padding)
-  dense: true,
-
-  // Selected state
-  selected: true,
-
-  // 3 lines max for subtitle
-  isThreeLine: true,
-
-  // Enable/disable
-  enabled: true,
-)
-```
-
-### Common ListTile Patterns
-
-```dart
-// Contact item
-ListTile(
-  leading: CircleAvatar(child: Text('A')),
-  title: Text('Alice Johnson'),
-  subtitle: Text('555-1234'),
-  trailing: Row(
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      IconButton(
-        icon: Icon(Icons.call),
-        onPressed: () {},
-      ),
-      IconButton(
-        icon: Icon(Icons.message),
-        onPressed: () {},
-      ),
-    ],
-  ),
-)
-
-// Settings item
-ListTile(
-  leading: Icon(Icons.notifications),
-  title: Text('Notifications'),
-  trailing: Switch(
-    value: true,
-    onChanged: (value) {},
-  ),
-)
-
-// Menu item with badge
-ListTile(
-  leading: Icon(Icons.inbox),
-  title: Text('Inbox'),
-  trailing: Container(
-    padding: EdgeInsets.all(8),
-    decoration: BoxDecoration(
-      color: Colors.red,
-      shape: BoxShape.circle,
-    ),
-    child: Text('5', style: TextStyle(color: Colors.white)),
-  ),
-)
-```
-
----
-
-## GridView - Grid Layout
-
-**Best for:** Photos, products, icons
-
-### GridView.count (Fixed Number of Columns)
+When you want a grid (like a photo gallery), use `GridView.count`. You tell it how many columns with `crossAxisCount`:
 
 ```dart
 GridView.count(
-  crossAxisCount: 2, // 2 columns
-  mainAxisSpacing: 10,
-  crossAxisSpacing: 10,
-  padding: EdgeInsets.all(16),
+  crossAxisCount: 2,   // two columns
+  children: const [
+    Card(child: Center(child: Text('A'))),
+    Card(child: Center(child: Text('B'))),
+    Card(child: Center(child: Text('C'))),
+    Card(child: Center(child: Text('D'))),
+  ],
+)
+```
+
+`crossAxisCount: 2` makes two columns, and the items flow into the grid. (`Card` is a simple raised box; you meet it properly in `06d`.)
+
+---
+
+## The Top Mistakes Beginners Make
+
+### Mistake 1: Putting a ListView straight inside a Column
+
+```dart
+Column(
   children: [
-    Card(
-      color: Colors.red,
-      child: Center(child: Text('1')),
-    ),
-    Card(
-      color: Colors.blue,
-      child: Center(child: Text('2')),
-    ),
-    Card(
-      color: Colors.green,
-      child: Center(child: Text('3')),
-    ),
-    Card(
-      color: Colors.orange,
-      child: Center(child: Text('4')),
+    const Text('Title'),
+    ListView(children: const [...]),   // BAD: error, the ListView has no height limit
+  ],
+)
+```
+
+A `ListView` inside a `Column` does not know how tall to be, which causes an error. Wrap it in `Expanded` so it fills the leftover space (remember `Expanded` from 05b):
+
+```dart
+Column(
+  children: [
+    const Text('Title'),
+    Expanded(child: ListView(children: const [...])),   // GOOD
+  ],
+)
+```
+
+### Mistake 2: Forgetting itemCount in .builder
+
+`ListView.builder` needs `itemCount` so it knows how many rows to make.
+
+### Mistake 3: Using plain ListView for a huge list
+
+For long or data-driven lists, use `ListView.builder`. Plain `ListView` builds everything at once and can be slow.
+
+### Mistake 4: Wrong index
+
+`itemBuilder`'s `index` starts at 0. The first item is `names[0]`, not `names[1]`.
+
+---
+
+## One-Minute Recap
+
+- `ListView` is a scrolling column of `children` (good for a few items).
+- `ListTile` is the ready-made row: `leading`, `title`, `subtitle`, `trailing`, `onTap`.
+- `ListView.builder` (with `itemCount` and `itemBuilder`) is efficient for long or data-driven lists; it builds only visible rows.
+- `ListView.separated` adds a divider between rows.
+- `GridView.count(crossAxisCount: n, ...)` makes an n-column grid.
+- A `ListView` inside a `Column` needs `Expanded` to give it a height.
+
+---
+
+## Quick Quiz
+
+**Q1.** When should you use `ListView.builder` instead of plain `ListView`?
+
+<details>
+<summary>Answer</summary>
+For long lists or lists built from data. It only builds the rows that are on screen, so it stays fast.
+</details>
+
+**Q2.** What does `itemBuilder` give you, and what must it return?
+
+<details>
+<summary>Answer</summary>
+It gives you the `index` of the row (starting at 0), and you return the widget for that row.
+</details>
+
+**Q3.** What are the four content slots of a ListTile?
+
+<details>
+<summary>Answer</summary>
+`leading`, `title`, `subtitle`, and `trailing` (plus `onTap` for taps).
+</details>
+
+**Q4.** Why does a ListView inside a Column cause an error, and how do you fix it?
+
+<details>
+<summary>Answer</summary>
+The ListView has no height limit inside a Column. Wrap it in `Expanded` so it fills the leftover space.
+</details>
+
+---
+
+## Assignment
+
+Paste into [dartpad.dev](https://dartpad.dev). Use a full Scaffold so the list has room: `Scaffold(body: YOUR_LIST)`.
+
+### Problem 1: A simple list
+
+Build a `ListView` with three `ListTile`s titled `'Home'`, `'Settings'`, and `'About'`, each with a matching leading icon.
+
+### Problem 2: A list from data
+
+Given `List<String> fruits = ['Apple', 'Banana', 'Cherry'];`, build a `ListView.builder` that shows one `ListTile` per fruit (the fruit as the title).
+
+### Problem 3: A tappable contact row
+
+Build a `ListTile` with a person icon as `leading`, `'Ada'` as the title, `'Online'` as the subtitle, a call icon as `trailing`, and an `onTap` that prints `'Calling Ada'`.
+
+### Problem 4: A 2-column grid
+
+Build a `GridView.count` with 2 columns and four coloured `Container`s.
+
+### Problem 5: Spot the bug
+
+Why does this throw an error, and how do you fix it?
+
+```dart
+Column(
+  children: [
+    const Text('My list'),
+    ListView(
+      children: const [ListTile(title: Text('A')), ListTile(title: Text('B'))],
     ),
   ],
 )
 ```
 
-### GridView.builder (Efficient Large Grids)
+---
+
+## Assignment Answers
+
+### Problem 1: A simple list
 
 ```dart
-GridView.builder(
-  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-    crossAxisCount: 3, // 3 columns
-    mainAxisSpacing: 8,
-    crossAxisSpacing: 8,
-    childAspectRatio: 1, // Square items (width/height)
-  ),
-  itemCount: 50,
-  itemBuilder: (context, index) {
-    return Card(
-      child: Center(
-        child: Text('${index + 1}'),
-      ),
-    );
-  },
+ListView(
+  children: const [
+    ListTile(leading: Icon(Icons.home), title: Text('Home')),
+    ListTile(leading: Icon(Icons.settings), title: Text('Settings')),
+    ListTile(leading: Icon(Icons.info), title: Text('About')),
+  ],
 )
 ```
 
-### GridView.extent (Fixed Item Width)
+Each row is a `ListTile` with a `leading` icon and a `title`.
+
+### Problem 2: A list from data
 
 ```dart
-GridView.extent(
-  maxCrossAxisExtent: 150, // Max 150px wide
-  mainAxisSpacing: 10,
-  crossAxisSpacing: 10,
-  padding: EdgeInsets.all(16),
-  children: List.generate(20, (index) {
-    return Card(
-      child: Center(child: Text('${index + 1}')),
-    );
-  }),
-)
-```
+class FruitList extends StatelessWidget {
+  const FruitList({super.key});
 
-### Photo Grid Example
-
-```dart
-class PhotoGrid extends StatelessWidget {
-  final List<String> imageUrls = [
-    'https://picsum.photos/200/200?random=1',
-    'https://picsum.photos/200/200?random=2',
-    'https://picsum.photos/200/200?random=3',
-    'https://picsum.photos/200/200?random=4',
-    'https://picsum.photos/200/200?random=5',
-    'https://picsum.photos/200/200?random=6',
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
-      padding: EdgeInsets.all(8),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        mainAxisSpacing: 8,
-        crossAxisSpacing: 8,
-      ),
-      itemCount: imageUrls.length,
-      itemBuilder: (context, index) {
-        return InkWell(
-          onTap: () {
-            print('Tapped image $index');
-          },
-          child: Card(
-            clipBehavior: Clip.antiAlias,
-            child: Image.network(
-              imageUrls[index],
-              fit: BoxFit.cover,
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-```
-
----
-
-## ReorderableListView - Drag to Reorder
-
-**Best for:** Todo lists, playlists, priority lists
-
-### Basic ReorderableListView
-
-```dart
-class ReorderableExample extends StatefulWidget {
-  @override
-  State<ReorderableExample> createState() => _ReorderableExampleState();
-}
-
-class _ReorderableExampleState extends State<ReorderableExample> {
-  List<String> items = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
-
-  @override
-  Widget build(BuildContext context) {
-    return ReorderableListView(
-      onReorder: (oldIndex, newIndex) {
-        setState(() {
-          if (newIndex > oldIndex) {
-            newIndex -= 1;
-          }
-          final item = items.removeAt(oldIndex);
-          items.insert(newIndex, item);
-        });
-      },
-      children: [
-        for (int index = 0; index < items.length; index++)
-          ListTile(
-            key: Key('$index'), // REQUIRED!
-            leading: Icon(Icons.drag_handle),
-            title: Text(items[index]),
-            trailing: IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () {
-                setState(() {
-                  items.removeAt(index);
-                });
-              },
-            ),
-          ),
-      ],
-    );
-  }
-}
-```
-
----
-
-## Pull to Refresh
-
-**Best for:** Lists that can update (social feeds, emails)
-
-### RefreshIndicator
-
-```dart
-class RefreshableList extends StatefulWidget {
-  @override
-  State<RefreshableList> createState() => _RefreshableListState();
-}
-
-class _RefreshableListState extends State<RefreshableList> {
-  List<String> items = ['Item 1', 'Item 2', 'Item 3'];
-
-  Future<void> _refreshData() async {
-    // Simulate network request
-    await Future.delayed(Duration(seconds: 2));
-
-    setState(() {
-      // Add new items
-      items.insert(0, 'New Item ${items.length + 1}');
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: _refreshData,
-      child: ListView.builder(
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(items[index]),
-          );
-        },
-      ),
-    );
-  }
-}
-```
-
----
-
-## Pagination (Load More)
-
-**Best for:** Very long lists (social media, search results)
-
-### Infinite Scroll Example
-
-```dart
-class PaginatedList extends StatefulWidget {
-  @override
-  State<PaginatedList> createState() => _PaginatedListState();
-}
-
-class _PaginatedListState extends State<PaginatedList> {
-  List<String> items = List.generate(20, (i) => 'Item ${i + 1}');
-  bool isLoadingMore = false;
-  ScrollController _scrollController = ScrollController();
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(_scrollListener);
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  void _scrollListener() {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
-      _loadMore();
-    }
-  }
-
-  Future<void> _loadMore() async {
-    if (isLoadingMore) return;
-
-    setState(() {
-      isLoadingMore = true;
-    });
-
-    // Simulate loading
-    await Future.delayed(Duration(seconds: 2));
-
-    setState(() {
-      int currentLength = items.length;
-      items.addAll(
-        List.generate(20, (i) => 'Item ${currentLength + i + 1}'),
-      );
-      isLoadingMore = false;
-    });
-  }
+  final List<String> fruits = const ['Apple', 'Banana', 'Cherry'];
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      controller: _scrollController,
-      itemCount: items.length + (isLoadingMore ? 1 : 0),
+      itemCount: fruits.length,
       itemBuilder: (context, index) {
-        if (index == items.length) {
-          return Center(
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: CircularProgressIndicator(),
-            ),
-          );
-        }
-        return ListTile(
-          title: Text(items[index]),
-        );
+        return ListTile(title: Text(fruits[index]));
       },
     );
   }
 }
 ```
 
----
+`itemCount` is the list length, and `itemBuilder` makes a row for each `index` using `fruits[index]`.
 
-## SliverAppBar - Collapsing Header
-
-**Best for:** Fancy scrolling effects
-
-### Basic Collapsing AppBar
+### Problem 3: A tappable contact row
 
 ```dart
-Scaffold(
-  body: CustomScrollView(
-    slivers: [
-      SliverAppBar(
-        expandedHeight: 200,
-        floating: false,
-        pinned: true,
-        flexibleSpace: FlexibleSpaceBar(
-          title: Text('Collapsing Header'),
-          background: Image.network(
-            'https://picsum.photos/400/200',
-            fit: BoxFit.cover,
-          ),
-        ),
-      ),
-      SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (context, index) {
-            return ListTile(
-              title: Text('Item ${index + 1}'),
-            );
-          },
-          childCount: 50,
-        ),
-      ),
-    ],
-  ),
+ListTile(
+  leading: const Icon(Icons.person),
+  title: const Text('Ada'),
+  subtitle: const Text('Online'),
+  trailing: const Icon(Icons.call),
+  onTap: () => print('Calling Ada'),
 )
 ```
 
-### SliverAppBar Options
+Each slot fills a part of the row, and `onTap` runs when the row is tapped.
+
+### Problem 4: A 2-column grid
 
 ```dart
-SliverAppBar(
-  // Height when expanded
-  expandedHeight: 200,
-
-  // Stay visible when scrolling
-  pinned: true,
-
-  // Float on scroll up
-  floating: true,
-
-  // Snap to expanded/collapsed
-  snap: false,
-
-  // Background when expanded
-  flexibleSpace: FlexibleSpaceBar(
-    title: Text('Title'),
-    background: Image.network('url', fit: BoxFit.cover),
-    centerTitle: true,
-  ),
-
-  // Actions
-  actions: [
-    IconButton(icon: Icon(Icons.search), onPressed: () {}),
+GridView.count(
+  crossAxisCount: 2,
+  children: [
+    Container(color: Colors.red),
+    Container(color: Colors.green),
+    Container(color: Colors.blue),
+    Container(color: Colors.amber),
   ],
 )
 ```
 
----
+`crossAxisCount: 2` makes two columns, and the four containers fill the grid.
 
-## Complete Example: Social Media Feed
+### Problem 5: Spot the bug
+
+A `ListView` inside a `Column` has no height limit, which causes an error. Wrap the ListView in `Expanded` so it takes the leftover height:
 
 ```dart
-import 'package:flutter/material.dart';
-
-void main() => runApp(SocialFeedApp());
-
-class SocialFeedApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: SocialFeedPage(),
-      theme: ThemeData(useMaterial3: true),
-    );
-  }
-}
-
-class Post {
-  final String username;
-  final String content;
-  final String timeAgo;
-  final int likes;
-  final int comments;
-
-  Post({
-    required this.username,
-    required this.content,
-    required this.timeAgo,
-    required this.likes,
-    required this.comments,
-  });
-}
-
-class SocialFeedPage extends StatefulWidget {
-  @override
-  State<SocialFeedPage> createState() => _SocialFeedPageState();
-}
-
-class _SocialFeedPageState extends State<SocialFeedPage> {
-  List<Post> posts = [
-    Post(
-      username: 'Alice',
-      content: 'Just finished learning Flutter! 🚀',
-      timeAgo: '2h ago',
-      likes: 24,
-      comments: 5,
+Column(
+  children: [
+    const Text('My list'),
+    Expanded(
+      child: ListView(
+        children: const [ListTile(title: Text('A')), ListTile(title: Text('B'))],
+      ),
     ),
-    Post(
-      username: 'Bob',
-      content: 'Beautiful sunset today! 🌅',
-      timeAgo: '4h ago',
-      likes: 156,
-      comments: 12,
-    ),
-    Post(
-      username: 'Charlie',
-      content: 'New blog post about mobile development',
-      timeAgo: '6h ago',
-      likes: 89,
-      comments: 23,
-    ),
-  ];
-
-  Future<void> _refreshFeed() async {
-    await Future.delayed(Duration(seconds: 2));
-    setState(() {
-      posts.insert(
-        0,
-        Post(
-          username: 'New User',
-          content: 'This is a new post!',
-          timeAgo: 'Just now',
-          likes: 0,
-          comments: 0,
-        ),
-      );
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Social Feed'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: Icon(Icons.more_vert),
-            onPressed: () {},
-          ),
-        ],
-      ),
-      body: RefreshIndicator(
-        onRefresh: _refreshFeed,
-        child: ListView.separated(
-          itemCount: posts.length,
-          separatorBuilder: (context, index) => Divider(height: 1),
-          itemBuilder: (context, index) {
-            final post = posts[index];
-            return _buildPostCard(post);
-          },
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Create new post
-        },
-        child: Icon(Icons.add),
-      ),
-    );
-  }
-
-  Widget _buildPostCard(Post post) {
-    return Padding(
-      padding: EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // User info
-          Row(
-            children: [
-              CircleAvatar(
-                child: Text(post.username[0]),
-              ),
-              SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      post.username,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      post.timeAgo,
-                      style: TextStyle(color: Colors.grey, fontSize: 12),
-                    ),
-                  ],
-                ),
-              ),
-              IconButton(
-                icon: Icon(Icons.more_vert),
-                onPressed: () {},
-              ),
-            ],
-          ),
-
-          SizedBox(height: 12),
-
-          // Content
-          Text(post.content),
-
-          SizedBox(height: 12),
-
-          // Actions
-          Row(
-            children: [
-              TextButton.icon(
-                icon: Icon(Icons.favorite_border),
-                label: Text('${post.likes}'),
-                onPressed: () {},
-              ),
-              SizedBox(width: 8),
-              TextButton.icon(
-                icon: Icon(Icons.comment_outlined),
-                label: Text('${post.comments}'),
-                onPressed: () {},
-              ),
-              SizedBox(width: 8),
-              TextButton.icon(
-                icon: Icon(Icons.share_outlined),
-                label: Text('Share'),
-                onPressed: () {},
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
+  ],
+)
 ```
+
+Now the ListView fills the space below the title and scrolls if needed.
 
 ---
 
-## Performance Tips
-
-### 1. Use .builder for Long Lists
-
-```dart
-// BAD - Creates all 1000 widgets immediately
-ListView(
-  children: List.generate(1000, (i) => ListTile(...)),
-)
-
-// GOOD - Creates only visible widgets
-ListView.builder(
-  itemCount: 1000,
-  itemBuilder: (context, index) => ListTile(...),
-)
-```
-
-### 2. Add Keys to List Items
-
-```dart
-ListView.builder(
-  itemBuilder: (context, index) {
-    return ListTile(
-      key: ValueKey(items[index].id), // Helps Flutter optimize
-      title: Text(items[index].name),
-    );
-  },
-)
-```
-
-### 3. Use const Widgets When Possible
-
-```dart
-ListView.builder(
-  itemBuilder: (context, index) {
-    return const ListTile( // const = better performance
-      leading: Icon(Icons.person),
-      title: Text('Static Text'),
-    );
-  },
-)
-```
-
-### 4. Dispose Controllers
-
-```dart
-class MyList extends StatefulWidget {
-  @override
-  State<MyList> createState() => _MyListState();
-}
-
-class _MyListState extends State<MyList> {
-  final ScrollController _controller = ScrollController();
-
-  @override
-  void dispose() {
-    _controller.dispose(); // Clean up!
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(controller: _controller);
-  }
-}
-```
-
----
-
-## Summary
-
-You now know:
-- **ListView** for simple scrollable lists
-- **ListView.builder** for efficient long lists
-- **ListView.separated** for lists with dividers
-- **ListTile** for standard list items
-- **GridView** for grid layouts
-- **ReorderableListView** for drag-to-reorder
-- **RefreshIndicator** for pull-to-refresh
-- **Pagination** for infinite scroll
-- **SliverAppBar** for collapsing headers
-- Performance optimization tips
-
-**Key Takeaways:**
-- Always use **.builder** for lists with 50+ items
-- Use **const** widgets when possible
-- Dispose of controllers in dispose()
-- Add keys to list items for better performance
-- Use **RefreshIndicator** for pullable lists
-
----
-
-**Next:** Learn about Card and Dialog Widgets
-
-**Continue to:** `06d-CardDialogWidgets.md`
+**Next:** `06d-CardDialogWidgets.md`, the last widget lesson, covering cards, dialogs, and snackbars.
