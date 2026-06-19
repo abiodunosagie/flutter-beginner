@@ -82,7 +82,7 @@ After each theory file, practice with the matching PART exercises!
 ### PART 6: Mocking with Mockito (NEW!)
 
 #### Step 6a: Mockito Basics
-📖 **[13a-MockitoBasics.md](13a-MockitoBasics.md)**
+📖 **[06-MockitoBasics.md](06-MockitoBasics.md)**
 - What is mocking?
 - When to use mocks
 - mockito package setup
@@ -97,7 +97,7 @@ After each theory file, practice with the matching PART exercises!
 ---
 
 #### Step 6b: Mockito Advanced
-📖 **[13b-MockitoAdvanced.md](13b-MockitoAdvanced.md)**
+📖 **[07-MockitoAdvanced.md](07-MockitoAdvanced.md)**
 - Argument matchers (any, argThat)
 - Verification patterns (times, never)
 - Async mocking (thenAnswer)
@@ -113,7 +113,7 @@ After each theory file, practice with the matching PART exercises!
 ### PART 7: DevTools & Performance (NEW!)
 
 #### Step 7a: DevTools Introduction
-📖 **[14a-DevToolsIntro.md](14a-DevToolsIntro.md)**
+📖 **[08-DevToolsIntro.md](08-DevToolsIntro.md)**
 - What is Flutter DevTools?
 - Installation and connection
 - Widget Inspector
@@ -128,7 +128,7 @@ After each theory file, practice with the matching PART exercises!
 ---
 
 #### Step 7b: Performance Profiling
-📖 **[14b-PerformanceProfiling.md](14b-PerformanceProfiling.md)**
+📖 **[09-PerformanceProfiling.md](09-PerformanceProfiling.md)**
 - Performance tab overview
 - Frame rendering analysis
 - Timeline events
@@ -143,7 +143,7 @@ After each theory file, practice with the matching PART exercises!
 ---
 
 #### Step 7c: Optimization Techniques
-📖 **[14c-OptimizationTechniques.md](14c-OptimizationTechniques.md)**
+📖 **[10-OptimizationTechniques.md](10-OptimizationTechniques.md)**
 - App size optimization
 - Build time optimization
 - Startup time improvements
@@ -232,4 +232,4 @@ Once you've finished all theory and exercises:
 
 **Ready to start?**
 
-👉 Begin with [01-UnitTesting.md](01-UnitTesting.md)
+👉 Begin with [01-WhyTesting.md](01-WhyTesting.md)
