@@ -1,5 +1,9 @@
 # HTTP Methods
 
+## The Big Idea In One Sentence
+
+> Each HTTP method is a verb: **GET** reads, **POST** creates, **PUT** replaces, **PATCH** tweaks part, and **DELETE** removes.
+
 Learn the different ways to interact with APIs: GET, POST, PUT, DELETE, and more!
 
 ---
@@ -521,7 +525,69 @@ class UserApi {
 
 ---
 
-[← What is an API](./01-WhatIsAnAPI.md) | [Next: JSON Basics →](./03-JSONBasics.md)
+## Quick Quiz
+
+**Q1.** Which method changes nothing on the server (it is "safe")?
+
+<details>
+<summary>Answer</summary>
+`GET`. It only reads data.
+</details>
+
+**Q2.** What is the difference between PUT and PATCH?
+
+<details>
+<summary>Answer</summary>
+PUT replaces the whole resource (fields you leave out can be erased). PATCH updates only the fields you send and leaves the rest unchanged.
+</details>
+
+**Q3.** What status code does a successful POST usually return?
+
+<details>
+<summary>Answer</summary>
+`201 Created`.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Choose the verb
+
+For each, pick GET, POST, PUT, PATCH, or DELETE:
+1. Change only a user's email, leaving name and age untouched.
+2. Read user number 7.
+3. Remove user number 7.
+
+### Problem 2: Spot the danger
+
+A user is `{name, email, age}`. You send `PUT /users/5` with only `{name: 'Sam'}`. What might happen to `email` and `age`?
+
+### Problem 3: Which needs a body?
+
+Of GET and POST, which one sends data in the request body, and why?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Choose the verb
+
+1. **PATCH** (partial update, keep the other fields).
+2. **GET** (read).
+3. **DELETE** (remove).
+
+### Problem 2: Spot the danger
+
+PUT replaces the whole resource, so `email` and `age` may be erased because you did not include them. Use PATCH if you only want to change the name.
+
+### Problem 3: Which needs a body?
+
+**POST** sends a body, because it carries the new data to create. GET has no body; its options go in the URL/query string.
+
+---
+
+[← What is an API](./01-WhatIsAnAPI.md) | [Next: JSON Introduction →](./03a-JSONIntro.md)
 
 ---
 
