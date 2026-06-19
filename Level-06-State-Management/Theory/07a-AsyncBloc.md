@@ -1,6 +1,12 @@
 # Async BLoC: Handling API Calls and Loading States
 
-Most real apps need to load data from the internet, databases, or files. Let's learn how to handle these async operations with BLoC! Think of it like ordering pizza delivery - you wait, it might fail, or you get your pizza.
+## The Big Idea In One Sentence
+
+> For data that loads over time, a bloc emits a **loading** state, does the work, then emits either a **loaded** state (with the data) or an **error** state.
+
+Most real apps load data from the internet. A bloc handles that with the same three states you saw with AsyncValue: loading, loaded, error.
+
+> **Async heads-up.** This lesson uses `Future`/`async`/`await` (data that arrives later). You learn those fully in Level 8. For now: an event handler can be `async`, `await` some work, and `emit` a loading state first, then the result. Focus on the loading -> loaded/error flow.
 
 ---
 
@@ -544,6 +550,93 @@ For async operations with BLoC:
 5. **Handle errors gracefully** with try/catch
 
 This pattern works for API calls, database queries, file operations, and any async operation!
+
+---
+
+## Quick Quiz
+
+**Q1.** What three states does an async bloc usually emit?
+
+<details>
+<summary>Answer</summary>
+Loading (while fetching), Loaded (success, with the data), and Error (if it failed). Often an Initial state too.
+</details>
+
+**Q2.** In what order do you emit them?
+
+<details>
+<summary>Answer</summary>
+Emit Loading first, then do the work, then emit Loaded on success or Error on failure.
+</details>
+
+**Q3.** What protects against a crash when the work fails?
+
+<details>
+<summary>Answer</summary>
+A `try/catch` around the `await`, emitting an Error state in the `catch`.
+</details>
+
+---
+
+## Assignment
+
+These use async (Level 8). Focus on the loading -> loaded/error flow.
+
+### Problem 1: Name the states
+
+A bloc loads a list of posts from the internet. List the states it should emit, in order, for a successful load.
+
+### Problem 2: Order the emits
+
+Put these in the right order inside an async handler: `emit(Loaded(data))`, `emit(Loading())`, `await fetchData()`.
+
+### Problem 3: Spot the missing piece
+
+This handler shows a spinner forever even after data loads. What is missing?
+
+```dart
+on<LoadData>((event, emit) async {
+  emit(Loading());
+  final data = await fetchData();
+  // ...
+});
+```
+
+---
+
+## Assignment Answers
+
+### Problem 1: Name the states
+
+`Loading` (while fetching), then `Loaded(posts)` (success). If it failed instead, it would emit `Error(message)`. So a successful run is Loading then Loaded.
+
+### Problem 2: Order the emits
+
+```dart
+emit(Loading());            // 1. show the spinner
+final data = await fetchData();  // 2. do the work
+emit(Loaded(data));         // 3. show the result
+```
+
+Loading first, then await the work, then emit the loaded result.
+
+### Problem 3: Spot the missing piece
+
+It never emits a loaded (or error) state after the data arrives, so the UI stays on the loading spinner. Add the emits (and a try/catch):
+
+```dart
+on<LoadData>((event, emit) async {
+  emit(Loading());
+  try {
+    final data = await fetchData();
+    emit(Loaded(data));
+  } catch (e) {
+    emit(Error(e.toString()));
+  }
+});
+```
+
+Now it emits Loaded on success or Error on failure, so the spinner is replaced.
 
 ---
 
