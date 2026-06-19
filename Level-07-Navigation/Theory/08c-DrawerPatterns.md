@@ -1,5 +1,9 @@
 # Drawer Navigation Patterns
 
+## The Big Idea In One Sentence
+
+> A `Scaffold` can have a left `drawer` and a right `endDrawer`, and the smart pattern is bottom nav for your main screens plus a drawer for secondary stuff like settings and logout.
+
 Learn about EndDrawer, combining navigation patterns, and best practices!
 
 ---
@@ -172,6 +176,65 @@ class ScaffoldWithDrawer extends StatelessWidget {
 │  • Bottom nav for main screens, drawer for secondary        │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Quick Quiz
+
+**Q1.** What is the property for a right-side drawer, and how do you open it?
+
+<details>
+<summary>Answer</summary>
+`endDrawer:` on the `Scaffold`, opened with `Scaffold.of(context).openEndDrawer()`.
+</details>
+
+**Q2.** You have 4 main screens users switch between constantly. Drawer or bottom nav?
+
+<details>
+<summary>Answer</summary>
+Bottom nav. It is best for 3 to 5 main destinations that users switch between often.
+</details>
+
+**Q3.** Where should secondary items like Settings, Help, and Logout usually live?
+
+<details>
+<summary>Answer</summary>
+In a drawer, while the bottom nav holds the main destinations.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Two drawers
+
+A shop screen needs a left menu and a right "Filters" panel. Which two `Scaffold` properties do you use?
+
+### Problem 2: Pick the pattern
+
+An app has 3 main tabs plus Settings, Help, and Logout. Describe the navigation setup.
+
+### Problem 3: Open the filter panel
+
+Write the line (inside an AppBar action button) that opens the right-side drawer.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Two drawers
+
+`drawer:` for the left menu and `endDrawer:` for the right Filters panel.
+
+### Problem 2: Pick the pattern
+
+Use a **bottom navigation bar** for the 3 main tabs, and a **drawer** for the secondary items (Settings, Help, Logout). This is the "use both" pattern.
+
+### Problem 3: Open the filter panel
+
+```dart
+Scaffold.of(context).openEndDrawer();
 ```
 
 ---
