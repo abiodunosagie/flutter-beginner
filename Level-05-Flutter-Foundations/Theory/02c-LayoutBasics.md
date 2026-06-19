@@ -1,23 +1,28 @@
-# Layout Basics: Organizing Your Widgets
+# Layout Basics: Arranging Your Widgets
 
-## Think of Organizing Your Room
+## The Big Idea In One Sentence
 
-Imagine arranging toys in your room:
-- **Row** = Line them up left to right →
-- **Column** = Stack them top to bottom ↓
-- **Center** = Put one toy in the middle of the room
-- **Padding** = Give toys some breathing room
-- **Scaffold** = The room itself (walls, ceiling, floor)
+> Layout widgets decide **where** things go: **Row** lines them up sideways, **Column** stacks them down, **Center** centers, **Padding** adds space, and **Scaffold** is the page itself.
 
-Let's learn how to organize widgets like organizing toys!
+You know the display widgets now. These are the widgets that arrange them.
 
 ---
 
-## Row: Line Things Up Horizontally
+## Think Of Organizing A Room
 
-`Row` places widgets in a horizontal line (left to right →).
+```
+Row      = line toys up left to right  →
+Column   = stack toys top to bottom    ↓
+Center   = put one toy in the middle
+Padding  = give a toy some breathing room
+Scaffold = the room itself (with walls and a top shelf)
+```
 
-### Basic Row
+---
+
+## Row: Line Things Up Sideways
+
+`Row` places its `children` in a horizontal line.
 
 ```dart
 Row(
@@ -29,51 +34,11 @@ Row(
 )
 ```
 
-Result: ⭐⭐⭐ (three stars in a line)
+Result: three stars in a line.
 
-### Row with Different Widgets
+### Spacing A Row With mainAxisAlignment
 
-```dart
-Row(
-  children: [
-    Icon(Icons.person, size: 30),
-    SizedBox(width: 10),  // Spacing
-    Text('John Doe'),
-    SizedBox(width: 10),
-    Icon(Icons.verified, color: Colors.blue),
-  ],
-)
-```
-
-Result: 👤 John Doe ✓
-
-### Row Spacing (mainAxisAlignment)
-
-Control how widgets are spaced:
-
-```dart
-// Packed at start (default)
-Row(
-  mainAxisAlignment: MainAxisAlignment.start,
-  children: [
-    Container(width: 50, height: 50, color: Colors.red),
-    Container(width: 50, height: 50, color: Colors.green),
-    Container(width: 50, height: 50, color: Colors.blue),
-  ],
-)
-```
-
-```
-start                  center                 end
-┌────────────────┐     ┌────────────────┐     ┌────────────────┐
-│[R][G][B]       │     │    [R][G][B]   │     │       [R][G][B]│
-└────────────────┘     └────────────────┘     └────────────────┘
-
-spaceBetween           spaceEvenly            spaceAround
-┌────────────────┐     ┌────────────────┐     ┌────────────────┐
-│[R]   [G]   [B] │     │ [R]  [G]  [B]  │     │ [R]  [G]  [B]  │
-└────────────────┘     └────────────────┘     └────────────────┘
-```
+`mainAxisAlignment` controls how the children are spread out **along the row** (left to right):
 
 ```dart
 Row(
@@ -86,40 +51,33 @@ Row(
 )
 ```
 
-### Row Alignment (crossAxisAlignment)
+The common options:
 
-Control vertical alignment within the row:
+```
+start          [A][B][C]            (default, packed at the left)
+center             [A][B][C]
+end                     [A][B][C]
+spaceBetween   [A]      [B]      [C]   (ends pushed out, gaps even)
+spaceEvenly      [A]    [B]    [C]     (equal gaps everywhere)
+spaceAround       [A]   [B]   [C]      (half-gaps at the ends)
+```
+
+### Aligning A Row With crossAxisAlignment
+
+`crossAxisAlignment` controls the **other** direction (up/down for a Row): top, center, or bottom.
 
 ```dart
 Row(
-  crossAxisAlignment: CrossAxisAlignment.start,  // top
-  // crossAxisAlignment: CrossAxisAlignment.center,  // middle (default)
-  // crossAxisAlignment: CrossAxisAlignment.end,  // bottom
-  children: [
-    Container(width: 50, height: 100, color: Colors.red),
-    Container(width: 50, height: 50, color: Colors.green),
-    Container(width: 50, height: 150, color: Colors.blue),
-  ],
+  crossAxisAlignment: CrossAxisAlignment.center,   // also: start (top), end (bottom)
+  children: [...],
 )
-```
-
-```
-start (top)         center (middle)      end (bottom)
-┌────────────┐      ┌────────────┐       ┌────────────┐
-│[R][G]      │      │[R]         │       │[R]         │
-│[R]   [B]   │      │[R][G][B]   │       │[R]         │
-│[R]   [B]   │      │[R]   [B]   │       │[R][G][B]   │
-│      [B]   │      │      [B]   │       │      [B]   │
-└────────────┘      └────────────┘       └────────────┘
 ```
 
 ---
 
-## Column: Stack Things Vertically
+## Column: Stack Things Down
 
-`Column` places widgets in a vertical stack (top to bottom ↓).
-
-### Basic Column
+`Column` is exactly like Row, but vertical. It places its `children` top to bottom.
 
 ```dart
 Column(
@@ -131,605 +89,347 @@ Column(
 )
 ```
 
-Result:
-```
-First
-Second
-Third
-```
+It uses the **same** two properties:
 
-### Column Spacing (mainAxisAlignment)
-
-Control vertical spacing:
+- `mainAxisAlignment` now controls **up/down** spacing (because the main direction is vertical).
+- `crossAxisAlignment` now controls **left/right** alignment.
 
 ```dart
 Column(
-  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  crossAxisAlignment: CrossAxisAlignment.start,   // line children up on the left
   children: [
-    Icon(Icons.cloud, size: 50),
-    Icon(Icons.ac_unit, size: 50),
-    Icon(Icons.wb_sunny, size: 50),
+    Text('Left aligned'),
+    Text('Also left'),
   ],
 )
 ```
 
-```
-start               center              end
-┌──────┐           ┌──────┐            ┌──────┐
-│[Icon]│           │      │            │      │
-│[Icon]│           │[Icon]│            │      │
-│[Icon]│           │[Icon]│            │[Icon]│
-│      │           │[Icon]│            │[Icon]│
-└──────┘           └──────┘            │[Icon]│
-                                       └──────┘
+---
 
-spaceBetween       spaceEvenly         spaceAround
-┌──────┐           ┌──────┐            ┌──────┐
-│[Icon]│           │      │            │      │
-│      │           │[Icon]│            │[Icon]│
-│[Icon]│           │      │            │      │
-│      │           │[Icon]│            │[Icon]│
-│[Icon]│           │      │            │      │
-└──────┘           │[Icon]│            │[Icon]│
-                   └──────┘            └──────┘
-```
+## Main Axis vs Cross Axis (The Key Idea)
 
-### Column Alignment (crossAxisAlignment)
+This confuses everyone at first, so here is the rule:
 
-Control horizontal alignment:
+- The **main axis** is the direction the widget lays things out.
+- The **cross axis** is the other direction (at a right angle).
 
-```dart
-Column(
-  crossAxisAlignment: CrossAxisAlignment.start,  // left
-  // crossAxisAlignment: CrossAxisAlignment.center,  // center (default)
-  // crossAxisAlignment: CrossAxisAlignment.end,  // right
-  children: [
-    Container(width: 100, height: 50, color: Colors.red),
-    Container(width: 150, height: 50, color: Colors.green),
-    Container(width: 80, height: 50, color: Colors.blue),
-  ],
-)
-```
+| Widget | Main axis | Cross axis |
+|--------|-----------|------------|
+| `Row` | left to right (horizontal) | up and down (vertical) |
+| `Column` | top to bottom (vertical) | left and right (horizontal) |
 
-```
-start (left)        center              end (right)
-┌──────────────┐    ┌──────────────┐    ┌──────────────┐
-│[Red      ]   │    │  [  Red   ]  │    │   [      Red]│
-│[Green       ]│    │  [ Green  ]  │    │   [    Green]│
-│[Blue  ]      │    │  [  Blue  ]  │    │   [     Blue]│
-└──────────────┘    └──────────────┘    └──────────────┘
-```
+So `mainAxisAlignment` in a Row spreads things sideways, but in a Column it spreads things up and down. Same property name, different direction, because the main axis is different.
 
 ---
 
-## Understanding MainAxis vs CrossAxis
+## Center: Put One Thing In The Middle
 
-This is super important!
-
-### In Row (Horizontal)
-
-```
-     Cross Axis (vertical ↕)
-           ↓
-    ┌──────────────────┐
-    │     ┌───┐        │
-←───┤─────│ W │────────┤───→  Main Axis (horizontal ↔)
-    │     └───┘        │
-    └──────────────────┘
-```
-
-- **MainAxis** = Horizontal (where widgets line up)
-- **CrossAxis** = Vertical (perpendicular direction)
-
-### In Column (Vertical)
-
-```
-           ↑
-           │ Main Axis (vertical ↕)
-           │
-    ┌──────┼──────┐
-    │    ┌─┴─┐    │
-←───┼────│ W │────┼───→  Cross Axis (horizontal ↔)
-    │    └───┘    │
-    └─────────────┘
-```
-
-- **MainAxis** = Vertical (where widgets stack)
-- **CrossAxis** = Horizontal (perpendicular direction)
-
----
-
-## Center: Put Widget in the Middle
-
-`Center` puts its child in the center of available space.
-
-### Basic Center
+`Center` takes one `child` and puts it in the middle of the space it is given.
 
 ```dart
 Center(
-  child: Text('I am centered!'),
+  child: Text('I am centered'),
 )
 ```
 
-### Center with Container
-
-```dart
-Container(
-  width: 300,
-  height: 200,
-  color: Colors.grey[300],
-  child: Center(
-    child: Text(
-      'Centered Text',
-      style: TextStyle(fontSize: 24),
-    ),
-  ),
-)
-```
-
-```
-┌─────────────────────────┐
-│                         │
-│                         │
-│      Centered Text      │
-│                         │
-│                         │
-└─────────────────────────┘
-```
+To center several things, put a `Column` or `Row` inside the `Center`.
 
 ---
 
-## Padding: Add Space Around Widget
+## Padding: Add Space Around A Widget
 
-`Padding` adds space inside a container around its child.
-
-### All Sides Equal
+`Padding` adds space around its `child`.
 
 ```dart
 Padding(
-  padding: EdgeInsets.all(16),  // 16 pixels on all sides
-  child: Text('Padded text'),
+  padding: EdgeInsets.all(16),   // 16 pixels on all four sides
+  child: Text('Roomy text'),
 )
 ```
 
-### Symmetric Padding
+The `EdgeInsets` ways to describe space:
 
 ```dart
-Padding(
-  padding: EdgeInsets.symmetric(
-    horizontal: 20,  // Left and right
-    vertical: 10,    // Top and bottom
-  ),
-  child: Text('Padded text'),
-)
+EdgeInsets.all(16)                              // same on all sides
+EdgeInsets.symmetric(horizontal: 20, vertical: 8) // sides vs top/bottom
+EdgeInsets.only(left: 10, top: 4)               // pick specific sides
 ```
 
-### Different Each Side
-
-```dart
-Padding(
-  padding: EdgeInsets.only(
-    left: 10,
-    top: 20,
-    right: 10,
-    bottom: 5,
-  ),
-  child: Text('Custom padding'),
-)
-```
-
-### Visual Padding Example
-
-```
-No Padding              With Padding
-┌────────────┐          ┌────────────┐
-│Text here   │          │            │
-└────────────┘          │ Text here  │
-                        │            │
-                        └────────────┘
-```
-
-### EdgeInsets Options
-
-```dart
-// All sides
-EdgeInsets.all(16)
-
-// Horizontal and vertical
-EdgeInsets.symmetric(horizontal: 20, vertical: 10)
-
-// Individual sides
-EdgeInsets.only(left: 10, top: 20, right: 10, bottom: 5)
-
-// From Left-Top-Right-Bottom
-EdgeInsets.fromLTRB(10, 20, 10, 5)
-
-// No padding
-EdgeInsets.zero
-```
+(You met `padding` on `Container` in the last lesson. The `Padding` widget does the same job when you only need spacing, without a whole box.)
 
 ---
 
-## Scaffold: The App Structure
+## Scaffold: The Page Itself
 
-`Scaffold` provides the basic structure for a Material Design app.
-
-### Basic Scaffold
+`Scaffold` gives you the standard page shape: a top bar and a main area. Almost every screen starts with one.
 
 ```dart
 Scaffold(
   appBar: AppBar(
-    title: Text('My App'),
+    title: const Text('My App'),
   ),
-  body: Center(
+  body: const Center(
     child: Text('Content goes here'),
   ),
 )
 ```
 
-### Complete Scaffold
+The two slots you will use constantly:
+
+- `appBar`: the bar across the top, usually with a title.
+- `body`: the main content of the screen.
+
+A third handy slot is the **floating action button**, the round button that floats over the bottom-right:
 
 ```dart
 Scaffold(
-  // Top bar
-  appBar: AppBar(
-    title: Text('My App'),
-    actions: [
-      IconButton(
-        icon: Icon(Icons.search),
-        onPressed: () {},
-      ),
-      IconButton(
-        icon: Icon(Icons.more_vert),
-        onPressed: () {},
-      ),
-    ],
-  ),
-
-  // Main content
-  body: Center(
-    child: Text('Hello, World!'),
-  ),
-
-  // Floating button (bottom right)
+  appBar: AppBar(title: const Text('My App')),
+  body: const Center(child: Text('Hello')),
   floatingActionButton: FloatingActionButton(
     onPressed: () {},
-    child: Icon(Icons.add),
-  ),
-
-  // Bottom navigation
-  bottomNavigationBar: BottomNavigationBar(
-    items: [
-      BottomNavigationBarItem(
-        icon: Icon(Icons.home),
-        label: 'Home',
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.settings),
-        label: 'Settings',
-      ),
-    ],
-  ),
-
-  // Side drawer
-  drawer: Drawer(
-    child: ListView(
-      children: [
-        DrawerHeader(
-          decoration: BoxDecoration(color: Colors.blue),
-          child: Text(
-            'Menu',
-            style: TextStyle(color: Colors.white, fontSize: 24),
-          ),
-        ),
-        ListTile(
-          leading: Icon(Icons.home),
-          title: Text('Home'),
-          onTap: () {},
-        ),
-        ListTile(
-          leading: Icon(Icons.settings),
-          title: Text('Settings'),
-          onTap: () {},
-        ),
-      ],
-    ),
+    child: const Icon(Icons.add),
   ),
 )
 ```
 
-### Scaffold Visual Structure
+```
+┌────────────────────────────┐
+│ AppBar (title)             │
+├────────────────────────────┤
+│                            │
+│        body (content)      │
+│                       [+]  │  <- floatingActionButton
+└────────────────────────────┘
+```
 
-```
-┌────────────────────────────────┐
-│ AppBar (title, actions)        │
-├────────────────────────────────┤
-│                                │
-│         Body (content)         │
-│                                │
-│                                │
-│                          [+]   │← FloatingActionButton
-├────────────────────────────────┤
-│  [Home]  [Search]  [Profile]   │← BottomNavigationBar
-└────────────────────────────────┘
-```
+> Scaffold has more slots (a side drawer, a bottom navigation bar), but those belong to navigation, which is Level 7. For now, `appBar` and `body` are all you need.
 
 ---
 
-## Practical Examples
+## Putting It Together
 
-### Example 1: Simple Profile Header
+### A row with an icon and a label
 
 ```dart
 Row(
-  children: [
-    CircleAvatar(
-      radius: 30,
-      backgroundImage: NetworkImage('https://example.com/avatar.jpg'),
-    ),
-    SizedBox(width: 16),
-    Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Alice Johnson',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        Text(
-          'Flutter Developer',
-          style: TextStyle(color: Colors.grey),
-        ),
-      ],
-    ),
+  children: const [
+    Icon(Icons.person, size: 30),
+    SizedBox(width: 8),
+    Text('Ada Bello'),
   ],
 )
 ```
 
-### Example 2: Icon with Label
+### An icon stacked above a label
 
 ```dart
 Column(
   mainAxisSize: MainAxisSize.min,
-  children: [
+  children: const [
     Icon(Icons.favorite, color: Colors.red, size: 40),
     SizedBox(height: 4),
-    Text('Favorite'),
+    Text('Favourite'),
   ],
 )
 ```
 
-### Example 3: Action Bar
+### A bottom action bar (three labelled icons, spread evenly)
 
 ```dart
 Row(
   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  children: [
-    Column(
-      children: [
-        Icon(Icons.thumb_up, color: Colors.blue),
-        SizedBox(height: 4),
-        Text('Like'),
-      ],
-    ),
-    Column(
-      children: [
-        Icon(Icons.comment, color: Colors.grey),
-        SizedBox(height: 4),
-        Text('Comment'),
-      ],
-    ),
-    Column(
-      children: [
-        Icon(Icons.share, color: Colors.grey),
-        SizedBox(height: 4),
-        Text('Share'),
-      ],
-    ),
+  children: const [
+    Column(mainAxisSize: MainAxisSize.min, children: [Icon(Icons.thumb_up), Text('Like')]),
+    Column(mainAxisSize: MainAxisSize.min, children: [Icon(Icons.comment), Text('Comment')]),
+    Column(mainAxisSize: MainAxisSize.min, children: [Icon(Icons.share), Text('Share')]),
   ],
 )
 ```
 
-### Example 4: Card Layout
-
-```dart
-Container(
-  padding: EdgeInsets.all(16),
-  decoration: BoxDecoration(
-    color: Colors.white,
-    borderRadius: BorderRadius.circular(10),
-    boxShadow: [
-      BoxShadow(
-        color: Colors.grey.withOpacity(0.3),
-        blurRadius: 5,
-        offset: Offset(0, 3),
-      ),
-    ],
-  ),
-  child: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        'Card Title',
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      SizedBox(height: 8),
-      Text(
-        'This is the card description. It can have multiple lines of text.',
-        style: TextStyle(color: Colors.grey[600]),
-      ),
-      SizedBox(height: 16),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          TextButton(
-            onPressed: () {},
-            child: Text('CANCEL'),
-          ),
-          SizedBox(width: 8),
-          ElevatedButton(
-            onPressed: () {},
-            child: Text('OK'),
-          ),
-        ],
-      ),
-    ],
-  ),
-)
-```
+Notice how Rows and Columns nest: a Row of Columns makes a neat action bar. This nesting is how every real screen is built.
 
 ---
 
-## Common Layout Patterns
+## The Top Mistakes Beginners Make
 
-### Pattern 1: Header-Content Structure
+### Mistake 1: Mixing up the two axis properties
 
-```dart
-Column(
-  children: [
-    // Header
-    Container(
-      padding: EdgeInsets.all(16),
-      color: Colors.blue,
-      child: Row(
-        children: [
-          Icon(Icons.menu, color: Colors.white),
-          SizedBox(width: 16),
-          Text(
-            'Title',
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
-        ],
-      ),
-    ),
+In a Row, `mainAxisAlignment` spreads things **sideways**. In a Column, the same property spreads things **up and down**. Picture the main axis first.
 
-    // Content
-    Padding(
-      padding: EdgeInsets.all(16),
-      child: Text('Content goes here'),
-    ),
-  ],
-)
-```
+### Mistake 2: Expecting `crossAxisAlignment.center` to do nothing
 
-### Pattern 2: List Item
+It is the default, so leaving it out usually centers on the cross axis. To line a Column's children on the left, you must set `crossAxisAlignment: CrossAxisAlignment.start`.
 
-```dart
-Padding(
-  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-  child: Row(
-    children: [
-      Icon(Icons.folder, size: 40, color: Colors.blue),
-      SizedBox(width: 16),
-      Expanded(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Documents',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              '24 items',
-              style: TextStyle(color: Colors.grey, fontSize: 14),
-            ),
-          ],
-        ),
-      ),
-      Icon(Icons.chevron_right, color: Colors.grey),
-    ],
-  ),
-)
-```
+### Mistake 3: Giving Row or Column a `child`
+
+`Row` and `Column` take `children` (a list), never `child`.
+
+### Mistake 4: Forgetting the Scaffold
+
+If your text appears stuck in the top-left corner with odd styling, you probably forgot to wrap your screen in a `Scaffold` (inside a `MaterialApp`).
 
 ---
 
-## Summary: Key Takeaways
+## One-Minute Recap
 
-| Widget | Purpose | Key Property |
-|--------|---------|--------------|
-| `Row` | Horizontal layout | `mainAxisAlignment` |
-| `Column` | Vertical layout | `mainAxisAlignment` |
-| `Center` | Center child | - |
-| `Padding` | Space around | `EdgeInsets` |
-| `Scaffold` | App structure | `appBar`, `body`, `drawer` |
+- `Row` lays children out sideways; `Column` stacks them down. Both use `children`.
+- `mainAxisAlignment` spreads children along the main axis; `crossAxisAlignment` aligns them across it.
+- Main axis: horizontal for Row, vertical for Column. Cross axis is the other one.
+- `Center` centers one `child`. `Padding` adds space around one `child`.
+- `Scaffold` is the page: `appBar` on top, `body` for content, plus a `floatingActionButton`.
 
 ---
 
 ## Quick Quiz
 
-**Q1:** What's the difference between `Row` and `Column`?
+**Q1.** What is the difference between Row and Column?
 
 <details>
 <summary>Answer</summary>
-
-- **Row**: Arranges widgets horizontally (left to right →)
-- **Column**: Arranges widgets vertically (top to bottom ↓)
-
-Both use the same properties (`mainAxisAlignment`, `crossAxisAlignment`), but the main axis direction is different.
-
+`Row` lays widgets out left to right (horizontal). `Column` stacks them top to bottom (vertical). They share the same alignment properties.
 </details>
 
-**Q2:** How do you add space between widgets in a `Column`?
+**Q2.** In a Column, which direction does `mainAxisAlignment` control?
 
 <details>
 <summary>Answer</summary>
-
-Use `SizedBox` with height:
-
-```dart
-Column(
-  children: [
-    Text('First'),
-    SizedBox(height: 20),  // 20 pixels of space
-    Text('Second'),
-  ],
-)
-```
-
-Or use `mainAxisAlignment`:
-
-```dart
-Column(
-  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  children: [
-    Text('First'),
-    Text('Second'),
-  ],
-)
-```
-
+Up and down (vertical), because a Column's main axis is vertical.
 </details>
 
-**Q3:** What does `Scaffold` provide?
+**Q3.** How do you line a Column's children up on the left?
 
 <details>
 <summary>Answer</summary>
+Set `crossAxisAlignment: CrossAxisAlignment.start`.
+</details>
 
-`Scaffold` provides the basic structure for a Material Design app:
-- `appBar` - Top navigation bar
-- `body` - Main content area
-- `floatingActionButton` - Circular button (usually bottom right)
-- `drawer` - Side menu
-- `bottomNavigationBar` - Bottom tab bar
+**Q4.** What are the two main slots of a Scaffold?
 
-It's the foundation for most Flutter screens!
-
+<details>
+<summary>Answer</summary>
+`appBar` (the top bar) and `body` (the main content).
 </details>
 
 ---
 
-**Next:** Learn how to build your own custom stateless widgets!
+## Assignment
+
+Paste full apps into [dartpad.dev](https://dartpad.dev). A handy shell to test a widget:
+
+```dart
+import 'package:flutter/material.dart';
+void main() => runApp(MaterialApp(home: Scaffold(
+  appBar: AppBar(title: const Text('Practice')),
+  body: Center(child: YOUR_WIDGET_HERE),
+)));
+```
+
+### Problem 1: A spaced row
+
+Build a `Row` of three icons (`Icons.home`, `Icons.search`, `Icons.person`) spread out with `spaceBetween`.
+
+### Problem 2: A left-aligned column
+
+Build a `Column` with three `Text` widgets (`'Name'`, `'Age'`, `'City'`) all lined up on the left.
+
+### Problem 3: Icon above a label
+
+Build a `Column` that shows a red heart icon, a small gap, and the text `'Liked'` underneath it.
+
+### Problem 4: A simple screen
+
+Build a full `Scaffold` with an `AppBar` titled `'Profile'` and a `body` that centers the text `'Welcome!'`.
+
+### Problem 5: Spot the bug
+
+```dart
+Column(
+  child: Text('Only one'),
+)
+```
 
 ---
 
-## Navigation
+## Assignment Answers
 
-⬅️ **Previous:** [Basic Display Widgets](02b-BasicWidgets.md)
-⬆️ **Back to:** [Learning Path](00-LearningPath.md)
-➡️ **Next:** [Stateless Widget Introduction](03a-StatelessIntro.md)
+### Problem 1: A spaced row
+
+```dart
+Row(
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  children: const [
+    Icon(Icons.home),
+    Icon(Icons.search),
+    Icon(Icons.person),
+  ],
+)
+```
+
+`spaceBetween` pushes the first and last icons to the edges and puts equal gaps between them.
+
+### Problem 2: A left-aligned column
+
+```dart
+Column(
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: const [
+    Text('Name'),
+    Text('Age'),
+    Text('City'),
+  ],
+)
+```
+
+By default a Column centers its children across the cross axis. Setting `crossAxisAlignment: CrossAxisAlignment.start` lines them up on the left.
+
+### Problem 3: Icon above a label
+
+```dart
+Column(
+  mainAxisSize: MainAxisSize.min,
+  children: const [
+    Icon(Icons.favorite, color: Colors.red, size: 40),
+    SizedBox(height: 4),
+    Text('Liked'),
+  ],
+)
+```
+
+A Column stacks the icon and the text. The `SizedBox(height: 4)` is the small gap between them. (`mainAxisSize: MainAxisSize.min` keeps the Column only as tall as its contents.)
+
+### Problem 4: A simple screen
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MaterialApp(
+    home: Scaffold(
+      appBar: AppBar(title: const Text('Profile')),
+      body: const Center(
+        child: Text('Welcome!'),
+      ),
+    ),
+  ));
+}
+```
+
+`Scaffold` gives the page shape, `AppBar` is the top bar with the title, and `body` holds a `Center` with the welcome text.
+
+### Problem 5: Spot the bug
+
+`Column` takes `children` (a list), not `child`. Fixed:
+
+```dart
+Column(
+  children: const [
+    Text('Only one'),
+  ],
+)
+```
+
+Even with a single item, a Column needs a list in `children`. (If you truly have only one widget and do not need a Column, you could just use the widget on its own.)
+
+---
+
+**Next:** `03a-StatelessIntro.md`, where you start building your own widgets properly.
