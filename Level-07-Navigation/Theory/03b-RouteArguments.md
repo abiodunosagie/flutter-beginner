@@ -1,5 +1,9 @@
 # Route Arguments
 
+## The Big Idea In One Sentence
+
+> With named routes you attach data as `arguments:`, like a package on a mailbox, and the new screen picks it up with `ModalRoute.of(context)`.
+
 Learn how to pass data using named routes and route arguments!
 
 ---
@@ -455,11 +459,65 @@ class ProductDetailScreen extends StatelessWidget {
 
 ---
 
-## Continue Learning
+## Quick Quiz
 
-Now that you know how to pass data with named routes, let's learn about returning data when navigating back!
+**Q1.** How do you attach data to a named route?
 
-**Continue to:** [Returning Data →](03c-ReturningData.md)
+<details>
+<summary>Answer</summary>
+With the `arguments:` parameter: `Navigator.pushNamed(context, '/product', arguments: product)`.
+</details>
+
+**Q2.** How does the destination screen read those arguments?
+
+<details>
+<summary>Answer</summary>
+`final args = ModalRoute.of(context)!.settings.arguments;` then cast or check its type.
+</details>
+
+**Q3.** Why does this approach need runtime type checks while constructor parameters do not?
+
+<details>
+<summary>Answer</summary>
+`arguments` is typed as `Object?`, so the compiler does not know its real type. You must check or cast (`args as Product`) at runtime.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Send arguments
+
+Write a `pushNamed` call to `'/product'` that passes a `Product product` as arguments.
+
+### Problem 2: Read arguments
+
+Inside `ProductDetailScreen.build`, write the line that reads the passed `Product` out of the route.
+
+### Problem 3: Constructor or arguments?
+
+You have a 3-screen app and pass data straight to the next screen with `Navigator.push`. Which method needs runtime casting, and which is fully type-safe at compile time?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Send arguments
+
+```dart
+Navigator.pushNamed(context, '/product', arguments: product);
+```
+
+### Problem 2: Read arguments
+
+```dart
+final product = ModalRoute.of(context)!.settings.arguments as Product;
+```
+
+### Problem 3: Constructor or arguments?
+
+- **Route arguments** need runtime casting (`args as Product`), because `arguments` is `Object?`.
+- **Constructor parameters** are fully type-safe at compile time, because you declare the exact types.
 
 ---
 
