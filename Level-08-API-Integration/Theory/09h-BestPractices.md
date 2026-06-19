@@ -1,6 +1,12 @@
 # Best Practices
 
+## The Big Idea In One Sentence
+
+> Production apps add a polish layer on top of basic API calls: cache to be fast, retry smartly to survive hiccups, work offline, debounce search, and always show friendly errors.
+
 Learn best practices for API integration including caching, offline support, retry logic, and more!
+
+> **This is a "menu," not a checklist.** You do not need all of this in every app. Pick the pieces your app actually needs. The basics from earlier lessons are enough to ship; these make it nicer.
 
 ---
 
@@ -714,9 +720,39 @@ Debouncing prevents making a request on every keystroke. Instead, we wait until 
 
 ---
 
+## Assignment
+
+### Problem 1: Cache or not?
+
+You show a list of countries that almost never changes. Should you cache it, and roughly how long?
+
+### Problem 2: Debounce the search
+
+A search box fires an API call on every keystroke. Which technique fixes that, and how long is a typical wait?
+
+### Problem 3: Offline plan
+
+The user opens the app with no internet. Describe a simple "offline-first" behavior for loading their saved data.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Cache or not?
+
+Yes, cache it. Since it rarely changes, a long TTL is fine (hours, or even cache it persistently and refresh occasionally). This avoids re-downloading the same list every visit.
+
+### Problem 2: Debounce the search
+
+Debouncing: wait until the user stops typing before searching. A typical wait is around 300 to 500 milliseconds.
+
+### Problem 3: Offline plan
+
+Try the network first; if offline (or it fails), load the last saved copy from local storage and show it, ideally with a small "offline" hint. Sync fresh data the next time a connection is available.
+
 ---
 
 ## Navigation
 
-⬅️ **Previous:** [Service Layer](09b-ServiceLayer.md)
+⬅️ **Previous:** [Dependency Injection](09g-DependencyInjection.md)
 ⬆️ **Back to:** [Learning Path](00-LearningPath.md)
