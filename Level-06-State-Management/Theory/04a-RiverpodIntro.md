@@ -1,6 +1,10 @@
-# Part 1: What is Riverpod?
+# What is Riverpod?
 
-Riverpod (which is "Provider" rearranged!) is like Provider 2.0 - it fixes Provider's problems and adds superpowers!
+## The Big Idea In One Sentence
+
+> Riverpod is like Provider but the providers live **globally** (outside the widget tree), so any widget can reach them safely with a `ref`.
+
+Riverpod is "Provider" with the letters rearranged. It is Provider's safer, more flexible cousin. Because you know Provider, this will feel familiar.
 
 ---
 
@@ -397,7 +401,94 @@ class CounterPage extends ConsumerWidget {
 
 ---
 
-**Next:** Learn about different provider types in Riverpod!
+## Quick Quiz
+
+**Q1.** Where do Riverpod providers live?
+
+<details>
+<summary>Answer</summary>
+Globally, outside the widget tree (defined as top-level `final` variables), so any widget can reach them.
+</details>
+
+**Q2.** What replaces `StatelessWidget` so a widget can read providers?
+
+<details>
+<summary>Answer</summary>
+`ConsumerWidget`. Its `build` gets an extra `WidgetRef ref` parameter.
+</details>
+
+**Q3.** Which do you use to display a value, `ref.watch` or `ref.read`?
+
+<details>
+<summary>Answer</summary>
+`ref.watch` (it rebuilds on change). Use `ref.read` in callbacks to change the value.
+</details>
+
+**Q4.** What one widget must wrap the app to enable Riverpod?
+
+<details>
+<summary>Answer</summary>
+`ProviderScope`, placed around the app in `main()`.
+</details>
+
+---
+
+## Assignment
+
+Paste full apps into [dartpad.dev](https://dartpad.dev). (DartPad supports Riverpod.)
+
+### Problem 1: Define a counter provider
+
+Write the one global line that defines a `StateProvider<int>` called `counterProvider` starting at 0.
+
+### Problem 2: Display the count
+
+Inside a `ConsumerWidget`'s `build(context, ref)`, write the line that watches `counterProvider` and a `Text` that shows it.
+
+### Problem 3: Increment it
+
+Write the `onPressed` line that increases the counter by 1 using `ref.read`.
+
+### Problem 4: Spot the difference
+
+In Provider you wrote `context.watch<Counter>()`. What is the Riverpod equivalent for reading `counterProvider`?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Define a counter provider
+
+```dart
+final counterProvider = StateProvider<int>((ref) => 0);
+```
+
+It is a top-level (global) variable, defined outside any class.
+
+### Problem 2: Display the count
+
+```dart
+final count = ref.watch(counterProvider);
+return Text('$count');
+```
+
+`ref.watch` reads the value and rebuilds when it changes.
+
+### Problem 3: Increment it
+
+```dart
+onPressed: () => ref.read(counterProvider.notifier).state++,
+```
+
+For a `StateProvider`, you change the value through `.notifier).state`. We use `ref.read` here because it is a callback, not display.
+
+### Problem 4: Spot the difference
+
+In Riverpod it is `ref.watch(counterProvider)` instead of `context.watch<Counter>()`. The idea is the same (watch to display), but Riverpod uses the global provider variable and a `ref` instead of the type and `context`.
+
+---
+
+**Next:** `04b-ProviderTypes.md`, the different kinds of Riverpod providers.
 
 ---
 
