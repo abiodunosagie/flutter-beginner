@@ -197,7 +197,9 @@ void main() {
 
   print('\n--- Nested Maps ---');
 
-  var users = {
+  // Use <String, dynamic> for the inner maps so values can be a mix
+  // of types (text, number, and another map) and nested lookups work.
+  var users = <String, Map<String, dynamic>>{
     'user1': {
       'name': 'Alice',
       'age': 25,

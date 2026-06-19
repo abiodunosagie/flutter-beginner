@@ -605,17 +605,28 @@ class OrderItem {
 class RestaurantOrder {
   final String id;
   final String tableName;
+  final List<MenuItem> menu;
   final List<OrderItem> items = [];
   final DateTime createdAt;
   String status = 'pending';
 
-  RestaurantOrder(this.id, this.tableName) : createdAt = DateTime.now();
+  RestaurantOrder(this.id, this.tableName, this.menu)
+      : createdAt = DateTime.now();
 
   void addItem(String itemName, int quantity) {
+    // Already on the order? Just add to the quantity.
     var existing = items.where((i) => i.menuItem.name == itemName);
     if (existing.isNotEmpty) {
       existing.first.quantity += quantity;
+      return;
     }
+
+    // Otherwise look it up on the menu and add it.
+    var menuItem = menu.firstWhere(
+      (m) => m.name == itemName,
+      orElse: () => throw Exception('Item not found: $itemName'),
+    );
+    items.add(OrderItem(menuItem, quantity));
   }
 
   double get total => items.fold(0, (sum, item) => sum + item.total);
@@ -639,19 +650,12 @@ class Restaurant {
   Restaurant(this.name, this.menu);
 
   RestaurantOrder createOrder(String tableName) {
+    // Give the order the menu so it can look items up by name.
     var order = RestaurantOrder(
       'ORD${orders.length + 1}',
       tableName,
+      menu,
     );
-
-    // Helper to add items
-    order.addItem = (String itemName, int qty) {
-      var menuItem = menu.firstWhere(
-            (m) => m.name == itemName,
-        orElse: () => throw Exception('Item not found'),
-      );
-      order.items.add(OrderItem(menuItem, qty));
-    };
 
     orders.add(order);
     return order;
@@ -669,11 +673,6 @@ class Restaurant {
     print('Completed: ${orders.where((o) => o.status == 'completed').length}');
     print('Revenue: \$${totalRevenue.toStringAsFixed(2)}');
   }
-}
-
-// Helper extension
-extension OrderExtension on RestaurantOrder {
-  set addItem(void Function(String, int) fn) {}
 }
 
 // ===========================================

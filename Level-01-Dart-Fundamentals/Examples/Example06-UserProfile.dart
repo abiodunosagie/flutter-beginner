@@ -24,10 +24,10 @@ void main() {
   double rating = 4.8;
   double accountBalance = 2549.99;
 
-  // bool - true/false
-  bool isVerified = true;
-  bool isPremium = false;
-  bool isOnline = true;
+  // bool - true/false (computed from the data above)
+  bool isVerified = age >= 18;            // adults are verified here
+  bool isPremium = accountBalance > 5000; // premium if balance is high
+  bool isOnline = followers > 0;          // online if they have followers
 
   // -----------------------------------------
   // Display Profile

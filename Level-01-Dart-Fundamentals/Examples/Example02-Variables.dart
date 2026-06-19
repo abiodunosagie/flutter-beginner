@@ -26,9 +26,13 @@ void main() {
 
   print('--- Basic Types ---');
   print('Name: $name');
+  print('City: $city');
   print('Age: $age');
+  print('Year: $year');
   print('Price: $price');
+  print('Temperature: $temperature');
   print('Is student: $isStudent');
+  print('Has job: $hasJob');
 
   // -----------------------------------------
   // PART 2: Using var (type inference)
@@ -43,6 +47,8 @@ void main() {
   print('\n--- Using var ---');
   print('First name: $firstName');
   print('Count: $count');
+  print('Amount: $amount');
+  print('Active: $active');
 
   // -----------------------------------------
   // PART 3: Changing values

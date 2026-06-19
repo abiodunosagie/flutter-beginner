@@ -163,8 +163,8 @@ void main() {
 
   print('\nInteracting:');
   button.onClick();
-  (textField as TextField).onInput('John Doe');
-  (checkbox as Checkbox).toggle();
+  textField.onInput('John Doe');
+  checkbox.toggle();
 
   print('\nRe-rendering:');
   for (var widget in widgets) {

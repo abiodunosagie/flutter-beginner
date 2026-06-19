@@ -103,7 +103,7 @@ void main() {
   // Update
   contacts.update('Bob', phone: '555-9999');
   print('\nAfter updating Bob:');
-  contacts.find('Bob')?.print();
+  contacts.find('Bob')?.display();
 
   // -----------------------------------------
   // EXAMPLE 5: Word Statistics
@@ -149,7 +149,7 @@ void main() {
   print('\nEvents on Jan 15:');
   var jan15Events = scheduler.getEventsForDate(DateTime(2024, 1, 15));
   for (var e in jan15Events) {
-    e.print();
+    e.display();
   }
 
   // -----------------------------------------
@@ -297,11 +297,10 @@ class Contact {
 
   Contact(this.name, this.email, this.phone);
 
-  void print() {
-    final p = print;  // Avoid conflict with method name
-    p('  $name');
-    p('    Email: $email');
-    p('    Phone: $phone');
+  void display() {
+    print('  $name');
+    print('    Email: $email');
+    print('    Phone: $phone');
   }
 }
 
@@ -390,10 +389,9 @@ class Event {
 
   Event(this.title, this.dateTime);
 
-  void print() {
-    final p = print;
+  void display() {
     var time = '${dateTime.hour}:${dateTime.minute.toString().padLeft(2, '0')}';
-    p('  $time - $title');
+    print('  $time - $title');
   }
 }
 

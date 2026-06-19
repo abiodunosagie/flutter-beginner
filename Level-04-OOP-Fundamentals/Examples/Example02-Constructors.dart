@@ -144,9 +144,9 @@ void main() {
   var r2 = Rect.square(5);
   var r3 = Rect.fromSize(20, 15);
 
-  r1.print();
-  r2.print();
-  r3.print();
+  r1.display();
+  r2.display();
+  r3.display();
 
   // -----------------------------------------
   // PART 10: Constructor with Validation
@@ -158,7 +158,7 @@ void main() {
     var email1 = Email('alice@email.com');
     print('Valid email: ${email1.address}');
 
-    var email2 = Email('invalid-email');  // Will throw
+    Email('invalid-email');  // Will throw before the next line runs
     print('This won\'t print');
   } catch (e) {
     print('Error: $e');
@@ -345,9 +345,8 @@ class Rect {
 
   Rect.fromSize(double width, double height) : this(0, 0, width, height);
 
-  void print() {
-    final p = print;  // Avoid shadowing
-    p('Rect at ($x, $y), size: ${width}x$height');
+  void display() {
+    print('Rect at ($x, $y), size: ${width}x$height');
   }
 }
 
