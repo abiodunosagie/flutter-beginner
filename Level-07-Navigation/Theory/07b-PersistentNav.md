@@ -1,5 +1,9 @@
 # Persistent Navigation with IndexedStack
 
+## The Big Idea In One Sentence
+
+> `IndexedStack` shows one tab but keeps the others alive in the background, so your scroll position and typed text are still there when you come back.
+
 Learn how to preserve tab state when switching between tabs!
 
 ---
@@ -346,11 +350,65 @@ class ScaffoldWithNav extends StatelessWidget {
 
 ---
 
-## Continue Learning
+## Quick Quiz
 
-Excellent! Now let's learn about TabBar and TabBarView!
+**Q1.** With a plain `body: _screens[_currentIndex]`, what happens to a tab's scroll position when you leave and return?
 
-**Continue to:** [Tab Navigation →](07c-TabNavigation.md)
+<details>
+<summary>Answer</summary>
+It is lost. The tab is rebuilt fresh because the old one was thrown away.
+</details>
+
+**Q2.** How does `IndexedStack` fix that?
+
+<details>
+<summary>Answer</summary>
+It keeps all children alive at once and just shows the one at `index`, so their state is preserved.
+</details>
+
+**Q3.** What is one trade-off of keeping every tab alive?
+
+<details>
+<summary>Answer</summary>
+All tabs are built and held in memory at once, so it uses more memory than building one at a time.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Swap in IndexedStack
+
+You currently have `body: _screens[_currentIndex]`. Rewrite the `body` using `IndexedStack` so state is preserved.
+
+### Problem 2: What stays alive?
+
+With `IndexedStack`, if the user scrolls the Home tab, switches to Search, then back to Home, where is the scroll position?
+
+### Problem 3: When NOT to use it
+
+Give one case where you might prefer building one screen at a time instead of `IndexedStack`.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Swap in IndexedStack
+
+```dart
+body: IndexedStack(
+  index: _currentIndex,
+  children: _screens,
+),
+```
+
+### Problem 2: What stays alive?
+
+Right where the user left it. `IndexedStack` kept the Home tab alive, so its scroll position is preserved.
+
+### Problem 3: When NOT to use it
+
+When you have many heavy tabs and memory matters, since `IndexedStack` builds and keeps all of them alive at once. (Lazy building one at a time uses less memory.)
 
 ---
 
