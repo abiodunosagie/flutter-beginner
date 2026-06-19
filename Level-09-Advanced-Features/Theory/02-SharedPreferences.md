@@ -1,5 +1,9 @@
 # SharedPreferences: Your App's Sticky Notes
 
+## The Big Idea In One Sentence
+
+> SharedPreferences saves small bits of data by a key (`setString('name', 'Alex')`) and reads them back by the same key (`getString('name')`), perfect for simple settings.
+
 ## The Simple Explanation
 
 Imagine you have a sticky note on your refrigerator. You write:
@@ -609,6 +613,52 @@ String name = prefs.getString('name') ?? 'Guest';
 ```
 
 </details>
+
+---
+
+## Assignment
+
+### Problem 1: Save the right type
+
+Write the line to save the user's volume of `75` (a whole number) under the key `'volume'`.
+
+### Problem 2: Load with a default
+
+Write the line that loads `'volume'` as an `int`, defaulting to `50` if it was never saved.
+
+### Problem 3: Fix the bugs
+
+This code has two bugs. Name them and fix it.
+
+```dart
+prefs.setInt('age', 25);
+String age = prefs.getString('age')!;
+```
+
+---
+
+## Assignment Answers
+
+### Problem 1: Save the right type
+
+```dart
+await prefs.setInt('volume', 75);
+```
+
+### Problem 2: Load with a default
+
+```dart
+int volume = prefs.getInt('volume') ?? 50;
+```
+
+### Problem 3: Fix the bugs
+
+Bugs: (1) missing `await` on `setInt`, so the save may not finish; (2) reading an int with `getString` and forcing it with `!`, which returns null and crashes. Fix:
+
+```dart
+await prefs.setInt('age', 25);
+int age = prefs.getInt('age') ?? 0;
+```
 
 ---
 
