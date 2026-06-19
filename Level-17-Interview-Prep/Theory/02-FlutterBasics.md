@@ -1,5 +1,9 @@
 # Flutter Basics - Interview Questions
 
+## The Big Idea In One Sentence
+
+> Expect the classics: "everything is a widget," Stateless vs Stateful, what `BuildContext` is, and hot reload vs hot restart, know these cold and explain them simply.
+
 Essential Flutter concepts every interviewer expects you to know!
 
 ---
@@ -781,6 +785,40 @@ final textStyle = Theme.of(context).textTheme.headline1;
 | StreamBuilder | Continuous async |
 | setState | Trigger rebuild |
 | Keys | Identify widgets uniquely |
+
+---
+
+## Assignment
+
+Answer each out loud, then check.
+
+### Problem 1: Stateless vs Stateful
+
+When do you use a StatelessWidget vs a StatefulWidget?
+
+### Problem 2: Hot reload vs hot restart
+
+What is the difference?
+
+### Problem 3: BuildContext
+
+In one sentence, what is `BuildContext`?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Stateless vs Stateful
+
+Stateless when the widget never changes after it is built (it only depends on its inputs). Stateful when it has data that changes over time and needs `setState` to rebuild.
+
+### Problem 2: Hot reload vs hot restart
+
+Hot reload injects code changes and keeps the app's current state. Hot restart restarts the app from scratch, losing state.
+
+### Problem 3: BuildContext
+
+It is a handle to a widget's place in the widget tree, used to look things up (theme, navigator, providers) relative to that location.
 
 ---
 

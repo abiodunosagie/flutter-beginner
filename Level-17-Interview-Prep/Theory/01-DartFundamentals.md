@@ -1,5 +1,9 @@
 # Dart Fundamentals - Interview Questions
 
+## The Big Idea In One Sentence
+
+> Interviewers test whether you really understand Dart basics (types, null safety, `final` vs `const`, `async`/`await`), so practice saying clear, short answers out loud, not just recognizing them.
+
 Master these Dart concepts for your Flutter interviews!
 
 ---
@@ -489,6 +493,40 @@ Future<void> fetchData() async {  // ✅ Add async
 | `??` | If null, use this instead |
 | `?.` | Safe call (won't crash if null) |
 | `..` | Cascade (chain operations) |
+
+---
+
+## Assignment
+
+Answer each out loud in one or two sentences, then check.
+
+### Problem 1: final vs const
+
+What is the difference between `final` and `const`?
+
+### Problem 2: Null safety
+
+What does the `?` in `String?` mean, and what does `??` do?
+
+### Problem 3: async/await
+
+In one sentence, what does `await` do?
+
+---
+
+## Assignment Answers
+
+### Problem 1: final vs const
+
+`final` is set once at runtime; `const` is a compile-time constant (its value must be known when you compile). Every `const` is also final.
+
+### Problem 2: Null safety
+
+`String?` means the value can be a string OR null. `??` provides a fallback when the left side is null (`name ?? 'Guest'`).
+
+### Problem 3: async/await
+
+`await` pauses an async function until a Future completes, then gives you its value, without freezing the app.
 
 ---
 

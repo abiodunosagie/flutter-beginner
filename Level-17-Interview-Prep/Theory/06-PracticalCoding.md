@@ -1,5 +1,9 @@
 # Practical Coding Questions - Interview Challenges
 
+## The Big Idea In One Sentence
+
+> Coding rounds test how you think, not just the final answer, so talk through your plan, write clean Dart, handle edge cases, and explain trade-offs as you go.
+
 Real coding problems you might face in Flutter interviews!
 
 ---
@@ -1004,6 +1008,50 @@ print(isPalindrome('hello'));  // false
 - Practice on DartPad
 - Understand the "why" not just "how"
 - Be ready to explain trade-offs
+
+---
+
+## Assignment
+
+Try these on your own, then check the approach.
+
+### Problem 1: Reverse words
+
+Write a Dart function that reverses the order of words in a sentence ("hello world" becomes "world hello").
+
+### Problem 2: Count occurrences
+
+Given a `List<String>`, return a `Map<String, int>` of how many times each item appears.
+
+### Problem 3: Talk it through
+
+In an interview, what should you do before writing any code?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Reverse words
+
+```dart
+String reverseWords(String s) => s.split(' ').reversed.join(' ');
+```
+
+### Problem 2: Count occurrences
+
+```dart
+Map<String, int> counts(List<String> items) {
+  final map = <String, int>{};
+  for (final item in items) {
+    map[item] = (map[item] ?? 0) + 1;
+  }
+  return map;
+}
+```
+
+### Problem 3: Talk it through
+
+Clarify the requirements and edge cases, state your plan out loud, then code it, and finally test it with an example. Communicating your thinking matters as much as the solution.
 
 ---
 

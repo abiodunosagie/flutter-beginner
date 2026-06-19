@@ -1,5 +1,9 @@
 # State Management - Interview Questions
 
+## The Big Idea In One Sentence
+
+> Be ready to compare approaches (setState, Provider, Riverpod, Bloc), explain when you would pick each, and describe the principles (single source of truth, separation of UI and logic) behind all of them.
+
 Master state management concepts - critical for any Flutter interview!
 
 ---
@@ -786,6 +790,40 @@ A: `watch` listens and rebuilds, `read` gets once without listening.
 
 **Q: Why not just use global variables?**
 A: They don't trigger rebuilds when changed. State management notifies widgets to update.
+
+---
+
+## Assignment
+
+Answer each out loud, then check.
+
+### Problem 1: setState vs a state library
+
+When is plain `setState` enough, and when would you reach for Provider/Riverpod/Bloc?
+
+### Problem 2: Compare two
+
+In one sentence each, contrast Provider and Bloc.
+
+### Problem 3: The principle
+
+Name one principle that applies to all state management approaches.
+
+---
+
+## Assignment Answers
+
+### Problem 1: setState vs a state library
+
+`setState` is fine for local state inside one widget. Use a library when state is shared across many widgets/screens or the logic grows complex.
+
+### Problem 2: Compare two
+
+Provider is simple and great for sharing state with `ChangeNotifier`. Bloc is more structured and event-driven, better for complex flows that benefit from clear, traceable state changes.
+
+### Problem 3: The principle
+
+Any of: single source of truth, separate UI from logic, one-way/predictable data flow.
 
 ---
 

@@ -1,5 +1,9 @@
 # Widget Lifecycle - Interview Deep Dive
 
+## The Big Idea In One Sentence
+
+> Interviewers love the State lifecycle: know the order `initState` -> `build` -> `setState`/`didUpdateWidget` -> `dispose`, and exactly what you do in each.
+
 Master the widget lifecycle - a favorite interview topic!
 
 ---
@@ -784,6 +788,40 @@ Navigate away → deactivate → (maybe dispose)
 3. Check `mounted` before async `setState`
 4. Use `const` constructors when possible
 5. Cancel timers/streams in `dispose`
+
+---
+
+## Assignment
+
+Answer each out loud, then check.
+
+### Problem 1: First and last
+
+Which lifecycle method runs first, and which runs last?
+
+### Problem 2: Where to set up / clean up
+
+Where do you start a timer or subscription, and where do you cancel it?
+
+### Problem 3: Why dispose?
+
+Why does forgetting `dispose` cause problems?
+
+---
+
+## Assignment Answers
+
+### Problem 1: First and last
+
+`initState` runs first (once, when the State is created); `dispose` runs last (when it is removed).
+
+### Problem 2: Where to set up / clean up
+
+Start them in `initState`; cancel/clean them up in `dispose`.
+
+### Problem 3: Why dispose?
+
+Uncleaned timers, controllers, and subscriptions keep running and holding memory after the widget is gone, causing memory leaks and even crashes.
 
 ---
 

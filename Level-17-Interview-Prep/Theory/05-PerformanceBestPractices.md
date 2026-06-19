@@ -1,5 +1,9 @@
 # Performance & Best Practices - Interview Questions
 
+## The Big Idea In One Sentence
+
+> Be able to name the everyday wins (use `const`, `ListView.builder`, keep rebuilds small, hit 60fps) and explain that you always measure with DevTools before optimizing.
+
 Learn how to build fast, efficient Flutter apps - a key interview topic!
 
 ---
@@ -793,6 +797,40 @@ void submitForm() {
 ✅ All async operations check mounted?
 ✅ Proper error handling?
 ```
+
+---
+
+## Assignment
+
+Answer each out loud, then check.
+
+### Problem 1: const
+
+Why does using `const` widgets help performance?
+
+### Problem 2: Long lists
+
+Why `ListView.builder` over a `ListView` with all children?
+
+### Problem 3: Optimize order
+
+Before optimizing, what should you always do first?
+
+---
+
+## Assignment Answers
+
+### Problem 1: const
+
+`const` widgets are built once and reused, so Flutter can skip rebuilding them on each frame.
+
+### Problem 2: Long lists
+
+`ListView.builder` builds only visible items lazily, saving memory and build time versus building every item up front.
+
+### Problem 3: Optimize order
+
+Measure/profile first (with DevTools) to find the real bottleneck, so you optimize what is actually slow.
 
 ---
 
