@@ -1,5 +1,9 @@
 # Local Notifications
 
+## The Big Idea In One Sentence
+
+> Local notifications are alerts your app itself schedules on the device (no server needed), like a reminder that pops up at 8am, even when the app is closed.
+
 ## The Simple Explanation
 
 Notifications are like sticky notes for your phone - they remind you of things even when you're not using the app!
@@ -595,6 +599,63 @@ class _ReminderAppState extends State<ReminderApp> {
 │                                                          │
 └─────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** What makes a notification "local" rather than "push"?
+
+<details>
+<summary>Answer</summary>
+The app schedules it on the device itself, no server or internet needed. Push notifications come from a server.
+</details>
+
+**Q2.** Give one good use for a local notification.
+
+<details>
+<summary>Answer</summary>
+A reminder or alarm: "Time to drink water", "Your timer is done", a daily habit nudge.
+</details>
+
+**Q3.** Do notifications need permission?
+
+<details>
+<summary>Answer</summary>
+Yes, modern Android and iOS require the user to allow notifications.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Local or push?
+
+A reminder at 9pm scheduled by the app with no internet: local or push?
+
+### Problem 2: A use case
+
+Name one feature in a to-do app that would use a local notification.
+
+### Problem 3: First requirement
+
+What must you get from the user before showing notifications?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Local or push?
+
+**Local.** The app scheduled it on the device; no server is involved.
+
+### Problem 2: A use case
+
+A due-date reminder: notify the user when a task is due (e.g. "Homework due in 1 hour").
+
+### Problem 3: First requirement
+
+Notification permission, the user has to allow notifications.
 
 ---
 

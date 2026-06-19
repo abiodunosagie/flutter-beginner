@@ -1,5 +1,9 @@
 # Camera & Image Picker
 
+## The Big Idea In One Sentence
+
+> The `image_picker` package lets the user grab a photo, either by taking one with the camera or choosing one from the gallery, and hands your app the picked file.
+
 ## The Simple Explanation
 
 Think of Image Picker like choosing a photo for your profile:
@@ -588,6 +592,63 @@ Future<void> pickImageSafely() async {
 │                                                          │
 └─────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** What two sources can `image_picker` get a photo from?
+
+<details>
+<summary>Answer</summary>
+The camera (`ImageSource.camera`) and the photo gallery (`ImageSource.gallery`).
+</details>
+
+**Q2.** What might the picked image be if the user cancels?
+
+<details>
+<summary>Answer</summary>
+`null`. Always check for null before using the file.
+</details>
+
+**Q3.** Why does taking a photo need a permission?
+
+<details>
+<summary>Answer</summary>
+The camera is sensitive hardware, so the OS asks the user to allow your app to use it.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Pick the source
+
+The user taps "Choose from gallery." Which `ImageSource` do you pass?
+
+### Problem 2: Handle cancel
+
+After `pickImage`, the result is null. What does that mean and what should you do?
+
+### Problem 3: Then what?
+
+After getting the image file, name one common next step in a real app.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Pick the source
+
+`ImageSource.gallery`.
+
+### Problem 2: Handle cancel
+
+It means the user backed out without picking. Do nothing (or keep the old image), and do not try to use a null file.
+
+### Problem 3: Then what?
+
+Show it on screen (`Image.file(...)`), or upload it to a server / Firebase Storage and save its URL.
 
 ---
 

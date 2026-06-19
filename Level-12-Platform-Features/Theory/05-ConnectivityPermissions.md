@@ -1,5 +1,9 @@
 # Connectivity & Permissions
 
+## The Big Idea In One Sentence
+
+> Two safety checks for platform features: **connectivity** tells you if the device is online, and **permissions** ask the user before your app uses sensitive things like camera, location, or notifications.
+
 ## Part 1: Connectivity
 
 ### The Simple Explanation
@@ -683,6 +687,63 @@ class _PermissionTileState extends State<PermissionTile> {
 │                                                          │
 └─────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** What does a connectivity check tell you?
+
+<details>
+<summary>Answer</summary>
+Whether the device is connected to the internet (wifi, mobile data, or none). Note: connected does not always mean the internet truly works, but it is a good first check.
+</details>
+
+**Q2.** Why must apps ask for permissions?
+
+<details>
+<summary>Answer</summary>
+To protect the user's privacy and device. The OS makes the user approve access to sensitive things (camera, location, contacts, notifications).
+</details>
+
+**Q3.** What should your app do if a permission is permanently denied?
+
+<details>
+<summary>Answer</summary>
+Explain why it is needed and guide the user to enable it in Settings (you cannot re-prompt once permanently denied).
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Online check
+
+Before downloading data, what should you check, and what do you show if offline?
+
+### Problem 2: Permission flow
+
+List the steps to use the camera safely (permission-wise).
+
+### Problem 3: Permanently denied
+
+The user chose "Don't ask again" for location. What is your best move?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Online check
+
+Check connectivity. If offline, show a friendly "You're offline" message (and maybe cached data) instead of failing silently.
+
+### Problem 2: Permission flow
+
+1. Check if camera permission is granted. 2. If not, request it. 3. If granted, use the camera. 4. If denied, show a message and a fallback.
+
+### Problem 3: Permanently denied
+
+Tell the user the feature needs location and provide a button/instructions to open app Settings to enable it, since you can no longer show the system prompt.
 
 ---
 

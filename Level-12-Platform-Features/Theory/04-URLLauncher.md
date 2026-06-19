@@ -1,5 +1,9 @@
 # URL Launcher
 
+## The Big Idea In One Sentence
+
+> The `url_launcher` package opens things outside your app: a website in the browser, the phone dialer, an email, or a map, by launching a URL.
+
 ## The Simple Explanation
 
 URL Launcher is like having shortcuts to other apps on your phone. It lets your app open websites, make phone calls, send emails, and launch other apps!
@@ -523,6 +527,68 @@ void _showError(String message) {
 │                                                          │
 └─────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** What does `url_launcher` do?
+
+<details>
+<summary>Answer</summary>
+It opens external destinations from your app: web pages, phone calls, emails, SMS, or maps, by launching a URL.
+</details>
+
+**Q2.** Which URL scheme would open the phone dialer?
+
+<details>
+<summary>Answer</summary>
+`tel:` (for example `tel:+1234567890`).
+</details>
+
+**Q3.** Why check `canLaunchUrl` before launching?
+
+<details>
+<summary>Answer</summary>
+The device might not handle that URL (no email app, etc.). Checking first lets you avoid an error and show a fallback.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Match the scheme
+
+Which URL prefix opens each? A website, a phone call, an email.
+
+### Problem 2: Open a website
+
+Write the idea (in words or code) to open `https://flutter.dev` in the browser.
+
+### Problem 3: Be safe
+
+What should you do before calling `launchUrl`?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Match the scheme
+
+Website: `https:` ; phone call: `tel:` ; email: `mailto:`.
+
+### Problem 2: Open a website
+
+```dart
+final url = Uri.parse('https://flutter.dev');
+if (await canLaunchUrl(url)) {
+  await launchUrl(url);
+}
+```
+
+### Problem 3: Be safe
+
+Check `canLaunchUrl(url)` first, so you only launch when the device can handle it (and show a fallback otherwise).
 
 ---
 

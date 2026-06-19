@@ -1,5 +1,9 @@
 # Location Services
 
+## The Big Idea In One Sentence
+
+> Location packages (like `geolocator`) ask permission, then give you the device's latitude and longitude, so your app knows where the user is.
+
 ## The Simple Explanation
 
 Location is like GPS in your car - it tells you exactly where you are on Earth using coordinates (latitude and longitude).
@@ -564,6 +568,63 @@ List<Store> sortByDistance(Position userLocation, List<Store> stores) {
 │                                                          │
 └─────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** What two numbers describe a location?
+
+<details>
+<summary>Answer</summary>
+Latitude and longitude.
+</details>
+
+**Q2.** What is the first thing you must do before reading location?
+
+<details>
+<summary>Answer</summary>
+Ask for (and check) location permission. The user has to allow it.
+</details>
+
+**Q3.** What should your app do if the user denies location permission?
+
+<details>
+<summary>Answer</summary>
+Handle it gracefully: explain why you need it and offer a fallback, instead of crashing or silently failing.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: The steps
+
+List the two steps to get the user's current position.
+
+### Problem 2: Denied
+
+The user taps "Don't allow." What should happen next in your app?
+
+### Problem 3: What you get
+
+After a successful read, what two values do you have to work with?
+
+---
+
+## Assignment Answers
+
+### Problem 1: The steps
+
+1. Request/check location permission. 2. If granted, read the current position (latitude and longitude).
+
+### Problem 2: Denied
+
+Show a friendly message explaining the feature needs location, and let the app keep working without it (or offer a manual option). Do not crash.
+
+### Problem 3: What you get
+
+Latitude and longitude (the device's coordinates), which you can show on a map or send to an API.
 
 ---
 
