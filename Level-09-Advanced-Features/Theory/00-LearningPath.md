@@ -280,4 +280,4 @@ Once you've finished all theory and exercises:
 
 **Ready to start?**
 
-👉 Begin with [01-SharedPreferences.md](01-SharedPreferences.md)
+👉 Begin with [01-LocalStorage.md](01-LocalStorage.md)
