@@ -1,5 +1,9 @@
 # Dio Advanced Features
 
+## The Big Idea In One Sentence
+
+> Dio's pro tools let you tell EXACTLY what went wrong (`DioException` types), stop a request you no longer need (`CancelToken`), and show upload/download progress bars.
+
 Master advanced Dio features: cancellation, progress tracking, and file operations!
 
 ---
@@ -692,6 +696,71 @@ void main() async {
 - **Handle errors globally** with interceptors
 - **Add auth tokens automatically** with AuthInterceptor
 - **Log in development** with LogInterceptor
+
+---
+
+## Quick Quiz
+
+**Q1.** What does `e.type == DioExceptionType.badResponse` tell you?
+
+<details>
+<summary>Answer</summary>
+The server answered with an error status (4xx or 5xx). Check `e.response?.statusCode` for the exact one.
+</details>
+
+**Q2.** What is a `CancelToken` used for?
+
+<details>
+<summary>Answer</summary>
+To stop a request that is still running, for example when the user leaves the screen, saving data and battery.
+</details>
+
+**Q3.** Which callback reports how much of a file has uploaded?
+
+<details>
+<summary>Answer</summary>
+`onSendProgress: (sent, total) { ... }` (and `onReceiveProgress` for downloads).
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Cancel on exit
+
+In a screen's `dispose`, what should you call so an in-flight request stops?
+
+### Problem 2: Show a percentage
+
+Inside `onSendProgress: (sent, total)`, write the line that computes the percent uploaded (0 to 100).
+
+### Problem 3: Read the error
+
+A request fails with `DioExceptionType.connectionError`. In plain words, what would you tell the user?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Cancel on exit
+
+```dart
+@override
+void dispose() {
+  _cancelToken?.cancel('User left the screen');
+  super.dispose();
+}
+```
+
+### Problem 2: Show a percentage
+
+```dart
+double percent = (sent / total) * 100;
+```
+
+### Problem 3: Read the error
+
+Something like: "No internet connection. Please check your network and try again." (`connectionError` means the device could not reach the server.)
 
 ---
 
