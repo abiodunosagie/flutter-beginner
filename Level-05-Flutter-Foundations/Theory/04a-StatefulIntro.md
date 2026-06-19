@@ -1,5 +1,15 @@
 # StatefulWidget: Widgets That Remember and Change
 
+## The Big Idea In One Sentence
+
+> A StatefulWidget can **change while it is on screen**, and you make it update by calling `setState`.
+
+This is the lesson the rest of Flutter depends on. Take your time.
+
+> The examples here use `ElevatedButton` so you have something to tap. You learn buttons properly in lesson `06a`; for now just know `onPressed:` runs the code you give it when the button is tapped.
+
+---
+
 ## Think Like a Kid with a Light Switch
 
 Imagine you have a light switch on the wall:
@@ -329,20 +339,14 @@ Widget build(BuildContext context) {
 // Infinite loop! 🔄🔄🔄
 ```
 
-### Rule 3: Don't Do Async Work Inside setState
+### Rule 3: Keep What Is Inside setState Small
+
+Put only the lines that **change your data** inside `setState`. Do the rest outside. The simplest habit: change one or two variables in there, nothing more.
 
 ```dart
-// ❌ WRONG: Async inside setState
-setState(() async {
-  await fetchData();  // Don't do this!
-  items = data;
-});
-
-// ✅ RIGHT: Async outside, setState after
-Future<void> loadData() async {
-  final data = await fetchData();  // Do async work first
+void addPoint() {
   setState(() {
-    items = data;  // Then update state
+    score = score + 1;   // just the change
   });
 }
 ```
@@ -455,65 +459,47 @@ class _ToggleState extends State<ToggleWidget> {
 
   void toggle() {
     setState(() {
-      isOn = !isOn;  // Flip between true and false
+      isOn = !isOn;   // flip between true and false
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Switch(
-      value: isOn,
-      onChanged: (value) {
-        setState(() {
-          isOn = value;
-        });
-      },
+    return ElevatedButton(
+      onPressed: toggle,
+      child: Text(isOn ? 'ON' : 'OFF'),
     );
   }
 }
 ```
 
-### Pattern 2: List Manipulation
+Each tap flips `isOn` and the button label switches between `ON` and `OFF`.
+
+### Pattern 2: A Growing List
 
 ```dart
-class _TodoListState extends State<TodoList> {
-  List<String> todos = [];
+class _TallyState extends State<TallyWidget> {
+  List<String> items = [];
 
-  void addTodo(String todo) {
+  void addItem() {
     setState(() {
-      todos.add(todo);
+      items.add('Item ${items.length + 1}');
     });
   }
 
-  void removeTodo(int index) {
-    setState(() {
-      todos.removeAt(index);
-    });
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text('Items: ${items.length}'),
+        ElevatedButton(onPressed: addItem, child: const Text('Add')),
+      ],
+    );
   }
 }
 ```
 
-### Pattern 3: Loading State
-
-```dart
-class _DataWidgetState extends State<DataWidget> {
-  bool isLoading = false;
-  String? data;
-
-  Future<void> loadData() async {
-    setState(() {
-      isLoading = true;
-    });
-
-    final result = await fetchFromApi();
-
-    setState(() {
-      data = result;
-      isLoading = false;
-    });
-  }
-}
-```
+Each tap adds to the list and rebuilds, so the count goes up.
 
 ---
 
@@ -535,26 +521,161 @@ class _DataWidgetState extends State<DataWidget> {
 
 ---
 
-## Practice Challenge
+## Assignment
 
-Try creating a widget that:
-1. Shows a smiley face 😊 or sad face 😢
-2. Has a button to toggle between happy and sad
-3. Shows how many times you've toggled
+Paste these full apps into [dartpad.dev](https://dartpad.dev) (Flutter mode) and tap to see them change. Shell:
 
-<details>
-<summary>Hint</summary>
+```dart
+import 'package:flutter/material.dart';
+void main() => runApp(MaterialApp(home: Scaffold(body: Center(child: YOUR_WIDGET()))));
+```
 
-You'll need:
-- A `bool isHappy` variable
-- An `int toggleCount` variable
-- A method that uses `setState()` to change both
+### Problem 1: Predict the behaviour
 
-</details>
+You tap the "Add" button three times. What number shows?
+
+```dart
+class _CounterState extends State<Counter> {
+  int count = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text('$count'),
+        ElevatedButton(
+          onPressed: () => setState(() => count++),
+          child: const Text('Add'),
+        ),
+      ],
+    );
+  }
+}
+```
+
+### Problem 2: Spot the bug
+
+Why does this counter never change on screen, even though you tap the button?
+
+```dart
+class _BrokenState extends State<Broken> {
+  int count = 0;
+
+  void add() {
+    count++;   // no setState!
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(onPressed: add, child: Text('$count'));
+  }
+}
+```
+
+### Problem 3: Build a toggle
+
+Build a `StatefulWidget` called `Lamp` with a `bool isOn` (start `false`). Show a button whose label is `'ON'` when `isOn` is true and `'OFF'` when false. Tapping it flips `isOn`.
+
+### Problem 4: Happy or sad with a count
+
+Build a `StatefulWidget` called `Mood` with a `bool isHappy` (start `true`) and an `int taps` (start `0`). Show the text `':)'` when happy and `':('` when sad, plus `'Tapped: <taps>'`. A button flips the mood and adds 1 to `taps`.
 
 ---
 
-**Next:** Learn about the Widget Lifecycle and how widgets are born, live, and die.
+## Assignment Answers
+
+### Problem 1: Predict the behaviour
+
+It shows `3`. Each tap runs `setState(() => count++)`, which adds 1 to `count` and rebuilds. Three taps means 0, then 1, then 2, then 3.
+
+### Problem 2: Spot the bug
+
+The `add` method changes `count` but never calls `setState`. Without `setState`, Flutter does not know anything changed, so it never rebuilds, and the screen keeps showing the old number. The value in memory does go up, but you cannot see it.
+
+Fix:
+
+```dart
+void add() {
+  setState(() {
+    count++;
+  });
+}
+```
+
+### Problem 3: Build a toggle
+
+```dart
+import 'package:flutter/material.dart';
+
+class Lamp extends StatefulWidget {
+  const Lamp({super.key});
+
+  @override
+  State<Lamp> createState() => _LampState();
+}
+
+class _LampState extends State<Lamp> {
+  bool isOn = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        setState(() {
+          isOn = !isOn;
+        });
+      },
+      child: Text(isOn ? 'ON' : 'OFF'),
+    );
+  }
+}
+```
+
+Each tap flips `isOn` inside `setState`, so the label switches between `ON` and `OFF`.
+
+### Problem 4: Happy or sad with a count
+
+```dart
+import 'package:flutter/material.dart';
+
+class Mood extends StatefulWidget {
+  const Mood({super.key});
+
+  @override
+  State<Mood> createState() => _MoodState();
+}
+
+class _MoodState extends State<Mood> {
+  bool isHappy = true;
+  int taps = 0;
+
+  void flip() {
+    setState(() {
+      isHappy = !isHappy;
+      taps = taps + 1;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(isHappy ? ':)' : ':(', style: const TextStyle(fontSize: 48)),
+        Text('Tapped: $taps'),
+        ElevatedButton(onPressed: flip, child: const Text('Flip mood')),
+      ],
+    );
+  }
+}
+```
+
+The `flip` method changes **both** state variables inside one `setState`: it flips the mood and adds one to the tap count. Then the rebuild shows the new face and the new count.
+
+---
+
+**Next:** `04b-Lifecycle.md`, where you learn the special methods that run when a widget is born and when it goes away.
 
 ---
 
