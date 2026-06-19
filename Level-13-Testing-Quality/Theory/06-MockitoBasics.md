@@ -1,5 +1,9 @@
 # Mockito Basics: Testing with Mock Objects
 
+## The Big Idea In One Sentence
+
+> Mockito makes fake versions of real classes so you can say "when this method is called, return this", letting you test your code without real networks or databases.
+
 ## The Simple Explanation
 
 Imagine you're testing a toy car, but you don't have a real road. Instead, you use a pretend road made of cardboard! That's what mocking is - using pretend (fake) objects to test your code.
@@ -615,6 +619,38 @@ when(mock.asyncMethod())
 ---
 
 ## Navigation
+
+## Assignment
+
+### Problem 1: Why a mock?
+
+You are testing a controller that calls a `UserRepository` which hits the network. Why use a mock repository in the test?
+
+### Problem 2: Stub a return
+
+In words, what does `when(mockRepo.getUser(1)).thenReturn(testUser)` set up?
+
+### Problem 3: Force an error
+
+How would you make a mock throw an error so you can test the failure path?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Why a mock?
+
+So the test runs fast and offline with predictable data, instead of depending on a real server that may be slow, down, or change.
+
+### Problem 2: Stub a return
+
+It says: "whenever the code calls `getUser(1)` on the mock, return `testUser`." That lets you control exactly what the code under test receives.
+
+### Problem 3: Force an error
+
+Use `thenThrow`, e.g. `when(mockRepo.getUser(1)).thenThrow(Exception('fail'))`, then assert your code handles it.
+
+---
 
 ⬅️ **Previous:** [Test Driven Development](05-TestDrivenDevelopment.md)
 ⬆️ **Back to:** [Learning Path](00-LearningPath.md)

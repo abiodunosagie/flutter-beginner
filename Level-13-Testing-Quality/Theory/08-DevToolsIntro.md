@@ -1,5 +1,9 @@
 # Flutter DevTools: Your App's X-Ray Vision
 
+## The Big Idea In One Sentence
+
+> DevTools is a free toolbox that lets you see inside your running app: the widget tree, performance, memory, and network, so you can find why something is slow or wrong.
+
 ## The Simple Explanation
 
 Imagine you have a toy robot, but you can't see inside it to understand how it works. DevTools is like having X-ray glasses that let you see EVERYTHING happening inside your Flutter app!
@@ -606,6 +610,38 @@ Look at the Performance tab timeline. Red or yellow bars indicate frames that to
 ---
 
 ## Navigation
+
+## Assignment
+
+### Problem 1: Pick the tool
+
+Which DevTools view helps you understand why a screen's layout is built the way it is?
+
+### Problem 2: Find the slowdown
+
+Your scrolling stutters. Which DevTools area would you open to investigate?
+
+### Problem 3: Why DevTools?
+
+In one sentence, why is DevTools better than adding `print` everywhere?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Pick the tool
+
+The widget inspector (widget tree), which shows how widgets are nested and laid out.
+
+### Problem 2: Find the slowdown
+
+The performance/frame view, to see slow frames (jank) and what is taking too long to build/paint.
+
+### Problem 3: Why DevTools?
+
+It shows the live state of your whole app (UI, performance, memory, network) visually, instead of guessing from scattered prints.
+
+---
 
 ⬅️ **Previous:** [Mockito Advanced](07-MockitoAdvanced.md)
 ⬆️ **Back to:** [Learning Path](00-LearningPath.md)

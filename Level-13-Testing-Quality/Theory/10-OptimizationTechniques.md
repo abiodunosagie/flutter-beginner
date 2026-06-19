@@ -1,5 +1,9 @@
 # Optimization Techniques: Making Your App Lightning Fast
 
+## The Big Idea In One Sentence
+
+> The big speed wins come from rebuilding less: use `const` widgets, build long lists lazily with `ListView.builder`, and keep `setState` scoped to the smallest widget that changed.
+
 ## The Simple Explanation
 
 Imagine you have a toy robot that's running slowly. You could make it faster by:
@@ -916,6 +920,38 @@ This keeps the UI smooth while processing happens in the background.
 ---
 
 ## Navigation
+
+## Assignment
+
+### Problem 1: Const it
+
+Why does marking a widget `const` help performance?
+
+### Problem 2: Long list
+
+You have 5000 items. Why use `ListView.builder` instead of a `ListView` with 5000 children?
+
+### Problem 3: Scope the rebuild
+
+A whole screen rebuilds when only a counter changes. What is the fix in one line?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Const it
+
+A `const` widget is built once and reused, so Flutter can skip rebuilding it, saving work on every frame.
+
+### Problem 2: Long list
+
+`ListView.builder` builds only the items currently on screen (lazily), instead of building all 5000 at once, which would be slow and use lots of memory.
+
+### Problem 3: Scope the rebuild
+
+Move the changing part into its own small widget (or use a focused listener), so only that small widget rebuilds, not the whole screen.
+
+---
 
 ⬅️ **Previous:** [Performance Profiling](09-PerformanceProfiling.md)
 ⬆️ **Back to:** [Learning Path](00-LearningPath.md)

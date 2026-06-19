@@ -1,5 +1,9 @@
 # Performance Profiling: Making Your App Lightning Fast
 
+## The Big Idea In One Sentence
+
+> Profiling means measuring before fixing: you find which frames are slow (jank) and what actually causes it, instead of guessing, because smooth apps hit 60 frames per second.
+
 ## The Simple Explanation
 
 Imagine you're trying to figure out why your toy car is slow. Is it the wheels? The battery? The motor? Performance profiling is like being a detective who finds EXACTLY why your app is slow!
@@ -688,6 +692,38 @@ Use the CPU Profiler in DevTools:
 ---
 
 ## Navigation
+
+## Assignment
+
+### Problem 1: The target
+
+A smooth app should hit how many frames per second, and what is the budget per frame (roughly)?
+
+### Problem 2: Measure first
+
+Why profile before you start optimizing?
+
+### Problem 3: What is jank?
+
+In one line, what does "jank" mean?
+
+---
+
+## Assignment Answers
+
+### Problem 1: The target
+
+About 60 frames per second, which is roughly 16 milliseconds per frame (120fps devices aim for ~8ms).
+
+### Problem 2: Measure first
+
+So you fix the real bottleneck instead of wasting time optimizing code that was never slow. You cannot improve what you have not measured.
+
+### Problem 3: What is jank?
+
+Janks are dropped/slow frames that make scrolling or animation look stuttery instead of smooth.
+
+---
 
 ⬅️ **Previous:** [DevTools Introduction](08-DevToolsIntro.md)
 ⬆️ **Back to:** [Learning Path](00-LearningPath.md)

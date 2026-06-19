@@ -1,5 +1,9 @@
 # Mockito Advanced: Pro Testing Techniques
 
+## The Big Idea In One Sentence
+
+> Beyond stubbing returns, Mockito can verify that a method was actually called (and how many times), match flexible arguments, and stub async results, so you test behavior, not just values.
+
 ## The Simple Explanation
 
 Now that you know how to create pretend (mock) objects, let's learn the advanced tricks! It's like learning to do more complicated magic tricks after mastering the basic ones.
@@ -807,6 +811,38 @@ expect(captured.single, expectedData);
 ---
 
 ## Navigation
+
+## Assignment
+
+### Problem 1: Verify a call
+
+You want to prove your code called `repo.save(user)` exactly once. Which Mockito feature do you use?
+
+### Problem 2: Stub vs verify
+
+In one line, what is the difference between `when(...)` and `verify(...)`?
+
+### Problem 3: Async stub
+
+A repository method returns a `Future`. Which method stubs its result?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Verify a call
+
+`verify(repo.save(user)).called(1);`.
+
+### Problem 2: Stub vs verify
+
+`when(...)` sets up what a mock returns when called; `verify(...)` checks afterward that a method was actually called (and how often).
+
+### Problem 3: Async stub
+
+`thenAnswer((_) async => value)` (use `thenAnswer` for Futures, since the result is asynchronous).
+
+---
 
 ⬅️ **Previous:** [Mockito Basics](06-MockitoBasics.md)
 ⬆️ **Back to:** [Learning Path](00-LearningPath.md)
