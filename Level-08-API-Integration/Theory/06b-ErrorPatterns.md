@@ -1,5 +1,9 @@
 # Advanced Error Handling Patterns
 
+## The Big Idea In One Sentence
+
+> Handle errors in ONE place, turn them into friendly messages, and retry only the failures worth retrying (network/server), waiting a little longer each time.
+
 Master advanced error handling patterns, retry logic, and user-friendly error messages!
 
 ---
@@ -640,6 +644,68 @@ dio.interceptors.add(GlobalErrorHandler());
 - **Give users options** - "Try Again", "Go to Login", etc.
 - **Log for debugging** - but only in development, not production
 - **Handle 401 specially** - always redirect to login
+
+---
+
+## Quick Quiz
+
+**Q1.** What is "exponential backoff"?
+
+<details>
+<summary>Answer</summary>
+Waiting longer between each retry (2s, then 4s, then 8s) to give the server time to recover.
+</details>
+
+**Q2.** Which errors should you NOT retry?
+
+<details>
+<summary>Answer</summary>
+Client errors like 401 (login needed), 404 (does not exist), and 422 (bad input). Retrying will not fix them.
+</details>
+
+**Q3.** Why convert a `SocketException` into a message like "Check your internet connection"?
+
+<details>
+<summary>Answer</summary>
+Users should see plain, helpful language, not technical jargon or stack traces.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Retry or not?
+
+For each, retry or do not retry?
+1. 500 Server Error.
+2. 401 Unauthorized.
+3. No internet (network error).
+
+### Problem 2: Friendly message
+
+Rewrite this for a user: "Error 503: Service Unavailable".
+
+### Problem 3: Cap the retries
+
+Why must a retry loop have a `maxRetries` limit?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Retry or not?
+
+1. **Retry** (server may recover).
+2. **Do not retry** (the user must log in; retrying changes nothing).
+3. **Retry** (the connection may come back).
+
+### Problem 2: Friendly message
+
+Something like: "Our servers are busy right now. Please try again in a few minutes."
+
+### Problem 3: Cap the retries
+
+Without a limit, a request that always fails would retry forever, draining battery and data and never letting the user move on. A cap (e.g. 3) means you eventually give up and show an error.
 
 ---
 
