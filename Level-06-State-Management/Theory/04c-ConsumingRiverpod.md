@@ -1,6 +1,10 @@
 # Consuming Riverpod: Reading and Using Providers
 
-Now that you know the different provider types, let's learn how to actually USE them in your widgets! Think of this as learning how to open and use those different containers we talked about.
+## The Big Idea In One Sentence
+
+> You read providers with a `ref`: use `ConsumerWidget` (or `Consumer`) to get one, then `ref.watch` to display data and `ref.read` to change it.
+
+Now that you know the provider types, here is how to actually use them in widgets.
 
 ---
 
@@ -642,6 +646,119 @@ final computed = Provider<int>((ref) {
   final base = ref.watch(baseProvider);
   return base * 2;
 });
+```
+
+---
+
+## Quick Quiz
+
+**Q1.** Which widget type do you usually use to read providers?
+
+<details>
+<summary>Answer</summary>
+`ConsumerWidget`. Its `build(context, ref)` gives you the `ref` to read providers. (`ConsumerStatefulWidget` when you also need lifecycle methods; `Consumer` to wrap just part of a widget.)
+</details>
+
+**Q2.** Which do you use in `build` to display, and which in a callback to change?
+
+<details>
+<summary>Answer</summary>
+`ref.watch` in build (it rebuilds on change); `ref.read` in callbacks (no rebuild).
+</details>
+
+**Q3.** How do you change a `StateProvider<int>` value?
+
+<details>
+<summary>Answer</summary>
+Through its notifier: `ref.read(provider.notifier).state = newValue;` (or `state++`, or `.update((s) => ...)`).
+</details>
+
+---
+
+## Assignment
+
+Use [dartpad.dev](https://dartpad.dev). Use `final counterProvider = StateProvider<int>((ref) => 0);` and wrap the app in a `ProviderScope`.
+
+### Problem 1: A ConsumerWidget that displays
+
+Write a `ConsumerWidget` whose `build(context, ref)` watches `counterProvider` and shows it in a `Text`.
+
+### Problem 2: A button that changes it
+
+Add an `ElevatedButton` whose `onPressed` increases the counter by 1 using `ref.read`.
+
+### Problem 3: A computed provider
+
+Write a `Provider<bool>` called `isEvenProvider` that is true when the counter is even, and show it with `ref.watch`.
+
+### Problem 4: Spot the bug
+
+Why is this wrong?
+
+```dart
+ElevatedButton(
+  onPressed: () {
+    final count = ref.watch(counterProvider);
+  },
+  child: const Text('Tap'),
+)
+```
+
+---
+
+## Assignment Answers
+
+### Problem 1: A ConsumerWidget that displays
+
+```dart
+class CountText extends ConsumerWidget {
+  const CountText({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final count = ref.watch(counterProvider);
+    return Text('Count: $count');
+  }
+}
+```
+
+`ConsumerWidget` gives the `ref`, and `ref.watch` rebuilds the Text when the count changes.
+
+### Problem 2: A button that changes it
+
+```dart
+ElevatedButton(
+  onPressed: () => ref.read(counterProvider.notifier).state++,
+  child: const Text('+1'),
+)
+```
+
+In a callback we use `ref.read` and change the value through `.notifier).state`.
+
+### Problem 3: A computed provider
+
+```dart
+final isEvenProvider = Provider<bool>((ref) {
+  final count = ref.watch(counterProvider);
+  return count % 2 == 0;
+});
+
+// In a ConsumerWidget build:
+final isEven = ref.watch(isEvenProvider);
+return Text('Even: $isEven');
+```
+
+`isEvenProvider` watches the counter and recomputes when it changes.
+
+### Problem 4: Spot the bug
+
+`ref.watch` should only be used inside `build`, not inside a callback like `onPressed`. In a callback, use `ref.read`. (Also, that callback reads the value but does nothing with it.) Fix:
+
+```dart
+ElevatedButton(
+  onPressed: () => ref.read(counterProvider.notifier).state++,
+  child: const Text('Tap'),
+)
 ```
 
 ---
