@@ -1,6 +1,10 @@
 # BLoC Introduction: The Pizza Restaurant Pattern
 
-BLoC (Business Logic Component) is like a well-organized pizza restaurant. Customers don't walk into the kitchen and make their own pizza. They place orders, the kitchen processes them, and pizzas come out. Everything is organized and predictable!
+## The Big Idea In One Sentence
+
+> Bloc separates your app into **events** (what happened), a **bloc** (the brain that processes them), and **states** (what to show): `Event -> Bloc -> State -> UI`.
+
+BLoC (Business Logic Component) is like a well-organized pizza restaurant. Customers do not walk into the kitchen and make their own pizza. They place orders (events), the kitchen (bloc) processes them, and pizzas (states) come out. Organized and predictable.
 
 ---
 
@@ -436,6 +440,76 @@ This separation makes your code:
 - Scalable (add more kitchens easily)
 
 Next, we'll learn how to actually create a BLoC!
+
+---
+
+## Quick Quiz
+
+**Q1.** What are the three parts of the Bloc pattern?
+
+<details>
+<summary>Answer</summary>
+Events (what happened), the Bloc (processes events), and States (what to show). The flow is Event -> Bloc -> State -> UI.
+</details>
+
+**Q2.** In the restaurant analogy, what is an event, a bloc, and a state?
+
+<details>
+<summary>Answer</summary>
+An event is a customer's order, the bloc is the kitchen, and a state is the finished dish.
+</details>
+
+**Q3.** Why is Bloc considered "clean"?
+
+<details>
+<summary>Answer</summary>
+It separates business logic (in the bloc) from the UI (the widgets), so each is easier to read, test, and change.
+</details>
+
+---
+
+## Assignment
+
+Conceptual for now; you write real Bloc code in the next lesson.
+
+### Problem 1: Label the flow
+
+Put these in the right order: State, Event, UI, Bloc.
+
+### Problem 2: Events for a counter
+
+For a counter app, list three events you might define.
+
+### Problem 3: Match the analogy
+
+Match each Bloc part to its restaurant role: Event, Bloc, State.
+Roles: kitchen, finished dish, customer's order.
+
+### Problem 4: Why separate?
+
+Give one reason separating logic (bloc) from UI (widgets) is helpful.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Label the flow
+
+`Event -> Bloc -> State -> UI`. Something happens (event), the bloc processes it, it produces a new state, and the UI shows that state.
+
+### Problem 2: Events for a counter
+
+`Increment`, `Decrement`, `Reset`. Each is a thing the user can ask the counter to do.
+
+### Problem 3: Match the analogy
+
+- Event -> customer's order
+- Bloc -> kitchen
+- State -> finished dish
+
+### Problem 4: Why separate?
+
+Any one of: the logic can be tested without the UI; the UI stays simple (just shows state); you can change the logic without touching the widgets, or reuse the same bloc with a different UI.
 
 ---
 
