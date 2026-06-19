@@ -258,47 +258,13 @@ After each theory file, practice with the matching PART exercises to work with r
 
 ---
 
-### PART 8: API Architecture
+### PART 8: API Architecture (Progressive Order)
 
-#### Step 8a: Repository Pattern
-📖 **[09a-RepositoryPattern.md](09a-RepositoryPattern.md)**
-- Repository pattern
-- Clean architecture
-- Separation of concerns
-- API client layer
+Read these in order - each builds on the previous!
 
-**Time:** 20 minutes
-**Then Practice:** PART 8 exercises 1-6
-
----
-
-#### Step 8b: Service Layer
-📖 **[09b-ServiceLayer.md](09b-ServiceLayer.md)**
-- API service classes
-- Dependency injection
-- Integrating with Provider/Riverpod
-- State management
-
-**Time:** 20 minutes
-**Then Practice:** PART 8 exercises 7-12
-
----
-
-#### Step 8c: Best Practices
-📖 **[09c-BestPractices.md](09c-BestPractices.md)**
-- Caching strategies
-- Offline support
-- Retry logic
-- API best practices
-
-**Time:** 25 minutes
-**Then Practice:** PART 8 exercises 13-20
-
----
-
-#### Step 8d: Folder Structure Guide
-📖 **[09d-FolderStructureGuide.md](09d-FolderStructureGuide.md)**
-- What goes in each folder
+#### Step 8a: Folder Structure Guide (Start Here!)
+📖 **[09a-FolderStructureGuide.md](09a-FolderStructureGuide.md)**
+- Overview: What goes in each folder
 - models/, services/, repositories/, controllers/, screens/, widgets/
 - Clear examples for each folder
 - Common mistakes to avoid
@@ -307,8 +273,65 @@ After each theory file, practice with the matching PART exercises to work with r
 
 ---
 
-#### Step 8e: Dependency Injection
-📖 **[09e-DependencyInjection.md](09e-DependencyInjection.md)**
+#### Step 8b: API Client Deep Dive (Network Layer)
+📖 **[09b-ApiClientDeepDive.md](09b-ApiClientDeepDive.md)**
+- Building the network layer
+- Making HTTP requests
+- Handling responses and errors
+- Custom exception classes
+
+**Time:** 20 minutes
+
+---
+
+#### Step 8c: Repository Pattern (Data Layer)
+📖 **[09c-RepositoryPattern.md](09c-RepositoryPattern.md)**
+- What is a repository?
+- Abstract classes and interfaces
+- Converting JSON to models
+- Multiple implementations (API, Mock, Cached)
+
+**Time:** 20 minutes
+**Then Practice:** PART 8 exercises 1-6
+
+---
+
+#### Step 8d: Controllers Deep Dive (State Layer)
+📖 **[09d-ControllersDeepDive.md](09d-ControllersDeepDive.md)**
+- Managing app state with ChangeNotifier
+- Loading, error, and data states
+- Search, pagination, and selection patterns
+- Testing controllers
+
+**Time:** 25 minutes
+
+---
+
+#### Step 8e: Widgets Deep Dive (UI Layer)
+📖 **[09e-WidgetsDeepDive.md](09e-WidgetsDeepDive.md)**
+- Building reusable UI components
+- Screens vs Widgets
+- Display, status, and interactive patterns
+- When to extract widgets
+
+**Time:** 20 minutes
+
+---
+
+#### Step 8f: Service Layer (Integration)
+📖 **[09f-ServiceLayer.md](09f-ServiceLayer.md)**
+- Connecting controllers to repositories
+- Using controllers in widgets
+- Provider integration
+- The complete data flow
+
+**Time:** 20 minutes
+**Then Practice:** PART 8 exercises 7-12
+
+---
+
+#### Step 8g: Dependency Injection (Wiring)
+📖 **[09g-DependencyInjection.md](09g-DependencyInjection.md)**
 - What is dependency injection and WHY
 - Step-by-step explanation
 - Abstract classes explained simply
@@ -316,6 +339,18 @@ After each theory file, practice with the matching PART exercises to work with r
 - Complete wiring example
 
 **Time:** 25 minutes
+
+---
+
+#### Step 8h: Best Practices (Advanced)
+📖 **[09h-BestPractices.md](09h-BestPractices.md)**
+- Caching strategies
+- Offline support
+- Retry logic
+- API best practices
+
+**Time:** 25 minutes
+**Then Practice:** PART 8 exercises 13-20
 
 ---
 
