@@ -1,6 +1,10 @@
-# Part 4: The Solution - State Management!
+# The Solution: State Management
 
-We've seen the problems with using `setState` for app-wide state. Now let's see how **state management** solves ALL these problems!
+## The Big Idea In One Sentence
+
+> State management tools put shared data in **one place** that any widget can reach directly, so you stop passing it down through every widget.
+
+You saw the problem (prop drilling). Here is the fix, and the three tools that do it.
 
 ---
 
@@ -361,7 +365,60 @@ No! With state management, only widgets that actually USE the changed data rebui
 
 ---
 
-**Next:** Learn Provider - the simplest state management!
+## Assignment
+
+These are about the ideas, no coding needed (you start coding Provider in the next lesson).
+
+### Problem 1: The one-place idea
+
+In one sentence, how does state management get rid of prop drilling?
+
+### Problem 2: Match the tool
+
+Match each tool to its description:
+
+- Provider
+- Riverpod
+- Bloc
+
+Descriptions:
+1. The simplest, best for learning and most apps.
+2. Like Provider but safer, catches more mistakes.
+3. Event-driven and very structured, good for big team apps.
+
+### Problem 3: Which first?
+
+Which tool should you learn first, and why?
+
+### Problem 4: Efficient rebuilds
+
+With state management, if a counter changes, do widgets that do not show the counter rebuild? Why does this matter?
+
+---
+
+## Assignment Answers
+
+### Problem 1: The one-place idea
+
+It keeps the shared data in one place that any widget can read directly, so you no longer have to pass it down through widgets that do not use it.
+
+### Problem 2: Match the tool
+
+- Provider -> 1 (simplest, best for learning).
+- Riverpod -> 2 (like Provider but safer).
+- Bloc -> 3 (event-driven, structured, big apps).
+
+### Problem 3: Which first?
+
+**Provider** first. It is the easiest, and it teaches the core ideas (a shared store, reading from it, rebuilding on change). Once you understand Provider, Riverpod and Bloc make much more sense.
+
+### Problem 4: Efficient rebuilds
+
+No, only the widgets that actually use the counter rebuild. This matters because rebuilding widgets that did not change wastes work and battery. State management makes apps faster by rebuilding only what needs to change.
+
+---
+
+**Next:** `02a-ProviderIntro.md`, where you start using Provider, the simplest tool.
 
 ---
 
