@@ -1,5 +1,9 @@
 # Multi-Language Support in Flutter
 
+## The Big Idea In One Sentence
+
+> You keep a translation file (ARB/JSON) for each language, list your `supportedLocales` in `MaterialApp`, and Flutter shows the matching words for whichever language the phone is set to.
+
 ## Think of It Like This (5-Year-Old Explanation)
 
 Imagine you have a magic storybook that changes the words based on who's reading it:
@@ -1567,6 +1571,65 @@ Multi-language support lets your app speak many languages:
 6. Test with different locales
 
 Your app is now ready to reach users around the world in their own language!
+
+## Quick Quiz
+
+**Q1.** Where do the actual translated words for each language live?
+
+<details>
+<summary>Answer</summary>
+In a translation file per language (an ARB or JSON file), one per locale (for example `app_en.arb`, `app_fr.arb`).
+</details>
+
+**Q2.** How does Flutter know which languages your app supports?
+
+<details>
+<summary>Answer</summary>
+You list them in `MaterialApp`'s `supportedLocales` (and provide the localization delegates).
+</details>
+
+**Q3.** How do you read a translated string in a widget?
+
+<details>
+<summary>Answer</summary>
+`AppLocalizations.of(context)!.someKey`.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Add a language
+
+To support Spanish, what file do you add, and what do you add it to in `MaterialApp`?
+
+### Problem 2: Read a string
+
+Write the expression that reads the translation for the key `greeting`.
+
+### Problem 3: Where does the choice come from?
+
+By default, how does the app decide which language to show?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Add a language
+
+Add a Spanish translation file (for example `app_es.arb`) and add the `es` locale to `supportedLocales` in `MaterialApp`.
+
+### Problem 2: Read a string
+
+```dart
+AppLocalizations.of(context)!.greeting
+```
+
+### Problem 3: Where does the choice come from?
+
+By default it follows the phone's language setting (the device locale), falling back to your default language if that one is not supported. You can also let users pick manually.
+
+---
 
 ## What's Next?
 
