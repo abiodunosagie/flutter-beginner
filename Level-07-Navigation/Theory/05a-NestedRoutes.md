@@ -1,5 +1,9 @@
 # Nested Routes and ShellRoute
 
+## The Big Idea In One Sentence
+
+> **Nested routes** make sub-pages like `/settings/profile`, and a **ShellRoute** keeps shared UI (like a bottom nav bar) on screen while only the inside changes.
+
 Learn how to create nested navigation and persistent UI!
 
 ---
@@ -401,11 +405,67 @@ class DetailsScreen extends StatelessWidget {
 
 ---
 
-## Continue Learning
+## Quick Quiz
 
-Now that you know nested routes and ShellRoute, let's learn about route guards and authentication!
+**Q1.** A child route with `path: 'profile'` nested under `path: '/settings'`. What is its full path?
 
-**Continue to:** [Route Guards →](05b-RouteGuards.md)
+<details>
+<summary>Answer</summary>
+`/settings/profile`. Child paths do not start with `/` and get added onto the parent.
+</details>
+
+**Q2.** What does a ShellRoute give you?
+
+<details>
+<summary>Answer</summary>
+Shared UI (like a bottom nav bar) that stays on screen while only the `child` content swaps between routes.
+</details>
+
+**Q3.** Where does the current screen appear inside the shell builder?
+
+<details>
+<summary>Answer</summary>
+In the `child` argument, which you place in the shell's `body`.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Nest a route
+
+Add a child route `'help'` under `'/settings'`. What is its full path, and write the `GoRoute`.
+
+### Problem 2: Spot the shell job
+
+In a ShellRoute builder `(context, state, child) => MainShell(child: child)`, what is `child`?
+
+### Problem 3: Inside or outside the shell?
+
+A login screen should NOT show the bottom nav bar. Should its route be inside the ShellRoute or outside it?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Nest a route
+
+Full path: `/settings/help`.
+
+```dart
+GoRoute(
+  path: 'help', // no leading slash; it joins onto /settings
+  builder: (context, state) => HelpScreen(),
+),
+```
+
+### Problem 2: Spot the shell job
+
+`child` is the current screen for whichever route is active. The shell wraps it with shared UI and shows it in the `body`.
+
+### Problem 3: Inside or outside the shell?
+
+**Outside** the ShellRoute. Routes inside the shell get the shared bottom nav; login should be a separate top-level route so it appears without the nav bar.
 
 ---
 
