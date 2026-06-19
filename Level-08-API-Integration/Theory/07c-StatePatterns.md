@@ -1,5 +1,9 @@
 # State Patterns
 
+## The Big Idea In One Sentence
+
+> Track your screen with ONE `enum` (initial, loading, success, error) instead of a tangle of booleans, then build a different view for each, plus an empty view and pull-to-refresh.
+
 Learn patterns for managing loading, empty, and error states in your app!
 
 ---
@@ -770,6 +774,68 @@ class _RealWorldExampleState extends State<RealWorldExample> {
 ```
 
 ---
+
+## Quick Quiz
+
+**Q1.** Why is one `enum` better than three booleans (`isLoading`, `hasError`, `hasData`)?
+
+<details>
+<summary>Answer</summary>
+An enum can only be one value at a time, so you cannot get into impossible states like "loading AND error" at once.
+</details>
+
+**Q2.** Why handle the empty state separately from the success state?
+
+<details>
+<summary>Answer</summary>
+A successful load can still return zero items. A good empty view explains that and offers an action, instead of showing a blank screen.
+</details>
+
+**Q3.** What widget gives you swipe-down "pull to refresh"?
+
+<details>
+<summary>Answer</summary>
+`RefreshIndicator(onRefresh: ..., child: ListView(...))`.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Define the states
+
+Write an `enum` named `LoadingState` with the four states used in this lesson.
+
+### Problem 2: Order the checks
+
+In what order should `_buildBody` check states: empty, error, loading, success? Put them in the right order.
+
+### Problem 3: Add refresh
+
+Wrap a `ListView` so pulling down calls `_onRefresh`.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Define the states
+
+```dart
+enum LoadingState { initial, loading, success, error }
+```
+
+### Problem 2: Order the checks
+
+Check **loading** first (show spinner), then **error** (show retry), then **empty** (show empty view), then **success** (show data). Loading and error come before looking at the data.
+
+### Problem 3: Add refresh
+
+```dart
+RefreshIndicator(
+  onRefresh: _onRefresh,
+  child: ListView(/* items */),
+)
+```
 
 ---
 
