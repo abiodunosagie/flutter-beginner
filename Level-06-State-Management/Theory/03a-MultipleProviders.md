@@ -1,6 +1,10 @@
-# Part 1: Using Multiple Providers
+# Using Multiple Providers
 
-Most real apps need more than one type of state. Let's learn how to manage multiple providers cleanly!
+## The Big Idea In One Sentence
+
+> Real apps have several pieces of state (user, cart, settings), and `MultiProvider` lets you share them all cleanly with one list instead of deeply nested providers.
+
+You learned one provider. Now you manage several.
 
 ---
 
@@ -356,35 +360,7 @@ Provider<ApiService>(
 )
 ```
 
-### 3. FutureProvider (Async Data)
-
-For data from a Future (like API calls):
-
-```dart
-FutureProvider<User>(
-  create: (_) => fetchUser(),  // Returns Future<User>
-  initialData: User.guest(),    // Show while loading
-  child: MyApp(),
-)
-
-// In widget
-final user = context.watch<User>();
-```
-
-### 4. StreamProvider (Stream Data)
-
-For real-time updates:
-
-```dart
-StreamProvider<int>(
-  create: (_) => Stream.periodic(
-    Duration(seconds: 1),
-    (count) => count,  // Timer that counts up
-  ),
-  initialData: 0,
-  child: MyApp(),
-)
-```
+> There are also `FutureProvider` and `StreamProvider` for data that arrives over time (from the internet, or a live stream). Those build on Futures and Streams, which you learn in Level 8 (API) and Level 9. We will skip them for now and come back when you know async.
 
 ---
 
@@ -395,8 +371,6 @@ StreamProvider<int>(
 | `MultiProvider` | Use multiple providers cleanly |
 | `ProxyProvider` | Provider depends on another provider |
 | `Provider` | Simple/immutable data |
-| `FutureProvider` | Async data from Future |
-| `StreamProvider` | Real-time stream data |
 
 ---
 
@@ -405,11 +379,101 @@ StreamProvider<int>(
 1. **Use MultiProvider** for multiple providers (cleaner than nesting)
 2. **Each provider** should handle one responsibility (user, cart, settings)
 3. **ProxyProvider** lets one provider depend on another
-4. **Different types** for different needs (ChangeNotifier, Future, Stream)
+4. Async provider types (Future, Stream) come later, after you learn async
 
 ---
 
-**Next:** Learn how to optimize rebuilds with Selector!
+## Quick Quiz
+
+**Q1.** Why use `MultiProvider` instead of nesting providers?
+
+<details>
+<summary>Answer</summary>
+It is much cleaner: a flat list of providers instead of providers nested deep inside each other.
+</details>
+
+**Q2.** How many responsibilities should one provider handle?
+
+<details>
+<summary>Answer</summary>
+One. Keep separate providers for separate concerns (a UserProvider, a CartProvider, a SettingsProvider), not one giant provider for everything.
+</details>
+
+**Q3.** What is `ProxyProvider` for?
+
+<details>
+<summary>Answer</summary>
+For when one provider needs data from another (for example, a cart that needs the current user's id).
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Convert nesting to MultiProvider
+
+Rewrite this using `MultiProvider`:
+
+```dart
+ChangeNotifierProvider(
+  create: (_) => UserProvider(),
+  child: ChangeNotifierProvider(
+    create: (_) => CartProvider(),
+    child: const MyApp(),
+  ),
+)
+```
+
+### Problem 2: Watch two providers
+
+In a widget, write the two lines that read both a `UserProvider` and a `CartProvider` for display.
+
+### Problem 3: Split the responsibilities
+
+You have one giant `AppState` provider holding the user, the cart, and the theme. Why is that a bad idea, and what would you do instead?
+
+### Problem 4: Spot the smell
+
+What is wrong with putting `FutureProvider` in this lesson's app right now?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Convert nesting to MultiProvider
+
+```dart
+MultiProvider(
+  providers: [
+    ChangeNotifierProvider(create: (_) => UserProvider()),
+    ChangeNotifierProvider(create: (_) => CartProvider()),
+  ],
+  child: const MyApp(),
+)
+```
+
+The two providers become a flat list, much easier to read than nesting.
+
+### Problem 2: Watch two providers
+
+```dart
+final user = context.watch<UserProvider>();
+final cart = context.watch<CartProvider>();
+```
+
+You watch each provider separately. The widget rebuilds when either one changes.
+
+### Problem 3: Split the responsibilities
+
+One giant provider for everything means any change (even the theme) notifies every widget that uses the provider, causing extra rebuilds, and the class becomes huge and hard to maintain. Split it into a `UserProvider`, a `CartProvider`, and a `SettingsProvider`, each handling one thing. Widgets then watch only the provider they need.
+
+### Problem 4: Spot the smell
+
+`FutureProvider` is for data that arrives from a `Future` (like a network call). You have not learned Futures or async yet (that is Level 8). Using it now would mean using tools you do not understand. Stick to `ChangeNotifierProvider` until you learn async, then come back to it.
+
+---
+
+**Next:** `03b-Optimization.md`, where you make rebuilds even more efficient.
 
 ---
 
