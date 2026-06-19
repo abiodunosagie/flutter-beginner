@@ -133,4 +133,4 @@ Once you've finished all theory and exercises:
 
 **Ready to start?**
 
-👉 Begin with [01-ImagePicker.md](01-ImagePicker.md)
+👉 Begin with [01-CameraImagePicker.md](01-CameraImagePicker.md)
