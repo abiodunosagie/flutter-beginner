@@ -1,6 +1,12 @@
 # What is an API?
 
+## The Big Idea In One Sentence
+
+> An API is a waiter: your app gives it an order (a request), it carries that to the kitchen (the server), and brings back your food (the data).
+
 Learn the fundamentals of APIs and how they enable app-to-server communication!
+
+> **New word: async.** Talking to the internet takes time (the food does not appear instantly). The code below uses `async` and `await`, which mean "start this, and wait for the answer to come back." You will learn `async`/`await` and `Future` step by step in this very level. For now, read `await` as "wait here until the data arrives."
 
 ---
 
@@ -393,6 +399,68 @@ Every API should have documentation that tells you:
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** In the restaurant analogy, what is the API?
+
+<details>
+<summary>Answer</summary>
+The waiter, who carries your order to the kitchen (server) and brings back your food (data).
+</details>
+
+**Q2.** What does a status code in the 2XX range mean? And 4XX?
+
+<details>
+<summary>Answer</summary>
+2XX means success. 4XX means the client (your request) made a mistake. (5XX means the server had a problem.)
+</details>
+
+**Q3.** Which HTTP method reads/fetches data without changing anything?
+
+<details>
+<summary>Answer</summary>
+`GET`.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Match the method
+
+For each action, pick the HTTP method (GET, POST, PUT, DELETE):
+1. Load the list of products.
+2. Add a new product.
+3. Remove a product.
+
+### Problem 2: Read the status code
+
+An API responds with `404`. What does that mean, and whose "fault" is it (you or the server)?
+
+### Problem 3: Name the parts
+
+In `https://api.example.com/users/5`, which part is the resource you are asking for?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Match the method
+
+1. **GET** (read the list).
+2. **POST** (create new data).
+3. **DELETE** (remove data).
+
+### Problem 2: Read the status code
+
+`404` means "Not Found", the resource does not exist. It is a 4XX code, so it is the client's side (you asked for something that is not there).
+
+### Problem 3: Name the parts
+
+`/users/5` is the resource path: user number 5. (`https://` is the protocol, `api.example.com` is the server/domain.)
 
 ---
 
