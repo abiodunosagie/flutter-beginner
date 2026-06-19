@@ -1,6 +1,12 @@
 # Query Parameters and Transitions
 
+## The Big Idea In One Sentence
+
+> **Query parameters** are optional extras on a URL (`?sort=new`) for things like filters, and you can swap the default screen-change animation for your own with a custom transition.
+
 Learn about query parameters and custom page transitions!
+
+> **Heads-up.** The transition examples use animations (`FadeTransition`, `Tween`), which you learn fully in Level 14, and `TypedGoRoute` uses code generation, which you meet in Level 8. Skim those parts now; the query-parameter section is the part to master here.
 
 ---
 
@@ -353,11 +359,64 @@ ProductRoute(id: '123').push(context);
 
 ---
 
-## Continue Learning
+## Quick Quiz
 
-Awesome! You've mastered GoRouter. Now let's learn about deep linking!
+**Q1.** How do you read a query parameter named `sort`?
 
-**Continue to:** [Deep Link Basics →](06a-DeepLinkBasics.md)
+<details>
+<summary>Answer</summary>
+`state.uri.queryParameters['sort']`. It is a `String?`, so give it a default with `?? 'name'`.
+</details>
+
+**Q2.** Why use `?? 'all'` when reading a query parameter?
+
+<details>
+<summary>Answer</summary>
+Query parameters are optional, so they can be missing (null). The `??` gives a default value so the screen still works.
+</details>
+
+**Q3.** Which is best for a filter like "category=books": a path parameter or a query parameter?
+
+<details>
+<summary>Answer</summary>
+A query parameter. Filters are optional extras, which is exactly what query parameters are for.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Read with a default
+
+Write the line that reads a query parameter `page` as an `int`, defaulting to `1` if it is missing.
+
+### Problem 2: Build the URL
+
+Write a `context.push` to `/products` that filters by `category=shoes` and sorts by `price`.
+
+### Problem 3: Why null-safe?
+
+A friend writes `final sort = state.uri.queryParameters['sort'];` and uses `sort` as a `String`. Why might this break?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Read with a default
+
+```dart
+final page = int.tryParse(state.uri.queryParameters['page'] ?? '1') ?? 1;
+```
+
+### Problem 2: Build the URL
+
+```dart
+context.push('/products?category=shoes&sort=price');
+```
+
+### Problem 3: Why null-safe?
+
+`queryParameters['sort']` is a `String?`. If the URL has no `sort`, it is `null`, and using a null where a `String` is expected breaks the code. Add a default: `?? 'name'`.
 
 ---
 
