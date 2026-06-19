@@ -1,5 +1,9 @@
 # The http Package - Part 3: Headers and Authentication
 
+## The Big Idea In One Sentence
+
+> Headers are extra notes on your request, and the most important one proves who you are: usually `Authorization: Bearer <token>` so the server lets you in.
+
 Learn about HTTP headers, authentication, and advanced request patterns!
 
 ---
@@ -344,6 +348,68 @@ void main() async {
 ```
 
 Excellent! You now know how to use the http package effectively. Next, you'll learn about Dio - a more powerful HTTP client!
+
+---
+
+## Quick Quiz
+
+**Q1.** What header usually carries a login token?
+
+<details>
+<summary>Answer</summary>
+`Authorization`, with the value `Bearer <token>`.
+</details>
+
+**Q2.** A protected request returns `401`. What does that mean?
+
+<details>
+<summary>Answer</summary>
+Unauthorized: the token is missing, wrong, or expired. The user needs to log in again.
+</details>
+
+**Q3.** Why add `.timeout(Duration(seconds: 10))` to a request?
+
+<details>
+<summary>Answer</summary>
+So the app does not wait forever if the network hangs; it fails after 10 seconds and you can show an error.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Add the token
+
+Write the `headers` map for an authenticated GET, sending a bearer token stored in `token`.
+
+### Problem 2: React to 401
+
+In a response handler, what should happen when you get `401`?
+
+### Problem 3: Why a reusable client?
+
+Give one reason to put all this in one `ApiClient` class instead of repeating headers in every call.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Add the token
+
+```dart
+headers: {
+  'Authorization': 'Bearer $token',
+  'Content-Type': 'application/json',
+},
+```
+
+### Problem 2: React to 401
+
+Treat it as "not logged in": throw/handle an auth error and send the user to log in again (and clear the old token).
+
+### Problem 3: Why a reusable client?
+
+Any one: the auth header is set in one place, every request stays consistent, and you fix bugs or change the base URL once instead of in dozens of calls.
 
 ---
 
