@@ -1,5 +1,9 @@
 # Basic Navigation in Flutter
 
+## The Big Idea In One Sentence
+
+> Screens stack like papers: **push** puts a new screen on top, **pop** takes the top one off to go back.
+
 Learn how to move between screens using Navigator.push and Navigator.pop!
 
 ---
@@ -422,6 +426,8 @@ Navigator.push(
 
 ## Common Patterns
 
+> **Heads-up:** the next two patterns use `async`/`await` (waiting for slow work). You learn those fully in Level 8. Skim them now and come back later if they feel new. The push/pop basics above are the part to master first.
+
 ### Pattern 1: Navigate After Async Operation
 
 ```dart
@@ -506,15 +512,76 @@ return WillPopScope(
 
 ---
 
-## Practice Time!
+## Quick Quiz
 
-Try building:
-1. A 3-screen app (Home → List → Details)
-2. Add a "Go to Home" button from Details that clears the stack
-3. Add custom slide/fade transitions
+**Q1.** Which method adds a new screen on top?
+
+<details>
+<summary>Answer</summary>
+`Navigator.push(...)`.
+</details>
+
+**Q2.** Which method goes back to the previous screen?
+
+<details>
+<summary>Answer</summary>
+`Navigator.pop(context)`.
+</details>
+
+**Q3.** You log a user in and never want them to tap back into the login screen. Which method fits?
+
+<details>
+<summary>Answer</summary>
+`Navigator.pushReplacement(...)` (it replaces the current screen instead of stacking on top).
+</details>
 
 ---
 
+## Assignment
+
+### Problem 1: Push or pop?
+
+For each action, write `push` or `pop`:
+1. Tapping a product to open its details page.
+2. Tapping the back arrow on the details page.
+
+### Problem 2: Write the call
+
+You are on `HomeScreen`. Write the line that opens `DetailsScreen` on top.
+
+### Problem 3: Pick the right method
+
+After checkout finishes, you want to land on `HomeScreen` and clear every screen behind it (cart, checkout, details). Which Navigator method do you use?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Push or pop?
+
+1. **push** (you are adding the details screen on top).
+2. **pop** (you are removing the top screen to go back).
+
+### Problem 2: Write the call
+
+```dart
+Navigator.push(
+  context,
+  MaterialPageRoute(builder: (context) => DetailsScreen()),
+);
+```
+
+### Problem 3: Pick the right method
+
+```dart
+Navigator.pushAndRemoveUntil(
+  context,
+  MaterialPageRoute(builder: (context) => HomeScreen()),
+  (route) => false, // remove every screen behind Home
+);
+```
+
+`pushAndRemoveUntil` with `(route) => false` clears the whole stack and leaves only Home.
 
 ---
 
