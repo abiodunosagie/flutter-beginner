@@ -1,5 +1,9 @@
 # Accessibility Patterns: Best Practices for Real Apps
 
+## The Big Idea In One Sentence
+
+> These are ready-made recipes for making real screens (forms, lists, loading states, navigation) accessible, so you announce what changed, label what matters, and keep the experience clear for everyone.
+
 ## The Simple Explanation
 
 Imagine you're building different types of furniture for your friends. After building many pieces, you notice patterns that work well:
@@ -1244,6 +1248,63 @@ class Product {
 │                                                          │
 └─────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** A form field fails validation. Besides showing red text, what should happen for a screen reader user?
+
+<details>
+<summary>Answer</summary>
+The error should be announced (associated with the field), so a non-sighted user hears what went wrong, not just sees red.
+</details>
+
+**Q2.** A list shows "Loading..." then the items appear. Why announce the change?
+
+<details>
+<summary>Answer</summary>
+So a screen reader user knows loading finished and content is ready, instead of being stuck on a silent screen.
+</details>
+
+**Q3.** Why give buttons clear labels like "Add to cart" instead of just an icon?
+
+<details>
+<summary>Answer</summary>
+So the screen reader announces a meaningful action, not just "button" or an unhelpful icon name.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Announce success
+
+After a user adds an item to the cart, in one line describe what an accessible app should do beyond the visual change.
+
+### Problem 2: Label a list item
+
+A product tile shows an image, name, and price. What single combined label would help a screen reader user most?
+
+### Problem 3: Pick the pattern
+
+You have a long form. Name one accessibility practice that makes it easier to complete with a screen reader.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Announce success
+
+Announce it (for example with a semantics live announcement or a clearly labeled SnackBar) so the screen reader says "Added to cart."
+
+### Problem 2: Label a list item
+
+A single semantic label combining all three, like "Red shoes, $40", so the user hears the whole item at once instead of three disconnected pieces.
+
+### Problem 3: Pick the pattern
+
+Any of: clear field labels, announce validation errors on the field, logical focus order, and group related fields so they read together.
 
 ---
 
