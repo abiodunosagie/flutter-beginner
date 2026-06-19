@@ -1,5 +1,9 @@
 # Passing Data Between Screens - Basics
 
+## The Big Idea In One Sentence
+
+> The easiest way to send data to a new screen is to hand it to that screen's **constructor**, just like giving an order to the kitchen.
+
 Learn the simplest way to send information from one screen to another!
 
 ---
@@ -341,11 +345,93 @@ Navigator.push(
 
 ---
 
-## Continue Learning
+## Quick Quiz
 
-Now that you know the basics of passing data forward, let's learn about passing data with named routes!
+**Q1.** Where does the data go when you pass it forward this way?
 
-**Continue to:** [Route Arguments →](03b-RouteArguments.md)
+<details>
+<summary>Answer</summary>
+Into the new screen's constructor (its parameters).
+</details>
+
+**Q2.** Why use `required` on the constructor parameters?
+
+<details>
+<summary>Answer</summary>
+So you can never forget to pass them. The code will not compile if you leave one out, which catches mistakes early.
+</details>
+
+**Q3.** Can you pass a whole object (like a `Product`) instead of separate fields?
+
+<details>
+<summary>Answer</summary>
+Yes. Passing one object is usually cleaner than passing many separate fields.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Receive the data
+
+You navigate with `ProfileScreen(name: 'Ada', age: 9)`. Write the fields and constructor for `ProfileScreen` so it can receive them.
+
+### Problem 2: Send the data
+
+You have a `Product product`. Write the `Navigator.push` that opens `ProductDetailScreen` and hands it that product.
+
+### Problem 3: Find the bug
+
+This will not compile. Why?
+
+```dart
+class DetailScreen extends StatelessWidget {
+  final String name;
+  const DetailScreen();
+
+  @override
+  Widget build(BuildContext context) => Text(name);
+}
+```
+
+---
+
+## Assignment Answers
+
+### Problem 1: Receive the data
+
+```dart
+class ProfileScreen extends StatelessWidget {
+  final String name;
+  final int age;
+
+  const ProfileScreen({required this.name, required this.age});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text('$name is $age');
+  }
+}
+```
+
+### Problem 2: Send the data
+
+```dart
+Navigator.push(
+  context,
+  MaterialPageRoute(
+    builder: (context) => ProductDetailScreen(product: product),
+  ),
+);
+```
+
+### Problem 3: Find the bug
+
+The field `name` is non-nullable and `final`, but the constructor never sets it. You must accept it in the constructor:
+
+```dart
+const DetailScreen({required this.name});
+```
 
 ---
 
