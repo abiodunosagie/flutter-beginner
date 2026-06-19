@@ -1,1201 +1,319 @@
-# Level 05 PART 5c: Stack, Positioned, and Advanced Layouts
+# Stack and Positioned: Putting Widgets On Top Of Each Other
 
-## For a 5-Year-Old
+## The Big Idea In One Sentence
 
-Imagine you're making a craft project with paper:
+> A `Stack` lets widgets **overlap** (layered on top of one another), and `Positioned` places a child at an exact spot, like a corner.
 
-**Stack** is like laying sheets of paper on top of each other:
-- The first sheet goes on the bottom
-- Each new sheet goes on top of the previous one
-- You can see all of them if they're different sizes
-
-**Positioned** is like using tape to stick a paper exactly where you want it:
-- "Put this 10 cm from the top"
-- "Put this 5 cm from the right side"
-- You're telling it exactly where to go
-
-**Center** is like putting a sticker right in the middle of a page.
-
-**Align** is like choosing any spot on the page - top-left corner, bottom-right, or anywhere!
+Rows and Columns put things side by side. A Stack puts things **on top** of each other.
 
 ---
 
-## Stack: Overlapping Widgets
+## For A 5-Year-Old
 
-`Stack` lets you put widgets on top of each other, like layers in a drawing app.
+Think of stacking sheets of clear plastic, each with a drawing. You see all of them at once, stacked up. The last one you put down is on top. That is a Stack.
 
-### Basic Stack
+---
+
+## Stack: Layers
+
+A `Stack` shows its children on top of each other. The **first** child is at the back, the **last** child is at the front.
 
 ```dart
 Stack(
   children: [
-    // First child = bottom layer
-    Container(
-      width: 200,
-      height: 200,
-      color: Colors.blue,
-    ),
-    // Second child = on top of first
-    Container(
-      width: 150,
-      height: 150,
-      color: Colors.red,
-    ),
-    // Third child = on top of both
-    Container(
-      width: 100,
-      height: 100,
-      color: Colors.green,
-    ),
+    Container(width: 200, height: 200, color: Colors.blue),   // back
+    Container(width: 120, height: 120, color: Colors.red),    // middle
+    Container(width: 60, height: 60, color: Colors.green),    // front
   ],
 )
 ```
 
-```
-Side view (3D):
-              ┌────────┐
-              │ Green  │ ← Top layer
-          ┌───┴────────┴───┐
-          │      Red       │ ← Middle layer
-      ┌───┴────────────────┴───┐
-      │         Blue           │ ← Bottom layer
-      └────────────────────────┘
+You see a big blue square, a red square on top of it, and a small green square on top of that. Order matters: last in the list is on top.
 
-Top view (what you see):
-┌────────────────────────┐
-│ ┌────────────────────┐ │ Blue (bottom)
-│ │ ┌────────────────┐ │ │
-│ │ │ ┌────────────┐ │ │ │ Red (middle)
-│ │ │ │   Green   │ │ │ │ Green (top)
-│ │ │ │  (100x100)│ │ │ │
-│ │ │ └────────────┘ │ │ │
-│ │ │   (150x150)    │ │ │
-│ │ └────────────────┘ │ │
-│ │     (200x200)      │ │
-│ └────────────────────┘ │
-└────────────────────────┘
-```
+By default the children pile up at the **top-left**. You can change where they pile with `alignment`:
 
-**Key Rule:** Order matters!
-- First child = back (bottom)
-- Last child = front (top)
+```dart
+Stack(
+  alignment: Alignment.center,   // pile them in the middle instead
+  children: [
+    Container(width: 200, height: 200, color: Colors.blue),
+    Container(width: 60, height: 60, color: Colors.green),
+  ],
+)
+```
 
 ---
 
-## Stack Alignment
+## Positioned: Place A Child Exactly
 
-By default, children in a Stack are positioned at the top-left corner. You can change this with `alignment`.
-
-### Default (topLeft)
+Inside a `Stack`, wrap a child in `Positioned` to pin it to specific edges. You give distances from `top`, `bottom`, `left`, or `right`.
 
 ```dart
 Stack(
   children: [
     Container(width: 200, height: 200, color: Colors.blue),
-    Container(width: 100, height: 100, color: Colors.red),
+    Positioned(
+      top: 10,
+      right: 10,
+      child: Container(width: 40, height: 40, color: Colors.red),
+    ),
   ],
 )
 ```
 
-```
-┌──────────────────────┐
-│ ┌────────┐           │
-│ │  Red   │           │
-│ │        │           │
-│ └────────┘           │
-│        Blue          │
-│                      │
-│                      │
-└──────────────────────┘
-↑ Both start at top-left
+The red box sits 10 pixels from the top and 10 from the right: the top-right corner. `Positioned` only works inside a `Stack`.
+
+### A Real Use: A Notification Badge
+
+The classic Stack + Positioned example is a little badge on a corner of an icon:
+
+```dart
+Stack(
+  children: [
+    const Icon(Icons.notifications, size: 40),
+    Positioned(
+      top: 0,
+      right: 0,
+      child: Container(
+        padding: const EdgeInsets.all(4),
+        decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+        child: const Text('3', style: TextStyle(color: Colors.white, fontSize: 12)),
+      ),
+    ),
+  ],
+)
 ```
 
-### Center Alignment
+A bell icon with a small red "3" badge in the corner. Every chat and email app uses this.
+
+---
+
+## Align: Position One Child
+
+`Align` places a single child at a spot, using an `Alignment`. It is handy inside a `Stack` or any box.
+
+```dart
+Container(
+  width: 200,
+  height: 200,
+  color: Colors.grey.shade300,
+  child: const Align(
+    alignment: Alignment.bottomRight,
+    child: Text('corner'),
+  ),
+)
+```
+
+The common alignments read just like they sound:
+
+```
+Alignment.topLeft      Alignment.topCenter      Alignment.topRight
+Alignment.centerLeft   Alignment.center         Alignment.centerRight
+Alignment.bottomLeft   Alignment.bottomCenter   Alignment.bottomRight
+```
+
+(`Center`, from lesson 02c, is just `Align` with `Alignment.center`.)
+
+---
+
+## Text Over A Box
+
+Stacks are great for putting text over an image or a coloured banner:
 
 ```dart
 Stack(
   alignment: Alignment.center,
   children: [
-    Container(width: 200, height: 200, color: Colors.blue),
-    Container(width: 100, height: 100, color: Colors.red),
+    Container(width: 250, height: 120, color: Colors.blue),
+    const Text(
+      'On top!',
+      style: TextStyle(color: Colors.white, fontSize: 24),
+    ),
   ],
 )
 ```
 
-```
-┌──────────────────────┐
-│                      │
-│     ┌────────┐       │
-│     │  Red   │       │
-│     │ (centered)     │
-│     └────────┘       │
-│        Blue          │
-│                      │
-└──────────────────────┘
-```
-
-### Other Alignments
-
-```dart
-// Bottom-right corner
-Stack(
-  alignment: Alignment.bottomRight,
-  children: [...],
-)
-
-// Top-center
-Stack(
-  alignment: Alignment.topCenter,
-  children: [...],
-)
-```
+The blue box is the background, and the white text floats centered on top of it.
 
 ---
 
-## Positioned Widget
+## The Top Mistakes Beginners Make
 
-`Positioned` lets you place a child at an exact position in the Stack.
-
-### Position from Edges
-
-```dart
-Stack(
-  children: [
-    Container(width: 300, height: 300, color: Colors.grey[300]),
-    Positioned(
-      top: 20,
-      left: 20,
-      child: Container(
-        width: 50,
-        height: 50,
-        color: Colors.red,
-      ),
-    ),
-    Positioned(
-      bottom: 20,
-      right: 20,
-      child: Container(
-        width: 50,
-        height: 50,
-        color: Colors.blue,
-      ),
-    ),
-  ],
-)
-```
-
-```
-┌─────────────────────────────────┐
-│ ←20→ ┌────┐                     │
-│  ↑20 │Red │                     │
-│  ↓   └────┘                     │
-│                                 │
-│                                 │
-│                    ┌────┐ ←20→ │
-│                    │Blue│  ↑20 │
-│                    └────┘  ↓   │
-└─────────────────────────────────┘
-```
-
-### Fill an Edge
-
-```dart
-Stack(
-  children: [
-    Container(color: Colors.grey[300]),
-    // Stretch across the top
-    Positioned(
-      top: 0,
-      left: 0,
-      right: 0,
-      child: Container(
-        height: 50,
-        color: Colors.blue,
-        child: Center(child: Text('Header')),
-      ),
-    ),
-    // Stretch across the bottom
-    Positioned(
-      bottom: 0,
-      left: 0,
-      right: 0,
-      child: Container(
-        height: 50,
-        color: Colors.grey,
-        child: Center(child: Text('Footer')),
-      ),
-    ),
-  ],
-)
-```
-
-```
-┌─────────────────────────────────┐
-│ [        Header (Blue)        ] │ ← top: 0, left: 0, right: 0
-│                                 │
-│                                 │
-│           Content               │
-│                                 │
-│                                 │
-│ [        Footer (Grey)        ] │ ← bottom: 0, left: 0, right: 0
-└─────────────────────────────────┘
-```
-
-### Absolute Positioning
-
-```dart
-Stack(
-  children: [
-    Container(color: Colors.grey[300]),
-    Positioned(
-      top: 100,
-      left: 50,
-      width: 200,
-      height: 100,
-      child: Container(
-        color: Colors.red,
-        child: Center(child: Text('Fixed Position')),
-      ),
-    ),
-  ],
-)
-```
-
-```
-┌─────────────────────────────────┐
-│                                 │
-│                                 │
-│                                 │
-│ ←50→ ┌──────────────────┐      │
-│  ↑   │  Fixed Position  │      │
-│ 100  │    200 x 100     │      │
-│  ↓   └──────────────────┘      │
-│                                 │
-└─────────────────────────────────┘
-```
-
-### Common Positioned Patterns
-
-```dart
-// Close button in top-right
-Positioned(
-  top: 10,
-  right: 10,
-  child: IconButton(
-    icon: Icon(Icons.close),
-    onPressed: () {},
-  ),
-)
-
-// Badge on avatar (like notification count)
-Stack(
-  children: [
-    CircleAvatar(radius: 30),
-    Positioned(
-      top: 0,
-      right: 0,
-      child: Container(
-        padding: EdgeInsets.all(4),
-        decoration: BoxDecoration(
-          color: Colors.red,
-          shape: BoxShape.circle,
-        ),
-        child: Text('3', style: TextStyle(color: Colors.white)),
-      ),
-    ),
-  ],
-)
-
-// Full-screen overlay
-Positioned.fill(
-  child: Container(
-    color: Colors.black54,  // Semi-transparent black
-    child: Center(child: CircularProgressIndicator()),
-  ),
-)
-```
-
----
-
-## Center and Align
-
-### Center
-
-Centers its child in the available space:
-
-```dart
-Center(
-  child: Text('I am centered'),
-)
-```
-
-```
-┌─────────────────────────────────┐
-│                                 │
-│                                 │
-│      I am centered              │
-│                                 │
-│                                 │
-└─────────────────────────────────┘
-```
-
-`Center` is just a shortcut for:
-
-```dart
-Align(
-  alignment: Alignment.center,
-  child: Text('I am centered'),
-)
-```
-
-### Align
-
-Position child anywhere in the available space:
-
-```dart
-Align(
-  alignment: Alignment.topRight,
-  child: Text('Top Right'),
-)
-
-Align(
-  alignment: Alignment.bottomLeft,
-  child: Text('Bottom Left'),
-)
-
-Align(
-  alignment: Alignment.centerLeft,
-  child: Text('Center Left'),
-)
-```
-
-```
-┌─────────────────────────────────┐
-│                      Top Right  │
-│                                 │
-│ Center Left                     │
-│                                 │
-│ Bottom Left                     │
-└─────────────────────────────────┘
-```
-
----
-
-## Alignment Coordinate System
-
-Alignment uses coordinates from -1 to 1:
-
-```
-(-1,-1)────(0,-1)────(1,-1)
-   │          │          │
-topLeft    topCenter  topRight
-   │          │          │
-(-1,0)─────(0,0)─────(1,0)
-   │          │          │
-centerLeft center  centerRight
-   │          │          │
-(-1,1)─────(0,1)─────(1,1)
-   │          │          │
-bottomLeft bottomCenter bottomRight
-```
-
-### Named Alignments
-
-```dart
-Alignment.topLeft        // (-1, -1)
-Alignment.topCenter      // (0, -1)
-Alignment.topRight       // (1, -1)
-
-Alignment.centerLeft     // (-1, 0)
-Alignment.center         // (0, 0)
-Alignment.centerRight    // (1, 0)
-
-Alignment.bottomLeft     // (-1, 1)
-Alignment.bottomCenter   // (0, 1)
-Alignment.bottomRight    // (1, 1)
-```
-
-### Custom Alignments
-
-You can use any value from -1 to 1:
-
-```dart
-// Slightly right of center, slightly up
-Align(
-  alignment: Alignment(0.5, -0.3),
-  child: Text('Custom'),
-)
-
-// Far left, very bottom
-Align(
-  alignment: Alignment(-0.9, 0.9),
-  child: Text('Custom'),
-)
-```
-
-```
-   -1         0         1
-    │         │         │
--1 ─┼─────────┼─────────┼─ -1
-    │         │         │
-    │    (-0.3, 0.5)    │
-    │         ●         │
- 0 ─┼─────────┼─────────┼─ 0
-    │         │         │
-    │                   │
- 1 ─┼─────────┼─────────┼─ 1
-    │         │         │
-
-Negative x = left
-Positive x = right
-Negative y = up
-Positive y = down
-```
-
----
-
-## Common Layout Patterns
-
-### Pattern 1: Header-Content-Footer
+### Mistake 1: Positioned outside a Stack
 
 ```dart
 Column(
-  children: [
-    // Header (fixed height)
-    Container(
-      height: 60,
-      color: Colors.blue,
-      child: Center(
-        child: Text(
-          'Header',
-          style: TextStyle(color: Colors.white, fontSize: 20),
-        ),
-      ),
-    ),
-
-    // Content (fills remaining space)
-    Expanded(
-      child: Container(
-        color: Colors.grey[200],
-        child: Center(child: Text('Content Area')),
-      ),
-    ),
-
-    // Footer (fixed height)
-    Container(
-      height: 50,
-      color: Colors.grey[800],
-      child: Center(
-        child: Text(
-          'Footer',
-          style: TextStyle(color: Colors.white),
-        ),
-      ),
-    ),
-  ],
+  children: [Positioned(top: 0, child: Text('x'))],  // BAD: Positioned needs a Stack
 )
 ```
 
-```
-┌─────────────────────────────────┐
-│         Header (60px)           │ ← Fixed
-├─────────────────────────────────┤
-│                                 │
-│                                 │
-│        Content Area             │ ← Expanded
-│        (fills space)            │
-│                                 │
-├─────────────────────────────────┤
-│         Footer (50px)           │ ← Fixed
-└─────────────────────────────────┘
-```
+`Positioned` only works as a direct child of a `Stack`.
 
-### Pattern 2: Sidebar Layout
+### Mistake 2: Forgetting that order is back-to-front
 
-```dart
-Row(
-  children: [
-    // Sidebar (fixed width)
-    Container(
-      width: 200,
-      color: Colors.blue[100],
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.all(16),
-            child: Text(
-              'Menu',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-          ),
-          ListTile(
-            leading: Icon(Icons.home),
-            title: Text('Home'),
-          ),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
-          ),
-          ListTile(
-            leading: Icon(Icons.person),
-            title: Text('Profile'),
-          ),
-        ],
-      ),
-    ),
+The first child is the bottom layer, the last is on top. If something is hidden, it is probably behind a later child.
 
-    // Main content (flexible)
-    Expanded(
-      child: Container(
-        padding: EdgeInsets.all(16),
-        child: Text('Main Content Area'),
-      ),
-    ),
-  ],
-)
-```
+### Mistake 3: A Stack with no size
 
-```
-┌──────────────────────────────────────┐
-│ Menu      │                          │
-│           │                          │
-│ Home      │    Main Content Area     │
-│ Settings  │                          │
-│ Profile   │    (fills remaining)     │
-│           │                          │
-│  200px    │                          │
-└──────────────────────────────────────┘
-```
-
-### Pattern 3: Card Grid (2 columns)
-
-```dart
-GridView.count(
-  crossAxisCount: 2,        // 2 columns
-  mainAxisSpacing: 10,      // Vertical gap
-  crossAxisSpacing: 10,     // Horizontal gap
-  padding: EdgeInsets.all(10),
-  children: List.generate(6, (index) {
-    return Card(
-      color: Colors.blue[100],
-      child: Center(
-        child: Text(
-          'Card ${index + 1}',
-          style: TextStyle(fontSize: 20),
-        ),
-      ),
-    );
-  }),
-)
-```
-
-```
-┌──────────────────────────────────┐
-│ ┌──────────┐   ┌──────────┐     │
-│ │ Card 1   │   │ Card 2   │     │
-│ └──────────┘   └──────────┘     │
-│                                  │
-│ ┌──────────┐   ┌──────────┐     │
-│ │ Card 3   │   │ Card 4   │     │
-│ └──────────┘   └──────────┘     │
-│                                  │
-│ ┌──────────┐   ┌──────────┐     │
-│ │ Card 5   │   │ Card 6   │     │
-│ └──────────┘   └──────────┘     │
-└──────────────────────────────────┘
-```
-
-### Pattern 4: Profile Header with Stack
-
-```dart
-Stack(
-  children: [
-    // Background image
-    Container(
-      height: 200,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Colors.blue, Colors.purple],
-        ),
-      ),
-    ),
-
-    // Profile info positioned at bottom
-    Positioned(
-      bottom: 20,
-      left: 20,
-      right: 20,
-      child: Row(
-        children: [
-          // Avatar
-          CircleAvatar(
-            radius: 40,
-            backgroundColor: Colors.white,
-            child: Icon(Icons.person, size: 40),
-          ),
-          SizedBox(width: 16),
-
-          // Name and bio
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'John Doe',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  'Flutter Developer',
-                  style: TextStyle(color: Colors.white70),
-                ),
-              ],
-            ),
-          ),
-
-          // Edit button
-          IconButton(
-            icon: Icon(Icons.edit, color: Colors.white),
-            onPressed: () {},
-          ),
-        ],
-      ),
-    ),
-  ],
-)
-```
-
-```
-┌─────────────────────────────────────┐
-│  ╔══════════════════════════════╗  │
-│  ║   Blue-Purple Gradient       ║  │
-│  ║          (Background)        ║  │
-│  ║                              ║  │
-│  ║  ●  John Doe              ✎  ║  │
-│  ║     Flutter Developer        ║  │
-│  ╚══════════════════════════════╝  │
-│       ↑ Profile info on top         │
-└─────────────────────────────────────┘
-```
-
-### Pattern 5: Image with Overlay Text
-
-```dart
-Stack(
-  children: [
-    // Background image
-    Image.network(
-      'https://example.com/image.jpg',
-      width: double.infinity,
-      height: 300,
-      fit: BoxFit.cover,
-    ),
-
-    // Dark overlay
-    Positioned.fill(
-      child: Container(
-        color: Colors.black.withOpacity(0.3),
-      ),
-    ),
-
-    // Text on top
-    Positioned(
-      bottom: 20,
-      left: 20,
-      right: 20,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Beautiful Landscape',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(height: 8),
-          Text(
-            'A scenic view from the mountains',
-            style: TextStyle(color: Colors.white70),
-          ),
-        ],
-      ),
-    ),
-  ],
-)
-```
+If a Stack has no sized children and no constraints, it may collapse. Give it at least one child with a size (like a sized Container) to define its area.
 
 ---
 
-## Common Layout Errors and Fixes
+## One-Minute Recap
 
-### Error 1: Unbounded Height in Column
-
-```dart
-// ❌ ERROR: ListView needs bounded height
-Column(
-  children: [
-    Text('Header'),
-    ListView(
-      children: [/* items */],  // "How tall should I be?" → "Infinite!"
-    ),
-  ],
-)
-```
-
-**Error message:** `RenderBox was not laid out`
-
-**Fix:** Wrap in Expanded or give fixed height
-
-```dart
-// ✅ FIX 1: Use Expanded
-Column(
-  children: [
-    Text('Header'),
-    Expanded(
-      child: ListView(
-        children: [/* items */],
-      ),
-    ),
-  ],
-)
-
-// ✅ FIX 2: Use SizedBox
-Column(
-  children: [
-    Text('Header'),
-    SizedBox(
-      height: 400,
-      child: ListView(
-        children: [/* items */],
-      ),
-    ),
-  ],
-)
-```
-
-### Error 2: Row/Column Overflow
-
-```dart
-// ❌ ERROR: Content wider than screen
-Row(
-  children: [
-    Container(width: 200, color: Colors.red),
-    Container(width: 200, color: Colors.blue),
-    Container(width: 200, color: Colors.green),  // Too much!
-  ],
-)
-```
-
-**Error:** Yellow/black striped overflow indicator
-
-**Fix:** Use Expanded or Flexible
-
-```dart
-// ✅ FIX: Share available space
-Row(
-  children: [
-    Expanded(child: Container(color: Colors.red)),
-    Expanded(child: Container(color: Colors.blue)),
-    Expanded(child: Container(color: Colors.green)),
-  ],
-)
-```
-
-### Error 3: Text Overflow
-
-```dart
-// ❌ ERROR: Text too long for container
-Row(
-  children: [
-    Icon(Icons.star),
-    Text('Very long text that goes on and on and on...'),
-  ],
-)
-```
-
-**Fix:** Wrap text in Expanded + add overflow handling
-
-```dart
-// ✅ FIX
-Row(
-  children: [
-    Icon(Icons.star),
-    Expanded(
-      child: Text(
-        'Very long text that goes on and on and on...',
-        overflow: TextOverflow.ellipsis,  // Shows ...
-        maxLines: 1,
-      ),
-    ),
-  ],
-)
-```
-
-### Error 4: Positioned without Stack
-
-```dart
-// ❌ ERROR: Positioned must be inside Stack
-Column(
-  children: [
-    Positioned(  // This crashes!
-      top: 10,
-      child: Text('Error'),
-    ),
-  ],
-)
-```
-
-**Fix:** Use Stack
-
-```dart
-// ✅ FIX
-Stack(
-  children: [
-    Positioned(
-      top: 10,
-      child: Text('Works!'),
-    ),
-  ],
-)
-```
-
-### Error 5: Nested Scrollables
-
-```dart
-// ❌ ERROR: ScrollView inside ScrollView
-ListView(
-  children: [
-    ListView(  // Both want to scroll!
-      children: [/* items */],
-    ),
-  ],
-)
-```
-
-**Fix:** Use shrinkWrap and disable scroll physics
-
-```dart
-// ✅ FIX
-ListView(
-  children: [
-    ListView(
-      shrinkWrap: true,  // Only take needed height
-      physics: NeverScrollableScrollPhysics(),  // Don't scroll
-      children: [/* items */],
-    ),
-  ],
-)
-```
-
----
-
-## Debugging Layout with LayoutBuilder
-
-`LayoutBuilder` lets you see what constraints a widget receives:
-
-```dart
-LayoutBuilder(
-  builder: (context, constraints) {
-    print('Max width: ${constraints.maxWidth}');
-    print('Max height: ${constraints.maxHeight}');
-    print('Min width: ${constraints.minWidth}');
-    print('Min height: ${constraints.minHeight}');
-
-    // Build different layouts based on size
-    if (constraints.maxWidth > 600) {
-      return Row(children: [/* wide layout */]);
-    } else {
-      return Column(children: [/* narrow layout */]);
-    }
-  },
-)
-```
-
-### Responsive Layout Example
-
-```dart
-LayoutBuilder(
-  builder: (context, constraints) {
-    // Tablet/Desktop: Side-by-side
-    if (constraints.maxWidth > 600) {
-      return Row(
-        children: [
-          Expanded(flex: 1, child: Sidebar()),
-          Expanded(flex: 2, child: Content()),
-        ],
-      );
-    }
-    // Mobile: Stacked
-    else {
-      return Column(
-        children: [
-          Sidebar(),
-          Expanded(child: Content()),
-        ],
-      );
-    }
-  },
-)
-```
-
----
-
-## Complete Example: Advanced Layout
-
-```dart
-import 'package:flutter/material.dart';
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: SafeArea(
-          child: Column(
-            children: [
-              // Header with Stack
-              Stack(
-                children: [
-                  // Background
-                  Container(
-                    height: 200,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [Colors.blue, Colors.purple],
-                      ),
-                    ),
-                  ),
-
-                  // Title
-                  Positioned(
-                    top: 20,
-                    left: 20,
-                    child: Text(
-                      'My App',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-
-                  // Close button
-                  Positioned(
-                    top: 20,
-                    right: 20,
-                    child: IconButton(
-                      icon: Icon(Icons.close, color: Colors.white),
-                      onPressed: () {},
-                    ),
-                  ),
-
-                  // Profile section at bottom
-                  Positioned(
-                    bottom: 20,
-                    left: 20,
-                    right: 20,
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 30,
-                          backgroundColor: Colors.white,
-                          child: Icon(Icons.person, size: 30),
-                        ),
-                        SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                'Welcome!',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                'Good to see you',
-                                style: TextStyle(color: Colors.white70),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-
-              // Content area
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.all(16),
-                  child: GridView.count(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 16,
-                    crossAxisSpacing: 16,
-                    children: [
-                      _buildCard('Photos', Icons.photo, Colors.blue),
-                      _buildCard('Videos', Icons.videocam, Colors.red),
-                      _buildCard('Music', Icons.music_note, Colors.green),
-                      _buildCard('Files', Icons.folder, Colors.orange),
-                    ],
-                  ),
-                ),
-              ),
-
-              // Bottom navigation
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 12),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 4,
-                      offset: Offset(0, -2),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _buildNavItem(Icons.home, 'Home', true),
-                    _buildNavItem(Icons.search, 'Search', false),
-                    _buildNavItem(Icons.favorite, 'Favorites', false),
-                    _buildNavItem(Icons.person, 'Profile', false),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCard(String title, IconData icon, Color color) {
-    return Card(
-      elevation: 4,
-      child: Container(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: 48, color: color),
-            SizedBox(height: 8),
-            Text(
-              title,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNavItem(IconData icon, String label, bool selected) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(
-          icon,
-          color: selected ? Colors.blue : Colors.grey,
-        ),
-        SizedBox(height: 4),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 12,
-            color: selected ? Colors.blue : Colors.grey,
-          ),
-        ),
-      ],
-    );
-  }
-}
-```
-
----
-
-## Key Takeaways
-
-1. **Stack** overlays widgets (first = bottom, last = top)
-2. **Positioned** places children at exact positions in Stack
-3. **Alignment** uses coordinate system (-1 to 1)
-4. **Center** is shorthand for `Align(alignment: Alignment.center)`
-5. **Common patterns**: header-content-footer, sidebar, grid, overlay
-6. **Common errors**: unbounded heights, overflow, missing Stack
-7. **LayoutBuilder** helps create responsive layouts
-8. **Positioned.fill** creates full-screen overlays
-
-**The Mental Model:**
-
-Think of Stack as layers in Photoshop:
-- Each child is a layer
-- Positioned lets you move layers around
-- Alignment sets the default position
+- `Stack` layers children on top of each other; the last child is on top.
+- `Stack`'s `alignment` sets where un-positioned children pile (default top-left).
+- `Positioned` (inside a Stack) pins a child using `top`, `bottom`, `left`, `right`. Great for corner badges.
+- `Align` places a single child at an `Alignment` like `bottomRight`.
+- Use a Stack to put text or a badge over a box or image.
 
 ---
 
 ## Quick Quiz
 
-**Q1:** In a Stack with three children, which one appears on top?
+**Q1.** In a Stack, which child is on top?
 
 <details>
 <summary>Answer</summary>
-
-The LAST child (the third one) appears on top. In a Stack, children are layered from first (bottom) to last (top).
-
+The last child in the list. The first child is at the back.
 </details>
 
-**Q2:** What's the difference between Positioned and Align?
+**Q2.** What does `Positioned(top: 0, right: 0, ...)` do?
 
 <details>
 <summary>Answer</summary>
-
-- **Positioned**: Must be inside a Stack. Uses absolute positioning (pixels from edges: top, left, right, bottom)
-- **Align**: Can be used anywhere. Uses relative positioning (coordinates from -1 to 1)
-
+It pins the child to the top-right corner of the Stack (0 from the top, 0 from the right).
 </details>
 
-**Q3:** Why use LayoutBuilder?
+**Q3.** Where can you use `Positioned`?
 
 <details>
 <summary>Answer</summary>
-
-LayoutBuilder lets you:
-1. See what constraints a widget receives
-2. Build different layouts based on available space
-3. Create responsive designs (different layouts for phone vs tablet)
-
+Only directly inside a `Stack`.
 </details>
 
 ---
 
-**Next:** Learn about common Flutter widgets
+## Assignment
 
-**Continue to:** `06-CommonWidgets.md`
+Paste into [dartpad.dev](https://dartpad.dev), wrapping widgets in `Scaffold(body: Center(child: ...))`.
+
+### Problem 1: Which is on top?
+
+In this Stack, what colour square is on top, and what colour is at the back?
+
+```dart
+Stack(
+  children: [
+    Container(width: 150, height: 150, color: Colors.green),
+    Container(width: 100, height: 100, color: Colors.orange),
+  ],
+)
+```
+
+### Problem 2: Corner box
+
+Build a `Stack` with a 200x200 grey box, and a 40x40 red box pinned to the top-right corner using `Positioned`.
+
+### Problem 3: Notification badge
+
+Build a bell icon (`Icons.notifications`, size 40) with a small red circle badge showing `'5'` pinned to its top-right corner.
+
+### Problem 4: Text over a banner
+
+Build a `Stack` with a 250x120 blue `Container` and the centered white text `'Sale!'` on top of it.
+
+### Problem 5: Spot the bug
+
+Why does this fail, and how do you fix it?
+
+```dart
+Column(
+  children: [
+    Positioned(top: 10, child: Text('hi')),
+  ],
+)
+```
 
 ---
 
-**Navigation:**
-- Previous: `05b-FlexibleExpanded.md`
-- **Current: `05c-StackPositioned.md`**
-- Next: `06-CommonWidgets.md`
-- Overview: `../README.md`
+## Assignment Answers
+
+### Problem 1: Which is on top?
+
+Orange is on top (it is the last child). Green is at the back (the first child). You see the orange square sitting on top of the green one, both at the top-left.
+
+### Problem 2: Corner box
+
+```dart
+Stack(
+  children: [
+    Container(width: 200, height: 200, color: Colors.grey),
+    Positioned(
+      top: 0,
+      right: 0,
+      child: Container(width: 40, height: 40, color: Colors.red),
+    ),
+  ],
+)
+```
+
+The grey box defines the area, and `Positioned(top: 0, right: 0)` pins the red box to the top-right corner.
+
+### Problem 3: Notification badge
+
+```dart
+Stack(
+  children: [
+    const Icon(Icons.notifications, size: 40),
+    Positioned(
+      top: 0,
+      right: 0,
+      child: Container(
+        padding: const EdgeInsets.all(4),
+        decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+        child: const Text('5', style: TextStyle(color: Colors.white, fontSize: 12)),
+      ),
+    ),
+  ],
+)
+```
+
+The bell is the back layer; the small red circle with `'5'` is pinned to the corner on top of it.
+
+### Problem 4: Text over a banner
+
+```dart
+Stack(
+  alignment: Alignment.center,
+  children: [
+    Container(width: 250, height: 120, color: Colors.blue),
+    const Text('Sale!', style: TextStyle(color: Colors.white, fontSize: 24)),
+  ],
+)
+```
+
+`alignment: Alignment.center` centers the text over the blue banner. The text is last, so it sits on top.
+
+### Problem 5: Spot the bug
+
+`Positioned` only works inside a `Stack`, but here it is inside a `Column`. Fix it by using a `Stack`, or, since a Column does not overlap things, just use the widget directly:
+
+```dart
+// If you want overlap:
+Stack(
+  children: [
+    Container(width: 100, height: 100, color: Colors.blue),
+    Positioned(top: 10, child: const Text('hi')),
+  ],
+)
+
+// If you just want it in a column, drop Positioned:
+Column(
+  children: const [Text('hi')],
+)
+```
+
+---
+
+**Next:** `06a-ButtonWidgets.md`, where you learn all the kinds of buttons and how to handle taps.
