@@ -1,6 +1,10 @@
 # Riverpod Provider Types: Different Tools for Different Jobs
 
-Think of providers like different types of containers in your kitchen. Some hold things that never change (like a jar of sugar), some hold things you can change (like a cookie jar you fill and empty), and some hold things that take time to get (like ordering pizza)!
+## The Big Idea In One Sentence
+
+> Riverpod has different provider types for different jobs: `StateProvider` for simple values, `Provider` for read-only or computed values, and `StateNotifierProvider` for complex state with methods.
+
+Think of providers like different containers in a kitchen: some hold a single thing, some compute from others, some hold a whole bundle with rules.
 
 ---
 
@@ -306,144 +310,9 @@ class CartWidget extends ConsumerWidget {
 
 ---
 
-## 4. FutureProvider: Ordering Pizza (Async One-Time)
+## A Note On Async Providers
 
-Use `FutureProvider` for data that takes time to load, like API calls or database queries.
-
-### When to Use
-
-```
-┌─────────────────────────────────────────────────────┐
-│                                                     │
-│   Perfect for:                                      │
-│   • Loading user data from API                      │
-│   • Fetching settings from database                 │
-│   • Reading files                                   │
-│   • One-time async operations                       │
-│                                                     │
-│   It's like ordering pizza:                         │
-│   • You place the order (start)                     │
-│   • Wait (loading)                                  │
-│   • Get pizza or error (done)                       │
-│                                                     │
-└─────────────────────────────────────────────────────┘
-```
-
-### Example: Loading User
-
-```dart
-// Define a model
-class User {
-  final String name;
-  final int age;
-
-  User({required this.name, required this.age});
-}
-
-// Create FutureProvider
-final userProvider = FutureProvider<User>((ref) async {
-  // Simulate API call
-  await Future.delayed(Duration(seconds: 2));
-
-  // Could throw error:
-  // throw Exception('Failed to load user');
-
-  return User(name: 'John', age: 25);
-});
-
-// Use in widget
-class UserWidget extends ConsumerWidget {
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final userAsync = ref.watch(userProvider);
-
-    // Handle loading, error, and data states
-    return userAsync.when(
-      loading: () => CircularProgressIndicator(),
-      error: (error, stack) => Text('Error: $error'),
-      data: (user) => Text('Welcome, ${user.name}!'),
-    );
-  }
-}
-```
-
----
-
-## 5. StreamProvider: Live Sports Score (Real-Time)
-
-Use `StreamProvider` for data that updates continuously over time.
-
-### When to Use
-
-```
-┌─────────────────────────────────────────────────────┐
-│                                                     │
-│   Perfect for:                                      │
-│   • Live chat messages                              │
-│   • Real-time notifications                         │
-│   • Stock prices                                    │
-│   • Timer/countdown                                 │
-│   • Firebase Firestore snapshots                    │
-│                                                     │
-│   It's like a live score ticker:                    │
-│   • Continuous updates                              │
-│   • Never "done" loading                            │
-│   • Can get many values over time                   │
-│                                                     │
-└─────────────────────────────────────────────────────┘
-```
-
-### Example: Timer
-
-```dart
-// Create a StreamProvider
-final timerProvider = StreamProvider<int>((ref) {
-  // Emit a new number every second
-  return Stream.periodic(
-    Duration(seconds: 1),
-    (count) => count,  // 0, 1, 2, 3, ...
-  );
-});
-
-// Use in widget
-class TimerWidget extends ConsumerWidget {
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final timerAsync = ref.watch(timerProvider);
-
-    return timerAsync.when(
-      loading: () => Text('Starting timer...'),
-      error: (error, stack) => Text('Error: $error'),
-      data: (seconds) => Text('Seconds: $seconds'),
-    );
-  }
-}
-```
-
-### Example: Chat Messages Stream
-
-```dart
-// Simulate chat stream
-final chatProvider = StreamProvider<String>((ref) {
-  return Stream.periodic(
-    Duration(seconds: 3),
-    (count) => 'Message ${count + 1}',
-  );
-});
-
-class ChatWidget extends ConsumerWidget {
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final messageAsync = ref.watch(chatProvider);
-
-    return messageAsync.when(
-      loading: () => Text('Connecting...'),
-      error: (e, s) => Text('Connection error'),
-      data: (message) => Text('Latest: $message'),
-    );
-  }
-}
-```
+> Riverpod also has `FutureProvider` (for data that loads once, like a network request) and `StreamProvider` (for data that updates continuously, like a live feed). Both build on **Futures** and **Streams**, which you learn in Level 8 (API) and Level 9. We will come back to them once you know async. For now, the three above (`StateProvider`, `Provider`, `StateNotifierProvider`) cover everything you need.
 
 ---
 
@@ -454,81 +323,116 @@ class ChatWidget extends ConsumerWidget {
 | `StateProvider` | Simple mutable value | Counter, toggle, index |
 | `Provider` | Read-only or computed | Constants, derived values |
 | `StateNotifierProvider` | Complex state + methods | Todo list, cart, game |
-| `FutureProvider` | One-time async | API call, file read |
-| `StreamProvider` | Continuous async | Live chat, timer, updates |
+
+(The async `FutureProvider` and `StreamProvider` come after you learn async.)
 
 ---
 
 ## How to Choose?
 
 ```
-Ask yourself:
-
 Does it change?
-  NO  → Provider (read-only)
-  YES → Continue...
-
-Is it a simple value (int, String, bool)?
-  YES → StateProvider
-  NO  → Continue...
-
-Does it involve waiting for data?
-  YES → Is it continuous updates?
-    YES → StreamProvider
-    NO  → FutureProvider
-  NO  → StateNotifierProvider
-```
-
----
-
-## Visual Summary
-
-```
-┌─────────────────────────────────────────────────────┐
-│                                                     │
-│   SIMPLE VALUE                                      │
-│   ┌─────────────┐                                   │
-│   │ StateProvider│  counter: 5 → 6 → 7             │
-│   └─────────────┘                                   │
-│                                                     │
-│   COMPUTED VALUE                                    │
-│   ┌─────────────┐                                   │
-│   │  Provider   │  doubled: 10 → 12 → 14           │
-│   └─────────────┘  (auto-updates!)                 │
-│                                                     │
-│   COMPLEX STATE                                     │
-│   ┌─────────────────────────┐                       │
-│   │ StateNotifierProvider   │  cart: {              │
-│   │   - addItem()           │    items: [...],     │
-│   │   - removeItem()        │    total: 29.99      │
-│   │   - clear()             │  }                   │
-│   └─────────────────────────┘                       │
-│                                                     │
-│   ONE-TIME ASYNC                                    │
-│   ┌─────────────────┐                               │
-│   │ FutureProvider  │  Loading... → User(John)     │
-│   └─────────────────┘                               │
-│                                                     │
-│   CONTINUOUS ASYNC                                  │
-│   ┌─────────────────┐                               │
-│   │ StreamProvider  │  0 → 1 → 2 → 3 → ...         │
-│   └─────────────────┘                               │
-│                                                     │
-└─────────────────────────────────────────────────────┘
+  NO  -> Provider (read-only or computed)
+  YES -> Is it a simple value (int, String, bool)?
+           YES -> StateProvider
+           NO  -> StateNotifierProvider (complex state with methods)
 ```
 
 ---
 
 ## Summary
 
-Each provider type is like a different tool in your toolbox:
-- **StateProvider** = Simple screwdriver (one job, easy to use)
-- **Provider** = Ruler (measures/computes, doesn't change)
-- **StateNotifierProvider** = Swiss Army knife (many tools in one)
-- **FutureProvider** = Microwave (wait once, get result)
-- **StreamProvider** = Running water (continuous flow)
+Each provider type is a different tool:
+- **StateProvider** = a simple screwdriver (one value, easy to change).
+- **Provider** = a ruler (computes or holds a fixed value, you do not change it directly).
+- **StateNotifierProvider** = a Swiss Army knife (a whole state object with methods).
 
-Choose the right tool for the job, and your code will be clean and easy to understand!
+Pick the simplest one that fits the job.
+
+---
+
+## Quick Quiz
+
+**Q1.** Which provider type for a simple counter (an int)?
+
+<details>
+<summary>Answer</summary>
+`StateProvider`. It is for simple mutable values like ints, strings, and bools.
+</details>
+
+**Q2.** Which provider type for a value computed from another provider (like "doubled")?
+
+<details>
+<summary>Answer</summary>
+`Provider`. It can read other providers and return a computed value, which auto-updates.
+</details>
+
+**Q3.** Which provider type for a shopping cart with `addItem`, `removeItem`, and `clear`?
+
+<details>
+<summary>Answer</summary>
+`StateNotifierProvider`. It is for complex state with multiple methods.
+</details>
+
+---
+
+## Assignment
+
+Use [dartpad.dev](https://dartpad.dev).
+
+### Problem 1: Pick the type
+
+For each, name the provider type (`StateProvider`, `Provider`, or `StateNotifierProvider`):
+
+1. A dark-mode on/off toggle.
+2. A "is the counter even?" value computed from a counter.
+3. A todo list with add and remove methods.
+
+### Problem 2: A computed provider
+
+Given `final counterProvider = StateProvider<int>((ref) => 0);`, write a `Provider<int>` called `doubledProvider` that is always double the counter.
+
+### Problem 3: A StateNotifier
+
+Write a `CounterNotifier extends StateNotifier<int>` (starting at 0) with `increment()` and `reset()` methods, and the `StateNotifierProvider` that exposes it.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Pick the type
+
+1. Dark-mode toggle -> `StateProvider` (a simple bool).
+2. "Is even?" computed value -> `Provider` (computed from the counter).
+3. Todo list with methods -> `StateNotifierProvider` (complex state + methods).
+
+### Problem 2: A computed provider
+
+```dart
+final doubledProvider = Provider<int>((ref) {
+  final count = ref.watch(counterProvider);
+  return count * 2;
+});
+```
+
+It watches `counterProvider` and returns double its value. When the counter changes, `doubledProvider` updates automatically.
+
+### Problem 3: A StateNotifier
+
+```dart
+class CounterNotifier extends StateNotifier<int> {
+  CounterNotifier() : super(0);
+
+  void increment() => state = state + 1;
+  void reset() => state = 0;
+}
+
+final counterProvider = StateNotifierProvider<CounterNotifier, int>((ref) {
+  return CounterNotifier();
+});
+```
+
+The notifier holds the state (an int starting at 0) and changes it through methods by assigning to `state`. The `StateNotifierProvider` exposes it. In a widget you read the value with `ref.watch(counterProvider)` and call methods with `ref.read(counterProvider.notifier).increment()`.
 
 ---
 
