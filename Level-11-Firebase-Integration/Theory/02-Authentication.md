@@ -1,5 +1,9 @@
 # Firebase Authentication: User Login & Signup
 
+## The Big Idea In One Sentence
+
+> Firebase Auth handles the hard parts of accounts for you: `createUserWithEmailAndPassword` to sign up, `signInWithEmailAndPassword` to log in, and it remembers who is logged in.
+
 ## The Simple Explanation
 
 Authentication is like a bouncer at a club:
@@ -622,6 +626,63 @@ await user.sendEmailVerification();
 │                                                          │
 └─────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** Which method signs a brand-new user up with email and password?
+
+<details>
+<summary>Answer</summary>
+`createUserWithEmailAndPassword(email, password)`.
+</details>
+
+**Q2.** Which method logs an existing user in?
+
+<details>
+<summary>Answer</summary>
+`signInWithEmailAndPassword(email, password)`.
+</details>
+
+**Q3.** How can your app know if someone is currently logged in?
+
+<details>
+<summary>Answer</summary>
+Check the current user / listen to `authStateChanges()`. Firebase remembers the signed-in user between app launches.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Sign up vs log in
+
+A new user taps "Create account." Which method do you call, create or sign in?
+
+### Problem 2: Stay logged in
+
+After login, the user closes and reopens the app. Do they have to log in again? Why?
+
+### Problem 3: Handle a wrong password
+
+When login fails because the password is wrong, what should your app do?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Sign up vs log in
+
+`createUserWithEmailAndPassword` (you are making a new account). `signInWithEmailAndPassword` is for users who already have one.
+
+### Problem 2: Stay logged in
+
+No, they stay logged in. Firebase persists the session, so on reopen the current user is still set (check `authStateChanges()` to route them straight in).
+
+### Problem 3: Handle a wrong password
+
+Catch the auth error and show a friendly message like "Incorrect email or password," and let them try again, instead of crashing or showing a raw error.
 
 ---
 

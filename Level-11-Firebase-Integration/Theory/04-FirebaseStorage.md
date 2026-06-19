@@ -1,5 +1,9 @@
 # Firebase Storage: Files in the Cloud
 
+## The Big Idea In One Sentence
+
+> Firestore is for small data; Firebase Storage is for big files (photos, videos), you upload a file and get back a URL, then save that URL in Firestore.
+
 ## The Simple Explanation
 
 Firebase Storage is like Google Drive for your app:
@@ -620,6 +624,68 @@ final pickedFile = await ImagePicker().pickImage(
 │                                                          │
 └─────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** What kind of data is Firebase Storage for, versus Firestore?
+
+<details>
+<summary>Answer</summary>
+Storage is for big files (images, videos, documents). Firestore is for structured data (text fields, numbers).
+</details>
+
+**Q2.** After you upload a photo, what do you get back, and where do you usually keep it?
+
+<details>
+<summary>Answer</summary>
+A download URL. You typically save that URL string in Firestore so the app can find and show the image.
+</details>
+
+**Q3.** Why not store the whole image inside a Firestore document?
+
+<details>
+<summary>Answer</summary>
+Documents are meant for small data. Big files are slow and costly there. Storage is built for files; you reference them by URL.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Storage or Firestore?
+
+Where does each go?
+1. A user's profile photo.
+2. The user's display name.
+3. A 30-second video clip.
+
+### Problem 2: The two-step pattern
+
+Describe the common pattern for saving a profile photo so the app can show it later.
+
+### Problem 3: Why URLs?
+
+Why save the file's URL in Firestore instead of the file itself?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Storage or Firestore?
+
+1. **Storage** (a file).
+2. **Firestore** (small text).
+3. **Storage** (a large file).
+
+### Problem 2: The two-step pattern
+
+Upload the photo to Firebase Storage, get its download URL, then save that URL in the user's Firestore document. To show it, read the URL and load it with `Image.network`.
+
+### Problem 3: Why URLs?
+
+Firestore documents should stay small and fast. Storing a URL keeps the document light while the big file lives in Storage, which is built for files.
 
 ---
 

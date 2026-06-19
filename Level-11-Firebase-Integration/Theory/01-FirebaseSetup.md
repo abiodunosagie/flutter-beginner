@@ -1,5 +1,9 @@
 # Firebase Setup: Getting Started
 
+## The Big Idea In One Sentence
+
+> Firebase is a ready-made backend from Google (login, database, file storage), and setup means connecting your Flutter app to a Firebase project so it can use those services.
+
 ## The Simple Explanation
 
 Setting up Firebase is like getting a library card:
@@ -426,6 +430,68 @@ defaultConfig {
 │                                                          │
 └─────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** In one line, what is Firebase?
+
+<details>
+<summary>Answer</summary>
+A ready-made backend service from Google that gives your app login, a cloud database, file storage, and more, without building your own server.
+</details>
+
+**Q2.** Why use Firebase instead of building your own backend?
+
+<details>
+<summary>Answer</summary>
+It saves huge time: you get auth, database, and storage that already work and scale, so you focus on your app.
+</details>
+
+**Q3.** What does "connecting" your app to Firebase mean at setup?
+
+<details>
+<summary>Answer</summary>
+Creating a Firebase project and adding its config to your Flutter app (e.g. via FlutterFire/`firebase_options`) so the app knows which project to talk to.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Pick the service
+
+Which Firebase service fits each need?
+1. Let users sign up and log in.
+2. Store a collection of posts in the cloud.
+3. Store uploaded profile photos.
+
+### Problem 2: Why a backend?
+
+In one sentence, what problem does Firebase solve for a solo developer?
+
+### Problem 3: First step
+
+What is the first thing you create before connecting your app?
+
+---
+
+## Assignment Answers
+
+### Problem 1: Pick the service
+
+1. **Firebase Authentication**.
+2. **Cloud Firestore** (database).
+3. **Firebase Storage** (files).
+
+### Problem 2: Why a backend?
+
+It gives you a working, scalable backend (auth, data, files) without building and maintaining your own server.
+
+### Problem 3: First step
+
+A Firebase project (in the Firebase console), which your app then connects to.
 
 ---
 

@@ -1,5 +1,9 @@
 # Cloud Firestore: Your Cloud Database
 
+## The Big Idea In One Sentence
+
+> Firestore stores your data in the cloud as collections of documents (like folders full of JSON cards), and it can even push live updates to every device in real time.
+
 ## The Simple Explanation
 
 Firestore is like a giant, smart filing cabinet in the cloud:
@@ -592,6 +596,63 @@ await FirebaseFirestore.instance
 │                                                          │
 └─────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Quick Quiz
+
+**Q1.** What are the two main building blocks of Firestore?
+
+<details>
+<summary>Answer</summary>
+Collections (groups) and documents (the individual records inside them, each holding fields).
+</details>
+
+**Q2.** How is Firestore different from SQLite (Level 9)?
+
+<details>
+<summary>Answer</summary>
+SQLite lives on the device only; Firestore lives in the cloud and syncs across devices and users, with optional real-time updates.
+</details>
+
+**Q3.** What makes Firestore great for things like chat or live lists?
+
+<details>
+<summary>Answer</summary>
+Real-time listeners (snapshots): when data changes, every listening device updates automatically.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Name the pieces
+
+You store users. What is the collection, and what is one document inside it?
+
+### Problem 2: Cloud or device?
+
+You want two phones to see the same shopping list update live. Firestore or SQLite?
+
+### Problem 3: One-time vs live
+
+Name the difference between reading a document once and listening to it.
+
+---
+
+## Assignment Answers
+
+### Problem 1: Name the pieces
+
+The collection is `users`; a document is one user (often keyed by their id) holding fields like name and email.
+
+### Problem 2: Cloud or device?
+
+**Firestore.** It is in the cloud and syncs across devices in real time. SQLite is local to one device only.
+
+### Problem 3: One-time vs live
+
+Reading once gives you the current value and stops. Listening (a snapshot stream) keeps giving you new values every time the data changes.
 
 ---
 
