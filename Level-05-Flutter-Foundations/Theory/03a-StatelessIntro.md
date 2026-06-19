@@ -1,5 +1,13 @@
 # StatelessWidget: Simple, Unchanging Widgets
 
+## The Big Idea In One Sentence
+
+> A StatelessWidget is a widget you build yourself that **never changes** once it is on screen.
+
+In lesson 02a you saw the three-part shape of a widget. Now you build your own properly.
+
+---
+
 ## For 5-Year-Olds: Printed Photos vs Videos
 
 Imagine you have two things:
@@ -527,7 +535,105 @@ The `const` keyword tells Flutter "this widget never changes, so you can reuse t
 
 ---
 
-**Next:** Learn how to pass data to your StatelessWidgets using properties.
+## Assignment
+
+Use [dartpad.dev](https://dartpad.dev). This shell shows your widget on screen:
+
+```dart
+import 'package:flutter/material.dart';
+void main() => runApp(MaterialApp(home: Scaffold(body: Center(child: YOUR_WIDGET()))));
+```
+
+(For now, your widgets have fixed content and no constructor inputs. Passing data in comes in the next lesson, 03b.)
+
+### Problem 1: A welcome widget
+
+Write a `StatelessWidget` called `Welcome` whose `build` returns `Text('Welcome to my app')`. Give it a `const Welcome({super.key});` constructor.
+
+### Problem 2: A logo widget
+
+Write a `StatelessWidget` called `Logo` whose `build` returns a `Column` containing a star icon (size 60, amber) and, below it, the text `'My App'`.
+
+### Problem 3: Predict the build calls
+
+For a normal `StatelessWidget`, which of these cause its `build` method to run?
+
+1. The widget is shown for the first time.
+2. The user taps the screen.
+3. The widget's parent rebuilds.
+4. A timer goes off.
+
+### Problem 4: Spot the bug
+
+Why is this a bad `StatelessWidget`? What would you use instead?
+
+```dart
+class Tally extends StatelessWidget {
+  int count = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text('Count: $count');
+  }
+}
+```
+
+---
+
+## Assignment Answers
+
+### Problem 1: A welcome widget
+
+```dart
+class Welcome extends StatelessWidget {
+  const Welcome({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text('Welcome to my app');
+  }
+}
+```
+
+The three parts: it `extends StatelessWidget`, has a `const` constructor with `super.key`, and a `build` that returns the widget to show.
+
+### Problem 2: A logo widget
+
+```dart
+class Logo extends StatelessWidget {
+  const Logo({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: const [
+        Icon(Icons.star, size: 60, color: Colors.amber),
+        SizedBox(height: 8),
+        Text('My App'),
+      ],
+    );
+  }
+}
+```
+
+`build` can return any widget tree, here a `Column` with an icon, a gap, and a text. The whole `Logo` is now one reusable widget you can drop anywhere.
+
+### Problem 3: Predict the build calls
+
+`build` runs for **1** (first shown) and **3** (parent rebuilds).
+
+It does **not** run for **2** (tap) or **4** (timer). A StatelessWidget cannot rebuild itself in response to events. For that you need a StatefulWidget, which is coming in lesson 04a.
+
+### Problem 4: Spot the bug
+
+The bug: it stores `int count = 0` as a changeable field and seems to expect the screen to update when `count` changes. But a `StatelessWidget` never rebuilds itself, so even if `count` changed, the screen would not update. It also should be `final` if it never changes.
+
+What to use instead: a **StatefulWidget**, which is designed for data that changes and can rebuild the screen. You will learn it in lesson 04a. The rule of thumb: if a value changes while the screen is showing, the widget should be stateful.
+
+---
+
+**Next:** `03b-StatelessProperties.md`, where you pass data into your widgets so they are reusable.
 
 ---
 
