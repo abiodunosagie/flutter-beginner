@@ -1,5 +1,9 @@
 # Named Routes in Flutter
 
+## The Big Idea In One Sentence
+
+> Give each screen a short name (like `'/cart'`), list them once in `MaterialApp`, then jump to any screen by its name with `pushNamed`.
+
 Organize your navigation with route names instead of creating screens inline!
 
 ---
@@ -532,6 +536,78 @@ MaterialApp(
 
 ---
 
+## Quick Quiz
+
+**Q1.** Where do you list all your named routes?
+
+<details>
+<summary>Answer</summary>
+In `MaterialApp` using the `routes: { ... }` map.
+</details>
+
+**Q2.** Which method navigates by name?
+
+<details>
+<summary>Answer</summary>
+`Navigator.pushNamed(context, '/details')`.
+</details>
+
+**Q3.** Why are route constants (like `AppRoutes.details`) better than typing `'/details'` everywhere?
+
+<details>
+<summary>Answer</summary>
+They prevent typos. A misspelled string fails silently, but a misspelled constant name fails to compile so you catch it immediately.
+</details>
+
+---
+
+## Assignment
+
+### Problem 1: Add a route
+
+You already have `'/': HomeScreen()`. Add a route named `'/about'` that opens `AboutScreen`. Write the routes map.
+
+### Problem 2: Navigate to it
+
+Write the line that opens the `'/about'` screen.
+
+### Problem 3: Find the bug
+
+This does nothing when tapped. Why?
+
+```dart
+// In MaterialApp:
+routes: {
+  '/': (context) => HomeScreen(),
+  '/about': (context) => AboutScreen(),
+},
+
+// On a button:
+Navigator.pushNamed(context, '/abuot');
+```
+
+---
+
+## Assignment Answers
+
+### Problem 1: Add a route
+
+```dart
+routes: {
+  '/': (context) => HomeScreen(),
+  '/about': (context) => AboutScreen(),
+},
+```
+
+### Problem 2: Navigate to it
+
+```dart
+Navigator.pushNamed(context, '/about');
+```
+
+### Problem 3: Find the bug
+
+The route name is misspelled: `'/abuot'` instead of `'/about'`. That route is not in the map, so nothing opens. This is exactly why route constants are safer: `AppRoutes.about` would not compile if misspelled.
 
 ---
 
