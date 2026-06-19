@@ -1,521 +1,178 @@
-# Level 05 PART 6a: Button Widgets - All the Buttons You Need
+# Buttons: Letting The User Tap
 
-## For a 5-Year-Old
+## The Big Idea In One Sentence
 
-Imagine you're building a toy remote control:
-- **Big raised buttons** that you can really press (like a doorbell)
-- **Flat buttons** that don't stick out (like drawn buttons on paper)
-- **Buttons with borders** (like buttons outlined with a marker)
-- **Tiny icon buttons** (like the play button on your tablet)
-- **Round floating buttons** (like the big red button on a game controller)
-- **Menu buttons** that show more choices when you tap them
+> A button shows something tappable and runs your code in its `onPressed` when the user taps it.
 
-Flutter has ALL these button types! Each one looks different and is perfect for different jobs. Let's learn them all!
+You have used `ElevatedButton` already. Now you meet the main button types and how to handle a tap.
 
 ---
 
-## Button Types Overview
+## For A 5-Year-Old
 
-Flutter provides 6 main button types:
-
-| Button Type | Use When | Appearance |
-|-------------|----------|------------|
-| **ElevatedButton** | Primary action (most important) | Raised with shadow |
-| **TextButton** | Secondary action | Flat, just text |
-| **OutlinedButton** | Medium importance | Border outline |
-| **IconButton** | Toolbar actions | Just an icon |
-| **FloatingActionButton** | Main screen action | Circular, floating |
-| **PopupMenuButton** | Show menu options | Opens popup menu |
+A button is like a doorbell. You press it, and something happens (a sound, a light, a door opens). In Flutter, "something happens" is the code you put in `onPressed`.
 
 ---
 
-## ElevatedButton - The Primary Button
+## The Heart Of Every Button: onPressed
 
-**Best for:** The MOST important action on a screen (Save, Submit, Next, etc.)
-
-### Basic Usage
+Every button has an `onPressed`. You give it a function, and Flutter runs that function when the button is tapped.
 
 ```dart
 ElevatedButton(
   onPressed: () {
-    print('Button pressed!');
+    print('Tapped!');
   },
-  child: Text('Click Me'),
+  child: const Text('Tap me'),
 )
 ```
 
-### With Icon
+The `() { ... }` is a small function that runs on tap. The `child` is what the button shows.
+
+> Special rule: if you set `onPressed: null`, the button is **disabled** (greyed out and not tappable). This is how you turn a button off.
+
+---
+
+## The Main Button Types
+
+Flutter gives you three text buttons that look different but work the same way. Pick by how important the action is.
+
+### ElevatedButton: the main action
+
+A filled, raised button. Use it for the most important action (Save, Submit, Next).
+
+```dart
+ElevatedButton(
+  onPressed: () {},
+  child: const Text('Save'),
+)
+```
+
+### OutlinedButton: a secondary action
+
+A button with a border and no fill. Use it for a less important action next to the main one (Cancel).
+
+```dart
+OutlinedButton(
+  onPressed: () {},
+  child: const Text('Cancel'),
+)
+```
+
+### TextButton: a subtle action
+
+Just text, no border or fill. Use it for the least important actions (Learn more, Skip).
+
+```dart
+TextButton(
+  onPressed: () {},
+  child: const Text('Skip'),
+)
+```
+
+They look like:
+
+```
+[ Save ]        (ElevatedButton: filled)
+[  Cancel  ]    (OutlinedButton: just a border)
+ Skip           (TextButton: just text)
+```
+
+---
+
+## Buttons With An Icon
+
+Each text button has an `.icon` version that shows an icon next to the label:
 
 ```dart
 ElevatedButton.icon(
-  onPressed: () {
-    print('Saved!');
-  },
-  icon: Icon(Icons.save),
-  label: Text('Save'),
+  onPressed: () {},
+  icon: const Icon(Icons.save),
+  label: const Text('Save'),
 )
 ```
 
-### Full Styling
-
-```dart
-ElevatedButton(
-  onPressed: () {
-    print('Custom styled button!');
-  },
-  style: ElevatedButton.styleFrom(
-    backgroundColor: Colors.blue,        // Background color
-    foregroundColor: Colors.white,       // Text/icon color
-
-    // Padding
-    padding: EdgeInsets.symmetric(
-      horizontal: 32,
-      vertical: 16,
-    ),
-
-    // Size
-    minimumSize: Size(200, 50),
-
-    // Shape
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12),
-    ),
-
-    // Elevation (shadow)
-    elevation: 8,
-    shadowColor: Colors.blue.withOpacity(0.5),
-
-    // Text style
-    textStyle: TextStyle(
-      fontSize: 18,
-      fontWeight: FontWeight.bold,
-    ),
-  ),
-  child: Text('Styled Button'),
-)
-```
-
-### Button States
-
-```dart
-class ButtonStatesExample extends StatefulWidget {
-  @override
-  State<ButtonStatesExample> createState() => _ButtonStatesExampleState();
-}
-
-class _ButtonStatesExampleState extends State<ButtonStatesExample> {
-  bool isEnabled = true;
-  bool isLoading = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // Enabled button
-        ElevatedButton(
-          onPressed: isEnabled && !isLoading
-              ? () async {
-                  setState(() => isLoading = true);
-                  await Future.delayed(Duration(seconds: 2));
-                  setState(() => isLoading = false);
-                }
-              : null, // null = disabled
-          child: isLoading
-              ? SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    color: Colors.white,
-                  ),
-                )
-              : Text('Submit'),
-        ),
-
-        SizedBox(height: 16),
-
-        // Toggle enable/disable
-        SwitchListTile(
-          title: Text('Button Enabled'),
-          value: isEnabled,
-          onChanged: (value) {
-            setState(() => isEnabled = value);
-          },
-        ),
-      ],
-    );
-  }
-}
-```
-
-### Disabled State
-
-```dart
-ElevatedButton(
-  onPressed: null,  // null = disabled (grayed out)
-  child: Text('Disabled Button'),
-)
-```
+Note it uses `icon:` and `label:` instead of `child:`.
 
 ---
 
-## TextButton - The Subtle Button
+## IconButton: Just An Icon
 
-**Best for:** Less important actions (Cancel, Skip, Learn More)
-
-### Basic Usage
-
-```dart
-TextButton(
-  onPressed: () {
-    print('Text button pressed');
-  },
-  child: Text('Cancel'),
-)
-```
-
-### With Icon
-
-```dart
-TextButton.icon(
-  onPressed: () {
-    print('Learn more');
-  },
-  icon: Icon(Icons.help_outline),
-  label: Text('Learn More'),
-)
-```
-
-### Styled TextButton
-
-```dart
-TextButton(
-  onPressed: () {},
-  style: TextButton.styleFrom(
-    foregroundColor: Colors.blue,
-    padding: EdgeInsets.all(16),
-    textStyle: TextStyle(fontSize: 16),
-
-    // Add background when pressed
-    backgroundColor: Colors.transparent,
-
-    // Shape
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(8),
-    ),
-  ),
-  child: Text('Text Button'),
-)
-```
-
-### Common Pattern: Dialog Buttons
-
-```dart
-AlertDialog(
-  title: Text('Confirm Delete'),
-  content: Text('Are you sure you want to delete this item?'),
-  actions: [
-    TextButton(
-      onPressed: () => Navigator.pop(context),
-      child: Text('Cancel'),
-    ),
-    ElevatedButton(
-      onPressed: () {
-        // Delete item
-        Navigator.pop(context);
-      },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.red,
-      ),
-      child: Text('Delete'),
-    ),
-  ],
-)
-```
-
----
-
-## OutlinedButton - The Bordered Button
-
-**Best for:** Medium importance actions (Add to Cart, Follow, etc.)
-
-### Basic Usage
-
-```dart
-OutlinedButton(
-  onPressed: () {
-    print('Outlined button pressed');
-  },
-  child: Text('Outlined'),
-)
-```
-
-### With Icon
-
-```dart
-OutlinedButton.icon(
-  onPressed: () {},
-  icon: Icon(Icons.shopping_cart),
-  label: Text('Add to Cart'),
-)
-```
-
-### Custom Border Style
-
-```dart
-OutlinedButton(
-  onPressed: () {},
-  style: OutlinedButton.styleFrom(
-    foregroundColor: Colors.blue,
-
-    // Border
-    side: BorderSide(
-      color: Colors.blue,
-      width: 2,
-    ),
-
-    // Padding
-    padding: EdgeInsets.symmetric(
-      horizontal: 24,
-      vertical: 12,
-    ),
-
-    // Shape
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(8),
-    ),
-
-    // Background when pressed
-    backgroundColor: Colors.blue.withOpacity(0.1),
-  ),
-  child: Text('Custom Border'),
-)
-```
-
-### Pill-Shaped Button
-
-```dart
-OutlinedButton(
-  onPressed: () {},
-  style: OutlinedButton.styleFrom(
-    side: BorderSide(color: Colors.green),
-    shape: StadiumBorder(), // Pill shape
-    padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-  ),
-  child: Text('Pill Button'),
-)
-```
-
----
-
-## IconButton - Icon-Only Buttons
-
-**Best for:** Toolbar actions, small UI elements
-
-### Basic Usage
+When you want only an icon to tap (like a heart, a settings gear, a back arrow), use `IconButton`:
 
 ```dart
 IconButton(
-  icon: Icon(Icons.favorite),
-  onPressed: () {
-    print('Favorite pressed');
-  },
+  onPressed: () {},
+  icon: const Icon(Icons.favorite),
 )
 ```
 
-### Styled IconButton
-
-```dart
-IconButton(
-  icon: Icon(Icons.delete),
-  color: Colors.red,
-  iconSize: 30,
-  tooltip: 'Delete',  // Shows on hover/long press
-  splashRadius: 24,   // Ripple size
-  onPressed: () {
-    print('Delete pressed');
-  },
-)
-```
-
-### Toggle Icon Button
-
-```dart
-class ToggleIconButton extends StatefulWidget {
-  @override
-  State<ToggleIconButton> createState() => _ToggleIconButtonState();
-}
-
-class _ToggleIconButtonState extends State<ToggleIconButton> {
-  bool isFavorite = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(
-        isFavorite ? Icons.favorite : Icons.favorite_border,
-      ),
-      color: isFavorite ? Colors.red : Colors.grey,
-      onPressed: () {
-        setState(() {
-          isFavorite = !isFavorite;
-        });
-      },
-    );
-  }
-}
-```
-
-### AppBar Action Buttons
-
-```dart
-AppBar(
-  title: Text('My App'),
-  actions: [
-    IconButton(
-      icon: Icon(Icons.search),
-      tooltip: 'Search',
-      onPressed: () {
-        // Open search
-      },
-    ),
-    IconButton(
-      icon: Icon(Icons.filter_list),
-      tooltip: 'Filter',
-      onPressed: () {
-        // Open filter
-      },
-    ),
-    IconButton(
-      icon: Icon(Icons.more_vert),
-      tooltip: 'More options',
-      onPressed: () {
-        // Show menu
-      },
-    ),
-  ],
-)
-```
+You often see these in the app bar.
 
 ---
 
-## FloatingActionButton - The Main Action Button
+## FloatingActionButton: The Round Action Button
 
-**Best for:** The primary action on a screen (Add, Create, Compose)
-
-### Basic FAB
-
-```dart
-FloatingActionButton(
-  onPressed: () {
-    print('FAB pressed');
-  },
-  child: Icon(Icons.add),
-)
-```
-
-### Extended FAB (with label)
-
-```dart
-FloatingActionButton.extended(
-  onPressed: () {
-    print('Extended FAB pressed');
-  },
-  icon: Icon(Icons.add),
-  label: Text('Add Item'),
-)
-```
-
-### Styled FAB
-
-```dart
-FloatingActionButton(
-  onPressed: () {},
-  backgroundColor: Colors.pink,
-  foregroundColor: Colors.white,
-  elevation: 8,
-  highlightElevation: 12,  // When pressed
-  child: Icon(Icons.edit),
-)
-```
-
-### Mini FAB
-
-```dart
-FloatingActionButton(
-  onPressed: () {},
-  mini: true,  // Smaller size
-  child: Icon(Icons.add),
-)
-```
-
-### FAB in Scaffold
+The round button that floats over the bottom-right of a screen. It goes in the `Scaffold`'s `floatingActionButton` slot:
 
 ```dart
 Scaffold(
-  appBar: AppBar(title: Text('My App')),
-  body: Center(child: Text('Content')),
-
-  // FAB position
+  appBar: AppBar(title: const Text('Home')),
+  body: const Center(child: Text('Tap the + button')),
   floatingActionButton: FloatingActionButton(
-    onPressed: () {
-      // Add new item
-    },
-    child: Icon(Icons.add),
+    onPressed: () {},
+    child: const Icon(Icons.add),
   ),
-
-  // FAB location (optional)
-  floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-  // Options:
-  // - FloatingActionButtonLocation.endFloat (default)
-  // - FloatingActionButtonLocation.centerFloat
-  // - FloatingActionButtonLocation.startFloat
-  // - FloatingActionButtonLocation.endDocked
-  // - FloatingActionButtonLocation.centerDocked
 )
 ```
 
-### Multiple FABs (Speed Dial)
+---
+
+## Styling A Button
+
+To change a button's colours, use `style: ElevatedButton.styleFrom(...)`:
 
 ```dart
-class SpeedDialFab extends StatefulWidget {
+ElevatedButton(
+  onPressed: () {},
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.green,   // the fill colour
+    foregroundColor: Colors.white,   // the text/icon colour
+  ),
+  child: const Text('Green button'),
+)
+```
+
+`backgroundColor` is the button's colour; `foregroundColor` is the colour of the text and icon on it.
+
+---
+
+## A Real Button: A Counter
+
+Buttons shine with stateful widgets. Here is a button that actually changes the screen, combining what you learned in `04a`:
+
+```dart
+import 'package:flutter/material.dart';
+
+class CounterButton extends StatefulWidget {
+  const CounterButton({super.key});
+
   @override
-  State<SpeedDialFab> createState() => _SpeedDialFabState();
+  State<CounterButton> createState() => _CounterButtonState();
 }
 
-class _SpeedDialFabState extends State<SpeedDialFab> {
-  bool isExpanded = false;
+class _CounterButtonState extends State<CounterButton> {
+  int count = 0;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (isExpanded) ...[
-          FloatingActionButton(
-            mini: true,
-            onPressed: () {
-              print('Option 1');
-              setState(() => isExpanded = false);
-            },
-            child: Icon(Icons.photo),
-          ),
-          SizedBox(height: 16),
-          FloatingActionButton(
-            mini: true,
-            onPressed: () {
-              print('Option 2');
-              setState(() => isExpanded = false);
-            },
-            child: Icon(Icons.video_call),
-          ),
-          SizedBox(height: 16),
-        ],
-        FloatingActionButton(
-          onPressed: () {
-            setState(() => isExpanded = !isExpanded);
-          },
-          child: Icon(isExpanded ? Icons.close : Icons.add),
+        Text('Count: $count', style: const TextStyle(fontSize: 24)),
+        ElevatedButton(
+          onPressed: () => setState(() => count++),
+          child: const Text('Add one'),
         ),
       ],
     );
@@ -523,477 +180,198 @@ class _SpeedDialFabState extends State<SpeedDialFab> {
 }
 ```
 
----
-
-## PopupMenuButton - Menu Button
-
-**Best for:** Showing multiple action options
-
-### Basic Popup Menu
-
-```dart
-PopupMenuButton<String>(
-  onSelected: (value) {
-    print('Selected: $value');
-  },
-  itemBuilder: (context) => [
-    PopupMenuItem(
-      value: 'edit',
-      child: Text('Edit'),
-    ),
-    PopupMenuItem(
-      value: 'delete',
-      child: Text('Delete'),
-    ),
-    PopupMenuItem(
-      value: 'share',
-      child: Text('Share'),
-    ),
-  ],
-)
-```
-
-### With Icons
-
-```dart
-PopupMenuButton<String>(
-  icon: Icon(Icons.more_vert),
-  onSelected: (value) {
-    switch (value) {
-      case 'edit':
-        // Edit action
-        break;
-      case 'delete':
-        // Delete action
-        break;
-      case 'share':
-        // Share action
-        break;
-    }
-  },
-  itemBuilder: (context) => [
-    PopupMenuItem(
-      value: 'edit',
-      child: Row(
-        children: [
-          Icon(Icons.edit, size: 20),
-          SizedBox(width: 12),
-          Text('Edit'),
-        ],
-      ),
-    ),
-    PopupMenuItem(
-      value: 'delete',
-      child: Row(
-        children: [
-          Icon(Icons.delete, size: 20, color: Colors.red),
-          SizedBox(width: 12),
-          Text('Delete', style: TextStyle(color: Colors.red)),
-        ],
-      ),
-    ),
-    PopupMenuDivider(),  // Divider line
-    PopupMenuItem(
-      value: 'share',
-      child: Row(
-        children: [
-          Icon(Icons.share, size: 20),
-          SizedBox(width: 12),
-          Text('Share'),
-        ],
-      ),
-    ),
-  ],
-)
-```
-
-### AppBar Overflow Menu
-
-```dart
-AppBar(
-  title: Text('My App'),
-  actions: [
-    PopupMenuButton<String>(
-      onSelected: (value) {
-        print('Menu: $value');
-      },
-      itemBuilder: (context) => [
-        PopupMenuItem(value: 'settings', child: Text('Settings')),
-        PopupMenuItem(value: 'help', child: Text('Help')),
-        PopupMenuItem(value: 'about', child: Text('About')),
-      ],
-    ),
-  ],
-)
-```
+The button's `onPressed` calls `setState` to bump the count, and the screen rebuilds with the new number.
 
 ---
 
-## Custom Button Widgets
+## The Top Mistakes Beginners Make
 
-### Create Your Own Button Style
+### Mistake 1: Forgetting onPressed
 
 ```dart
-class PrimaryButton extends StatelessWidget {
-  final String text;
-  final VoidCallback? onPressed;
-  final IconData? icon;
-
-  const PrimaryButton({
-    required this.text,
-    required this.onPressed,
-    this.icon,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.white,
-        padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        elevation: 4,
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (icon != null) ...[
-            Icon(icon),
-            SizedBox(width: 8),
-          ],
-          Text(text, style: TextStyle(fontSize: 16)),
-        ],
-      ),
-    );
-  }
-}
-
-// Usage:
-PrimaryButton(
-  text: 'Save Changes',
-  icon: Icons.save,
-  onPressed: () {
-    // Save action
-  },
-)
+ElevatedButton(child: Text('hi'))   // BAD: onPressed is required
+ElevatedButton(onPressed: () {}, child: Text('hi'))   // GOOD
 ```
 
-### Gradient Button
+### Mistake 2: Calling the function instead of passing it
 
 ```dart
-class GradientButton extends StatelessWidget {
-  final String text;
-  final VoidCallback? onPressed;
+onPressed: doThing()    // BAD: runs doThing right now, once
+onPressed: doThing      // GOOD: passes the function to run on tap
+onPressed: () => doThing()   // also GOOD
+```
 
-  const GradientButton({
-    required this.text,
-    required this.onPressed,
-  });
+### Mistake 3: Using child for the .icon version
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Colors.purple, Colors.pink],
-        ),
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.purple.withOpacity(0.3),
-            blurRadius: 8,
-            offset: Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onPressed,
-          borderRadius: BorderRadius.circular(12),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-            child: Text(
-              text,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
+```dart
+ElevatedButton.icon(onPressed: () {}, child: Text('Save'))           // BAD
+ElevatedButton.icon(onPressed: () {}, icon: Icon(Icons.save), label: Text('Save'))  // GOOD
+```
+
+### Mistake 4: Changing data without setState
+
+A button that updates the screen must call `setState` (or it will not show the change).
+
+---
+
+## One-Minute Recap
+
+- Every button runs the function in its `onPressed` when tapped. `onPressed: null` disables it.
+- `ElevatedButton` (main), `OutlinedButton` (secondary), `TextButton` (subtle) all work the same way.
+- The `.icon` versions add an icon (use `icon:` and `label:`).
+- `IconButton` is an icon-only button. `FloatingActionButton` is the round button in a Scaffold.
+- Style with `style: ElevatedButton.styleFrom(backgroundColor: ..., foregroundColor: ...)`.
+
+---
+
+## Quick Quiz
+
+**Q1.** What runs when a button is tapped?
+
+<details>
+<summary>Answer</summary>
+The function you gave to `onPressed`.
+</details>
+
+**Q2.** How do you disable a button?
+
+<details>
+<summary>Answer</summary>
+Set `onPressed: null`. The button greys out and cannot be tapped.
+</details>
+
+**Q3.** Which button is for the most important action on a screen?
+
+<details>
+<summary>Answer</summary>
+`ElevatedButton` (the filled one). `OutlinedButton` and `TextButton` are for less important actions.
+</details>
+
+**Q4.** What is wrong with `onPressed: doThing()`?
+
+<details>
+<summary>Answer</summary>
+The `()` calls `doThing` immediately, once, instead of on tap. Pass it without `()`: `onPressed: doThing`, or wrap it: `onPressed: () => doThing()`.
+</details>
+
+---
+
+## Assignment
+
+Paste into [dartpad.dev](https://dartpad.dev), wrapping in `Scaffold(body: Center(child: ...))`.
+
+### Problem 1: Pick the button
+
+For each action, which button type fits best: `ElevatedButton`, `OutlinedButton`, or `TextButton`?
+
+1. The main "Sign Up" button.
+2. A "Cancel" next to a main button.
+3. A subtle "Forgot password?" link.
+
+### Problem 2: A counter button
+
+Build a `StatefulWidget` that shows a number and an `ElevatedButton` labelled `'Add'`. Each tap adds 1 and updates the screen.
+
+### Problem 3: A save button with an icon
+
+Build an `ElevatedButton.icon` with a save icon and the label `'Save'` that prints `'Saved!'` when tapped.
+
+### Problem 4: A green styled button
+
+Build an `ElevatedButton` with a green background and white text that says `'Go'`.
+
+### Problem 5: Spot the bug
+
+```dart
+ElevatedButton(
+  onPressed: print('hi'),
+  child: const Text('Tap'),
+)
 ```
 
 ---
 
-## Complete Example: Button Showcase App
+## Assignment Answers
+
+### Problem 1: Pick the button
+
+1. Sign Up -> `ElevatedButton` (the main action).
+2. Cancel -> `OutlinedButton` (secondary, next to the main one).
+3. Forgot password? -> `TextButton` (subtle, low importance).
+
+### Problem 2: A counter button
 
 ```dart
 import 'package:flutter/material.dart';
 
-void main() => runApp(ButtonShowcaseApp());
+class Counter extends StatefulWidget {
+  const Counter({super.key});
 
-class ButtonShowcaseApp extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: ButtonShowcasePage(),
-      theme: ThemeData(useMaterial3: true),
-    );
-  }
+  State<Counter> createState() => _CounterState();
 }
 
-class ButtonShowcasePage extends StatefulWidget {
-  @override
-  State<ButtonShowcasePage> createState() => _ButtonShowcasePageState();
-}
-
-class _ButtonShowcasePageState extends State<ButtonShowcasePage> {
-  bool isLoading = false;
-  bool isFavorite = false;
-  int counter = 0;
-
-  void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
-  }
+class _CounterState extends State<Counter> {
+  int count = 0;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Button Showcase'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () => _showSnackBar('Search pressed'),
-          ),
-          PopupMenuButton<String>(
-            onSelected: (value) => _showSnackBar('Menu: $value'),
-            itemBuilder: (context) => [
-              PopupMenuItem(value: 'settings', child: Text('Settings')),
-              PopupMenuItem(value: 'help', child: Text('Help')),
-            ],
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text('Elevated Buttons', style: TextStyle(fontSize: 18)),
-            SizedBox(height: 8),
-            ElevatedButton(
-              onPressed: () => _showSnackBar('Elevated button pressed'),
-              child: Text('Elevated Button'),
-            ),
-            SizedBox(height: 8),
-            ElevatedButton.icon(
-              onPressed: () => _showSnackBar('Save pressed'),
-              icon: Icon(Icons.save),
-              label: Text('Save'),
-            ),
-
-            SizedBox(height: 24),
-            Text('Text Buttons', style: TextStyle(fontSize: 18)),
-            SizedBox(height: 8),
-            TextButton(
-              onPressed: () => _showSnackBar('Text button pressed'),
-              child: Text('Text Button'),
-            ),
-            TextButton.icon(
-              onPressed: () => _showSnackBar('Learn more pressed'),
-              icon: Icon(Icons.help_outline),
-              label: Text('Learn More'),
-            ),
-
-            SizedBox(height: 24),
-            Text('Outlined Buttons', style: TextStyle(fontSize: 18)),
-            SizedBox(height: 8),
-            OutlinedButton(
-              onPressed: () => _showSnackBar('Outlined button pressed'),
-              child: Text('Outlined Button'),
-            ),
-            OutlinedButton.icon(
-              onPressed: () => _showSnackBar('Add to cart'),
-              icon: Icon(Icons.shopping_cart),
-              label: Text('Add to Cart'),
-            ),
-
-            SizedBox(height: 24),
-            Text('Icon Buttons', style: TextStyle(fontSize: 18)),
-            SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                IconButton(
-                  icon: Icon(isFavorite ? Icons.favorite : Icons.favorite_border),
-                  color: isFavorite ? Colors.red : Colors.grey,
-                  onPressed: () {
-                    setState(() => isFavorite = !isFavorite);
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.share),
-                  onPressed: () => _showSnackBar('Share pressed'),
-                ),
-                IconButton(
-                  icon: Icon(Icons.delete),
-                  color: Colors.red,
-                  onPressed: () => _showSnackBar('Delete pressed'),
-                ),
-              ],
-            ),
-
-            SizedBox(height: 24),
-            Text('Loading State', style: TextStyle(fontSize: 18)),
-            SizedBox(height: 8),
-            ElevatedButton(
-              onPressed: isLoading ? null : () async {
-                setState(() => isLoading = true);
-                await Future.delayed(Duration(seconds: 2));
-                setState(() => isLoading = false);
-                _showSnackBar('Completed!');
-              },
-              child: isLoading
-                  ? SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: Colors.white,
-                      ),
-                    )
-                  : Text('Submit'),
-            ),
-
-            SizedBox(height: 24),
-            Text('Counter: $counter', style: TextStyle(fontSize: 18)),
-          ],
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text('$count', style: const TextStyle(fontSize: 32)),
+        ElevatedButton(
+          onPressed: () => setState(() => count++),
+          child: const Text('Add'),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() => counter++);
-        },
-        child: Icon(Icons.add),
-      ),
+      ],
     );
   }
 }
 ```
 
----
+The button's `onPressed` calls `setState` to add 1, so the number updates each tap.
 
-## Best Practices
-
-### 1. Choose the Right Button Type
+### Problem 3: A save button with an icon
 
 ```dart
-// PRIMARY action - use ElevatedButton
-ElevatedButton(
-  onPressed: () => _saveChanges(),
-  child: Text('Save'),
-)
-
-// SECONDARY action - use TextButton
-TextButton(
-  onPressed: () => Navigator.pop(context),
-  child: Text('Cancel'),
-)
-
-// ALTERNATIVE action - use OutlinedButton
-OutlinedButton(
-  onPressed: () => _saveAsDraft(),
-  child: Text('Save as Draft'),
+ElevatedButton.icon(
+  onPressed: () => print('Saved!'),
+  icon: const Icon(Icons.save),
+  label: const Text('Save'),
 )
 ```
 
-### 2. Use Loading States
+The `.icon` version uses `icon:` and `label:` instead of `child:`.
+
+### Problem 4: A green styled button
 
 ```dart
 ElevatedButton(
-  onPressed: isLoading ? null : _handleSubmit,
-  child: isLoading
-    ? CircularProgressIndicator()
-    : Text('Submit'),
-)
-```
-
-### 3. Provide Feedback
-
-```dart
-ElevatedButton(
-  onPressed: () {
-    // Do action
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Action completed!')),
-    );
-  },
-  child: Text('Do Action'),
-)
-```
-
-### 4. Add Tooltips to IconButtons
-
-```dart
-IconButton(
-  icon: Icon(Icons.delete),
-  tooltip: 'Delete item',  // Shows on hover/long press
   onPressed: () {},
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.green,
+    foregroundColor: Colors.white,
+  ),
+  child: const Text('Go'),
 )
 ```
 
-### 5. Consistent Styling
+`backgroundColor` makes the button green, and `foregroundColor` makes the text white.
+
+### Problem 5: Spot the bug
+
+`onPressed: print('hi')` calls `print` immediately (when the button is built), not on tap, and passes its result to `onPressed`, which is wrong. Wrap it in a function:
 
 ```dart
-// Create theme for consistent buttons
-ThemeData(
-  elevatedButtonTheme: ElevatedButtonThemeData(
-    style: ElevatedButton.styleFrom(
-      backgroundColor: Colors.blue,
-      foregroundColor: Colors.white,
-      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-      ),
-    ),
-  ),
+ElevatedButton(
+  onPressed: () => print('hi'),
+  child: const Text('Tap'),
 )
 ```
 
----
-
-## Summary
-
-You now know:
-- **6 button types** and when to use each
-- How to style buttons with colors, shapes, padding
-- Button states (enabled, disabled, loading)
-- Creating custom button widgets
-- Best practices for professional apps
-
-**Key Takeaways:**
-- Use **ElevatedButton** for primary actions
-- Use **TextButton** for secondary actions
-- Use **OutlinedButton** for alternative actions
-- Use **IconButton** for toolbar/compact UI
-- Use **FAB** for the main screen action
-- Use **PopupMenuButton** for multiple options
+Now `print('hi')` only runs when the button is actually tapped.
 
 ---
 
-**Next:** Learn about Input Widgets
-
-**Continue to:** `06b-InputWidgets.md`
+**Next:** `06b-InputWidgets.md`, where you let the user type with text fields.
