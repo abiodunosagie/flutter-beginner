@@ -134,3 +134,11 @@ Once you've finished all theory and exercises:
 **Ready to start?**
 
 👉 Begin with [01-CameraImagePicker.md](01-CameraImagePicker.md)
+
+---
+
+## Going Deeper (Level 19)
+
+When you are comfortable here, Level 19 takes this further with the production stack that job adverts ask for:
+
+📖 **[Writing your own platform code: method channels in Kotlin and Swift, Pigeon, and web](../../Level-19-Job-Ready-Flutter/Theory/04a-PlatformAwareCode.md)**

@@ -86,3 +86,11 @@ Do not:
 ---
 
 **Ready? Start here:** [01-WhatIsFlutter.md](01-WhatIsFlutter.md)
+
+---
+
+## Going Deeper (Level 19)
+
+When you are comfortable here, Level 19 takes this further with the production stack that job adverts ask for:
+
+📖 **[Widget composition, const rebuilds, keys, and responsive layout in production](../../Level-19-Job-Ready-Flutter/Theory/01a-CompositionOverInheritance.md)**

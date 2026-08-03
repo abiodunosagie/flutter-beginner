@@ -414,3 +414,11 @@ Once you've finished all theory and exercises:
 **Ready to start?**
 
 👉 Begin with [01-WhatIsAnAPI.md](01-WhatIsAnAPI.md)
+
+---
+
+## Going Deeper (Level 19)
+
+When you are comfortable here, Level 19 takes this further with the production stack that job adverts ask for:
+
+📖 **[Freezed, Retrofit, and the build_runner workflow](../../Level-19-Job-Ready-Flutter/Theory/05a-CodeGenerationWorkflow.md)**

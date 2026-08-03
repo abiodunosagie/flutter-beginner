@@ -240,3 +240,9 @@ Continue practicing by building your own MCP servers and AI-powered applications
 **Ready to start?**
 
 Open `Theory/01-WhatIsMCP.md` and begin your journey into MCP and AI integration.
+
+---
+
+## Next Level
+
+➡️ **[Level 19: Job Ready Flutter](../Level-19-Job-Ready-Flutter/README.md)** - the production stack job adverts ask for: composition and responsive UI, Cubit/Bloc, go_router, platform channels, Freezed/Retrofit/codegen, and testing, plus interview preparation.

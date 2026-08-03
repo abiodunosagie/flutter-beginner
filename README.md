@@ -412,6 +412,33 @@ Learn to integrate AI capabilities into your Flutter apps!
 
 ---
 
+### **Level 19: Job Ready Flutter** NEW!
+** Time**: 20-27 hours | ** Difficulty**: Advanced
+
+The production stack that Flutter job adverts actually ask for, with every code
+sample compiled and run before it was written down (Flutter 3.38.4, Dart 3.10.3).
+
+**What You'll Learn:**
+- Widget composition and responsive, adaptive UI
+- Cubit and Bloc in depth, including event transformers and state modeling
+- go_router: shells, typed routes, guards, deep links
+- Platform specific code: method channels in Kotlin and Swift, Pigeon, web
+- Freezed, Retrofit, json_serializable, and the build_runner workflow
+- Unit, widget, and integration testing, plus bloc_test and golden tests
+
+**What You'll Build:**
+- A responsive dashboard, a Cubit todo app, a Bloc search with pagination
+- A go_router app with a stateful shell and an auth guard
+- A platform aware app with a method channel and an event channel
+- A Freezed + Retrofit data layer, and a 16 test suite that passes
+
+**Also inside:** interview questions with answers to say out loud, 44 real
+error messages and their fixes, and a four day interview sprint plan.
+
+** Go to:** `Level-19-Job-Ready-Flutter/README.md`
+
+---
+
 ##  How Long Will This Take?
 
 ### Realistic Timeline:
@@ -570,6 +597,7 @@ Use this to track your journey:
 - [ ] **Level 16:** Professional Patterns
 - [ ] **Level 17:** Interview Prep
 - [ ] **Level 18:** MCP & AI Integration
+- [ ] **Level 19:** Job Ready Flutter
 
 ---
 
@@ -593,6 +621,7 @@ By completing this course, you will:
 - **Level-01-Dart-Fundamentals/** - Where you begin!
 - **Level-17-Interview-Prep/** - Interview preparation
 - **Level-18-MCP-AI-Integration/** - AI integration (advanced)
+- **Level-19-Job-Ready-Flutter/** - The production job stack + interview prep
 
 ---
 

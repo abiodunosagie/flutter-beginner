@@ -312,3 +312,11 @@ Once you've finished all theory and exercises:
 **Ready to start?**
 
 👉 Begin with [01-BasicNavigation.md](01-BasicNavigation.md)
+
+---
+
+## Going Deeper (Level 19)
+
+When you are comfortable here, Level 19 takes this further with the production stack that job adverts ask for:
+
+📖 **[go_router in production: typed routes, stateful shells, guards, and deep links](../../Level-19-Job-Ready-Flutter/Theory/03a-GoRouterMentalModel.md)**

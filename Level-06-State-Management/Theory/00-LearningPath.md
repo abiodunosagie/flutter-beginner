@@ -358,3 +358,11 @@ Once you've finished all theory and exercises:
 **Ready to start?**
 
 👉 Begin with [01a-WhatIsState.md](01a-WhatIsState.md)
+
+---
+
+## Going Deeper (Level 19)
+
+When you are comfortable here, Level 19 takes this further with the production stack that job adverts ask for:
+
+📖 **[Cubit and Bloc in depth: event transformers, state modeling, and architecture](../../Level-19-Job-Ready-Flutter/Theory/02a-CubitDeepDive.md)**
