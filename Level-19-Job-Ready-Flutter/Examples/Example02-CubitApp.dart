@@ -64,13 +64,20 @@ final class TodoLoading extends TodoState {
 }
 
 final class TodoLoaded extends TodoState {
-  const TodoLoaded(this.todos);
+  const TodoLoaded(this.todos, {this.actionError});
 
   final List<Todo> todos;
+
+  /// A single action failed (a toggle that did not save) while the list is
+  /// still perfectly good. The listener shows it; the builder ignores it.
+  /// Keeping this here instead of emitting TodoFailed is what stops one
+  /// failed checkbox from wiping the whole list off the screen.
+  final String? actionError;
 
   int get remaining => todos.where((t) => !t.done).length;
 }
 
+/// The LIST could not be loaded at all, so there is nothing to show.
 final class TodoFailed extends TodoState {
   const TodoFailed(this.message);
 
@@ -112,8 +119,11 @@ class TodoCubit extends Cubit<TodoState> {
       await _repository.toggle(id);
     } catch (_) {
       if (isClosed) return;
-      emit(current); // roll back to exactly what we had
-      emit(const TodoFailed('That change did not save.'));
+      // Roll back to exactly what we had, and attach the message. We do NOT
+      // emit TodoFailed here: the list loaded fine, only this one action
+      // failed, and TodoFailed would replace the whole screen with a retry
+      // button the user does not need.
+      emit(TodoLoaded(current.todos, actionError: 'That change did not save.'));
     }
   }
 }
@@ -154,10 +164,18 @@ class TodoPage extends StatelessWidget {
       ),
       body: BlocListener<TodoCubit, TodoState>(
         // A snackbar is a side effect, so it lives in a listener, not a builder.
-        listenWhen: (previous, current) => current is TodoFailed,
+        listenWhen: (previous, current) =>
+            current is TodoFailed ||
+            (current is TodoLoaded && current.actionError != null),
         listener: (context, state) {
+          final message = switch (state) {
+            TodoFailed(:final message) => message,
+            TodoLoaded(:final actionError) => actionError,
+            _ => null,
+          };
+          if (message == null) return;
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text((state as TodoFailed).message)),
+            SnackBar(content: Text(message)),
           );
         },
         child: BlocBuilder<TodoCubit, TodoState>(

@@ -57,21 +57,29 @@ final router = GoRouter(
   redirect: (context, state) {
     final location = state.matchedLocation;
 
+    // Where was the user actually going? After the first redirect the current
+    // location is /splash or /login, so the original target has to be carried
+    // along in ?from= or it is lost.
+    final intended = state.uri.queryParameters['from'] ?? state.uri.toString();
+
     // While the session check runs, hold on the splash so the login screen
-    // does not flash for half a second.
+    // does not flash for half a second, and take the target along.
     if (auth.status == AuthStatus.unknown) {
-      return location == '/splash' ? null : '/splash';
+      if (location == '/splash') return null;
+      return '/splash?from=${Uri.encodeComponent(intended)}';
     }
 
     final onLogin = location == '/login';
 
     if (auth.status == AuthStatus.signedOut) {
       if (onLogin) return null;
-      final from = Uri.encodeComponent(state.uri.toString());
-      return '/login?from=$from';
+      return '/login?from=${Uri.encodeComponent(intended)}';
     }
 
-    if (onLogin || location == '/splash') return '/feed';
+    if (onLogin || location == '/splash') {
+      final from = state.uri.queryParameters['from'];
+      return from == null ? '/feed' : Uri.decodeComponent(from);
+    }
     return null;
   },
   errorBuilder: (context, state) => Scaffold(
@@ -256,10 +264,10 @@ class LoginPage extends StatelessWidget {
               key: const Key('sign_in'),
               onPressed: () {
                 auth.signIn();
-                // The redirect sends signed in users off /login automatically,
-                // but honouring ?from= is the nicer experience.
-                final target = from == null ? null : Uri.decodeComponent(from!);
-                if (target != null) context.go(target);
+                // The redirect already sends signed in users off /login and
+                // honours ?from=, so this is only here to make the intent
+                // obvious when reading the example.
+                if (from != null) context.go(Uri.decodeComponent(from!));
               },
               child: const Text('Sign in'),
             ),

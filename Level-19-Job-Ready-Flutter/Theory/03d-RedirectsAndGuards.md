@@ -16,27 +16,62 @@ final router = GoRouter(
     final status = authNotifier.status;
     final location = state.matchedLocation;
 
-    // While we do not know yet, hold the user on the splash screen
+    // Where was the user actually trying to go? Once we have redirected them
+    // to /splash or /login, the current location IS /splash or /login, so the
+    // original target has to be carried along in ?from= .
+    final intended =
+        state.uri.queryParameters['from'] ?? state.uri.toString();
+
+    // While we do not know yet, hold the user on the splash screen,
+    // taking the target with them.
     if (status == AuthStatus.unknown) {
-      return location == '/splash' ? null : '/splash';
+      if (location == '/splash') return null;
+      return '/splash?from=${Uri.encodeComponent(intended)}';
     }
 
-    final loggingIn = location == '/login' || location == '/signup';
+    final waitingRoom = location == '/splash' ||
+        location == '/login' ||
+        location == '/signup';
 
     if (status == AuthStatus.signedOut) {
-      // Remember where they wanted to go, so we can send them back after login
-      return loggingIn ? null : '/login?from=${Uri.encodeComponent(state.uri.toString())}';
+      if (location == '/login' || location == '/signup') return null;
+      return '/login?from=${Uri.encodeComponent(intended)}';
     }
 
-    // Signed in but sitting on a login/splash page: move them along
-    if (loggingIn || location == '/splash') {
-      return '/home';
+    // Signed in but sitting on a splash or login page: move them along,
+    // to the page they originally asked for when there was one.
+    if (waitingRoom) {
+      final from = state.uri.queryParameters['from'];
+      return from == null ? '/home' : Uri.decodeComponent(from);
     }
 
     return null;   // null means "no redirect, carry on"
   },
   routes: [...],
 );
+```
+
+```
+┌──────────────────────────────────────────────────────┐
+│                                                      │
+│   THE TRAP THIS AVOIDS (measured, not guessed)       │
+│                                                      │
+│   The obvious version returns a bare '/splash' while │
+│   the session is being checked, then later builds    │
+│   ?from= out of state.uri.                           │
+│                                                      │
+│   By then the app IS at /splash, so it captures      │
+│   from=/splash, and after signing in the user lands  │
+│   on the home page instead of the link they tapped.  │
+│                                                      │
+│   Deep link to /orders/77 while signed out:          │
+│     naive version  -> from=%2Fsplash    ✗            │
+│     version above  -> from=%2Forders%2F77  ✓         │
+│                                                      │
+│   Carry the target through EVERY hop, or do not      │
+│   promise the feature.                               │
+│                                                      │
+└──────────────────────────────────────────────────────┘
 ```
 
 ```
@@ -142,14 +177,18 @@ Order of execution: the top level `redirect` runs first, then route level redire
 ## Sending The User Back After Login
 
 ```dart
-// Login page reads where they were headed
+// Login page reads where they were headed (it arrives encoded)
 final from = GoRouterState.of(context).uri.queryParameters['from'];
 
 // After a successful login
-context.go(from ?? '/home');
+context.go(from == null ? '/home' : Uri.decodeComponent(from));
 ```
 
 Small touch, big impression: a user who taps a shared link to `/products/42` while signed out lands on login, signs in, and arrives at the product instead of a generic home screen.
+
+Decode it. The redirect encoded the value with `Uri.encodeComponent`, so a path
+with a query of its own (`/search?q=red%20shoes`) arrives escaped and would
+otherwise be treated as one long nonsense path.
 
 ---
 
@@ -380,12 +419,19 @@ A redirect that never returns `null`: usually a rule that sends signed out users
 ### Problem 3: Return to intent
 
 ```dart
-// in redirect
-return '/login?from=${Uri.encodeComponent(state.uri.toString())}';
+// in redirect: read any target already being carried, and pass it on
+final intended = state.uri.queryParameters['from'] ?? state.uri.toString();
+return '/login?from=${Uri.encodeComponent(intended)}';
 
 // after a successful login
-context.go(GoRouterState.of(context).uri.queryParameters['from'] ?? '/');
+final from = GoRouterState.of(context).uri.queryParameters['from'];
+context.go(from == null ? '/' : Uri.decodeComponent(from));
 ```
+
+Reading `from` before building the new one is the part that matters. If the
+user passed through a splash or another guard first, `state.uri` is already
+that intermediate page, and building `?from=` out of it loses the original
+destination.
 
 ### Problem 4: Web refresh 404
 

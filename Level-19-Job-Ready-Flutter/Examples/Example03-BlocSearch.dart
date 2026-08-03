@@ -262,9 +262,12 @@ class _SearchPageState extends State<SearchPage> {
           ),
           Expanded(
             child: BlocConsumer<SearchBloc, SearchState>(
+              // Fire on the TRANSITION into failure, not on the message text.
+              // Keying off the message would silently swallow the second
+              // failure in a row, because the message is the same string.
               listenWhen: (previous, current) =>
-                  current.status == SearchStatus.failure &&
-                  previous.errorMessage != current.errorMessage,
+                  previous.status != SearchStatus.failure &&
+                  current.status == SearchStatus.failure,
               listener: (context, state) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text(state.errorMessage ?? 'Error')),

@@ -318,7 +318,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc(this._repo) : super(const AuthUnknown()) {
     on<AuthSubscribed>((e, emit) => emit.forEach(
           _repo.statusStream,
-          onData: (status) => status == Status.in ? const AuthIn() : const AuthOut(),
+          onData: (status) =>
+              status == AuthStatus.signedIn ? const AuthIn() : const AuthOut(),
         ));
   }
   final AuthRepository _repo;

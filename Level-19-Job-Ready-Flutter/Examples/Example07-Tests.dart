@@ -125,7 +125,7 @@ void main() {
     );
 
     blocTest<TodoCubit, TodoState>(
-      'rolls back when saving fails',
+      'rolls back and reports the error without losing the list',
       setUp: () {
         when(() => repository.toggle(any())).thenThrow(Exception('nope'));
       },
@@ -134,8 +134,11 @@ void main() {
       act: (cubit) => cubit.toggle('1'),
       expect: () => [
         isA<TodoLoaded>().having((s) => s.todos.first.done, 'optimistic', true),
-        isA<TodoLoaded>().having((s) => s.todos.first.done, 'rolled back', false),
-        isA<TodoFailed>(),
+        // Still TodoLoaded, so the list stays on screen. The failure travels
+        // as actionError for the listener to show.
+        isA<TodoLoaded>()
+            .having((s) => s.todos.first.done, 'rolled back', false)
+            .having((s) => s.actionError, 'actionError', isNotNull),
       ],
     );
   });
@@ -329,9 +332,13 @@ final class TodoLoading extends TodoState {
 }
 
 final class TodoLoaded extends TodoState {
-  const TodoLoaded(this.todos);
+  const TodoLoaded(this.todos, {this.actionError});
 
   final List<Todo> todos;
+
+  /// One action failed while the list itself is fine. The listener shows it,
+  /// the builder ignores it, so a failed checkbox does not wipe the screen.
+  final String? actionError;
 
   int get remaining => todos.where((t) => !t.done).length;
 }
@@ -372,8 +379,7 @@ class TodoCubit extends Cubit<TodoState> {
       await _repository.toggle(id);
     } catch (_) {
       if (isClosed) return;
-      emit(current);
-      emit(const TodoFailed('That change did not save.'));
+      emit(TodoLoaded(current.todos, actionError: 'That change did not save.'));
     }
   }
 }

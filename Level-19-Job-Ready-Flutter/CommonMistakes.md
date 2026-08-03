@@ -183,6 +183,26 @@ check finishes.
 
 ---
 
+### 17b. After signing in, the deep link lands on home instead of the shared page
+
+**Why:** the redirect builds `?from=` out of `state.uri` **after** it has
+already sent the user to `/splash` or `/login`, so the current location is that
+intermediate page and the original target is gone. Measured: a deep link to
+`/orders/77` produces `from=%2Fsplash`.
+
+**Fix:** read any target already being carried before building a new one, and
+pass it through every hop:
+
+```dart
+final intended = state.uri.queryParameters['from'] ?? state.uri.toString();
+// hold on splash WITH the target
+return '/splash?from=${Uri.encodeComponent(intended)}';
+```
+
+And decode it on the way back out: `Uri.decodeComponent(from)`.
+
+---
+
 ### 18. Logging out does not kick the user off the private screen
 
 **Why:** `redirect` only runs on navigation, and nothing navigated.

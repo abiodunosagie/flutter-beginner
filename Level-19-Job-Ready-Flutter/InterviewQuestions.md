@@ -252,6 +252,13 @@ session is being checked, so the app holds on the splash instead of flashing
 the login screen. Second, I put the intended location in `?from=` and send the
 user there after signing in, so a shared link still lands where it meant to.
 
+Those two interact in a way that catches people out. Once you have redirected
+to the splash, the current location **is** the splash, so building `?from=` out
+of `state.uri` at that point captures `/splash` and the deep link is lost. The
+target has to be read back out and carried through every hop:
+`final intended = state.uri.queryParameters['from'] ?? state.uri.toString();`.
+I found that one by testing the guard rather than trusting it.
+
 When auth lives in a bloc I bridge its stream to a `Listenable` with a small
 `GoRouterRefreshStream` class, because the router needs a `Listenable` and a
 bloc exposes a `Stream`.

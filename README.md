@@ -432,7 +432,7 @@ sample compiled and run before it was written down (Flutter 3.38.4, Dart 3.10.3)
 - A platform aware app with a method channel and an event channel
 - A Freezed + Retrofit data layer, and a 16 test suite that passes
 
-**Also inside:** interview questions with answers to say out loud, 44 real
+**Also inside:** interview questions with answers to say out loud, 45 real
 error messages and their fixes, and a four day interview sprint plan.
 
 ** Go to:** `Level-19-Job-Ready-Flutter/README.md`

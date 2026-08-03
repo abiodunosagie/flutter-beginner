@@ -193,7 +193,7 @@ Score 40 or more out of 50 and you are ready to interview on this material.
 47. How do you assert that a button is disabled?
 48. Does `blocTest`'s `expect:` include the initial state?
 49. What does `seed:` do?
-50. What two lines make a widget test run at 1400x900 without leaking?
+50. What three lines make a widget test run at 1400x900 without leaking?
 
 <details>
 <summary>Answers</summary>
@@ -207,8 +207,12 @@ Score 40 or more out of 50 and you are ready to interview on this material.
 48. No. Only the states emitted after it. (06d)
 49. Starts the bloc from a given state so you can test a mid-flow behaviour
     directly. (06d)
-50. `tester.view.physicalSize = const Size(1400, 900);` and
-    `addTearDown(tester.view.reset);` (06b)
+50. ```dart
+    tester.view.physicalSize = const Size(1400, 900);
+    tester.view.devicePixelRatio = 1.0;   // without this the logical size is not 1400x900
+    addTearDown(tester.view.reset);
+    ```
+    (06b)
 
 </details>
 
