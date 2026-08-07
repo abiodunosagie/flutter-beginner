@@ -40,6 +40,24 @@ If you've never coded before, **don't worry!** This course is designed for you. 
 - Do all exercises
 - Build your own small projects after each level
 
+### Step 5: Build the level app (required)
+Every level has a **`Build-This-App/`** folder. After theory + exercises, **ship that app** before moving on.
+
+Especially from **Level 06 (State Management)** onward, these are multi-screen apps employers understand (cart, APIs, Firebase, maps, tests, polish).
+
+### Step 6: Employer-grade full app tutorials
+When you want larger portfolio pieces (or after Level 08+), open:
+
+👉 **[`Full-App-Tutorials/README.md`](Full-App-Tutorials/README.md)**
+
+Includes **15 start-to-finish apps**, among them:
+
+| High ROI | Path |
+|----------|------|
+| **Realtime Chat (Firebase)** | `Full-App-Tutorials/App-04-Realtime-Chat-Firebase/` |
+| **Ride Hailing (Uber-style)** | `Full-App-Tutorials/App-05-Ride-Hailing-Complete/` |
+| Food delivery, e-commerce, social, wallet, marketplace, … | see hub catalog |
+
 ---
 
 ##  Complete Course Roadmap

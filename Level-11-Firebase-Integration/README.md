@@ -376,3 +376,11 @@ StreamBuilder<QuerySnapshot>(
 ---
 
 **Let's start:** `Theory/01-FirebaseSetup.md` 🚀
+
+---
+
+## Build This App (required project)
+
+After exercises, complete **[Build-This-App/README.md](Build-This-App/README.md)**.
+
+Larger apps: [Full-App-Tutorials](../Full-App-Tutorials/README.md).

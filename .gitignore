@@ -3,3 +3,4 @@
 
 # Local session doc, never commit
 SESSION_GUIDE.md
+docs/.task-tracker.tsv.lock

@@ -188,3 +188,11 @@ Run: `flutter pub get`
 ---
 
 **Start Here:** `Theory/01-WhatIsState.md`
+
+---
+
+## Build This App (required project)
+
+After exercises, complete **[Build-This-App/README.md](Build-This-App/README.md)**.
+
+Larger apps: [Full-App-Tutorials](../Full-App-Tutorials/README.md).
