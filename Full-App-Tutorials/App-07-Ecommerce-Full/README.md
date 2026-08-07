@@ -1,64 +1,124 @@
-# App 07: E-Commerce Full — ShopEase Complete
+# App 07: E-Commerce Full (ShopEase Complete) — Complete Tutorial
 
-> End-to-end store: catalog, detail, cart, checkout, orders. Aligns with course ShopEase capstones — **finish as one app**.
+> End-to-end store: catalog, detail, cart, checkout, orders. The portfolio “shop app.”
 
-**Min level:** 06–11 · **Time:** 20–30 hours  
-
----
-
-## Must-have features
-
-- Product list + category filter + search  
-- Product detail (images, price, variants size/color simple)  
-- Cart with qty update  
-- Wishlist (local)  
-- Checkout form (address)  
-- Order confirmation + history  
-- Auth (Firebase or mock)  
+**Time:** 20–30 hours  
+**Minimum level:** 06–08; Firebase auth/orders at 11  
 
 ---
 
-## Architecture
+## 1. What you are building
+
+A shopping app with:
+
+- Product catalog (grid)  
+- Search + category filter  
+- Product detail  
+- Cart + badge  
+- Checkout  
+- Order success + history  
+- (Optional) login  
+
+Use [FakeStore API](https://fakestoreapi.com) for products first.
+
+---
+
+## 2. Features
+
+- [ ] Fetch products from API  
+- [ ] Category filter from product.category  
+- [ ] Search by title  
+- [ ] Detail page (image, price, description)  
+- [ ] Add to cart  
+- [ ] Cart qty update / remove  
+- [ ] Checkout address form  
+- [ ] Create order object  
+- [ ] Order history (local or cloud)  
+- [ ] Loading / error / empty  
+
+---
+
+## 3. Architecture
 
 ```
-features/catalog | cart | checkout | orders | auth | profile
-core/network | theme | router
-data/repositories
+features/
+  catalog/
+  cart/
+  checkout/
+  orders/
+  auth/          # optional
+data/
+  product_api.dart
+  product_repository.dart
+  order_repository.dart
 ```
 
-Use one state approach end-to-end (Provider **or** Riverpod — pick one).
+One state library end-to-end.
 
 ---
 
-## Data sources
+## 4. Cart math
 
-| Phase | Source |
-|-------|--------|
-| 1 | FakeStore API https://fakestoreapi.com |
-| 2 | Firebase products + orders |
-| 3 | Own Supabase/Stripe later |
+```dart
+double get subtotal => lines.fold(0, (a, l) => a + l.price * l.qty);
+double get shipping => subtotal > 50 ? 0 : 5.99;
+double get total => subtotal + shipping;
+```
+
+Show free shipping callout when close to $50.
 
 ---
 
-## Checkout pipeline
+## 5. Checkout pipeline (exact)
 
 ```
-Cart valid → Address form → Payment mock → Create order → Clear cart → Success
+Validate cart not empty
+ → Validate address
+ → Create order {id, items copy, totals, createdAt, status: placed}
+ → Persist order
+ → Clear cart
+ → Navigate to success (order id)
 ```
 
-Never clear cart if order create fails.
+If persist fails, **do not** clear cart.
 
 ---
 
-## Checklist
+## 6. Build order
 
-- [ ] Responsive product grid  
-- [ ] Cart badge in app bar  
-- [ ] Stock/qty rules  
-- [ ] Empty cart CTA  
-- [ ] Order detail  
-- [ ] Logout  
+1. Product API + list  
+2. Detail  
+3. Cart  
+4. Checkout  
+5. Orders storage  
+6. Polish empty states  
+7. Optional Firebase auth  
 
-## Portfolio line
+---
 
-> Full Flutter e-commerce client with catalog, cart domain, checkout, and order history.
+## 7. Test script
+
+1. Load products online  
+2. Add 2 products different prices  
+3. Change qty  
+4. Checkout  
+5. Cart empty; history has 1 order  
+6. Airplane mode on catalog → error + retry  
+
+---
+
+## 8. Common mistakes
+
+- Holding product references that change  
+- Not copying cart lines into order  
+- Shipping logic only on UI not in domain  
+
+---
+
+## 9. Portfolio blurb
+
+> Full Flutter e-commerce client with catalog API, cart domain logic, checkout, and order history.
+
+## Done when
+
+Cold start → browse → purchase → history works.

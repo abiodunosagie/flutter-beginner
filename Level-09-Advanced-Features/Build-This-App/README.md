@@ -1,3 +1,10 @@
+## How to use this folder
+
+1. Finish this level’s Theory + Examples + Exercises first.  
+2. Create a **new** project (or `dart` file for CLI levels).  
+3. Work the checklist in order.  
+4. Only mark the level complete when **Definition of done** is true.
+
 # Build This App — Offline Notes (Hive or SQLite)
 
 > **Level app project** (not a toy snippet). Complete this after the level theory/exercises.

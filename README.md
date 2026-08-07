@@ -43,20 +43,21 @@ If you've never coded before, **don't worry!** This course is designed for you. 
 ### Step 5: Build the level app (required)
 Every level has a **`Build-This-App/`** folder. After theory + exercises, **ship that app** before moving on.
 
-Especially from **Level 06 (State Management)** onward, these are multi-screen apps employers understand (cart, APIs, Firebase, maps, tests, polish).
+Especially from **Level 06 (State Management)** onward, these are multi-screen apps employers understand (cart, APIs, Firebase, maps, tests, polish). Level 06 includes a full cart walkthrough: `Level-06-State-Management/Build-This-App/FULL_WALKTHROUGH.md`.
 
 ### Step 6: Employer-grade full app tutorials
 When you want larger portfolio pieces (or after Level 08+), open:
 
-👉 **[`Full-App-Tutorials/README.md`](Full-App-Tutorials/README.md)**
+👉 **[`Full-App-Tutorials/README.md`](Full-App-Tutorials/README.md)**  
+👉 **[`HOW_TO_LEARN.md`](HOW_TO_LEARN.md)** (simple path so you never get lost)
 
-Includes **15 start-to-finish apps**, among them:
+Includes **15 start-to-finish apps** (each with architecture, steps, code, test script, mistakes), among them:
 
 | High ROI | Path |
 |----------|------|
 | **Realtime Chat (Firebase)** | `Full-App-Tutorials/App-04-Realtime-Chat-Firebase/` |
 | **Ride Hailing (Uber-style)** | `Full-App-Tutorials/App-05-Ride-Hailing-Complete/` |
-| Food delivery, e-commerce, social, wallet, marketplace, … | see hub catalog |
+| Habit, expenses, movies, delivery, shop, social, wallet, marketplace, … | see hub catalog |
 
 ---
 

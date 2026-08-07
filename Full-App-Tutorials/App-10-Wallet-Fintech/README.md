@@ -1,34 +1,114 @@
-# App 10: Wallet / Fintech UI — Full Tutorial
+# App 10: Wallet / Fintech UI — Complete Tutorial
 
-> Mobile banking style: balance, transactions, transfer mock, PIN lock.
+> Banking-style wallet: balance, transactions, transfer mock, privacy toggles. Educational — no real money.
 
-**Min level:** 11–16 · **Time:** 18–28 hours  
-**Warning:** Educational mock — not real money movement.
+**Time:** 18–28 hours  
+**Minimum level:** 11–16  
+**Important:** label the app “Demo / mock ledger” in README.
 
-## Features
-- Auth + optional local PIN/biometrics UI  
-- Account balance card  
+---
+
+## 1. What you are building
+
+- Login (Firebase or mock)  
+- Home: balance card + recent transactions  
 - Transaction list (credit/debit)  
-- Transfer form with confirmation  
-- Receipt screen  
-- Freeze card toggle  
+- Transfer form → confirmation → receipt  
+- Hide balance eye toggle  
+- Optional PIN gate on open  
 
-## Architecture
+---
+
+## 2. Features
+
+- [ ] Ledger model: balance recomputed from transactions  
+- [ ] Seed transactions for demo  
+- [ ] Transfer creates debit for sender (single-user mock)  
+- [ ] Validation: amount > 0, amount ≤ balance, note optional  
+- [ ] Receipt screen with reference id  
+- [ ] Hide/show balance  
+- [ ] Empty states  
+- [ ] Clear “not real money” banner  
+
+---
+
+## 3. Domain (core)
+
+```dart
+enum TxType { credit, debit }
+
+class Tx {
+  final String id;
+  final TxType type;
+  final double amount;
+  final String title;
+  final DateTime createdAt;
+  final String? counterparty;
+}
+
+class Ledger {
+  static double balance(List<Tx> txs) {
+    double b = 0;
+    for (final t in txs) {
+      b += t.type == TxType.credit ? t.amount : -t.amount;
+    }
+    return b;
+  }
+}
 ```
-domain/ledger.dart          # pure balance math
-data/transaction_repository.dart
-features/home|transfer|history|security
+
+Never store balance as the only source of truth in a real bank; for the demo, recompute always.
+
+---
+
+## 4. Transfer pipeline
+
+```
+Validate
+ → Create tx id (uuid)
+ → Append debit tx
+ → Persist
+ → Navigate receipt
 ```
 
-## Ledger rules
-- Never trust client final balance alone in real systems  
-- For mock: recompute from transaction list  
-- Idempotent transfer ids  
+Idempotency: disable Send button while in flight.
 
-## Security UX
-- Obscure balance option  
-- Session timeout stretch  
-- No secrets in logs  
+---
 
-## Portfolio
-> Fintech-style wallet UI with ledger model, transfer flow, and security-minded UX.
+## 5. Build order
+
+1. Static UI screens with fake data  
+2. Ledger math + unit tests  
+3. Provider wiring  
+4. Transfer flow  
+5. Persistence  
+6. Security UX (hide balance, PIN optional)  
+7. Firebase sync stretch  
+
+---
+
+## 6. Test script
+
+1. Balance 1000 seed  
+2. Transfer 100 → balance 900; history shows debit  
+3. Transfer 9999 → validation error  
+4. Hide balance → ••••  
+5. Kill app → ledger consistent  
+
+---
+
+## 7. Common mistakes
+
+- Negative balance allowed  
+- Double submit creates two transfers  
+- Calling it “real payments” in store text  
+
+---
+
+## 8. Portfolio blurb
+
+> Fintech-style wallet UI with ledger-based balance, transfer flow, and privacy-minded UX (demo only).
+
+## Done when
+
+Transfer + ledger tests + cold start consistency pass.

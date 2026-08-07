@@ -2,7 +2,10 @@
 
 > Build **real products**, not toy counters. These tutorials are start-to-finish: product brief → architecture → features → code → testing → portfolio notes.
 
-This hub sits **beside** the level-by-level course. Each level also has a **`Build-This-App/`** folder (from Level 05 onward) so you always ship something after theory.
+This hub sits **beside** the level-by-level course. **Every level** also has a **`Build-This-App/`** folder so you always ship something after theory.
+
+**How to study the whole course:** [`../HOW_TO_LEARN.md`](../HOW_TO_LEARN.md)  
+**What “good” looks like:** [`TUTORIAL_STANDARD.md`](TUTORIAL_STANDARD.md)
 
 ---
 
@@ -10,10 +13,11 @@ This hub sits **beside** the level-by-level course. Each level also has a **`Bui
 
 1. Finish the **minimum level** listed for each app (or more).
 2. Create a **new Flutter project** per app (`flutter create app_name`).
-3. Follow the app README step by step. Type code; do not only read.
-4. Put finished apps in your GitHub portfolio with screenshots + README.
+3. Follow the app README **in order**. Each step has a “done when”.
+4. Tick every feature checkbox. Stretch goals are optional.
+5. Put finished apps on GitHub with screenshots + a short README.
 
-**Rule:** Prefer depth on 4–6 apps over shallow clones of 20.
+**Rule:** Prefer finishing 4–6 apps deeply over skimming all 15.
 
 ---
 
