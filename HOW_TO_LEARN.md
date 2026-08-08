@@ -14,15 +14,21 @@ This course is built so you **do not need to invent the path**. Follow this loop
 7. Next level
 ```
 
+## Master map
+
+Open **[COURSE_MAP.md](COURSE_MAP.md)** for the full level list (01–23), sample-apps, and portfolio order.
+
 ## When to open Full-App-Tutorials
 
 | Your situation | Do this |
 |----------------|---------|
 | Still on Levels 1–5 | Stay on Build-This-App only |
-| Finished Level 6 cart | Optional: Habit or Expense full app |
-| Finished Level 8 | Movie Browser full app |
-| Finished Level 11 | **Realtime Chat** full app |
-| Want a standout portfolio | **Ride Hailing** + one of Chat / Marketplace / Delivery |
+| Finished Level 6 | Run `sample-apps/shop_cart_app`; optional Habit/Expense |
+| Finished Level 8 | Movie Browser; optional Live Prices (App 17) |
+| Finished Level 11 | **Chat** (`sample-apps/chat_starter` then Firebase tutorial) |
+| Finished Level 12 | **Ride hail** sample + App 05 + map lab App 19 |
+| Finished Level 20–22 | Supabase todos; FCM on chat; payments on marketplace |
+| Want standout portfolio | Chat + Ride-hail + Marketplace/Payments + one stretch |
 
 ## Quality bar for “I’m done”
 

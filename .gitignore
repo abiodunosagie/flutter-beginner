@@ -4,3 +4,8 @@
 # Local session doc, never commit
 SESSION_GUIDE.md
 docs/.task-tracker.tsv.lock
+
+# Sample app build outputs
+sample-apps/**/build/
+sample-apps/**/.dart_tool/
+sample-apps/**/.flutter-plugins-dependencies

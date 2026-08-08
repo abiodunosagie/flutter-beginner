@@ -45,19 +45,29 @@ Every level has a **`Build-This-App/`** folder. After theory + exercises, **ship
 
 Especially from **Level 06 (State Management)** onward, these are multi-screen apps employers understand (cart, APIs, Firebase, maps, tests, polish). Level 06 includes a full cart walkthrough: `Level-06-State-Management/Build-This-App/FULL_WALKTHROUGH.md`.
 
-### Step 6: Employer-grade full app tutorials
+### Step 6: Employer-grade full app tutorials + runnable samples
 When you want larger portfolio pieces (or after Level 08+), open:
 
-👉 **[`Full-App-Tutorials/README.md`](Full-App-Tutorials/README.md)**  
-👉 **[`HOW_TO_LEARN.md`](HOW_TO_LEARN.md)** (simple path so you never get lost)
-
-Includes **15 start-to-finish apps** (each with architecture, steps, code, test script, mistakes), among them:
+👉 **[`COURSE_MAP.md`](COURSE_MAP.md)** (single map of everything)  
+👉 **[`HOW_TO_LEARN.md`](HOW_TO_LEARN.md)**  
+👉 **[`Full-App-Tutorials/README.md`](Full-App-Tutorials/README.md)** — **23** product tutorials  
+👉 **[`sample-apps/`](sample-apps/)** — **runnable** ShopCart, Chat, Ride-hail  
 
 | High ROI | Path |
 |----------|------|
-| **Realtime Chat (Firebase)** | `Full-App-Tutorials/App-04-Realtime-Chat-Firebase/` |
-| **Ride Hailing (Uber-style)** | `Full-App-Tutorials/App-05-Ride-Hailing-Complete/` |
-| Habit, expenses, movies, delivery, shop, social, wallet, marketplace, … | see hub catalog |
+| **Realtime Chat** | Tutorial + `sample-apps/chat_starter` |
+| **Ride Hailing** | Tutorial + `sample-apps/ride_hail_starter` + map lab App 19 |
+| Music, live prices, subscriptions, WebRTC, BLE, short video, design system | Apps 16–23 |
+
+### Step 7: Advanced levels (20–23)
+After Level 19 (or in parallel once Firebase is done):
+
+| Level | Topic |
+|-------|--------|
+| **20** | Supabase backend (Auth, RLS, Realtime) |
+| **21** | Production: FCM, Crashlytics, App Check, flavors, CI |
+| **22** | Payments & subscriptions (Stripe / RevenueCat / Paystack) |
+| **23** | Quality: a11y, l10n, isolates, Drift |
 
 ---
 
@@ -202,7 +212,7 @@ Navigate between multiple screens in your app.
 - Login flow
 - Tab-based navigation
 
-** Go to:** `Level-07-Navigation-Routing/README.md`
+** Go to:** `Level-07-Navigation/README.md`
 
 ---
 
