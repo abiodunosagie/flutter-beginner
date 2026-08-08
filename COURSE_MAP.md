@@ -69,6 +69,8 @@ Read this whenever you feel lost. **One path. No guessing.**
 | `shop_cart_app` | Level 06 cart |
 | `chat_starter` | App 04 patterns (needs your Firebase config) |
 | `ride_hail_starter` | App 05 trip state machine + mock matching |
+| `live_prices_app` | App 17 mock ticker |
+| `paywall_saas_app` | App 18 / Level 22 mock paywall |
 
 ```bash
 cd sample-apps/shop_cart_app && flutter pub get && flutter run

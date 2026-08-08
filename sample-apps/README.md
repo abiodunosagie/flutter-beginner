@@ -1,15 +1,22 @@
 # Runnable sample apps
 
-These are real Flutter projects you can open and run.
+Real Flutter projects — open, `flutter pub get`, `flutter run`.
 
-| App | Command | Course link |
-|-----|---------|-------------|
-| Shop cart | `cd shop_cart_app && flutter run` | Level 06 |
-| Chat starter | `cd chat_starter && flutter run` | App 04 (mock) |
-| Ride hail starter | `cd ride_hail_starter && flutter run` | App 05 (mock) |
+| Folder | Run | Course link |
+|--------|-----|-------------|
+| `shop_cart_app` | Provider cart + badge | Level 06 |
+| `chat_starter` | Mock chat (+ [FIREBASE_UPGRADE.md](chat_starter/FIREBASE_UPGRADE.md)) | App 04 |
+| `ride_hail_starter` | Rider/driver trip machine | App 05 |
+| `live_prices_app` | Mock live ticker | App 17 |
+| `paywall_saas_app` | Free tier + mock Pro paywall | App 18 / L22 |
 
 ```bash
 cd sample-apps/<app>
 flutter pub get
 flutter run
+flutter test
 ```
+
+## CI
+
+GitHub Actions (`.github/workflows/flutter_ci.yml`) analyzes and tests the matrix of sample apps.

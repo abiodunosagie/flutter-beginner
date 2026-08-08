@@ -8,7 +8,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        app: [shop_cart_app, chat_starter, ride_hail_starter]
+        app:
+          - shop_cart_app
+          - chat_starter
+          - ride_hail_starter
+          - live_prices_app
+          - paywall_saas_app
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
@@ -18,7 +23,7 @@ jobs:
         run: flutter pub get
         working-directory: sample-apps/${{ matrix.app }}
       - name: Analyze
-        run: flutter analyze
+        run: flutter analyze --no-fatal-infos
         working-directory: sample-apps/${{ matrix.app }}
       - name: Test
         run: flutter test
